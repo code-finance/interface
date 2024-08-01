@@ -21,6 +21,7 @@ const {
 } = theme;
 
 const FONT = 'Inter, Arial';
+const FONT_HEADING = 'Poppins';
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
@@ -57,23 +58,26 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 interface TypographyCustomVariants {
-  display1: React.CSSProperties;
-  subheader1: React.CSSProperties;
-  subheader2: React.CSSProperties;
-  description: React.CSSProperties;
-  buttonL: React.CSSProperties;
-  buttonM: React.CSSProperties;
-  buttonS: React.CSSProperties;
-  helperText: React.CSSProperties;
-  tooltip: React.CSSProperties;
-  main21: React.CSSProperties;
-  secondary21: React.CSSProperties;
-  main16: React.CSSProperties;
-  secondary16: React.CSSProperties;
-  main14: React.CSSProperties;
-  secondary14: React.CSSProperties;
-  main12: React.CSSProperties;
-  secondary12: React.CSSProperties;
+  h1: React.CSSProperties;
+  h2: React.CSSProperties;
+  h3: React.CSSProperties;
+  h4: React.CSSProperties;
+  h5: React.CSSProperties;
+  h6: React.CSSProperties;
+  body1: React.CSSProperties;
+  body2: React.CSSProperties;
+  body3: React.CSSProperties;
+  body4: React.CSSProperties;
+  body5: React.CSSProperties;
+  body6: React.CSSProperties;
+  body7: React.CSSProperties;
+  body8: React.CSSProperties;
+  body9: React.CSSProperties;
+  detail1: React.CSSProperties;
+  detail2: React.CSSProperties;
+  detail3: React.CSSProperties;
+  detail4: React.CSSProperties;
+  detail5: React.CSSProperties;
 }
 
 declare module '@mui/material/styles' {
@@ -82,16 +86,34 @@ declare module '@mui/material/styles' {
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions extends TypographyCustomVariants {}
 
-  interface BreakpointOverrides {
-    xsm: true;
-    xxl: true;
-    mdlg: true;
-  }
+  interface BreakpointOverrides {}
 }
 
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    h1: true;
+    h2: true;
+    h3: true;
+    h4: true;
+    h5: true;
+    h6: true;
+    body1: true;
+    body2: true;
+    body3: true;
+    body4: true;
+    body5: true;
+    body6: true;
+    body7: true;
+    body8: true;
+    body9: true;
+    detail1: true;
+    detail2: true;
+    detail3: true;
+    detail4: true;
+    detail5: true;
+
+    // to be removed
     display1: true;
     subheader1: true;
     subheader2: true;
@@ -109,12 +131,8 @@ declare module '@mui/material/Typography' {
     secondary14: true;
     main12: true;
     secondary12: true;
-    h5: false;
-    h6: false;
     subtitle1: false;
     subtitle2: false;
-    body1: false;
-    body2: false;
     button: false;
     overline: false;
   }
@@ -133,8 +151,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 
   return {
     breakpoints: {
-      keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      values: { xs: 0, xsm: 640, sm: 760, md: 960, mdlg: 1125, lg: 1280, xl: 1575, xxl: 1800 },
+      keys: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
+      values: { xs: 0, sm: 600, md: 900, lg: 1280, xl: 1536, xxl: 1800 },
     },
     palette: {
       mode,
@@ -245,164 +263,256 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     spacing: 4,
     typography: {
       fontFamily: FONT,
-      subtitle1: undefined,
-      subtitle2: undefined,
-      body1: undefined,
-      body2: undefined,
-      button: undefined,
-      overline: undefined,
-      display1: {
-        fontFamily: FONT,
-        fontWeight: 700,
-        letterSpacing: pxToRem(0.25),
-        lineHeight: '123.5%',
-        fontSize: pxToRem(32),
-      },
+      // subtitle1: undefined,
+      // subtitle2: undefined,
+      // body1: undefined,
+      // body2: undefined,
+      // button: undefined,
+      // overline: undefined,
+      // display1: {
+      //   fontFamily: FONT,
+      //   fontWeight: 700,
+      //   letterSpacing: pxToRem(0.25),
+      //   lineHeight: '130%',
+      //   fontSize: pxToRem(32),
+      // },
       h1: {
-        fontFamily: FONT,
+        fontFamily: FONT_HEADING,
         fontWeight: 700,
-        letterSpacing: pxToRem(0.25),
-        lineHeight: '123.5%',
-        fontSize: pxToRem(28),
+        lineHeight: '130%',
+        fontSize: pxToRem(36),
       },
       h2: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: 'unset',
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '130%',
+        fontSize: pxToRem(24),
       },
       h3: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: '160%',
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '130%',
         fontSize: pxToRem(18),
       },
       h4: {
+        fontFamily: FONT_HEADING,
+        fontWeight: 400,
+        lineHeight: '130%',
+        fontSize: pxToRem(18),
+      },
+      h5: {
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '150%',
+        fontSize: pxToRem(22),
+      },
+      h6: {
+        fontFamily: FONT_HEADING,
+        fontWeight: 700,
+        lineHeight: '150%',
+        fontSize: pxToRem(30),
+      },
+      body1: {
         fontFamily: FONT,
         fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
+        fontSize: pxToRem(22),
+        lineHeight: '130%',
       },
-      subheader1: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      subheader2: {
+      body2: {
         fontFamily: FONT,
         fontWeight: 500,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
+        fontSize: pxToRem(18),
+        lineHeight: '130%',
       },
-      description: {
+      body3: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: '143%',
-        fontSize: pxToRem(14),
+        fontSize: pxToRem(18),
+        lineHeight: '140%',
       },
-      caption: {
+      body4: {
+        fontFamily: FONT,
+        fontWeight: 600,
+        fontSize: pxToRem(17),
+        lineHeight: '130%',
+      },
+      body5: {
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: pxToRem(17),
+        lineHeight: '130%',
+      },
+      body6: {
+        fontFamily: FONT,
+        fontWeight: 600,
+        fontSize: pxToRem(16),
+        lineHeight: '130%',
+      },
+      body7: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      buttonL: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.46),
-        lineHeight: pxToRem(24),
         fontSize: pxToRem(16),
+        lineHeight: '130%',
       },
-      buttonM: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(14),
-      },
-      buttonS: {
+      body8: {
         fontFamily: FONT,
         fontWeight: 600,
-        letterSpacing: pxToRem(0.46),
-        lineHeight: pxToRem(20),
-        textTransform: 'uppercase',
-        fontSize: pxToRem(10),
+        fontSize: pxToRem(20),
+        lineHeight: '130%',
       },
-      helperText: {
+      body9: {
+        fontFamily: FONT,
+        fontWeight: 600,
+        fontSize: pxToRem(26),
+        lineHeight: '130%',
+      },
+      detail1: {
+        fontFamily: FONT,
+        fontWeight: 700,
+        fontSize: pxToRem(14),
+        lineHeight: '130%',
+      },
+      detail2: {
+        fontFamily: FONT,
+        fontWeight: 500,
+        fontSize: pxToRem(14),
+        lineHeight: '130%',
+      },
+      detail3: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.4),
-        lineHeight: pxToRem(12),
-        fontSize: pxToRem(10),
+        fontSize: pxToRem(14),
+        lineHeight: '130%',
       },
-      tooltip: {
+      detail4: {
         fontFamily: FONT,
         fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
+        fontSize: pxToRem(13),
+        lineHeight: '130%',
       },
-      main21: {
+      detail5: {
         fontFamily: FONT,
-        fontWeight: 800,
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
+        fontWeight: 400,
+        fontSize: pxToRem(15),
+        lineHeight: '140%',
       },
-      secondary21: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
-      },
-      main16: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
-      },
-      secondary16: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
-      },
-      main14: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      secondary14: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      main12: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      secondary12: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
+      // subheader1: {
+      //   fontFamily: FONT,
+      //   fontWeight: 600,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: pxToRem(20),
+      //   fontSize: pxToRem(14),
+      // },
+      // subheader2: {
+      //   fontFamily: FONT,
+      //   fontWeight: 500,
+      //   letterSpacing: pxToRem(0.1),
+      //   lineHeight: pxToRem(16),
+      //   fontSize: pxToRem(12),
+      // },
+      // description: {
+      //   fontFamily: FONT,
+      //   fontWeight: 400,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: '143%',
+      //   fontSize: pxToRem(14),
+      // },
+      // caption: {
+      //   fontFamily: FONT,
+      //   fontWeight: 400,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: pxToRem(16),
+      //   fontSize: pxToRem(12),
+      // },
+      // buttonL: {
+      //   fontFamily: FONT,
+      //   fontWeight: 500,
+      //   letterSpacing: pxToRem(0.46),
+      //   lineHeight: pxToRem(24),
+      //   fontSize: pxToRem(16),
+      // },
+      // buttonM: {
+      //   fontFamily: FONT,
+      //   fontWeight: 500,
+      //   lineHeight: pxToRem(24),
+      //   fontSize: pxToRem(14),
+      // },
+      // buttonS: {
+      //   fontFamily: FONT,
+      //   fontWeight: 600,
+      //   letterSpacing: pxToRem(0.46),
+      //   lineHeight: pxToRem(20),
+      //   textTransform: 'uppercase',
+      //   fontSize: pxToRem(10),
+      // },
+      // helperText: {
+      //   fontFamily: FONT,
+      //   fontWeight: 400,
+      //   letterSpacing: pxToRem(0.4),
+      //   lineHeight: pxToRem(12),
+      //   fontSize: pxToRem(10),
+      // },
+      // tooltip: {
+      //   fontFamily: FONT,
+      //   fontWeight: 400,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: pxToRem(16),
+      //   fontSize: pxToRem(12),
+      // },
+      // main21: {
+      //   fontFamily: FONT,
+      //   fontWeight: 800,
+      //   lineHeight: '133.4%',
+      //   fontSize: pxToRem(21),
+      // },
+      // secondary21: {
+      //   fontFamily: FONT,
+      //   fontWeight: 500,
+      //   lineHeight: '133.4%',
+      //   fontSize: pxToRem(21),
+      // },
+      // main16: {
+      //   fontFamily: FONT,
+      //   fontWeight: 600,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: pxToRem(24),
+      //   fontSize: pxToRem(16),
+      // },
+      // secondary16: {
+      //   fontFamily: FONT,
+      //   fontWeight: 500,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: pxToRem(24),
+      //   fontSize: pxToRem(16),
+      // },
+      // main14: {
+      //   fontFamily: FONT,
+      //   fontWeight: 600,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: pxToRem(20),
+      //   fontSize: pxToRem(14),
+      // },
+      // secondary14: {
+      //   fontFamily: FONT,
+      //   fontWeight: 500,
+      //   letterSpacing: pxToRem(0.15),
+      //   lineHeight: pxToRem(20),
+      //   fontSize: pxToRem(14),
+      // },
+      // main12: {
+      //   fontFamily: FONT,
+      //   fontWeight: 600,
+      //   letterSpacing: pxToRem(0.1),
+      //   lineHeight: pxToRem(16),
+      //   fontSize: pxToRem(12),
+      // },
+      // secondary12: {
+      //   fontFamily: FONT,
+      //   fontWeight: 500,
+      //   letterSpacing: pxToRem(0.1),
+      //   lineHeight: pxToRem(16),
+      //   fontSize: pxToRem(12),
+      // },
     },
   } as ThemeOptions;
 };
@@ -449,46 +559,19 @@ export function getThemedComponents(theme: Theme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '6px',
           },
           sizeLarge: {
-            ...theme.typography.buttonL,
-            padding: '10px 24px',
+            padding: '12px 24px',
           },
           sizeMedium: {
-            ...theme.typography.buttonM,
-            padding: '6px 12px',
+            padding: '12px 46.5px',
           },
           sizeSmall: {
-            ...theme.typography.buttonS,
-            padding: '0 6px',
+            padding: '9px 8px',
           },
         },
         variants: [
-          {
-            props: { variant: 'surface' },
-            style: {
-              color: theme.palette.common.white,
-              border: '1px solid',
-              borderColor: '#EBEBED1F',
-              backgroundColor: '#383D51',
-              '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.background.header,
-              },
-            },
-          },
-          {
-            props: { variant: 'gradient' },
-            style: {
-              color: theme.palette.common.white,
-              background: theme.palette.gradients.aaveGradient,
-              transition: 'all 0.2s ease',
-              '&:hover, &.Mui-focusVisible': {
-                background: theme.palette.gradients.aaveGradient,
-                opacity: '0.9',
-              },
-            },
-          },
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
@@ -565,13 +648,6 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
-      MuiListItemText: {
-        styleOverrides: {
-          root: {
-            ...theme.typography.subheader1,
-          },
-        },
-      },
       MuiListItemIcon: {
         styleOverrides: {
           root: {
@@ -619,39 +695,18 @@ export function getThemedComponents(theme: Theme) {
       MuiContainer: {
         styleOverrides: {
           root: {
-            display: 'flex',
-            flexDirection: 'column',
-            flex: 1,
             paddingBottom: '39px',
             [theme.breakpoints.up('xs')]: {
-              paddingLeft: '8px',
-              paddingRight: '8px',
-            },
-            [theme.breakpoints.up('xsm')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
             },
             [theme.breakpoints.up('sm')]: {
-              paddingLeft: '48px',
-              paddingRight: '48px',
+              paddingLeft: '24px',
+              paddingRight: '24px',
             },
             [theme.breakpoints.up('md')]: {
-              paddingLeft: '96px',
-              paddingRight: '96px',
-            },
-            [theme.breakpoints.up('lg')]: {
-              paddingLeft: '20px',
-              paddingRight: '20px',
-            },
-            [theme.breakpoints.up('xl')]: {
-              maxWidth: 'unset',
-              paddingLeft: '96px',
-              paddingRight: '96px',
-            },
-            [theme.breakpoints.up('xxl')]: {
-              paddingLeft: 0,
-              paddingRight: 0,
-              maxWidth: '1440px',
+              paddingLeft: '32px',
+              paddingRight: '32px',
             },
           },
         },
@@ -861,7 +916,6 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           outlined: {
             backgroundColor: theme.palette.background.surface,
-            ...theme.typography.buttonM,
             padding: '6px 12px',
             color: theme.palette.primary.light,
           },
