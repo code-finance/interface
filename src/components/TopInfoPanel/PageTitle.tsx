@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { useRootStore } from '../../store/root';
@@ -18,24 +18,19 @@ export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
 export const PageTitle = ({ pageTitle, withMarketSwitcher, withMigrateButton }: PageTitleProps) => {
   const isMigrateToV3Available = useRootStore((state) => selectIsMigrationAvailable(state));
 
-  const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  // const upToMD = useMediaQuery(theme.breakpoints.up('md'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: { xs: 'flex-start', xsm: 'center' },
-        mb: pageTitle ? 4 : 0,
+        mb: pageTitle ? 10 : 0,
         flexDirection: { xs: 'column', xsm: 'row' },
       }}
     >
-      {pageTitle && (downToXSM || !withMarketSwitcher) && (
+      {pageTitle && !withMarketSwitcher && (
         <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
           <Typography
-            variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
+            variant={'h1'}
             sx={{
               color: withMarketSwitcher ? 'text.muted' : 'text.white',
               mr: { xs: 5, xsm: 3 },
@@ -52,7 +47,6 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, withMigrateButton }: 
           display: 'flex',
           alignItems: 'flex-start',
           flexWrap: 'wrap',
-          mb: !pageTitle ? 4 : 0,
         }}
       >
         {withMarketSwitcher && <MarketSwitcher />}

@@ -27,10 +27,30 @@ declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
 
   interface TypeText {
+    primary: string;
+    secondary: string;
+    disabledText: string;
+    disabledBg: string;
+    mainTitle: string;
+    subTitle: string;
+    subText: string;
+    buttonText: string;
+    // to be removed
     muted: string;
   }
 
   interface TypeBackground {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+    modulePopup: string;
+    point: string;
+    contents: string;
+    dim: string;
+    group: string;
+    top: string;
+    chip: string;
+    // to be removed
     default: string;
     paper: string;
     surface: string;
@@ -40,6 +60,12 @@ declare module '@mui/material/styles/createPalette' {
   }
 
   interface Palette {
+    positive: {
+      main: string;
+    };
+    negative: {
+      main: string;
+    };
     gradients: {
       aaveGradient: string;
       newGradient: string;
@@ -87,6 +113,30 @@ declare module '@mui/material/styles' {
   interface TypographyVariantsOptions extends TypographyCustomVariants {}
 
   interface BreakpointOverrides {}
+
+  interface TypeText {
+    primary: string;
+    secondary: string;
+    disabledText: string;
+    disabledBg: string;
+    mainTitle: string;
+    subTitle: string;
+    subText: string;
+    buttonText: string;
+  }
+
+  interface TypeBackground {
+    primary: string;
+    secondary: string;
+    tertiary: string;
+    modulePopup: string;
+    point: string;
+    contents: string;
+    dim: string;
+    group: string;
+    top: string;
+    chip: string;
+  }
 }
 
 // Update the Typography's variant prop options
@@ -559,7 +609,7 @@ export function getThemedComponents(theme: Theme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '6px',
+            borderRadius: '8px',
           },
           sizeLarge: {
             padding: '12px 24px',
@@ -695,7 +745,9 @@ export function getThemedComponents(theme: Theme) {
       MuiContainer: {
         styleOverrides: {
           root: {
-            paddingBottom: '39px',
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
             [theme.breakpoints.up('xs')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
@@ -890,6 +942,7 @@ export function getThemedComponents(theme: Theme) {
             fontWeight: 400,
             fontSize: pxToRem(14),
             minWidth: '375px',
+            backgroundColor: theme.palette.mode === 'light' ? colors.gray[50] : colors.gray[800],
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',

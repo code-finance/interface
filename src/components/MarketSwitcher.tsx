@@ -115,7 +115,6 @@ export const MarketSwitcher = () => {
   );
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const isV3MarketsAvailable = availableMarkets
@@ -157,45 +156,21 @@ export const MarketSwitcher = () => {
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
-                size={upToLG ? 32 : 28}
+                size={upToLG ? 48 : 48}
                 logo={network.networkLogoPath}
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
-              <Box sx={{ mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
+              <Box sx={{ ml: 2, mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
                 <Typography
-                  variant={upToLG ? 'display1' : 'h1'}
-                  sx={{
-                    fontSize: downToXSM ? '1.55rem' : undefined,
-                    color: 'common.white',
+                  variant={upToLG ? 'h1' : 'h1'}
+                  sx={(theme) => ({
+                    color: theme.palette.text.primary,
                     mr: 1,
-                  }}
+                  })}
                 >
                   {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
                   {upToLG && ' Market'}
                 </Typography>
-                {market.v3 ? (
-                  <Box
-                    sx={{
-                      color: '#fff',
-                      px: 2,
-                      borderRadius: '12px',
-                      background: (theme) => theme.palette.gradients.aaveGradient,
-                    }}
-                  >
-                    <Typography variant="subheader2">V3</Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      color: '#A5A8B6',
-                      px: 2,
-                      borderRadius: '12px',
-                      backgroundColor: '#383D51',
-                    }}
-                  >
-                    <Typography variant="subheader2">V2</Typography>
-                  </Box>
-                )}
               </Box>
             </Box>
           );

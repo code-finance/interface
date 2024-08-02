@@ -2,8 +2,6 @@ import { Trans } from '@lingui/macro';
 import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
-import LoveGhost from '/public/loveGhost.svg';
-
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
 
 interface ConnectWalletPaperProps extends PaperProps {
@@ -20,7 +18,7 @@ export const ConnectWalletPaper = ({
   return (
     <Paper
       {...rest}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -28,22 +26,20 @@ export const ConnectWalletPaper = ({
         textAlign: 'center',
         p: 4,
         flex: 1,
+        borderRadius: 4,
+        background: theme.palette.background.secondary,
         ...sx,
-      }}
+      })}
     >
-      <LoveGhost style={{ marginBottom: '16px' }} />
       <>
         {loading ? (
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 2 }}>
-              <Trans>Please, connect your wallet</Trans>
-            </Typography>
-            <Typography sx={{ mb: 6 }} color="text.secondary">
+            <Typography sx={{ mb: 10, fontSize: 20 }} color="text.secondary">
               {description || (
                 <Trans>
-                  Please connect your wallet to see your supplies, borrowings, and open positions.
+                  We couldn’t detect a wallet. Connect a wallet to stake and view your balance.
                 </Trans>
               )}
             </Typography>
