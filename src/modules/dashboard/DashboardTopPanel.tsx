@@ -118,17 +118,6 @@ export const DashboardTopPanel = () => {
               withMarketSwitcher={true}
               bridge={currentNetworkConfig.bridge}
             />
-            {showMigrateButton && !downToSM && (
-              <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
-                <Link href={ROUTES.marketMigrationTool(currentMarket)}>
-                  <Button variant="gradient" sx={{ height: '20px' }}>
-                    <Typography variant="buttonS" data-cy={`migration-button`}>
-                      <Trans>Migrate to v3</Trans>
-                    </Typography>
-                  </Button>
-                </Link>
-              </Box>
-            )}
           </Box>
         }
       >

@@ -9,27 +9,23 @@ interface ConnectWalletPaperProps extends PaperProps {
   description?: ReactNode;
 }
 
-export const ConnectWalletPaper = ({
-  loading,
-  description,
-  sx,
-  ...rest
-}: ConnectWalletPaperProps) => {
+export const ConnectWalletPaper = ({ loading, description, ...rest }: ConnectWalletPaperProps) => {
   return (
     <Paper
       {...rest}
-      sx={(theme) => ({
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        p: 4,
-        flex: 1,
-        borderRadius: 4,
-        background: theme.palette.background.secondary,
-        ...sx,
-      })}
+      sx={[
+        (theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          p: 4,
+          flex: 1,
+          borderRadius: 4,
+          background: theme.palette.background.primary,
+        }),
+      ]}
     >
       <>
         {loading ? (
@@ -39,7 +35,7 @@ export const ConnectWalletPaper = ({
             <Typography sx={{ mb: 10, fontSize: 20 }} color="text.secondary">
               {description || (
                 <Trans>
-                  We couldn’t detect a wallet. Connect a wallet to stake and view your balance.
+                  We could’t detect a wallet. Connect a wallet to stake and view your balance.
                 </Trans>
               )}
             </Typography>
