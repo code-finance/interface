@@ -73,6 +73,12 @@ declare module '@mui/material/styles/createPalette' {
     other: {
       standardInputLine: string;
     };
+    border: {
+      activeState: string;
+      contentOutline: string;
+      pointDivider: string;
+      bgDivider: string;
+    };
   }
 
   interface PaletteOptions {
@@ -609,10 +615,11 @@ export function getThemedComponents(theme: Theme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '8px',
+            borderRadius: '6px',
           },
           sizeLarge: {
             padding: '12px 24px',
+            fontWeight: 600,
           },
           sizeMedium: {
             padding: '12px 46.5px',
@@ -625,8 +632,18 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              background: theme.palette.background.surface,
-              borderColor: theme.palette.divider,
+              background: theme.palette.background.primary,
+              borderColor: theme.palette.primary.main,
+              color: theme.palette.primary.main,
+            },
+          },
+          {
+            props: { color: 'primary', variant: 'text' },
+            style: {
+              border: '1px solid',
+              background: theme.palette.background.primary,
+              borderColor: theme.palette.border.contentOutline,
+              color: theme.palette.text.primary,
             },
           },
         ],
