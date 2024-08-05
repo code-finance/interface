@@ -90,29 +90,33 @@ export const ListWrapper = ({
 
   return (
     <Paper
-      sx={{
-        mt: withTopMargin ? 4 : 0,
-        border: 1,
-        borderColor: 'divider',
-        ...paperSx,
-      }}
+      sx={[
+        () => ({
+          mt: withTopMargin ? 4 : 0,
+          border: 1,
+          borderColor: 'divider',
+          py: 9,
+          px: 5,
+        }),
+        ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
+      ]}
     >
       <Box
-        sx={{
-          px: { xs: 4, xsm: 6 },
-          py: { xs: 3.5, xsm: 4 },
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          ...wrapperSx,
-        }}
+        sx={[
+          {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          },
+          ...(Array.isArray(wrapperSx) ? wrapperSx : [wrapperSx]),
+        ]}
       >
         <Box
           sx={{
             width: '100%',
             display: 'flex',
             alignItems: { xs: 'flex-start', xsm: 'center' },
-            py: '3.6px',
+            mb: 8,
             flexDirection: { xs: 'column', xsm: 'row' },
           }}
         >

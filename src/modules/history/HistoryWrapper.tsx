@@ -19,8 +19,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
-import LoveGhost from '/public/loveGhost.svg';
-
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
@@ -130,7 +128,6 @@ export const HistoryWrapper = () => {
           flex: 1,
         }}
       >
-        <LoveGhost style={{ marginBottom: '16px' }} />
         <Typography variant={downToMD ? 'h4' : 'h3'}>
           <Trans>Transaction history is not currently available for this market</Trans>
         </Typography>
@@ -156,13 +153,14 @@ export const HistoryWrapper = () => {
 
   return (
     <ListWrapper
+      paperSx={(theme) => ({ backgroundColor: theme.palette.background.primary })}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          <Trans>Transactions</Trans>
+          <Trans>Transactions1</Trans>
         </Typography>
       }
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'inline-flex' }}>
           <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
           <SearchInput

@@ -143,7 +143,7 @@ export const HistoryWrapperMobile = () => {
 
   return (
     <ListWrapper
-      wrapperSx={showSearchBar ? { px: 4 } : undefined}
+      wrapperSx={showSearchBar ? { px: 5, py: 9 } : undefined}
       titleComponent={
         <Box
           ref={searchBarRef}
@@ -156,7 +156,7 @@ export const HistoryWrapperMobile = () => {
         >
           {!showSearchBar && (
             <Typography component="div" variant="h2" sx={{ mr: 4, height: '36px' }}>
-              <Trans>Transactions</Trans>
+              <Trans>Transactions1</Trans>
             </Typography>
           )}
           {!showSearchBar && (
