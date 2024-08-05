@@ -126,7 +126,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   return (
     <Box>
       <Button
-        sx={{
+        sx={(theme) => ({
           minWidth: 148,
           maxWidth: downToMD ? '100%' : 360,
           display: 'flex',
@@ -134,53 +134,55 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
           alignItems: 'center',
           height: 36,
           border: '1px solid',
-          borderColor: 'divider',
+          borderColor: theme.palette.border.contentOutline,
           borderRadius: '4px',
           mr: downToMD ? 0 : 2,
           ml: downToMD ? 4 : 0,
           pl: 2,
           pr: 1,
-        }}
+          color: theme.palette.text.secondary,
+          textDecoration: 'none',
+        })}
         onClick={handleClick}
-      >
-        <Box display="flex" alignItems="center" overflow="hidden">
-          <SvgIcon height={9} width={9} color="primary">
+        startIcon={
+          <SvgIcon height={9} width={9}>
             <SortIcon />
           </SvgIcon>
-          <Typography
-            variant="subheader1"
-            color="text.primary"
-            sx={{
-              ml: 1,
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              mr: 1,
-            }}
-          >
-            <FilterButtonLabel />
-          </Typography>
-        </Box>
+        }
+      >
+        <Typography
+          variant="body4"
+          sx={{
+            ml: 1,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            mr: 1,
+            textTransform: 'none',
+          }}
+        >
+          <FilterButtonLabel />
+        </Typography>
         {!allSelected && (
           <DarkTooltip
             title={
-              <Typography variant="caption" color="common.white">
+              <Typography variant="caption" color="text.subText">
                 <Trans>Reset</Trans>
               </Typography>
             }
           >
             <Box
-              sx={{
+              sx={(theme) => ({
+                color: theme.palette.text.subText,
                 cursor: 'pointer',
-                color: 'primary',
                 height: 'auto',
                 width: 'auto',
                 display: 'flex',
                 alignItems: 'center',
-              }}
+              })}
               onClick={handleClearFilter}
             >
-              <XCircleIcon color="#A5A8B6" width={18} height={18} />
+              <XCircleIcon width={18} height={18} />
             </Box>
           </DarkTooltip>
         )}

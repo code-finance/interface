@@ -735,7 +735,8 @@ export function getThemedComponents(theme: Theme) {
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '16px',
+            backgroundColor: theme.palette.background.primary,
           },
         },
         variants: [
