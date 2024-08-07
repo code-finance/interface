@@ -3,6 +3,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { MoneyIcon } from 'src/components/icons/MoneyIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -162,6 +163,8 @@ export const BorrowedPositionsList = () => {
 
   return (
     <ListWrapper
+      icon={<MoneyIcon />}
+      bgColor={theme.palette.background.cardBg}
       tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" variant="h3" sx={{ mr: 4 }}>

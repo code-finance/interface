@@ -57,6 +57,7 @@ declare module '@mui/material/styles/createPalette' {
     surface2: string;
     header: string;
     disabled: string;
+    cardBg: string;
   }
 
   interface Palette {
