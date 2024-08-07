@@ -1,4 +1,4 @@
-import { Box, ClickAwayListener, experimental_sx, Popper, styled, Tooltip } from '@mui/material';
+import { Box, ClickAwayListener, Popper, styled, Tooltip } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
 interface ContentWithTooltipProps {
@@ -12,24 +12,18 @@ interface ContentWithTooltipProps {
   offset?: [number, number];
 }
 
-export const PopperComponent = styled(Popper)(
-  experimental_sx({
-    '.MuiTooltip-tooltip': {
-      color: 'text.primary',
-      backgroundColor: 'background.paper',
-      p: 0,
-      borderRadius: '6px',
-      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      maxWidth: '280px',
-    },
-    '.MuiTooltip-arrow': {
-      color: 'background.paper',
-      '&:before': {
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      },
-    },
-  })
-);
+export const PopperComponent = styled(Popper)(({ theme }) => ({
+  '.MuiTooltip-tooltip': {
+    color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.background.secondary,
+    p: 0,
+    borderRadius: 2,
+    maxWidth: '280px',
+  },
+  '.MuiTooltip-arrow': {
+    color: theme.palette.background.secondary,
+  },
+}));
 
 export const ContentWithTooltip = ({
   children,
@@ -80,14 +74,12 @@ export const ContentWithTooltip = ({
         >
           <Box
             sx={{
-              py: 4,
-              px: 6,
+              p: 3,
               fontSize: '12px',
               lineHeight: '16px',
               a: {
-                fontSize: '12px',
-                lineHeight: '16px',
-                fontWeight: 500,
+                fontSize: '13px',
+                lineHeight: '16.9px',
                 '&:hover': { textDecoration: 'underline' },
               },
             }}

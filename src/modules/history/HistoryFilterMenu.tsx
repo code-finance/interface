@@ -108,7 +108,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
       return (
         <Box sx={{ display: 'flex' }}>
           <Typography variant="description" color={theme.palette.primary.main} sx={{ mr: 1 }}>
-            TXs:
+            TXs:&nbsp;
           </Typography>
           {displayedFilters}
           {hiddenCount > 0 && <React.Fragment>...(+{hiddenCount})</React.Fragment>}
@@ -126,22 +126,16 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   return (
     <Box>
       <Button
+        variant="text"
+        size="medium"
         sx={(theme) => ({
-          minWidth: 148,
           maxWidth: downToMD ? '100%' : 360,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: 36,
-          border: '1px solid',
-          borderColor: theme.palette.border.contentOutline,
-          borderRadius: '4px',
-          mr: downToMD ? 0 : 2,
-          ml: downToMD ? 4 : 0,
-          pl: 2,
-          pr: 1,
           color: theme.palette.text.secondary,
-          textDecoration: 'none',
+          px: 6,
+          height: 42,
         })}
         onClick={handleClick}
         startIcon={
@@ -164,21 +158,15 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
           <FilterButtonLabel />
         </Typography>
         {!allSelected && (
-          <DarkTooltip
-            title={
-              <Typography variant="caption" color="text.subText">
-                <Trans>Reset</Trans>
-              </Typography>
-            }
-          >
+          <DarkTooltip title={<Trans>Reset</Trans>}>
             <Box
-              sx={(theme) => ({
-                color: theme.palette.text.subText,
+              sx={() => ({
                 cursor: 'pointer',
                 height: 'auto',
                 width: 'auto',
                 display: 'flex',
                 alignItems: 'center',
+                ml: 1,
               })}
               onClick={handleClearFilter}
             >

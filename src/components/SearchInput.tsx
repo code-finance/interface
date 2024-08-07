@@ -36,18 +36,20 @@ export const SearchInput = ({
   }, [onSearchTermChange]);
   return (
     <Box
-      sx={(theme) => ({
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: '6px',
-        height: '36px',
-        ...wrapperSx,
-      })}
+      sx={[
+        (theme) => ({
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          border: `1px solid ${theme.palette.border.contents}`,
+          borderRadius: 2,
+          height: '42px',
+        }),
+        ...(Array.isArray(wrapperSx) ? wrapperSx : [wrapperSx]),
+      ]}
     >
-      <Box sx={{ ml: 2, mt: 1 }}>
-        <SearchIcon height={16} />
+      <Box sx={(theme) => ({ ml: 2, mt: 1, color: theme.palette.text.secondary })}>
+        <SearchIcon height={24} />
       </Box>
       <InputBase
         autoFocus={sm}

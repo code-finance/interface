@@ -18,7 +18,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) =>
   return (
     <>
       <Button
-        variant="text"
+        variant="outlined"
         onClick={() => {
           trackEvent(AUTH.CONNECT_WALLET, { funnel: funnel });
           setWalletModalOpen(true);

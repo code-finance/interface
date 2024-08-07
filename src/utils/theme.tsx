@@ -74,10 +74,11 @@ declare module '@mui/material/styles/createPalette' {
       standardInputLine: string;
     };
     border: {
-      activeState: string;
-      contentOutline: string;
-      pointDivider: string;
-      bgDivider: string;
+      active: string;
+      contents: string;
+      point: string;
+      divider: string;
+      bg: string;
     };
   }
 
@@ -120,29 +121,29 @@ declare module '@mui/material/styles' {
 
   interface BreakpointOverrides {}
 
-  interface TypeText {
-    primary: string;
-    secondary: string;
-    disabledText: string;
-    disabledBg: string;
-    mainTitle: string;
-    subTitle: string;
-    subText: string;
-    buttonText: string;
-  }
-
-  interface TypeBackground {
-    primary: string;
-    secondary: string;
-    tertiary: string;
-    modulePopup: string;
-    point: string;
-    contents: string;
-    dim: string;
-    group: string;
-    top: string;
-    chip: string;
-  }
+  // interface TypeText {
+  //   primary: string;
+  //   secondary: string;
+  //   disabledText: string;
+  //   disabledBg: string;
+  //   mainTitle: string;
+  //   subTitle: string;
+  //   subText: string;
+  //   buttonText: string;
+  // }
+  //
+  // interface TypeBackground {
+  //   primary: string;
+  //   secondary: string;
+  //   tertiary: string;
+  //   modulePopup: string;
+  //   point: string;
+  //   contents: string;
+  //   dim: string;
+  //   group: string;
+  //   top: string;
+  //   chip: string;
+  // }
 }
 
 // Update the Typography's variant prop options
@@ -214,14 +215,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       mode,
       primary: {
         main: getColor(colors.marine[500], colors.marine[300]),
-        // light: getColor('#62677B', '#F1F1F3'),
-        // dark: getColor('#292E41', '#D2D4DC'),
-        // contrast: getColor('#FFFFFF', '#0F121D'),
       },
       secondary: {
         main: getColor(colors.violet[500], colors.violet[300]),
-        // light: getColor('#FF607B', '#F6A5C0'),
-        // dark: getColor('#B34356', '#AA647B'),
       },
       positive: {
         main: getColor(colors.green[500], colors.green[300]),
@@ -231,44 +227,25 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       error: {
         main: getColor('#FF2D2D', '#F44336'),
-        // light: getColor('#D26666', '#E57373'),
-        // dark: getColor('#BC0000', '#D32F2F'),
-        // '100': getColor('#4F1919', '#FBB4AF'), // for alert text
-        // '200': getColor('#F9EBEB', '#2E0C0A'), // for alert background
       },
       warning: {
         main: getColor('#F89F1A', '#FFA726'),
-        // light: getColor('#FFCE00', '#FFB74D'),
-        // dark: getColor('#C67F15', '#F57C00'),
-        // '100': getColor('#63400A', '#FFDCA8'), // for alert text
-        // '200': getColor('#FEF5E8', '#301E04'), // for alert background
       },
       info: {
         main: getColor('#0062D2', '#29B6F6'),
-        // light: getColor('#0062D2', '#4FC3F7'),
-        // dark: getColor('#002754', '#0288D1'),
-        // '100': getColor('#002754', '#A9E2FB'), // for alert text
-        // '200': getColor('#E5EFFB', '#071F2E'), // for alert background
       },
       success: {
         main: getColor('#1FC74E', '#38E067'),
-        // light: getColor('#90FF95', '#90FF95'),
-        // dark: getColor('#318435', '#388E3C'),
-        // '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
-        // '200': getColor('#ECF8ED', '#0A130B'), // for alert background
       },
       text: {
         primary: getColor(colors.gray[950], colors.gray[50]),
         secondary: getColor(colors.gray[700], colors.gray[200]),
-        disabledText: getColor(colors.gray[300], colors.gray[600]),
-        disabledBg: getColor(colors.gray[100], colors.gray[800]),
         mainTitle: getColor(colors.gray[600], colors.gray[300]),
         subTitle: getColor(colors.gray[400], colors.gray[500]),
         subText: getColor(colors.gray[200], colors.gray[700]),
+        disabledBg: getColor(colors.gray[100], colors.gray[800]),
+        disabledText: getColor(colors.gray[300], colors.gray[600]),
         buttonText: getColor(colors.white, colors.white),
-        // disabled: getColor('#ABAEBA', '#5C6070'),
-        // muted: getColor('#A5A8B6', '#8E92A3'),
-        // highlight: getColor('#383D51', '#C9B3F9'),
       },
       background: {
         primary: getColor(colors.white, colors.gray[850]),
@@ -281,14 +258,6 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         group: getColor(colors.marine[400], colors.marine[300]),
         top: getColor(withOpacity(colors.marine[300], 0.3), '#28216D'),
         chip: getColor(colors.marine[500], colors.marine[400]),
-        // default: getColor('#F1F1F3', '#23242A'),
-        // secondary: getColor('#F5F5F5', '#2E3038'),
-        // tertiary: getColor('#E3E4E8', '#191A1F'),
-        // paper: getColor('#FFFFFF', '#292E41'),
-        // surface: getColor('#F7F7F9', '#383D51'),
-        // surface2: getColor('#F9F9FB', '#383D51'),
-        // header: getColor('#2B2D3C', '#1B2030'),
-        // disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
       divider: getColor(colors.gray[100], colors.gray[800]),
       action: {
@@ -307,31 +276,16 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
       },
       border: {
-        activeState: getColor(colors.gray[800], colors.gray[100]),
-        contentOutline: getColor(colors.gray[200], colors.gray[700]),
-        pointDivider: getColor(
-          withOpacity(colors.marine[300], 0.5),
-          withOpacity(colors.marine[300], 0.5)
-        ),
-        bgDivider: getColor(colors.gray[50], colors.gray[950]),
+        active: getColor(colors.gray[800], colors.gray[100]),
+        contents: getColor(colors.gray[200], colors.gray[700]),
+        divider: getColor(colors.gray[100], colors.gray[800]),
+        point: getColor(withOpacity(colors.marine[300], 0.5), withOpacity(colors.marine[300], 0.5)),
+        bg: getColor(colors.gray[50], colors.gray[950]),
       },
     },
     spacing: 4,
     typography: {
       fontFamily: FONT,
-      // subtitle1: undefined,
-      // subtitle2: undefined,
-      // body1: undefined,
-      // body2: undefined,
-      // button: undefined,
-      // overline: undefined,
-      // display1: {
-      //   fontFamily: FONT,
-      //   fontWeight: 700,
-      //   letterSpacing: pxToRem(0.25),
-      //   lineHeight: '130%',
-      //   fontSize: pxToRem(32),
-      // },
       h1: {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
@@ -366,7 +320,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '150%',
-        fontSize: pxToRem(30),
+        fontSize: '30px',
       },
       body1: {
         fontFamily: FONT,
@@ -452,123 +406,6 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontSize: pxToRem(15),
         lineHeight: '140%',
       },
-      // subheader1: {
-      //   fontFamily: FONT,
-      //   fontWeight: 600,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: pxToRem(20),
-      //   fontSize: pxToRem(14),
-      // },
-      // subheader2: {
-      //   fontFamily: FONT,
-      //   fontWeight: 500,
-      //   letterSpacing: pxToRem(0.1),
-      //   lineHeight: pxToRem(16),
-      //   fontSize: pxToRem(12),
-      // },
-      // description: {
-      //   fontFamily: FONT,
-      //   fontWeight: 400,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: '143%',
-      //   fontSize: pxToRem(14),
-      // },
-      // caption: {
-      //   fontFamily: FONT,
-      //   fontWeight: 400,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: pxToRem(16),
-      //   fontSize: pxToRem(12),
-      // },
-      // buttonL: {
-      //   fontFamily: FONT,
-      //   fontWeight: 500,
-      //   letterSpacing: pxToRem(0.46),
-      //   lineHeight: pxToRem(24),
-      //   fontSize: pxToRem(16),
-      // },
-      // buttonM: {
-      //   fontFamily: FONT,
-      //   fontWeight: 500,
-      //   lineHeight: pxToRem(24),
-      //   fontSize: pxToRem(14),
-      // },
-      // buttonS: {
-      //   fontFamily: FONT,
-      //   fontWeight: 600,
-      //   letterSpacing: pxToRem(0.46),
-      //   lineHeight: pxToRem(20),
-      //   textTransform: 'uppercase',
-      //   fontSize: pxToRem(10),
-      // },
-      // helperText: {
-      //   fontFamily: FONT,
-      //   fontWeight: 400,
-      //   letterSpacing: pxToRem(0.4),
-      //   lineHeight: pxToRem(12),
-      //   fontSize: pxToRem(10),
-      // },
-      // tooltip: {
-      //   fontFamily: FONT,
-      //   fontWeight: 400,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: pxToRem(16),
-      //   fontSize: pxToRem(12),
-      // },
-      // main21: {
-      //   fontFamily: FONT,
-      //   fontWeight: 800,
-      //   lineHeight: '133.4%',
-      //   fontSize: pxToRem(21),
-      // },
-      // secondary21: {
-      //   fontFamily: FONT,
-      //   fontWeight: 500,
-      //   lineHeight: '133.4%',
-      //   fontSize: pxToRem(21),
-      // },
-      // main16: {
-      //   fontFamily: FONT,
-      //   fontWeight: 600,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: pxToRem(24),
-      //   fontSize: pxToRem(16),
-      // },
-      // secondary16: {
-      //   fontFamily: FONT,
-      //   fontWeight: 500,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: pxToRem(24),
-      //   fontSize: pxToRem(16),
-      // },
-      // main14: {
-      //   fontFamily: FONT,
-      //   fontWeight: 600,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: pxToRem(20),
-      //   fontSize: pxToRem(14),
-      // },
-      // secondary14: {
-      //   fontFamily: FONT,
-      //   fontWeight: 500,
-      //   letterSpacing: pxToRem(0.15),
-      //   lineHeight: pxToRem(20),
-      //   fontSize: pxToRem(14),
-      // },
-      // main12: {
-      //   fontFamily: FONT,
-      //   fontWeight: 600,
-      //   letterSpacing: pxToRem(0.1),
-      //   lineHeight: pxToRem(16),
-      //   fontSize: pxToRem(12),
-      // },
-      // secondary12: {
-      //   fontFamily: FONT,
-      //   fontWeight: 500,
-      //   letterSpacing: pxToRem(0.1),
-      //   lineHeight: pxToRem(16),
-      //   fontSize: pxToRem(12),
-      // },
     },
   } as ThemeOptions;
 };
@@ -616,13 +453,18 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             borderRadius: '6px',
+            textTransform: 'none',
           },
           sizeLarge: {
+            borderRadius: '8px',
             padding: '12px 24px',
             fontWeight: 600,
+            fontSize: 16,
           },
           sizeMedium: {
+            borderRadius: '8px',
             padding: '12px 46.5px',
+            fontSize: 16,
           },
           sizeSmall: {
             padding: '9px 8px',
@@ -632,9 +474,12 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              background: theme.palette.background.primary,
+              background: theme.palette.text.buttonText,
               borderColor: theme.palette.primary.main,
               color: theme.palette.primary.main,
+              '&:hover': {
+                background: theme.palette.text.buttonText,
+              },
             },
           },
           {
@@ -642,8 +487,17 @@ export function getThemedComponents(theme: Theme) {
             style: {
               border: '1px solid',
               background: theme.palette.background.primary,
-              borderColor: theme.palette.border.contentOutline,
+              borderColor: theme.palette.text.subText,
               color: theme.palette.text.primary,
+            },
+          },
+          {
+            props: { color: 'primary', disabled: true },
+            style: {
+              border: '1px solid',
+              background: theme.palette.background.disabled,
+              borderColor: theme.palette.border.contents,
+              color: theme.palette.text.disabledText,
             },
           },
         ],
@@ -651,30 +505,30 @@ export function getThemedComponents(theme: Theme) {
       MuiTypography: {
         defaultProps: {
           variant: 'description',
-          variantMapping: {
-            display1: 'h1',
-            h1: 'h1',
-            h2: 'h2',
-            h3: 'h3',
-            h4: 'h4',
-            subheader1: 'p',
-            subheader2: 'p',
-            caption: 'p',
-            description: 'p',
-            buttonL: 'p',
-            buttonM: 'p',
-            buttonS: 'p',
-            main12: 'p',
-            main14: 'p',
-            main16: 'p',
-            main21: 'p',
-            secondary12: 'p',
-            secondary14: 'p',
-            secondary16: 'p',
-            secondary21: 'p',
-            helperText: 'span',
-            tooltip: 'span',
-          },
+          // variantMapping: {
+          //   display1: 'h1',
+          //   h1: 'h1',
+          //   h2: 'h2',
+          //   h3: 'h3',
+          //   h4: 'h4',
+          //   subheader1: 'p',
+          //   subheader2: 'p',
+          //   caption: 'p',
+          //   description: 'p',
+          //   buttonL: 'p',
+          //   buttonM: 'p',
+          //   buttonS: 'p',
+          //   main12: 'p',
+          //   main14: 'p',
+          //   main16: 'p',
+          //   main21: 'p',
+          //   secondary12: 'p',
+          //   secondary14: 'p',
+          //   secondary16: 'p',
+          //   secondary21: 'p',
+          //   helperText: 'span',
+          //   tooltip: 'span',
+          // },
         },
       },
       MuiLink: {
