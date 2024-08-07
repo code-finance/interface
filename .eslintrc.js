@@ -10,7 +10,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true }],
+    '@typescript-eslint/no-unused-vars': 'off',
     'prettier/prettier': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

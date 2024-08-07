@@ -166,50 +166,50 @@ export const HistoryWrapper = () => {
           <SearchInput
             onSearchTermChange={setSearchQuery}
             placeholder="Search assets..."
-            wrapperSx={{ width: '280px' }}
+            wrapperSx={{ width: '280px', ml: 2 }}
             key={searchResetKey}
           />
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
-          {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              mr: 6,
-            }}
-            onClick={handleCsvDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.CSV</Trans>
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            onClick={handleJsonDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
-              <Trans>.JSON</Trans>
-            </Typography>
-          </Box>
-        </Box>
+        {/*<Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>*/}
+        {/*  {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}*/}
+        {/*  <Box*/}
+        {/*    sx={{*/}
+        {/*      cursor: 'pointer',*/}
+        {/*      color: 'primary',*/}
+        {/*      height: 'auto',*/}
+        {/*      width: 'auto',*/}
+        {/*      display: 'flex',*/}
+        {/*      alignItems: 'center',*/}
+        {/*      mr: 6,*/}
+        {/*    }}*/}
+        {/*    onClick={handleCsvDownload}*/}
+        {/*  >*/}
+        {/*    <SvgIcon>*/}
+        {/*      <DocumentDownloadIcon width={22} height={22} />*/}
+        {/*    </SvgIcon>*/}
+        {/*    <Typography variant="buttonM" color="text.primary">*/}
+        {/*      <Trans>.CSV</Trans>*/}
+        {/*    </Typography>*/}
+        {/*  </Box>*/}
+        {/*  <Box*/}
+        {/*    sx={{*/}
+        {/*      cursor: 'pointer',*/}
+        {/*      color: 'primary',*/}
+        {/*      height: 'auto',*/}
+        {/*      width: 'auto',*/}
+        {/*      display: 'flex',*/}
+        {/*      alignItems: 'center',*/}
+        {/*    }}*/}
+        {/*    onClick={handleJsonDownload}*/}
+        {/*  >*/}
+        {/*    <SvgIcon>*/}
+        {/*      <DocumentDownloadIcon width={22} height={22} />*/}
+        {/*    </SvgIcon>*/}
+        {/*    <Typography variant="buttonM" color="text.primary">*/}
+        {/*      <Trans>.JSON</Trans>*/}
+        {/*    </Typography>*/}
+        {/*  </Box>*/}
+        {/*</Box>*/}
       </Box>
 
       {isLoading ? (
@@ -248,25 +248,25 @@ export const HistoryWrapper = () => {
             my: 24,
           }}
         >
-          <Typography variant="h3" color="text.primary">
-            <Trans>Nothing found</Trans>
+          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary })}>
+            <Trans>No Transaction yet.</Trans>
           </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
-            <Trans>
-              We couldn&apos;t find any transactions related to your search. Try again with a
-              different asset name, or reset filters.
-            </Trans>
-          </Typography>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSearchQuery('');
-              setFilterQuery([]);
-              setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query
-            }}
-          >
-            Reset Filters
-          </Button>
+          {/*<Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">*/}
+          {/*  <Trans>*/}
+          {/*    We couldn&apos;t find any transactions related to your search. Try again with a*/}
+          {/*    different asset name, or reset filters.*/}
+          {/*  </Trans>*/}
+          {/*</Typography>*/}
+          {/*<Button*/}
+          {/*  variant="outlined"*/}
+          {/*  onClick={() => {*/}
+          {/*    setSearchQuery('');*/}
+          {/*    setFilterQuery([]);*/}
+          {/*    setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  Reset Filters*/}
+          {/*</Button>*/}
         </Box>
       ) : !isFetchingNextPage ? (
         <Box
@@ -280,8 +280,8 @@ export const HistoryWrapper = () => {
             flex: 1,
           }}
         >
-          <Typography sx={{ my: 24 }} variant="h3" color="text.primary">
-            <Trans>No transactions yet.</Trans>
+          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary, my: 24 })}>
+            <Trans>No Transaction yet.</Trans>
           </Typography>
         </Box>
       ) : (
