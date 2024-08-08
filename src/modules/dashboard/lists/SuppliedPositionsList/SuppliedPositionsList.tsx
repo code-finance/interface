@@ -2,6 +2,7 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -61,7 +62,7 @@ export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xs'));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
@@ -94,7 +95,7 @@ export const SuppliedPositionsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -123,10 +124,12 @@ export const SuppliedPositionsList = () => {
 
   return (
     <ListWrapper
+      icon={<WalletIcon />}
+      bgColor={theme.palette.background.cardBg}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Your supplies</Trans>
+        <Typography component="div" variant="h2" sx={{ mr: 4, color: '#fff' }}>
+          Your supplies
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"

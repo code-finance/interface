@@ -229,6 +229,12 @@ export const SupplyAssetsListItemDesktop = ({
       <ListButtonsColumn>
         <Button
           disabled={disableSupply}
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
           variant="contained"
           onClick={() => {
             openSupply(underlyingAsset, currentMarket, name, 'dashboard');
@@ -237,60 +243,18 @@ export const SupplyAssetsListItemDesktop = ({
           <Trans>Supply</Trans>
         </Button>
         <Button
-          id="supply-extra-button"
           sx={{
-            minWidth: 0,
-            px: 4,
+            p: 2,
+            ml: '4px !important',
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
           }}
-          variant="outlined"
-          onClick={handleClick}
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
+          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          onClick={onDetailsClick}
         >
-          <Trans>...</Trans>
+          <Trans>Details</Trans>
         </Button>
-        <Menu
-          id="supply-item-extra-menu"
-          anchorEl={anchorEl}
-          open={open}
-          MenuListProps={{
-            'aria-labelledby': 'supply-extra-button',
-            sx: {
-              py: 0,
-            },
-          }}
-          onClose={handleClose}
-          keepMounted={true}
-          PaperProps={{
-            sx: {
-              minWidth: '120px',
-              py: 0,
-            },
-          }}
-        >
-          <MenuItem
-            sx={{ gap: 2 }}
-            onClick={handleSwitchClick}
-            disabled={!isFeatureEnabled.switch(currentMarketData)}
-          >
-            <SvgIcon fontSize="small">
-              <SwitchHorizontalIcon />
-            </SvgIcon>
-            <ListItemText>Switch</ListItemText>
-          </MenuItem>
-          <MenuItem
-            sx={{ gap: 2 }}
-            component={Link}
-            href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-            onClick={onDetailsClick}
-          >
-            <SvgIcon fontSize="small">
-              <EyeIcon />
-            </SvgIcon>
-            <ListItemText>Details</ListItemText>
-          </MenuItem>
-        </Menu>
       </ListButtonsColumn>
     </ListItemWrapper>
   );

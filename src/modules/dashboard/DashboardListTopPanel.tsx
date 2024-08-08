@@ -1,4 +1,6 @@
 import { Trans } from '@lingui/macro';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import { FaucetButton } from 'src/components/FaucetButton';
 import { useRootStore } from 'src/store/root';
@@ -36,8 +38,8 @@ export const DashboardListTopPanel = ({
       }}
     >
       <FormControlLabel
-        sx={{ mt: { xs: bridge ? 2 : 0, xsm: 0 } }}
-        control={<Checkbox sx={{ p: '6px' }} />}
+        sx={{ mt: { xs: bridge ? 2 : 0, xsm: 0, fontSize: '16px' } }}
+        control={<Checkbox icon={<CheckCircleOutlineIcon />} checkedIcon={<CheckCircleIcon />} />}
         checked={value}
         onChange={() => {
           trackEvent(DASHBOARD.SHOW_ASSETS_0_BALANCE, {});

@@ -72,6 +72,12 @@ export const BorrowAssetsListItem = ({
       /> */}
       <ListButtonsColumn>
         <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
           disabled={disableBorrow}
           variant="contained"
           onClick={() => {
@@ -81,6 +87,12 @@ export const BorrowAssetsListItem = ({
           <Trans>Borrow</Trans>
         </Button>
         <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}

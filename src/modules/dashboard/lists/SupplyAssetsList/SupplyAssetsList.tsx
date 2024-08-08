@@ -204,7 +204,7 @@ export const SupplyAssetsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -242,8 +242,9 @@ export const SupplyAssetsList = () => {
 
   return (
     <ListWrapper
+      wrapperSx={{ px: 5, mb: 4 }}
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to supply</Trans>
         </Typography>
       }

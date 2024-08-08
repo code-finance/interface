@@ -122,6 +122,12 @@ export const SuppliedPositionsListItem = ({
           </Button>
         ) : (
           <Button
+            sx={{
+              p: 2,
+              height: '36px',
+              fontSize: '14px',
+              textTransform: 'capitalize',
+            }}
             disabled={disableSupply}
             variant="contained"
             onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
@@ -130,6 +136,12 @@ export const SuppliedPositionsListItem = ({
           </Button>
         )}
         <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
           disabled={disableWithdraw}
           variant="outlined"
           onClick={() => {
