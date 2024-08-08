@@ -248,6 +248,19 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         disabledText: getColor(colors.gray[300], colors.gray[600]),
         buttonText: getColor(colors.white, colors.white),
       },
+      point: {
+        primary: getColor(colors.marine[500], colors.marine[300]),
+        secondary: getColor(colors.violet[500], colors.violet[300]),
+        positive: getColor(colors.green[500], colors.green[400]),
+        negative: getColor(colors.red[400], colors.red[300]),
+        riskMedium: getColor(
+          withOpacity(colors.orange[50], 0.7),
+          withOpacity(colors.orange[400], 0.3)
+        ),
+        riskRow: getColor(withOpacity(colors.blue[100], 0.4), withOpacity(colors.blue[400], 0.2)),
+        riskHigh: getColor(withOpacity(colors.red[400], 0.1), withOpacity(colors.red[300], 0.2)),
+        noti: getColor(withOpacity(colors.green[300], 0.3), withOpacity(colors.green[400], 0.2)),
+      },
       background: {
         primary: getColor(colors.white, colors.gray[850]),
         secondary: getColor(colors.gray[50], colors.gray[800]),
