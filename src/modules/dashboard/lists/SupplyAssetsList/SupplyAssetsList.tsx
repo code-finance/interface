@@ -242,7 +242,6 @@ export const SupplyAssetsList = () => {
 
   return (
     <ListWrapper
-      wrapperSx={{ px: 5, mb: 4 }}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to supply</Trans>
@@ -253,7 +252,7 @@ export const SupplyAssetsList = () => {
       noData={supplyDisabled}
       subChildrenComponent={
         <>
-          <Box sx={{ px: 6 }}>
+          <Box>
             {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
               <MarketWarning marketName="Harmony" />
             ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (

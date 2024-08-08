@@ -121,7 +121,7 @@ export const DashboardTopPanel = () => {
           </Box>
         }
       >
-        <div style={{ display: 'flex', gap: '20px' }}>
+        <div style={{ display: 'flex', gap: '20px', color: theme.palette.text.secondary }}>
           <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
             {currentAccount ? (
               <FormattedNumber
@@ -130,7 +130,7 @@ export const DashboardTopPanel = () => {
                 variant={valueTypographyVariant}
                 visibleDecimals={2}
                 compact
-                symbolsColor="#A5A8B6"
+                symbolsColor="#F5F5F5"
                 symbolsVariant={noDataTypographyVariant}
               />
             ) : (

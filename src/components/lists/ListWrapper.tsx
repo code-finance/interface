@@ -106,12 +106,7 @@ export const ListWrapper = ({
         ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
       ]}
     >
-      <Box
-        display="flex"
-        gap={5}
-        alignItems={'center'}
-        sx={{ px: { xs: 4, xsm: 6 }, py: { xs: 3.5, xsm: 4 } }}
-      >
+      <Box display="flex" gap={5} alignItems={'center'} sx={{ px: 5, pt: 9, pb: 5 }}>
         {!!icon && icon}
         <Box flex={1}>
           <Box

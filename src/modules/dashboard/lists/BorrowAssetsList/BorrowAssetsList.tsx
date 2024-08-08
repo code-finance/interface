@@ -215,7 +215,7 @@ export const BorrowAssetsList = () => {
       noData={borrowDisabled}
       subChildrenComponent={
         <>
-          <Box sx={{ mb: 8, bgcolor: theme.palette.background.borrowTitle }}>
+          <Box sx={{ mb: 8, bgcolor: theme.palette.point.riskRow }}>
             {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
               <MarketWarning marketName="Harmony" />
             )}
@@ -259,7 +259,7 @@ export const BorrowAssetsList = () => {
                     severity="info"
                     sx={{
                       color: theme.palette.text.secondary,
-                      bgcolor: theme.palette.background.borrowTitle,
+                      bgcolor: theme.palette.point.riskRow,
                     }}
                   >
                     <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>

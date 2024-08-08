@@ -41,7 +41,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
         <Box
           sx={{
             position: 'relative',
-
             display: { xs: isBorrow ? 'none' : 'block', lg: 'block' },
             width: paperWidth,
           }}
@@ -83,7 +82,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             <Box
               sx={{
                 position: 'absolute',
-                top: '-90px',
+                top: '-153px',
                 right: '0px',
               }}
             >
@@ -99,6 +98,9 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
                   color: 'text.secondary',
                   bgcolor: 'transparent',
                   borderColor: theme.palette.text.subText,
+                  '&:hover': {
+                    bgcolor: 'transparent',
+                  },
                 }}
               >
                 <Trans>View Transactions</Trans>
