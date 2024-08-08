@@ -95,7 +95,7 @@ export const SuppliedPositionsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -128,7 +128,7 @@ export const SuppliedPositionsList = () => {
       bgColor={theme.palette.background.cardBg}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4, color: '#fff' }}>
+        <Typography component="div" variant="h2" sx={{ mr: 4, color: '#fff' }}>
           Your supplies
         </Typography>
       }

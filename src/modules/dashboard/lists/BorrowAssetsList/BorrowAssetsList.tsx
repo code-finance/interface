@@ -170,7 +170,7 @@ export const BorrowAssetsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -206,7 +206,7 @@ export const BorrowAssetsList = () => {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to borrow</Trans>
         </Typography>
       }
@@ -215,7 +215,7 @@ export const BorrowAssetsList = () => {
       noData={borrowDisabled}
       subChildrenComponent={
         <>
-          <Box sx={{ px: 6, mb: 4 }}>
+          <Box sx={{ mb: 8, bgcolor: theme.palette.background.borrowTitle }}>
             {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
               <MarketWarning marketName="Harmony" />
             )}
@@ -255,7 +255,13 @@ export const BorrowAssetsList = () => {
                   </Warning>
                 )}
                 {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                  <Warning severity="info">
+                  <Warning
+                    severity="info"
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      bgcolor: theme.palette.background.borrowTitle,
+                    }}
+                  >
                     <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
                   </Warning>
                 )}

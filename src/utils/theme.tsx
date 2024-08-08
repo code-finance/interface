@@ -259,6 +259,11 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         group: getColor(colors.marine[400], colors.marine[300]),
         top: getColor(withOpacity(colors.marine[300], 0.3), '#28216D'),
         chip: getColor(colors.marine[500], colors.marine[400]),
+        borrowTitle: getColor(
+          withOpacity(colors.blue[100], 0.4),
+          withOpacity(colors.blue[400], 0.2)
+        ),
+        cardBg: getColor(colors.marine[400], '#5D45F8'),
       },
       divider: getColor(colors.gray[100], colors.gray[800]),
       action: {

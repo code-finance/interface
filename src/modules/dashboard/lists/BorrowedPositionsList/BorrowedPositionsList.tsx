@@ -134,7 +134,7 @@ export const BorrowedPositionsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper>
+      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -159,7 +159,7 @@ export const BorrowedPositionsList = () => {
   };
 
   if (loading)
-    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
+    return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((c) => c.title)} />;
 
   return (
     <ListWrapper
@@ -167,8 +167,8 @@ export const BorrowedPositionsList = () => {
       bgColor={theme.palette.background.cardBg}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Your borrows</Trans>
+        <Typography component="div" variant="h2" sx={{ mr: 4, color: 'white' }}>
+          <Trans>Your supplies</Trans>
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"

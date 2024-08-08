@@ -181,10 +181,26 @@ const GhoBorrowAssetsListItemDesktop = ({
         <MeritIncentivesButton symbol="gho" />
       </ListColumn>
       <ListButtonsColumn>
-        <Button disabled={borrowButtonDisable} variant="contained" onClick={onBorrowClick}>
+        <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
+          disabled={borrowButtonDisable}
+          variant="contained"
+          onClick={onBorrowClick}
+        >
           <Trans>Borrow</Trans>
         </Button>
         <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+          }}
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
