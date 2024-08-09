@@ -2,7 +2,7 @@ import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
-import { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
@@ -65,12 +65,22 @@ export const SearchInput = ({
           if (disableFocus) event.stopPropagation();
         }}
       />
-      <IconButton
-        sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+      <Box
+        sx={() => ({
+          cursor: 'pointer',
+          height: 'auto',
+          width: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          ml: 'auto',
+          p: 0,
+          mr: 2,
+          visibility: searchTerm ? 'visible' : 'hidden',
+        })}
         onClick={() => handleClear()}
       >
-        <XCircleIcon height={16} />
-      </IconButton>
+        <XCircleIcon width={16} height={16} />
+      </Box>
     </Box>
   );
 };

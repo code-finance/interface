@@ -120,31 +120,11 @@ declare module '@mui/material/styles' {
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions extends TypographyCustomVariants {}
 
-  interface BreakpointOverrides {}
-
-  // interface TypeText {
-  //   primary: string;
-  //   secondary: string;
-  //   disabledText: string;
-  //   disabledBg: string;
-  //   mainTitle: string;
-  //   subTitle: string;
-  //   subText: string;
-  //   buttonText: string;
-  // }
-  //
-  // interface TypeBackground {
-  //   primary: string;
-  //   secondary: string;
-  //   tertiary: string;
-  //   modulePopup: string;
-  //   point: string;
-  //   contents: string;
-  //   dim: string;
-  //   group: string;
-  //   top: string;
-  //   chip: string;
-  // }
+  interface BreakpointOverrides {
+    xsm: true;
+    xxl: true;
+    mdlg: true;
+  }
 }
 
 // Update the Typography's variant prop options
@@ -209,8 +189,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 
   return {
     breakpoints: {
-      keys: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      values: { xs: 0, sm: 600, md: 900, lg: 1280, xl: 1536, xxl: 1800 },
+      keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
+      values: { xs: 0, xsm: 640, sm: 760, md: 960, mdlg: 1125, lg: 1280, xl: 1575, xxl: 1800 },
     },
     palette: {
       mode,
@@ -267,7 +247,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         tertiary: getColor(colors.gray[100], colors.gray[900]),
         modulePopup: getColor(colors.white, withOpacity(colors.gray[700], 0.2)),
         point: getColor(colors.marine[50], withOpacity(colors.marine[900], 0.2)),
-        contents: getColor(colors.gray[30], withOpacity(colors.marine[700], 0.5)),
+        contents: getColor(colors.gray[30], withOpacity(colors.gray[700], 0.5)),
         dim: getColor(withOpacity(colors.black, 0.6), withOpacity(colors.black, 0.6)),
         group: getColor(colors.marine[400], colors.marine[300]),
         top: getColor(withOpacity(colors.marine[300], 0.1), '#28216D'),
@@ -519,30 +499,31 @@ export function getThemedComponents(theme: Theme) {
       MuiTypography: {
         defaultProps: {
           variant: 'description',
-          // variantMapping: {
-          //   display1: 'h1',
-          //   h1: 'h1',
-          //   h2: 'h2',
-          //   h3: 'h3',
-          //   h4: 'h4',
-          //   subheader1: 'p',
-          //   subheader2: 'p',
-          //   caption: 'p',
-          //   description: 'p',
-          //   buttonL: 'p',
-          //   buttonM: 'p',
-          //   buttonS: 'p',
-          //   main12: 'p',
-          //   main14: 'p',
-          //   main16: 'p',
-          //   main21: 'p',
-          //   secondary12: 'p',
-          //   secondary14: 'p',
-          //   secondary16: 'p',
-          //   secondary21: 'p',
-          //   helperText: 'span',
-          //   tooltip: 'span',
-          // },
+          variantMapping: {
+            h1: 'h1',
+            h2: 'h2',
+            h3: 'h3',
+            h4: 'h4',
+            h5: 'h5',
+            h6: 'h6',
+            subheader1: 'p',
+            subheader2: 'p',
+            caption: 'p',
+            description: 'p',
+            buttonL: 'p',
+            buttonM: 'p',
+            buttonS: 'p',
+            main12: 'p',
+            main14: 'p',
+            main16: 'p',
+            main21: 'p',
+            secondary12: 'p',
+            secondary14: 'p',
+            secondary16: 'p',
+            secondary21: 'p',
+            helperText: 'span',
+            tooltip: 'span',
+          },
         },
       },
       MuiLink: {
@@ -579,7 +560,9 @@ export function getThemedComponents(theme: Theme) {
       MuiMenuItem: {
         styleOverrides: {
           root: {
-            padding: '12px 16px',
+            padding: '13.5px 12px',
+            fontSize: '16px',
+            fontWeight: 400,
           },
         },
       },
@@ -873,3 +856,5 @@ export function getThemedComponents(theme: Theme) {
     },
   } as ThemeOptions;
 }
+
+// fasfd

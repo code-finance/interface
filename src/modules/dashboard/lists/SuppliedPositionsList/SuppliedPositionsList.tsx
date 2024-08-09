@@ -62,7 +62,7 @@ export const SuppliedPositionsList = () => {
   const { user, loading } = useAppDataContext();
   const { currentNetworkConfig } = useProtocolDataContext();
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xs'));
+  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);

@@ -96,41 +96,59 @@ export const ListWrapper = ({
 
   return (
     <Paper
-      sx={[
-        {
-          mt: withTopMargin ? 4 : 0,
-          border: 1,
-          borderColor: 'divider',
-          borderRadius: 4,
-          background: bgColor,
-        },
-        ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
-      ]}
+      sx={{
+        mt: withTopMargin ? 4 : 0,
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 4,
+        background: bgColor,
+        ...paperSx,
+      }}
     >
-      <Box display="flex" gap={5} alignItems={'center'} sx={{ px: 5, pt: 9, pb: 5 }}>
-        <Box width={'100%'} flexShrink={1} minWidth={0}>
+      <Box display="flex" flexDirection={'column'} gap={5} sx={{ px: 5, pt: 9, pb: 5 }}>
+        <Box display="flex" alignItems={'center'}>
           {!!icon && icon}
           <Box
-            sx={[
-              {
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              },
-              ...(Array.isArray(wrapperSx) ? wrapperSx : [wrapperSx]),
-            ]}
+            flex={1}
+            sx={{
+              px: { xs: 4, xsm: 6 },
+              py: { xs: 3.5, xsm: 4 },
+              display: 'flex',
+              alignItems: 'start',
+              justifyContent: 'space-between',
+              ...wrapperSx,
+            }}
           >
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                alignItems: { xs: 'flex-start', xsm: 'center' },
-                py: '3.6px',
-                flexDirection: { xs: 'column', xsm: 'row' },
-              }}
-            >
-              {titleComponent}
-              {subTitleComponent}
+            <Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: { xs: 'flex-start', xsm: 'center' },
+                  py: '3.6px',
+                  flexDirection: { xs: 'column', xsm: 'row' },
+                }}
+              >
+                {titleComponent}
+                {subTitleComponent}
+              </Box>
+
+              {topInfo && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    px: { xs: 4, xsm: 0 },
+                    pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
+                    overflowX: tooltipOpen ? 'hidden' : 'auto',
+                  }}
+                >
+                  {topInfo}
+                </Box>
+              )}
+              {subChildrenComponent && !collapsed && (
+                <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
+              )}
             </Box>
 
             {!!localStorageName && !noData && (
@@ -161,7 +179,6 @@ export const ListWrapper = ({
                 }}
                 onClick={() => {
                   handleTrackingEvents();
-
                   !!localStorageName && !noData
                     ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
                     : undefined;
@@ -186,24 +203,9 @@ export const ListWrapper = ({
               </Box>
             )}
           </Box>
-
-          {topInfo && (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
-                overflowX: tooltipOpen ? 'hidden' : 'auto',
-              }}
-            >
-              {topInfo}
-            </Box>
-          )}
-          {subChildrenComponent && !collapsed && (
-            <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
-          )}
-          <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
         </Box>
+
+        <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
       </Box>
     </Paper>
   );
