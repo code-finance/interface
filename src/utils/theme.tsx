@@ -270,7 +270,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         contents: getColor(colors.gray[30], withOpacity(colors.marine[700], 0.5)),
         dim: getColor(withOpacity(colors.black, 0.6), withOpacity(colors.black, 0.6)),
         group: getColor(colors.marine[400], colors.marine[300]),
-        top: getColor(withOpacity(colors.marine[300], 0.3), '#28216D'),
+        top: getColor(withOpacity(colors.marine[300], 0.1), '#28216D'),
         chip: getColor(colors.marine[500], colors.marine[400]),
       },
       divider: getColor(colors.gray[100], colors.gray[800]),

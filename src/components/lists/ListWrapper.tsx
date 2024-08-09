@@ -1,4 +1,6 @@
 import { Trans } from '@lingui/macro';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { useRootStore } from 'src/store/root';
@@ -99,7 +101,6 @@ export const ListWrapper = ({
           mt: withTopMargin ? 4 : 0,
           border: 1,
           borderColor: 'divider',
-
           borderRadius: 4,
           background: bgColor,
         },
@@ -107,8 +108,8 @@ export const ListWrapper = ({
       ]}
     >
       <Box display="flex" gap={5} alignItems={'center'} sx={{ px: 5, pt: 9, pb: 5 }}>
-        {!!icon && icon}
-        <Box flex={1}>
+        <Box width={'100%'} flexShrink={1} minWidth={0}>
+          {!!icon && icon}
           <Box
             sx={[
               {
@@ -140,23 +141,23 @@ export const ListWrapper = ({
                   cursor: 'pointer',
                   minHeight: '28px',
                   pl: 3,
-                  span: {
-                    width: '14px',
-                    height: '2px',
-                    bgcolor: 'text.secondary',
-                    position: 'relative',
-                    ml: 1,
-                    '&:after': {
-                      content: "''",
-                      position: 'absolute',
-                      width: '14px',
-                      height: '2px',
-                      bgcolor: 'text.secondary',
-                      transition: 'all 0.2s ease',
-                      transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
-                      opacity: collapsed ? 1 : 0,
-                    },
-                  },
+                  // span: {
+                  //   width: '14px',
+                  //   height: '2px',
+                  //   bgcolor: 'text.secondary',
+                  //   position: 'relative',
+                  //   ml: 1,
+                  //   '&:after': {
+                  //     content: "''",
+                  //     position: 'absolute',
+                  //     width: '14px',
+                  //     height: '2px',
+                  //     bgcolor: 'text.secondary',
+                  //     transition: 'all 0.2s ease',
+                  //     transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
+                  //     opacity: collapsed ? 1 : 0,
+                  //   },
+                  // },
                 }}
                 onClick={() => {
                   handleTrackingEvents();
@@ -166,8 +167,20 @@ export const ListWrapper = ({
                     : undefined;
                 }}
               >
-                <Typography variant="buttonM" color="text.secondary">
-                  {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
+                <Typography
+                  variant="buttonM"
+                  color="text.secondary"
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  {collapsed ? (
+                    <>
+                      <Trans>Show</Trans> <KeyboardArrowDownIcon sx={{ ml: 1 }} />
+                    </>
+                  ) : (
+                    <>
+                      <Trans>Hide</Trans> <KeyboardArrowUpIcon sx={{ ml: 1 }} />
+                    </>
+                  )}
                 </Typography>
                 <span />
               </Box>

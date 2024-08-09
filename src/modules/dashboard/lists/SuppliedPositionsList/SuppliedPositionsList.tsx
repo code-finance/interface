@@ -175,7 +175,13 @@ export const SuppliedPositionsList = () => {
       }
     >
       {sortedReserves.length ? (
-        <>
+        <div
+          style={{
+            backgroundColor: theme.palette.background.primary,
+            margin: ' 0 -20px -20px -20px',
+            borderRadius: '12px',
+          }}
+        >
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset}>
@@ -183,12 +189,14 @@ export const SuppliedPositionsList = () => {
                 {downToXSM ? (
                   <SuppliedPositionsListMobileItem {...item} />
                 ) : (
-                  <SuppliedPositionsListItem {...item} />
+                  <div style={{ padding: '0 20px' }}>
+                    <SuppliedPositionsListItem {...item} />
+                  </div>
                 )}
               </AssetCapsProvider>
             </Fragment>
           ))}
-        </>
+        </div>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
       )}
