@@ -120,31 +120,11 @@ declare module '@mui/material/styles' {
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions extends TypographyCustomVariants {}
 
-  interface BreakpointOverrides {}
-
-  // interface TypeText {
-  //   primary: string;
-  //   secondary: string;
-  //   disabledText: string;
-  //   disabledBg: string;
-  //   mainTitle: string;
-  //   subTitle: string;
-  //   subText: string;
-  //   buttonText: string;
-  // }
-  //
-  // interface TypeBackground {
-  //   primary: string;
-  //   secondary: string;
-  //   tertiary: string;
-  //   modulePopup: string;
-  //   point: string;
-  //   contents: string;
-  //   dim: string;
-  //   group: string;
-  //   top: string;
-  //   chip: string;
-  // }
+  interface BreakpointOverrides {
+    xsm: true;
+    xxl: true;
+    mdlg: true;
+  }
 }
 
 // Update the Typography's variant prop options
@@ -209,8 +189,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
 
   return {
     breakpoints: {
-      keys: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      values: { xs: 0, sm: 600, md: 900, lg: 1280, xl: 1536, xxl: 1800 },
+      keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
+      values: { xs: 0, xsm: 640, sm: 760, md: 960, mdlg: 1125, lg: 1280, xl: 1575, xxl: 1800 },
     },
     palette: {
       mode,
@@ -520,27 +500,29 @@ export function getThemedComponents(theme: Theme) {
         defaultProps: {
           variant: 'description',
           variantMapping: {
-            display1: 'h1',
             h1: 'h1',
             h2: 'h2',
             h3: 'h3',
             h4: 'h4',
             h5: 'h5',
             h6: 'h6',
-            body1: 'div',
-            body2: 'div',
-            body3: 'div',
-            body4: 'div',
-            body5: 'div',
-            body6: 'div',
-            body7: 'div',
-            body8: 'div',
-            body9: 'div',
-            detail1: 'div',
-            detail2: 'div',
-            detail3: 'div',
-            detail4: 'div',
-            detail5: 'div',
+            subheader1: 'p',
+            subheader2: 'p',
+            caption: 'p',
+            description: 'p',
+            buttonL: 'p',
+            buttonM: 'p',
+            buttonS: 'p',
+            main12: 'p',
+            main14: 'p',
+            main16: 'p',
+            main21: 'p',
+            secondary12: 'p',
+            secondary14: 'p',
+            secondary16: 'p',
+            secondary21: 'p',
+            helperText: 'span',
+            tooltip: 'span',
           },
         },
       },
@@ -874,3 +856,5 @@ export function getThemedComponents(theme: Theme) {
     },
   } as ThemeOptions;
 }
+
+// fasfd
