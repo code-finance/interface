@@ -235,50 +235,48 @@ export const BorrowAssetsList = () => {
                 </Trans>
               </Warning>
             )}
-
-            {!borrowDisabled && (
-              <>
-                {user?.isInIsolationMode && (
-                  <Warning severity="warning">
-                    <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                    <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
-                      Learn More
-                    </Link>
-                  </Warning>
-                )}
-                {user?.isInEmode && (
-                  <Warning severity="warning">
-                    <Trans>
-                      In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
-                      assets
-                    </Trans>
-                  </Warning>
-                )}
-                {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                  <Warning
-                    severity="info"
-                    sx={{
-                      color: theme.palette.text.secondary,
-                      bgcolor: theme.palette.point.riskRow,
-                    }}
-                  >
-                    <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-                  </Warning>
-                )}
-              </>
-            )}
           </Box>
-          {ghoReserve &&
-            !downToXSM &&
-            displayGhoForMintableMarket({ symbol: ghoReserve.symbol, currentMarket }) && (
-              <AssetCapsProvider asset={ghoReserve.reserve}>
-                <GhoBorrowAssetsListItem {...ghoReserve} />
-              </AssetCapsProvider>
-            )}
         </>
       }
     >
       <>
+        {!borrowDisabled && (
+          <>
+            {user?.isInIsolationMode && (
+              <Warning severity="warning">
+                <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
+                <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                  Learn More
+                </Link>
+              </Warning>
+            )}
+            {user?.isInEmode && (
+              <Warning severity="warning">
+                <Trans>
+                  In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets
+                </Trans>
+              </Warning>
+            )}
+            {user?.totalCollateralMarketReferenceCurrency === '0' && (
+              <Warning
+                severity="info"
+                sx={{
+                  color: theme.palette.text.secondary,
+                  bgcolor: theme.palette.point.riskRow,
+                }}
+              >
+                <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+              </Warning>
+            )}
+          </>
+        )}
+        {ghoReserve &&
+          !downToXSM &&
+          displayGhoForMintableMarket({ symbol: ghoReserve.symbol, currentMarket }) && (
+            <AssetCapsProvider asset={ghoReserve.reserve}>
+              <GhoBorrowAssetsListItem {...ghoReserve} />
+            </AssetCapsProvider>
+          )}
         {!downToXSM && !!borrowReserves.length && <RenderHeader />}
         {ghoReserve &&
           downToXSM &&

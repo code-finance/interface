@@ -125,6 +125,7 @@ const BorrowedPositionsListItemDesktop = ({
   onOpenRateSwitch,
 }: BorrowedPositionsListItemProps) => {
   const { currentMarket } = useProtocolDataContext();
+  const theme = useTheme();
 
   const { isActive, isFrozen, isPaused, stableBorrowRateEnabled, name } = reserve;
 
@@ -170,11 +171,38 @@ const BorrowedPositionsListItemDesktop = ({
             <Trans>Switch</Trans>
           </Button>
         ) : (
-          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
+          <Button
+            sx={{
+              p: 2,
+              height: '36px',
+              fontSize: '14px',
+              textTransform: 'capitalize',
+              borderColor: theme.palette.text.subText,
+            }}
+            disabled={disableBorrow}
+            variant="contained"
+            onClick={onOpenBorrow}
+          >
             <Trans>Borrow</Trans>
           </Button>
         )}
-        <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay}>
+        <Button
+          sx={{
+            p: 2,
+            height: '36px',
+            fontSize: '14px',
+            textTransform: 'capitalize',
+            borderColor: theme.palette.text.subText,
+            bgcolor: 'transparent',
+            color: 'text.primary',
+            '&:hover': {
+              bgcolor: 'transparent',
+            },
+          }}
+          disabled={disableRepay}
+          variant="outlined"
+          onClick={onOpenRepay}
+        >
           <Trans>Repay</Trans>
         </Button>
       </ListButtonsColumn>
@@ -272,7 +300,18 @@ const BorrowedPositionsListItemMobile = ({
             <Trans>Switch</Trans>
           </Button>
         ) : (
-          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} fullWidth>
+          <Button
+            sx={{
+              p: 2,
+              height: '36px',
+              fontSize: '14px',
+              textTransform: 'capitalize',
+            }}
+            disabled={disableBorrow}
+            variant="contained"
+            onClick={onOpenBorrow}
+            fullWidth
+          >
             <Trans>Borrow</Trans>
           </Button>
         )}

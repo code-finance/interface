@@ -129,7 +129,7 @@ const GhoBorrowAssetsListItemDesktop = ({
         borderBottom: '1px solid',
         borderColor: 'divider',
         mb: 2,
-        pl: 0,
+        px: 0,
       }}
       data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
     >

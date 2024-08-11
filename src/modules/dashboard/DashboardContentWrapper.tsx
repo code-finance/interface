@@ -73,45 +73,10 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
         <Box
           sx={{
             position: 'relative',
-
             display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' },
             width: paperWidth,
           }}
         >
-          {currentAccount && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '-153px',
-                right: '0px',
-              }}
-            >
-              <Button
-                onClick={() => {
-                  router.push(ROUTES.history);
-                  trackEvent(AUTH.VIEW_TX_HISTORY);
-                }}
-                component="a"
-                variant="outlined"
-                size="small"
-                sx={{
-                  textTransform: 'uppercase',
-                  color: 'text.secondary',
-                  bgcolor: 'transparent',
-                  height: '42px',
-                  p: '10px 24px',
-                  fontSize: '17px',
-                  borderColor: theme.palette.text.subText,
-                  '&:hover': {
-                    bgcolor: 'transparent',
-                  },
-                }}
-              >
-                <Trans>View Transactions</Trans>
-              </Button>
-            </Box>
-          )}
-
           <BorrowedPositionsList />
           <BorrowAssetsList />
         </Box>

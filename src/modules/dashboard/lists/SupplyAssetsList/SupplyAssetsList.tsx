@@ -282,19 +282,18 @@ export const SupplyAssetsList = () => {
               ))
             )}
           </Box>
-
-          {filteredSupplyReserves.length >= 1 && (
-            <DashboardListTopPanel
-              value={isShowZeroAssets}
-              onClick={setIsShowZeroAssets}
-              localStorageName={localStorageName}
-              bridge={bridge}
-            />
-          )}
         </>
       }
     >
       <>
+        {filteredSupplyReserves.length >= 1 && (
+          <DashboardListTopPanel
+            value={isShowZeroAssets}
+            onClick={setIsShowZeroAssets}
+            localStorageName={localStorageName}
+            bridge={bridge}
+          />
+        )}
         {!downToXSM && !!sortedReserves && !supplyDisabled && <RenderHeader />}
         {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>

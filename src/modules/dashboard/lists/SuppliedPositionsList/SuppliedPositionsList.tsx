@@ -124,6 +124,9 @@ export const SuppliedPositionsList = () => {
 
   return (
     <ListWrapper
+      wrapperSx={{
+        pl: 5,
+      }}
       icon={<WalletIcon sx={{ height: '60px', width: '60px', mb: 4 }} />}
       bgColor={theme.palette.background.group}
       tooltipOpen={tooltipOpen}
@@ -133,6 +136,7 @@ export const SuppliedPositionsList = () => {
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"
+      isPosition
       noData={!sortedReserves.length}
       topInfo={
         <>
@@ -178,7 +182,7 @@ export const SuppliedPositionsList = () => {
         <div
           style={{
             backgroundColor: theme.palette.background.primary,
-            margin: ' 0 -20px -20px -20px',
+            margin: ' 24px -20px -20px -20px',
             borderRadius: '12px',
           }}
         >

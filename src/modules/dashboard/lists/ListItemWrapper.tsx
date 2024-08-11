@@ -63,7 +63,7 @@ export const ListItemWrapper = ({
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <ListItem {...rest} sx={{ height: '100px', pl: '0 !important' }}>
+    <ListItem {...rest} sx={{ height: '100px', px: '0 !important' }}>
       <ListColumn maxWidth={DASHBOARD_LIST_COLUMN_WIDTHS.CELL} isRow>
         <Link
           onClick={() =>

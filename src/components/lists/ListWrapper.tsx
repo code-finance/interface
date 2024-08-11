@@ -22,6 +22,7 @@ interface ListWrapperProps {
   paperSx?: PaperProps['sx'];
   bgColor?: string;
   icon?: ReactNode;
+  isPosition?: boolean;
 }
 
 export const ListWrapper = ({
@@ -38,6 +39,7 @@ export const ListWrapper = ({
   paperSx,
   bgColor,
   icon,
+  isPosition,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -106,20 +108,18 @@ export const ListWrapper = ({
       }}
     >
       <Box display="flex" flexDirection={'column'} gap={5} sx={{ px: 5, pt: 9, pb: 5 }}>
-        <Box display="flex" alignItems={'center'}>
+        <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
           {!!icon && icon}
           <Box
             flex={1}
             sx={{
-              px: { xs: 4, xsm: 6 },
-              py: { xs: 3.5, xsm: 4 },
               display: 'flex',
               alignItems: 'start',
               justifyContent: 'space-between',
               ...wrapperSx,
             }}
           >
-            <Box>
+            <Box sx={{ minWidth: 0 }}>
               <Box
                 sx={{
                   width: '100%',
@@ -140,6 +140,8 @@ export const ListWrapper = ({
                     alignItems: 'center',
                     px: { xs: 4, xsm: 0 },
                     pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
+                    flexWrap: 'wrap',
+                    gap: 1.5,
                     overflowX: tooltipOpen ? 'hidden' : 'auto',
                   }}
                 >
@@ -186,7 +188,7 @@ export const ListWrapper = ({
               >
                 <Typography
                   variant="buttonM"
-                  color="text.secondary"
+                  color={isPosition ? 'white' : 'text.secondary'}
                   sx={{ display: 'flex', alignItems: 'center' }}
                 >
                   {collapsed ? (
