@@ -81,6 +81,16 @@ declare module '@mui/material/styles/createPalette' {
       divider: string;
       bg: string;
     };
+    point: {
+      primary: string;
+      secondary: string;
+      positive: string;
+      negative: string;
+      riskMedium: string;
+      riskRow: string;
+      riskHigh: string;
+      noti: string;
+    };
   }
 
   interface PaletteOptions {
@@ -272,7 +282,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       border: {
         active: getColor(colors.gray[800], colors.gray[100]),
         contents: getColor(colors.gray[200], colors.gray[700]),
-        divider: getColor(colors.gray[100], colors.gray[800]),
+        divider: getColor(colors.gray[100], colors.gray[700]),
         point: getColor(withOpacity(colors.marine[300], 0.5), withOpacity(colors.marine[300], 0.5)),
         bg: getColor(colors.gray[50], colors.gray[950]),
       },
@@ -635,34 +645,41 @@ export function getThemedComponents(theme: Theme) {
       MuiSwitch: {
         styleOverrides: {
           root: {
-            height: 20 + 6 * 2,
-            width: 34 + 6 * 2,
-            padding: 6,
+            width: 35,
+            height: 20,
+            padding: 0,
           },
           switchBase: {
-            padding: 8,
+            padding: 0,
+            margin: 1,
+            transitionDuration: '300ms',
             '&.Mui-checked': {
-              transform: 'translateX(14px)',
+              transform: 'translateX(15px)',
+              color: '#FFF',
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.success.main,
+                backgroundColor: theme.palette.point.primary,
                 opacity: 1,
+                border: 0,
+              },
+              '&.Mui-disabled + .MuiSwitch-track': {
+                opacity: 0.5,
               },
             },
-            '&.Mui-disabled': {
-              opacity: theme.palette.mode === 'dark' ? 0.3 : 0.7,
+            '&.Mui-disabled + .MuiSwitch-track': {
+              opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
             },
           },
           thumb: {
             color: theme.palette.common.white,
-            borderRadius: '6px',
-            width: '16px',
-            height: '16px',
-            boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.12)',
+            borderRadius: '100px',
+            width: '18px',
+            height: '18px',
+            boxShadow: '1px 1px 1px 0px rgba(0, 0, 0, 0.05)',
           },
           track: {
             opacity: 1,
-            backgroundColor: theme.palette.action.active,
-            borderRadius: '8px',
+            backgroundColor: theme.palette.text.subText,
+            borderRadius: '12px',
           },
         },
       },
@@ -687,18 +704,18 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             boxShadow: 'none',
-            borderRadius: '4px',
-            padding: '8px 12px',
-            ...theme.typography.caption,
+            borderRadius: 0,
+            padding: '8px 8px 8px 4px',
+            ...theme.typography.body7,
+            color: theme.palette.text.secondary,
             alignItems: 'flex-start',
             '.MuiAlert-message': {
               padding: 0,
-              paddingTop: '2px',
-              paddingBottom: '2px',
             },
             '.MuiAlert-icon': {
               padding: 0,
               opacity: 1,
+              marginRight: '8px',
               '.MuiSvgIcon-root': {
                 fontSize: pxToRem(20),
               },
@@ -712,7 +729,7 @@ export function getThemedComponents(theme: Theme) {
               },
             },
             '.MuiButton-text': {
-              ...theme.typography.caption,
+              ...theme.typography.body7,
               fontWeight: 500,
               textDecoration: 'underline',
               padding: 0,
@@ -743,7 +760,12 @@ export function getThemedComponents(theme: Theme) {
               </SvgIcon>
             ),
             warning: (
-              <SvgIcon color="warning">
+              <SvgIcon
+                color="warning"
+                sx={{
+                  color: theme.palette.point.negative,
+                }}
+              >
                 <ExclamationCircleIcon />
               </SvgIcon>
             ),
@@ -792,10 +814,9 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { severity: 'warning' },
             style: {
-              color: theme.palette.warning['100'],
-              background: theme.palette.warning['200'],
+              background: theme.palette.point.riskHigh,
               a: {
-                color: theme.palette.warning['100'],
+                color: theme.palette.primary.main,
               },
               '.MuiButton-text': {
                 color: theme.palette.warning['100'],
