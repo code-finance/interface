@@ -139,7 +139,7 @@ export const ListWrapper = ({
                     display: 'flex',
                     alignItems: 'center',
                     px: { xs: 4, xsm: 0 },
-                    pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
+                    pb: { xs: collapsed && !noData ? 6 : 2, xsm: 0 },
                     flexWrap: 'wrap',
                     gap: 1.5,
                     overflowX: tooltipOpen ? 'hidden' : 'auto',

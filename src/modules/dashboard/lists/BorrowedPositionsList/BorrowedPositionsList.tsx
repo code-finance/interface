@@ -229,7 +229,7 @@ export const BorrowedPositionsList = () => {
         <div
           style={{
             backgroundColor: theme.palette.background.primary,
-            margin: ' 24px -20px -20px -20px',
+            margin: '0px -20px -20px -20px',
             borderRadius: '12px',
           }}
         >

@@ -44,7 +44,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   const loading = domainsLoading || accountLoading;
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 0 }}>
       <Avatar
         fallbackImage={fallbackImage}
         loading={loading}
@@ -52,7 +52,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
         invisibleBadge={!readOnlyMode}
         {...avatarProps}
       />
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', p: 0 }}>
         {!oneLiner && defaultDomain?.name ? (
           <>
             <UserNameText
