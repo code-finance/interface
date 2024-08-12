@@ -151,7 +151,7 @@ export const MarketSwitcher = () => {
             fontSize="medium"
             {...props}
             sx={(theme) => ({
-              color: theme.palette.text.primary,
+              color: `${theme.palette.text.primary} !important`,
             })}
           >
             <ChevronDownIcon />

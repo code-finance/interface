@@ -15,6 +15,7 @@ export const marketContainerProps = {
     flexDirection: 'column',
     flex: 1,
     pb: '39px',
+    pt: 10,
     px: {
       xs: 2,
       xsm: 5,
@@ -48,19 +49,9 @@ export default function Markets() {
   return (
     <>
       <MarketsTopPanel />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          flex: 1,
-          py: 10,
-        }}
-      >
-        <MarketContainer>
-          <MarketAssetsListContainer />
-        </MarketContainer>
-      </Box>
+      <MarketContainer>
+        <MarketAssetsListContainer />
+      </MarketContainer>
     </>
   );
 }

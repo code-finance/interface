@@ -575,6 +575,13 @@ export function getThemedComponents(theme: Theme) {
             fontWeight: 400,
           },
         },
+        defaultProps: {
+          sx: {
+            '&.Mui-selected': {
+              backgroundColor: theme.palette.background.group,
+            },
+          },
+        },
       },
       MuiListItemIcon: {
         styleOverrides: {
@@ -606,17 +613,12 @@ export function getThemedComponents(theme: Theme) {
             style: {
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-              background:
-                theme.palette.mode === 'light'
-                  ? theme.palette.background.paper
-                  : theme.palette.background.surface,
             },
           },
           {
             props: { variant: 'elevation' },
             style: {
-              boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-              ...(theme.palette.mode === 'dark' ? { backgroundImage: 'none' } : {}),
+              boxShadow: '4px 4px 20px 0px rgba(0, 0, 0, 0.05)',
             },
           },
         ],

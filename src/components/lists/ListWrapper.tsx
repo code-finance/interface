@@ -90,11 +90,10 @@ export const ListWrapper = ({
 
   return (
     <Paper
+      variant="elevation"
       sx={[
         () => ({
           mt: withTopMargin ? 4 : 0,
-          border: 1,
-          borderColor: 'divider',
           py: 9,
           px: 5,
         }),

@@ -49,7 +49,7 @@ export const SearchInput = ({
       ]}
     >
       <Box sx={(theme) => ({ ml: 2, mt: 1, color: theme.palette.text.secondary })}>
-        <SearchIcon height={24} />
+        <SearchIcon height={20} />
       </Box>
       <InputBase
         autoFocus={sm}

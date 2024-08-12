@@ -25,8 +25,8 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher }: PageTitleProps) => 
         <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
           <Typography
             variant={'h1'}
+            color="text.primary"
             sx={{
-              color: withMarketSwitcher ? 'text.muted' : 'text.white',
               mr: { xs: 5, xsm: 3 },
               mb: { xs: 1, xsm: 0 },
             }}
