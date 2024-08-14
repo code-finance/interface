@@ -45,7 +45,7 @@ export const TextWithTooltip = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '3px', ...boxSx }} {...boxRest}>
       {text && (
         <Typography {...rest} color={textColor}>
           {text}
@@ -74,7 +74,7 @@ export const TextWithTooltip = ({
           <SvgIcon
             sx={{
               fontSize: iconSize,
-              color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
+              color: iconColor ? iconColor : open ? 'info.main' : 'text.mainTitle',
               borderRadius: '50%',
               '&:hover': { color: iconColor || 'info.main' },
             }}

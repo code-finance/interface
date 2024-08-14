@@ -64,38 +64,22 @@ export const useReserveActionState = ({
         {balance === '0' && !isGho && (
           <>
             {currentNetworkConfig.isTestnet ? (
-              <Warning sx={{ mb: 0 }} severity="info" icon={false}>
+              <Warning sx={{ mb: 0 }} severity="info">
                 <Trans>
                   Your {networkName} wallet is empty. Get free test {reserve.name} at
                 </Trans>{' '}
                 {!currentMarketData.addresses.FAUCET ? (
-                  <Button
-                    variant="text"
-                    href="https://faucet.circle.com/"
-                    component={Link}
-                    sx={{ verticalAlign: 'top' }}
-                    disableRipple
-                    endIcon={
-                      <SvgIcon sx={{ width: 14, height: 14 }}>
-                        <ExternalLinkIcon />
-                      </SvgIcon>
-                    }
-                  >
-                    <Typography variant="caption">
-                      <Trans>{networkName} Faucet</Trans>
-                    </Typography>
-                  </Button>
+                  <Link href="https://faucet.circle.com/">
+                    <Trans>{networkName} Faucet</Trans>
+                  </Link>
                 ) : (
-                  <Button
-                    variant="text"
+                  <Link
+                    href={'#'}
                     sx={{ verticalAlign: 'top' }}
                     onClick={() => openFaucet(reserve.underlyingAsset)}
-                    disableRipple
                   >
-                    <Typography variant="caption">
-                      <Trans>{networkName} Faucet</Trans>
-                    </Typography>
-                  </Button>
+                    <Trans>{networkName} Faucet</Trans>
+                  </Link>
                 )}
               </Warning>
             ) : (

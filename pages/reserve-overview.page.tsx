@@ -76,26 +76,24 @@ export default function ReserveOverview() {
           </StyledToggleButtonGroup>
         </Box>
 
-        <Box sx={{ display: 'flex' }}>
-          {/** Main status and configuration panel*/}
-          <Box
-            sx={{
-              display: { xs: !isOverview ? 'none' : 'block', lg: 'block' },
-              width: { xs: '100%', lg: 'calc(100% - 432px)' },
-              mr: { xs: 0, lg: 4 },
-            }}
-          >
-            <ReserveConfigurationWrapper reserve={reserve} />
-          </Box>
-
-          {/** Right panel with actions*/}
+        <Box>
           <Box
             sx={{
               display: { xs: isOverview ? 'none' : 'block', lg: 'block' },
-              width: { xs: '100%', lg: '416px' },
+              width: '100%',
             }}
           >
             <ReserveActions reserve={reserve} />
+          </Box>
+          <Box
+            sx={{
+              display: { xs: !isOverview ? 'none' : 'block', lg: 'block' },
+              width: '100%',
+              mr: { xs: 0, lg: 4 },
+              mt: 5,
+            }}
+          >
+            <ReserveConfigurationWrapper reserve={reserve} />
           </Box>
         </Box>
       </ContentContainer>

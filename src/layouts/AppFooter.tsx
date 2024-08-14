@@ -69,7 +69,7 @@ export function AppFooter() {
     },
     {
       href: 'https://docs.aave.com/faq/',
-      label: <Trans>Term of COnditions</Trans>,
+      label: <Trans>Term of Conditions</Trans>,
       key: 'FAQS',
     },
     {
@@ -93,42 +93,40 @@ export function AppFooter() {
   ];
 
   return (
-    <Container
-      sx={(theme) => ({
-        flex: 0,
-        display: 'flex',
-        padding: ['20px 0px 40px 0px', '0 22px 0 40px', '20px 60px'],
-        width: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: '20px',
-        flexDirection: ['column', 'column', 'row'],
-        boxShadow:
-          theme.palette.mode === 'light'
-            ? 'inset 0px 1px 0px rgba(0, 0, 0, 0.04)'
-            : 'inset 0px 1px 0px rgba(255, 255, 255, 0.12)',
-      })}
-    >
-      <Box sx={{ display: 'flex', gap: { sm: 4, md: 6 }, alignItems: 'center' }}>
-        {FOOTER_LINKS.map((link) => (
-          <StyledLink onClick={link.onClick} key={link.key} href={link.href}>
-            <Typography variant="h4">{link.label}</Typography>
-          </StyledLink>
-        ))}
-      </Box>
-      <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        {FOOTER_ICONS.map((icon) => (
-          <StyledLink href={icon.href} key={icon.title}>
-            <SvgIcon
-              sx={{
-                fontSize: [24, 24, 36],
-              }}
-            >
-              {icon.icon}
-            </SvgIcon>
-          </StyledLink>
-        ))}
-      </Box>
-    </Container>
+    <Box sx={(theme) => ({ borderTop: `1px solid ${theme.palette.border.contents}` })}>
+      <Container
+        sx={{
+          flex: 0,
+          display: 'flex',
+          paddingBlock: ['20px 40px', '20px 60px'],
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '20px',
+          flexDirection: ['column', 'column', 'row'],
+        }}
+      >
+        <Box sx={{ display: 'flex', gap: { sm: 4, md: 6 }, alignItems: 'center' }}>
+          {FOOTER_LINKS.map((link) => (
+            <StyledLink onClick={link.onClick} key={link.key} href={link.href}>
+              <Typography variant="h4">{link.label}</Typography>
+            </StyledLink>
+          ))}
+        </Box>
+        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          {FOOTER_ICONS.map((icon) => (
+            <StyledLink href={icon.href} key={icon.title}>
+              <SvgIcon
+                sx={{
+                  fontSize: [24, 24, 36],
+                }}
+              >
+                {icon.icon}
+              </SvgIcon>
+            </StyledLink>
+          ))}
+        </Box>
+      </Container>
+    </Box>
   );
 }

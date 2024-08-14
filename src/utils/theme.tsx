@@ -260,7 +260,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         contents: getColor(colors.gray[30], withOpacity(colors.gray[700], 0.5)),
         dim: getColor(withOpacity(colors.black, 0.6), withOpacity(colors.black, 0.6)),
         group: getColor(colors.marine[400], colors.marine[300]),
-        top: getColor(withOpacity(colors.marine[300], 0.3), '#28216D'),
+        top: getColor(withOpacity(colors.marine[300], 0.1), '#28216D'),
         chip: getColor(colors.marine[500], colors.marine[400]),
       },
       divider: getColor(colors.gray[100], colors.gray[800]),
@@ -421,6 +421,7 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             transform: 'unset',
+            backgroundColor: theme.palette.text.disabledBg,
           },
         },
       },
@@ -747,8 +748,8 @@ export function getThemedComponents(theme: Theme) {
         defaultProps: {
           iconMapping: {
             error: (
-              <SvgIcon color="error">
-                <ExclamationIcon />
+              <SvgIcon color="error" sx={{ color: '#FB8509' }}>
+                <InformationCircleIcon />
               </SvgIcon>
             ),
             info: (
@@ -777,8 +778,7 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { severity: 'error' },
             style: {
-              color: theme.palette.error['100'],
-              background: theme.palette.error['200'],
+              background: theme.palette.point.riskMedium,
               a: {
                 color: theme.palette.error['100'],
               },
@@ -790,12 +790,8 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { severity: 'info' },
             style: {
-              color: theme.palette.info['100'],
-              background: theme.palette.info['200'],
+              background: theme.palette.point.riskRow,
               a: {
-                color: theme.palette.info['100'],
-              },
-              '.MuiButton-text': {
                 color: theme.palette.info['100'],
               },
             },
@@ -819,9 +815,6 @@ export function getThemedComponents(theme: Theme) {
               background: theme.palette.point.riskHigh,
               a: {
                 color: theme.palette.primary.main,
-              },
-              '.MuiButton-text': {
-                color: theme.palette.warning['100'],
               },
             },
           },
