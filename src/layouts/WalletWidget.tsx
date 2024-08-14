@@ -206,8 +206,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             <DuplicateIcon />
           </SvgIcon>
         </ListItemIcon>
-        <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
-          <Trans>Copy address</Trans>
+        <ListItemText>
+          <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+            <Trans>Copy address</Trans>
+          </Box>
         </ListItemText>
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
@@ -222,10 +224,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           }}
           onClick={handleViewOnExplorer}
         >
-          <ListItemText
-            sx={{ fontSize: '16px', color: theme.palette.text.primary, pl: 8, fontWeight: 600 }}
-          >
-            <Trans>E24C0234B9</Trans>
+          <ListItemText>
+            <Box
+              sx={{ fontSize: '16px', color: theme.palette.text.primary, pl: 8, fontWeight: 600 }}
+            >
+              <Trans>E24C0234B9</Trans>
+            </Box>
           </ListItemText>
           <ListItemIcon
             sx={{
@@ -253,14 +257,20 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           <ListItemIcon
             sx={{
               color: theme.palette.text.primary,
+              p: 0,
+              lineHeight: 1.3,
             }}
           >
             <SvgIcon fontSize="small">
               <AccountCircleOutlinedIcon />
             </SvgIcon>
           </ListItemIcon>
-          <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
-            <Trans>Copy referral code</Trans>
+          <ListItemText>
+            <Box
+              sx={{ fontSize: '17px', color: theme.palette.text.secondary, p: 0, lineHeight: 1.3 }}
+            >
+              <Trans>Copy referral code</Trans>
+            </Box>
           </ListItemText>
         </Box>
       </Link>
@@ -285,8 +295,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
                 <CallMadeOutlinedIcon />
               </SvgIcon>
             </ListItemIcon>
-            <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
-              <Trans>View on Explorer</Trans>
+            <ListItemText>
+              <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+                <Trans>View on Explorer</Trans>
+              </Box>
             </ListItemText>
           </Box>
         </Link>
@@ -311,8 +323,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               <LogoutOutlinedIcon />
             </SvgIcon>
           </ListItemIcon>
-          <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
-            <Trans>Disconnect</Trans>
+          <ListItemText>
+            <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+              <Trans>Disconnect</Trans>
+            </Box>
           </ListItemText>
         </Box>
         // <Box>
