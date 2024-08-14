@@ -16,9 +16,10 @@ export const PopperComponent = styled(Popper)(({ theme }) => ({
   '.MuiTooltip-tooltip': {
     color: theme.palette.text.secondary,
     backgroundColor: theme.palette.background.secondary,
-    p: 0,
-    borderRadius: 2,
+    padding: '0px',
+    borderRadius: '8px',
     maxWidth: '280px',
+    boxShadow: '0px 8px 16px -2px #1B212C1F',
   },
   '.MuiTooltip-arrow': {
     color: theme.palette.background.secondary,
@@ -73,16 +74,16 @@ export const ContentWithTooltip = ({
           onClickAway={handleClose}
         >
           <Box
-            sx={{
+            sx={(theme) => ({
               p: 3,
-              fontSize: '12px',
-              lineHeight: '16px',
+              ...theme.typography.detail4,
+              color: theme.palette.text.secondary,
               a: {
                 fontSize: '13px',
                 lineHeight: '16.9px',
                 '&:hover': { textDecoration: 'underline' },
               },
-            }}
+            })}
           >
             {tooltipContent}
           </Box>

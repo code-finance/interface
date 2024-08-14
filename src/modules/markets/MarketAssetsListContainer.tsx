@@ -96,7 +96,6 @@ export const MarketAssetsListContainer = () => {
           searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
         />
       }
-      paperSx={{ p: 0 }}
     >
       {showFrozenMarketWarning && (
         <Box>

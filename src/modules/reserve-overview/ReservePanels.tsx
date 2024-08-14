@@ -18,7 +18,7 @@ export const PanelTitle: React.FC<TypographyProps> = (props) => (
     {...props}
     variant="body6"
     color="text.primary"
-    sx={{ minWidth: { xs: '120px' }, mr: 3, mb: { xs: 6, md: 0 }, ...props.sx }}
+    sx={{ minWidth: '120px', mr: 3, mb: { xs: 6, md: 0 }, ...props.sx }}
   />
 );
 
