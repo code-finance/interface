@@ -124,15 +124,19 @@ export const SuppliedPositionsList = () => {
 
   return (
     <ListWrapper
-      icon={<WalletIcon />}
-      bgColor={theme.palette.background.cardBg}
+      wrapperSx={{
+        pl: 5,
+      }}
+      icon={<WalletIcon sx={{ height: '60px', width: '60px', mb: 4 }} />}
+      bgColor={theme.palette.background.group}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4, color: '#fff' }}>
+        <Typography component="div" variant="h2" sx={{ mb: 3, mr: 4, color: '#fff' }}>
           Your supplies
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"
+      isPosition
       noData={!sortedReserves.length}
       topInfo={
         <>
@@ -175,7 +179,13 @@ export const SuppliedPositionsList = () => {
       }
     >
       {sortedReserves.length ? (
-        <>
+        <div
+          style={{
+            backgroundColor: theme.palette.background.primary,
+            margin: '0px -20px -20px -20px',
+            borderRadius: '12px',
+          }}
+        >
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset}>
@@ -183,12 +193,14 @@ export const SuppliedPositionsList = () => {
                 {downToXSM ? (
                   <SuppliedPositionsListMobileItem {...item} />
                 ) : (
-                  <SuppliedPositionsListItem {...item} />
+                  <div style={{ padding: '0 20px' }}>
+                    <SuppliedPositionsListItem {...item} />
+                  </div>
                 )}
               </AssetCapsProvider>
             </Fragment>
           ))}
-        </>
+        </div>
       ) : (
         <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
       )}

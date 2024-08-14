@@ -1,6 +1,10 @@
 import { DuplicateIcon } from '@heroicons/react/outline';
 import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import {
   Box,
   Button,
@@ -45,7 +49,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     useWeb3Context();
 
   const { setWalletModalOpen } = useWalletModalContext();
-
+  const theme = useTheme();
   const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
@@ -118,10 +122,17 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Trans>Account</Trans>
       </Typography>
 
-      <Box component={component} disabled>
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <Box component={component} disabled sx={{ p: 0, ml: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            height: '44px',
+          }}
+        >
           <UserDisplay
-            avatarProps={{ size: AvatarSize.XL }}
+            avatarProps={{ size: AvatarSize.LG }}
             titleProps={{
               typography: 'h4',
               addressCompactMode: CompactMode.MD,
@@ -142,32 +153,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           )}
         </Box>
       </Box>
-      {!md && (
-        <Box sx={{ display: 'flex', flexDirection: 'row', padding: '0 16px 10px' }}>
-          <Button
-            variant="outlined"
-            sx={{
-              padding: '0 5px',
-              marginRight: '10px',
-            }}
-            size="small"
-            onClick={handleSwitchWallet}
-          >
-            Switch wallet
-          </Button>
-          <Button
-            variant="outlined"
-            sx={{
-              padding: '0 5px',
-            }}
-            size="small"
-            onClick={handleDisconnect}
-            data-cy={`disconnect-wallet`}
-          >
-            Disconnect
-          </Button>
-        </Box>
-      )}
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
 
       <Box component={component} disabled>
@@ -177,7 +162,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              mb: 1,
+              mb: 5,
             }}
           >
             <Typography variant="caption" color={{ xs: '#FFFFFFB2', md: 'text.secondary' }}>
@@ -205,54 +190,158 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
       <Box
         component={component}
-        sx={{ color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' } }}
+        sx={{
+          color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' },
+          height: '48px',
+          py: 1.5,
+        }}
         onClick={handleCopy}
       >
         <ListItemIcon
           sx={{
-            color: {
-              xs: '#F1F1F3',
-              md: 'primary.light',
-              minWidth: 'unset',
-              marginRight: 12,
-            },
+            color: theme.palette.text.primary,
           }}
         >
           <SvgIcon fontSize="small">
             <DuplicateIcon />
           </SvgIcon>
         </ListItemIcon>
-        <ListItemText>
+        <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
           <Trans>Copy address</Trans>
         </ListItemText>
       </Box>
-
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
+        <Box
+          component={component}
+          sx={{
+            color: { xs: '#F1F1F3', md: theme.palette.text.primary },
+            height: '48px',
+            display: 'flex',
+            py: 1.5,
+          }}
+          onClick={handleViewOnExplorer}
+        >
+          <ListItemText
+            sx={{ fontSize: '16px', color: theme.palette.text.primary, pl: 8, fontWeight: 600 }}
+          >
+            <Trans>E24C0234B9</Trans>
+          </ListItemText>
+          <ListItemIcon
+            sx={{
+              color: theme.palette.text.primary,
+              pl: 4,
+              mr: 0,
+            }}
+          >
+            <SvgIcon fontSize="small">
+              <ArrowForwardIosIcon />
+            </SvgIcon>
+          </ListItemIcon>
+        </Box>
+      </Link>
+      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
+        <Box
+          component={component}
+          sx={{
+            color: { xs: '#F1F1F3', md: theme.palette.text.primary },
+            height: '48px',
+            p: '6px 12px',
+          }}
+          onClick={handleViewOnExplorer}
+        >
+          <ListItemIcon
+            sx={{
+              color: theme.palette.text.primary,
+            }}
+          >
+            <SvgIcon fontSize="small">
+              <AccountCircleOutlinedIcon />
+            </SvgIcon>
+          </ListItemIcon>
+          <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+            <Trans>Copy referral code</Trans>
+          </ListItemText>
+        </Box>
+      </Link>
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
       {networkConfig?.explorerLinkBuilder && (
         <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
           <Box
             component={component}
-            sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
+            sx={{
+              color: { xs: '#F1F1F3', md: theme.palette.text.primary },
+              height: '48px',
+              p: '6px 12px',
+            }}
             onClick={handleViewOnExplorer}
           >
             <ListItemIcon
               sx={{
-                color: {
-                  xs: '#F1F1F3',
-                  md: 'primary.light',
-                  minWidth: 'unset',
-                  marginRight: 12,
-                },
+                color: theme.palette.text.primary,
               }}
             >
               <SvgIcon fontSize="small">
-                <ExternalLinkIcon />
+                <CallMadeOutlinedIcon />
               </SvgIcon>
             </ListItemIcon>
-            <ListItemText>
+            <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
               <Trans>View on Explorer</Trans>
             </ListItemText>
           </Box>
         </Link>
+      )}
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      {!md && (
+        <Box
+          component={component}
+          sx={{
+            color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' },
+            height: '48px',
+            py: 1.5,
+          }}
+          onClick={handleDisconnect}
+        >
+          <ListItemIcon
+            sx={{
+              color: theme.palette.text.primary,
+            }}
+          >
+            <SvgIcon fontSize="small">
+              <LogoutOutlinedIcon />
+            </SvgIcon>
+          </ListItemIcon>
+          <ListItemText sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+            <Trans>Disconnect</Trans>
+          </ListItemText>
+        </Box>
+        // <Box>
+        //   <Button
+        //     variant="outlined"
+        //     sx={{
+        //       padding: '0 5px',
+        //       boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
+        //     }}
+        //     size="small"
+        //     onClick={handleDisconnect}
+        //     data-cy={`disconnect-wallet`}
+        //   >
+        //     Disconnect
+        //   </Button>
+        // </Box>
+        // <Box sx={{ display: 'flex', flexDirection: 'row', padding: '0 16px 10px' }}>
+        //   <Button
+        //     variant="outlined"
+        //     sx={{
+        //       padding: '0 5px',
+        //       marginRight: '10px',
+        //     }}
+        //     size="small"
+        //     onClick={handleSwitchWallet}
+        //   >
+        //     Switch wallet
+        //   </Button>
+        // </Box>
       )}
       {md && (
         <>
@@ -305,8 +394,9 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-haspopup="true"
           onClick={handleClick}
           sx={{
-            p: connected ? '5px 8px' : undefined,
+            p: connected ? '12px' : undefined,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
+            height: '48px',
           }}
           endIcon={
             connected &&
@@ -351,7 +441,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           onClose={handleClose}
           keepMounted={true}
         >
-          <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
+          <MenuList
+            disablePadding
+            sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 }, px: 3, py: 5 }}
+          >
             <Content component={MenuItem} />
           </MenuList>
         </Menu>

@@ -163,8 +163,11 @@ export const BorrowedPositionsList = () => {
 
   return (
     <ListWrapper
-      icon={<MoneyIcon />}
-      bgColor={theme.palette.background.cardBg}
+      wrapperSx={{
+        pl: 5,
+      }}
+      icon={<MoneyIcon sx={{ height: '60px', width: '60px', mb: 3 }} />}
+      bgColor={theme.palette.background.group}
       tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4, color: 'white' }}>
@@ -172,12 +175,18 @@ export const BorrowedPositionsList = () => {
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
+      isPosition
       subTitleComponent={
         showEModeButton ? (
           <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
         ) : undefined
       }
       noData={!sortedReserves.length}
+      subChildrenComponent={
+        !sortedReserves.length ? (
+          <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
+        ) : null
+      }
       topInfo={
         <>
           {!!sortedReserves.length && (
@@ -217,18 +226,21 @@ export const BorrowedPositionsList = () => {
       }
     >
       {sortedReserves.length ? (
-        <>
+        <div
+          style={{
+            backgroundColor: theme.palette.background.primary,
+            margin: '0px -20px -20px -20px',
+            borderRadius: '12px',
+          }}
+        >
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
-            <BorrowedPositionsListItemWrapper
-              item={item}
-              key={item.underlyingAsset + item.borrowRateMode}
-            />
+            <div key={item.underlyingAsset + item.borrowRateMode} style={{ padding: '0 20px' }}>
+              <BorrowedPositionsListItemWrapper item={item} />
+            </div>
           ))}
-        </>
-      ) : (
-        <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
-      )}
+        </div>
+      ) : null}
     </ListWrapper>
   );
 };

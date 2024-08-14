@@ -32,9 +32,7 @@ export const DashboardListTopPanel = ({
         alignItems: { xs: 'flex-start', xsm: 'center' },
         justifyContent: 'space-between',
         flexDirection: { xs: 'column-reverse', xsm: 'row' },
-        px: { xs: 4, xsm: 6 },
         py: 2,
-        pl: { xs: '18px', xsm: '27px' },
       }}
     >
       <FormControlLabel

@@ -88,6 +88,7 @@ export function AppHeader() {
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
   const smd = useMediaQuery('(max-width:1120px)');
+  const theme = useTheme();
 
   const [visitedSwitch, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
@@ -205,9 +206,9 @@ export function AppHeader() {
             xsm: '8px 20px',
           },
           display: 'flex',
+          flex: 1,
           alignItems: 'center',
-          flexDirection: 'space-between',
-          boxShadow: 'inset 0px -1px 0px rgba(242, 243, 247, 0.16)',
+          justifyContent: 'space-between',
         })}
       >
         <Box
@@ -222,9 +223,9 @@ export function AppHeader() {
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <img src={uiConfig.appLogo} alt="AAVE" width={72} height={20} />
+          <img src={uiConfig.appLogo} alt="CODE labs" width={72} height={20} />
         </Box>
-        <Box sx={{ mr: sm ? 1 : 3 }}>
+        {/* <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (
             <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
               <Button
@@ -263,15 +264,13 @@ export function AppHeader() {
               </Button>
             </ContentWithTooltip>
           )}
-        </Box>
+        </Box> */}
 
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Box sx={{ display: { xs: 'none', md: 'block', flex: 1 } }}>
           <NavItems />
         </Box>
 
-        <Box sx={{ flexGrow: 1 }} />
-
-        <NoSsr>
+        {/* <NoSsr>
           <StyledBadge
             invisible={visitedSwitch}
             variant="dot"
@@ -320,17 +319,25 @@ export function AppHeader() {
               </SvgIcon>
             </Button>
           </StyledBadge>
-        </NoSsr>
+        </NoSsr> */}
 
         {!mobileMenuOpen && (
-          <WalletWidget
-            open={walletWidgetOpen}
-            setOpen={toggleWalletWigit}
-            headerHeight={headerHeight}
-          />
+          <Box
+            sx={{ bgcolor: theme.palette.background.modulePopup, borderRadius: 2, height: '48px' }}
+          >
+            <WalletWidget
+              open={walletWidgetOpen}
+              setOpen={toggleWalletWigit}
+              headerHeight={headerHeight}
+            />
+          </Box>
         )}
 
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Box
+          sx={{
+            display: { xs: 'none', md: 'block' },
+          }}
+        >
           <SettingsMenu />
         </Box>
 

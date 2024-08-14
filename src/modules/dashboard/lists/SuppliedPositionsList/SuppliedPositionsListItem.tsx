@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -31,7 +31,7 @@ export const SuppliedPositionsListItem = ({
   const { openSupply, openWithdraw, openCollateralChange, openSwap } = useModalContext();
   const { debtCeiling } = useAssetCaps();
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
   let showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   if (
     reserve.symbol === GHO_SYMBOL &&
@@ -141,6 +141,12 @@ export const SuppliedPositionsListItem = ({
             height: '36px',
             fontSize: '14px',
             textTransform: 'capitalize',
+            borderColor: theme.palette.text.subText,
+            bgcolor: 'transparent',
+            color: 'text.primary',
+            '&:hover': {
+              bgcolor: 'transparent',
+            },
           }}
           disabled={disableWithdraw}
           variant="outlined"
