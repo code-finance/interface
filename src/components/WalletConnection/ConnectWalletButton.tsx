@@ -18,6 +18,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) =>
   return (
     <>
       <Button
+        sx={{ px: 15 }}
         variant="outlined"
         onClick={() => {
           trackEvent(AUTH.CONNECT_WALLET, { funnel: funnel });
