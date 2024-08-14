@@ -200,7 +200,7 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: 'background.top',
+          backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
           padding: {
             xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
             xsm: '8px 20px',

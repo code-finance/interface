@@ -873,6 +873,20 @@ export function getThemedComponents(theme: Theme) {
           },
         },
       },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            paddingBlock: '3px',
+            paddingInline: '4px',
+            borderRadius: '4px',
+            height: 'fit-content',
+          },
+          label: {
+            ...theme.typography.detail2,
+            padding: 0,
+          },
+        },
+      },
     },
   } as ThemeOptions;
 }

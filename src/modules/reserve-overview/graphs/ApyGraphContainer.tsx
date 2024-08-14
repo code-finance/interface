@@ -40,8 +40,8 @@ export const ApyGraphContainer = ({
   );
 
   const theme = useTheme();
-  const CHART_HEIGHT = 275;
-  const CHART_HEIGHT_LOADING_FIX = 3.5;
+  const CHART_HEIGHT = 253;
+  const CHART_HEIGHT_LOADING_FIX = 62;
   let reserveAddress = '';
   if (reserve) {
     if (currentMarketData.v3) {
@@ -102,7 +102,7 @@ export const ApyGraphContainer = ({
   const graphError = (
     <Box
       sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
+        height: CHART_HEIGHT,
         width: 'auto',
         display: 'flex',
         flexDirection: 'column',
@@ -123,21 +123,25 @@ export const ApyGraphContainer = ({
   );
 
   return (
-    <Box sx={{ width: 450, height: 315, display: 'flex', flexDirection: 'column' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 4,
-        }}
-      >
+    <Box
+      sx={{
+        maxWidth: { xs: '100%', mdlg: 450 },
+        width: '100%',
+        minWidth: 350,
+        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box sx={{ height: CHART_HEIGHT_LOADING_FIX }}>
         <GraphLegend labels={fields} />
-        <GraphTimeRangeSelector
-          disabled={loading || error}
-          timeRange={selectedTimeRange}
-          onTimeRangeChanged={setSelectedTimeRange}
-        />
+        <Box sx={{ mt: 5, display: 'flex', justifyContent: 'flex-end' }}>
+          <GraphTimeRangeSelector
+            disabled={loading || error}
+            timeRange={selectedTimeRange}
+            onTimeRangeChanged={setSelectedTimeRange}
+          />
+        </Box>
       </Box>
       {loading && graphLoading}
       {error && graphError}

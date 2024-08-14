@@ -144,7 +144,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           />
           {readOnlyModeAddress && (
             <Warning
-              icon={false}
               severity="warning"
               sx={{ mt: 3, mb: 0, ...(md ? { background: '#301E04', color: '#FFDCA8' } : {}) }}
             >

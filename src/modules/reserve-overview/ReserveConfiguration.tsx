@@ -106,18 +106,16 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           debtCeiling={debtCeiling}
         />
       </PanelRow>
-
       {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
-          <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-          <PanelRow>
-            <PanelTitle>Borrow info</PanelTitle>
-            <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-              {!reserve.borrowingEnabled && (
-                <Warning sx={{ mb: '40px' }} severity="error">
-                  <BorrowDisabledWarning symbol={reserve.symbol} currentMarket={currentMarket} />
-                </Warning>
-              )}
+          <PanelRow sx={{ mt: { xs: 6, sm: 10 } }}>
+            <PanelTitle> Borrow info</PanelTitle>
+            <Box sx={{ flexGrow: 1, width: '100%' }}>
+              {/*{reserve.borrowingEnabled && (*/}
+              {/*  <Warning sx={{ mb: '40px' }} severity="error">*/}
+              {/*    <BorrowDisabledWarning symbol={reserve.symbol} currentMarket={currentMarket} />*/}
+              {/*  </Warning>*/}
+              {/*)}*/}
               <BorrowInfo
                 reserve={reserve}
                 currentMarketData={currentMarketData}
@@ -141,7 +139,6 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
-
           <PanelRow>
             <PanelTitle>Interest rate model</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
