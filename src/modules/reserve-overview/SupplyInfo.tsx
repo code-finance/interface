@@ -44,131 +44,164 @@ export const SupplyInfo = ({
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
+          flexWrap: { xs: 'wrap', xsm: 'nowrap' },
+          gap: 7,
         }}
       >
-        {showSupplyCapStatus ? (
-          // With supply cap
-          <>
-            <CapsCircularStatus
-              value={supplyCap.percentUsed}
-              tooltipContent={
-                <>
-                  <Trans>
-                    Maximum amount available to supply is{' '}
+        <Box sx={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
+          {!showSupplyCapStatus ? (
+            // With supply cap
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', py: 2 }}>
+                <CapsCircularStatus
+                  value={supplyCap.percentUsed}
+                  tooltipContent={
+                    <>
+                      <Trans>
+                        Maximum amount available to supply is{' '}
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCap).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidity).toNumber()
+                          }
+                          variant="secondary12"
+                        />{' '}
+                        {reserve.symbol} (
+                        <FormattedNumber
+                          value={
+                            valueToBigNumber(reserve.supplyCapUSD).toNumber() -
+                            valueToBigNumber(reserve.totalLiquidityUSD).toNumber()
+                          }
+                          variant="secondary12"
+                          symbol="USD"
+                        />
+                        ).
+                      </Trans>
+                    </>
+                  }
+                />
+                <PanelItem
+                  sx={{ ml: 3, minWidth: '168px' }}
+                  title={
+                    <Box display="flex" alignItems="center">
+                      <Typography color="text.mainTitle" variant="detail2">
+                        <Trans>Total supplied</Trans>
+                      </Typography>
+                      <TextWithTooltip
+                        event={{
+                          eventName: GENERAL.TOOL_TIP,
+                          eventParams: {
+                            tooltip: 'Total Supply',
+                            asset: reserve.underlyingAsset,
+                            assetName: reserve.name,
+                          },
+                        }}
+                      >
+                        <>
+                          <Trans>
+                            Asset supply is limited to a certain amount to reduce protocol exposure
+                            to the asset and to help manage risks involved.
+                          </Trans>{' '}
+                          <Link
+                            href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
+                            underline="always"
+                          >
+                            <Trans>Learn more</Trans>
+                          </Link>
+                        </>
+                      </TextWithTooltip>
+                    </Box>
+                  }
+                >
+                  <Box>
                     <FormattedNumber
-                      value={
-                        valueToBigNumber(reserve.supplyCap).toNumber() -
-                        valueToBigNumber(reserve.totalLiquidity).toNumber()
-                      }
-                      variant="secondary12"
-                    />{' '}
-                    {reserve.symbol} (
-                    <FormattedNumber
-                      value={
-                        valueToBigNumber(reserve.supplyCapUSD).toNumber() -
-                        valueToBigNumber(reserve.totalLiquidityUSD).toNumber()
-                      }
-                      variant="secondary12"
-                      symbol="USD"
+                      value={reserve.totalLiquidity}
+                      variant="body6"
+                      color="text.primary"
+                      compact
                     />
-                    ).
-                  </Trans>
-                </>
-              }
-            />
+                    <Typography
+                      component="span"
+                      variant="body6"
+                      color="text.primary"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <FormattedNumber
+                      value={reserve.supplyCap}
+                      variant="body6"
+                      color="text.primary"
+                    />
+                  </Box>
+                  <Box>
+                    <ReserveSubheader value={reserve.totalLiquidityUSD} />
+                    <Typography
+                      component="span"
+                      color="text.mainTitle"
+                      variant="detail2"
+                      sx={{ display: 'inline-block', mx: 1 }}
+                    >
+                      <Trans>of</Trans>
+                    </Typography>
+                    <ReserveSubheader value={reserve.supplyCapUSD} />
+                  </Box>
+                </PanelItem>
+              </Box>
+              <PanelItem title={<Trans>APY</Trans>} sx={{ ml: 2, minWidth: '120px' }}>
+                <FormattedNumber
+                  value={reserve.supplyAPY}
+                  percent
+                  variant="body6"
+                  color="text.primary"
+                />
+                <IncentivesButton
+                  symbol={reserve.symbol}
+                  incentives={reserve.aIncentivesData}
+                  displayBlank={true}
+                />
+              </PanelItem>
+              {reserve.unbacked && reserve.unbacked !== '0' && (
+                <PanelItem title={<Trans>Unbacked</Trans>} sx={{ ml: 2, minWidth: '168px' }}>
+                  <FormattedNumber
+                    value={reserve.unbacked}
+                    variant="body6"
+                    color="text.primary"
+                    symbol={reserve.name}
+                  />
+                  <ReserveSubheader value={reserve.unbackedUSD} />
+                </PanelItem>
+              )}
+            </Box>
+          ) : (
             <PanelItem
               title={
                 <Box display="flex" alignItems="center">
-                  <Trans>Total supplied</Trans>
-                  <TextWithTooltip
-                    event={{
-                      eventName: GENERAL.TOOL_TIP,
-                      eventParams: {
-                        tooltip: 'Total Supply',
-                        asset: reserve.underlyingAsset,
-                        assetName: reserve.name,
-                      },
-                    }}
-                  >
-                    <>
-                      <Trans>
-                        Asset supply is limited to a certain amount to reduce protocol exposure to
-                        the asset and to help manage risks involved.
-                      </Trans>{' '}
-                      <Link
-                        href="https://docs.aave.com/developers/whats-new/supply-borrow-caps"
-                        underline="always"
-                      >
-                        <Trans>Learn more</Trans>
-                      </Link>
-                    </>
-                  </TextWithTooltip>
+                  <Typography color="text.mainTitle" variant="detail2">
+                    <Trans>Total supplied</Trans>
+                  </Typography>
                 </Box>
               }
             >
-              <Box>
-                <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-                <Typography
-                  component="span"
-                  color="text.primary"
-                  variant="secondary16"
-                  sx={{ display: 'inline-block', mx: 1 }}
-                >
-                  <Trans>of</Trans>
-                </Typography>
-                <FormattedNumber value={reserve.supplyCap} variant="main16" />
-              </Box>
-              <Box>
-                <ReserveSubheader value={reserve.totalLiquidityUSD} />
-                <Typography
-                  component="span"
-                  color="text.secondary"
-                  variant="secondary12"
-                  sx={{ display: 'inline-block', mx: 1 }}
-                >
-                  <Trans>of</Trans>
-                </Typography>
-                <ReserveSubheader value={reserve.supplyCapUSD} />
-              </Box>
+              <FormattedNumber
+                value={reserve.totalLiquidity}
+                variant="body6"
+                color="text.primary"
+                compact
+              />
+              <ReserveSubheader value={reserve.totalLiquidityUSD} />
             </PanelItem>
-          </>
-        ) : (
-          // Without supply cap
-          <PanelItem
-            title={
-              <Box display="flex" alignItems="center">
-                <Trans>Total supplied</Trans>
-              </Box>
-            }
-          >
-            <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-            <ReserveSubheader value={reserve.totalLiquidityUSD} />
-          </PanelItem>
-        )}
-        <PanelItem title={<Trans>APY</Trans>}>
-          <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
-          <IncentivesButton
-            symbol={reserve.symbol}
-            incentives={reserve.aIncentivesData}
-            displayBlank={true}
+          )}
+        </Box>
+        {renderCharts && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
+          <ApyGraphContainer
+            graphKey="supply"
+            reserve={reserve}
+            currentMarketData={currentMarketData}
           />
-        </PanelItem>
-        {reserve.unbacked && reserve.unbacked !== '0' && (
-          <PanelItem title={<Trans>Unbacked</Trans>}>
-            <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
-            <ReserveSubheader value={reserve.unbackedUSD} />
-          </PanelItem>
         )}
       </Box>
-      {renderCharts && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
-        <ApyGraphContainer
-          graphKey="supply"
-          reserve={reserve}
-          currentMarketData={currentMarketData}
-        />
-      )}
+
       <div>
         {reserve.isIsolated ? (
           <Box sx={{ pt: '42px', pb: '12px' }}>

@@ -128,7 +128,7 @@ export const SuppliedPositionsList = () => {
         pl: 5,
       }}
       icon={<WalletIcon sx={{ height: '60px', width: '60px', mb: 4 }} />}
-      bgColor={theme.palette.background.group}
+      paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
       tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mb: 3, mr: 4, color: '#fff' }}>

@@ -49,37 +49,9 @@ export default function ReserveOverview() {
       <ReserveTopDetailsWrapper underlyingAsset={underlyingAsset} />
 
       <ContentContainer>
-        <Box
-          sx={{
-            display: { xs: 'flex', lg: 'none' },
-            justifyContent: { xs: 'center', xsm: 'flex-start' },
-            mb: { xs: 3, xsm: 4 },
-          }}
-        >
-          <StyledToggleButtonGroup
-            color="primary"
-            value={mode}
-            exclusive
-            onChange={(_, value) => setMode(value)}
-            sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
-          >
-            <StyledToggleButton value="overview" disabled={mode === 'overview'}>
-              <Typography variant="subheader1">
-                <Trans>Overview</Trans>
-              </Typography>
-            </StyledToggleButton>
-            <StyledToggleButton value="actions" disabled={mode === 'actions'}>
-              <Typography variant="subheader1">
-                <Trans>Your info</Trans>
-              </Typography>
-            </StyledToggleButton>
-          </StyledToggleButtonGroup>
-        </Box>
-
         <Box>
           <Box
             sx={{
-              display: { xs: isOverview ? 'none' : 'block', lg: 'block' },
               width: '100%',
             }}
           >
@@ -87,9 +59,7 @@ export default function ReserveOverview() {
           </Box>
           <Box
             sx={{
-              display: { xs: !isOverview ? 'none' : 'block', lg: 'block' },
               width: '100%',
-              mr: { xs: 0, lg: 4 },
               mt: 5,
             }}
           >

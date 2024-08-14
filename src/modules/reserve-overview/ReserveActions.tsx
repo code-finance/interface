@@ -269,10 +269,7 @@ const ActionsSkeleton = () => {
 const PaperWrapper = ({ children, sx }: PaperProps) => {
   return (
     <Paper
-      sx={[
-        { pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } },
-        ...(Array.isArray(sx) ? sx : [sx]),
-      ]}
+      sx={[{ py: { xs: 4, xsm: 7 }, px: { xs: 4, xsm: 5 } }, ...(Array.isArray(sx) ? sx : [sx])]}
     >
       <Typography variant="h2" sx={{ mb: { xs: 6, xsm: 8 } }}>
         <Trans>Your info</Trans>

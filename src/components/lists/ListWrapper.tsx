@@ -20,7 +20,6 @@ interface ListWrapperProps {
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
   paperSx?: PaperProps['sx'];
-  bgColor?: string;
   icon?: ReactNode;
   isPosition?: boolean;
 }
@@ -37,7 +36,6 @@ export const ListWrapper = ({
   wrapperSx,
   tooltipOpen,
   paperSx,
-  bgColor,
   icon,
   isPosition,
 }: ListWrapperProps) => {
@@ -108,7 +106,7 @@ export const ListWrapper = ({
         ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
       ]}
     >
-      <Box display="flex" flexDirection={'column'} gap={5} sx={{ px: 5, pt: 9, pb: 5 }}>
+      <Box display="flex" flexDirection={'column'} gap={5}>
         <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
           {!!icon && icon}
           <Box

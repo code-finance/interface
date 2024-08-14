@@ -43,7 +43,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     borderRadius: '20px',
     width: '10px',
     height: '10px',
-    backgroundColor: `${theme.palette.secondary.main}`,
+    backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
     color: `${theme.palette.secondary.main}`,
     '&::after': {
       position: 'absolute',

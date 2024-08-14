@@ -48,17 +48,17 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           {currentAccount && !isBorrow && downToLg && (
             <Box>
               <Button
-                sx={{
+                sx={(theme) => ({
                   position: 'absolute',
                   top: '-120px',
                   right: '0px',
-                }}
+                  color: theme.palette.text.secondary,
+                })}
                 onClick={() => {
                   router.push(ROUTES.history);
                   trackEvent(AUTH.VIEW_TX_HISTORY);
                 }}
-                component="a"
-                variant="surface"
+                variant="outlined"
                 size="small"
               >
                 <Trans>View Transactions</Trans>

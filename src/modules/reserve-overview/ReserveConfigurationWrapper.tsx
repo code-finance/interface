@@ -24,7 +24,13 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
   return (
-    <Paper variant="elevation">
+    <Paper
+      variant="elevation"
+      sx={{
+        py: 9,
+        px: 5,
+      }}
+    >
       <Box
         sx={{
           display: 'flex',

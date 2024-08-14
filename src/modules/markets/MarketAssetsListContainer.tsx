@@ -96,6 +96,7 @@ export const MarketAssetsListContainer = () => {
           searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
         />
       }
+      paperSx={{ p: 0 }}
     >
       {showFrozenMarketWarning && (
         <Box>
@@ -103,11 +104,11 @@ export const MarketAssetsListContainer = () => {
         </Box>
       )}
 
-      {displayGhoBanner && (
-        <Box mb={4}>
-          <GhoBanner reserve={ghoReserve} />
-        </Box>
-      )}
+      {/*{displayGhoBanner && (*/}
+      {/*  <Box mb={4}>*/}
+      {/*    <GhoBanner reserve={ghoReserve} />*/}
+      {/*  </Box>*/}
+      {/*)}*/}
 
       {/* Unfrozen assets list */}
       <MarketAssetsList reserves={unfrozenReserves} loading={loading} />

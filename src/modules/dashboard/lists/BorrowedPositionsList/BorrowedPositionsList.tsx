@@ -166,8 +166,8 @@ export const BorrowedPositionsList = () => {
       wrapperSx={{
         pl: 5,
       }}
+      paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
       icon={<MoneyIcon sx={{ height: '60px', width: '60px', mb: 3 }} />}
-      bgColor={theme.palette.background.group}
       tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4, color: 'white' }}>

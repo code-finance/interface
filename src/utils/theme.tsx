@@ -484,6 +484,7 @@ export function getThemedComponents(theme: Theme) {
               color: theme.palette.primary.main,
               '&:hover': {
                 background: theme.palette.text.buttonText,
+                color: theme.palette.point.primary,
               },
             },
           },
@@ -605,7 +606,6 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             borderRadius: '16px',
-            backgroundColor: theme.palette.background.primary,
           },
         },
         variants: [
@@ -620,6 +620,8 @@ export function getThemedComponents(theme: Theme) {
             props: { variant: 'elevation' },
             style: {
               boxShadow: '4px 4px 20px 0px rgba(0, 0, 0, 0.05)',
+              backgroundColor: theme.palette.background.primary,
+              backgroundImage: 'unset',
             },
           },
         ],
@@ -654,13 +656,16 @@ export function getThemedComponents(theme: Theme) {
           },
           switchBase: {
             padding: 0,
-            margin: 1,
+            margin: '1px !important',
             transitionDuration: '300ms',
+            '& + .MuiSwitch-track': {
+              backgroundColor: `${theme.palette.text.subText} !important`,
+            },
             '&.Mui-checked': {
               transform: 'translateX(15px)',
               color: '#FFF',
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.point.primary,
+                backgroundColor: `${theme.palette.point.primary} !important`,
                 opacity: 1,
                 border: 0,
               },
@@ -681,7 +686,6 @@ export function getThemedComponents(theme: Theme) {
           },
           track: {
             opacity: 1,
-            backgroundColor: theme.palette.text.subText,
             borderRadius: '12px',
           },
         },

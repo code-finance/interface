@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { useState } from 'react';
 import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -39,7 +39,8 @@ export const ApyGraphContainer = ({
     ESupportedTimeRanges.OneMonth
   );
 
-  const CHART_HEIGHT = 155;
+  const theme = useTheme();
+  const CHART_HEIGHT = 275;
   const CHART_HEIGHT_LOADING_FIX = 3.5;
   let reserveAddress = '';
   if (reserve) {
@@ -55,7 +56,9 @@ export const ApyGraphContainer = ({
   );
 
   // Supply fields
-  const supplyFields: Fields = [{ name: 'liquidityRate', color: '#2EBAC6', text: 'Supply APR' }];
+  const supplyFields: Fields = [
+    { name: 'liquidityRate', color: theme.palette.point.positive, text: 'Supply APR' },
+  ];
 
   // Borrow fields
   const borrowFields: Fields = [
@@ -63,14 +66,14 @@ export const ApyGraphContainer = ({
       ? ([
           {
             name: 'stableBorrowRate',
-            color: '#E7C6DF',
+            color: theme.palette.point.riskHigh,
             text: 'Borrow APR, stable',
           },
         ] as const)
       : []),
     {
       name: 'variableBorrowRate',
-      color: '#B6509E',
+      color: theme.palette.point.negative,
       text: 'Borrow APR, variable',
     },
   ];
@@ -80,12 +83,13 @@ export const ApyGraphContainer = ({
   const graphLoading = (
     <Box
       sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
-        width: 'auto',
+        height: 'auto',
+        width: 'full',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        my: 'auto',
       }}
     >
       <CircularProgress size={20} sx={{ mb: 2, opacity: 0.5 }} />
@@ -106,20 +110,20 @@ export const ApyGraphContainer = ({
         justifyContent: 'center',
       }}
     >
-      <Typography variant="subheader1">
+      <Typography variant="body5">
         <Trans>Something went wrong</Trans>
       </Typography>
-      <Typography variant="caption" sx={{ mb: 3 }}>
+      <Typography variant="detail5" sx={{ mb: 3 }}>
         <Trans>Data couldn&apos;t be fetched, please reload graph.</Trans>
       </Typography>
-      <Button variant="outlined" color="primary" onClick={refetch}>
+      <Button variant="outlined" color="primary" size="small" onClick={refetch}>
         <Trans>Reload</Trans>
       </Button>
     </Box>
   );
 
   return (
-    <Box sx={{ mt: 10, mb: 4 }}>
+    <Box sx={{ width: 450, height: 315, display: 'flex', flexDirection: 'column' }}>
       <Box
         sx={{
           display: 'flex',
