@@ -116,7 +116,7 @@ export function AppHeader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = 48;
+  const headerHeight = 64;
 
   const toggleWalletWigit = (state: boolean) => {
     if (md) setMobileDrawerOpen(state);
@@ -195,7 +195,6 @@ export function AppHeader() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         sx={(theme) => ({
-          height: headerHeight,
           position: 'sticky',
           top: 0,
           transition: theme.transitions.create('top'),
@@ -206,7 +205,6 @@ export function AppHeader() {
             xsm: '8px 20px',
           },
           display: 'flex',
-          flex: 1,
           alignItems: 'center',
           justifyContent: 'space-between',
         })}

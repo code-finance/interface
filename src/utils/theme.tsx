@@ -35,6 +35,7 @@ declare module '@mui/material/styles/createPalette' {
     subTitle: string;
     subText: string;
     buttonText: string;
+    buttonBgTap: string;
     // to be removed
     muted: string;
   }
@@ -237,6 +238,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         disabledBg: getColor(colors.gray[100], colors.gray[800]),
         disabledText: getColor(colors.gray[300], colors.gray[600]),
         buttonText: getColor(colors.white, colors.white),
+        buttonBgTap: getColor(colors.gray[50], colors.gray[950]),
       },
       point: {
         primary: getColor(colors.marine[500], colors.marine[300]),

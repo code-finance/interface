@@ -166,7 +166,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           />
         </Box>
       )}
-      <Box sx={{ display: 'flex', gap: 10 }}>
+      <Box sx={{ display: 'flex', gap: '8px 2px', flexWrap: 'wrap' }}>
         <WalletBalance
           balance={balance.amount}
           symbol={selectedAsset}
@@ -318,10 +318,11 @@ const SupplyAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
       <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
         <AvailableTooltip
-          variant="description"
+          variant="detail2"
+          textColor="text.mainTitle"
           text={<Trans>Available to supply</Trans>}
           capType={CapType.supplyCap}
           event={{
@@ -366,12 +367,12 @@ const BorrowAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
       <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
         <AvailableTooltip
           variant="detail2"
           sx={{ whiteSpace: 'nowrap' }}
-          color="text.mainTitle"
+          textColor="text.mainTitle"
           text={<Trans>Available to borrow</Trans>}
           capType={CapType.borrowCap}
           event={{
@@ -428,11 +429,11 @@ const WrappedBaseAssetSelector = ({
       sx={{ mb: 4 }}
     >
       <StyledTxModalToggleButton value={assetSymbol}>
-        <Typography variant="detail2">{assetSymbol}</Typography>
+        <Typography variant="body7">{assetSymbol}</Typography>
       </StyledTxModalToggleButton>
 
       <StyledTxModalToggleButton value={baseAssetSymbol}>
-        <Typography variant="detail2">{baseAssetSymbol}</Typography>
+        <Typography variant="body7">{baseAssetSymbol}</Typography>
       </StyledTxModalToggleButton>
     </StyledTxModalToggleGroup>
   );
@@ -472,7 +473,13 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
   const theme = useTheme();
 
   return (
-    <Stack direction="row" gap={3} alignItems="center">
+    <Stack
+      direction="row"
+      gap={3}
+      alignItems="center"
+      flexWrap="nowrap"
+      sx={{ flexShrink: 0, width: '300px' }}
+    >
       <Box
         sx={(theme) => ({
           background: theme.palette.background.primary,
