@@ -103,7 +103,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
   return (
     <>
-      <TxModalTitle title="Stake CODE" />
+      <TxModalTitle sx={{ mb: 8 }} title="Stake CODE" />
       {/* {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
           networkName={networkConfig.name}

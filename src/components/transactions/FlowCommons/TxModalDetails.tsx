@@ -68,7 +68,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
       >
         {children}
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: '6px' }}>
         <GasStation
           chainId={chainId}
           gasLimit={parseUnits(gasLimit || '0', 'wei')}

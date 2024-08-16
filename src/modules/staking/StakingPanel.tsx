@@ -193,27 +193,30 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         }}
       >
         <Stack>
-          <Typography>
+          <Typography variant="body4" color="text.primary">
             <Stack direction="row" alignItems="center" gap={0} mb={4}>
               <Trans>Stake CODE on </Trans>
-              <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' }, ml: 2 }} />
-              <Box sx={{ fontSize: '24px', ml: 1.5 }}>{stakeTitle}</Box>
+              <TokenIcon symbol={icon} sx={{ width: '24px', height: '24px', ml: 2 }} />
+              <Typography variant="h2">
+                <Box sx={{ fontSize: '24px', ml: 1.5 }}>{stakeTitle}</Box>
+              </Typography>
               {TokenContractTooltip}
             </Stack>
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="body7" color="text.secondary">
             Total staked:{' '}
             <FormattedNumber
-              variant="caption"
+              variant="body7"
               value={stakeData.totalSupplyFormatted}
               visibleDecimals={2}
             />
             {' ('}
             <FormattedNumber
-              variant="caption"
+              variant="body7"
               value={stakeData.totalSupplyUSDFormatted}
               visibleDecimals={2}
               symbol="usd"
+              symbolsColor="text.secondary"
             />
             {')'}
           </Typography>
@@ -262,7 +265,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '24px' } }} />
             <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
               <Stack direction="row">
-                <Typography variant={xsm ? 'body7' : 'h4'}>{stakedToken}</Typography>
+                <Typography variant={xsm ? 'body6' : 'h4'}>{stakedToken}</Typography>
                 <Box sx={{ display: { xsm: 'none' } }}>{TokenContractTooltip}</Box>
               </Stack>
               <Typography
@@ -307,8 +310,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         >
           <Stack direction="row">
             <Typography
-              variant={xsm ? 'subheader2' : 'description'}
-              color={xsm ? 'text.secondary' : 'text.primary'}
+              variant={xsm ? 'detail2' : 'description'}
+              color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
               sx={{ mb: 2 }}
             >
               <Trans>Staking APR</Trans>
@@ -349,16 +352,17 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </Box>
         <Box
           sx={{
-            display: { xs: 'flex', xsm: 'block' },
+            display: { xs: 'flex' },
             width: { xs: '100%', xsm: 'unset' },
+            flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
             mb: { xs: 3, xsm: 0 },
           }}
         >
           <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
+            variant={xsm ? 'detail2' : 'description'}
+            color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
             sx={{ mb: 2 }}
           >
             <Trans>Max slashing</Trans>
@@ -367,16 +371,17 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         </Box>
         <Box
           sx={{
-            display: { xs: 'flex', xsm: 'block' },
+            display: { xs: 'flex' },
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
+            flexDirection: 'column',
             alignItems: 'center',
             mb: { xs: 3, xsm: 0 },
           }}
         >
           <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
+            variant={xsm ? 'detail2' : 'description'}
+            color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
             sx={{ mb: 2 }}
           >
             <Trans>Wallet Balance</Trans>
@@ -410,7 +415,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             color: theme.palette.text.buttonText,
           }}
           onClick={onStakeAction}
-          disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
+          disabled={false}
           fullWidth={!xsm}
           data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
         >
@@ -644,7 +649,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               </Box>
             )}
 
-            {isCooldownActive && (
+            {true && (
               <Button
                 sx={{
                   p: 3,
@@ -658,7 +663,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 variant="contained"
                 fullWidth
                 onClick={onCooldownAction}
-                disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
+                disabled={false}
                 data-cy={`coolDownBtn_${stakedToken}`}
               >
                 <Trans>Cooldown to unstake</Trans>

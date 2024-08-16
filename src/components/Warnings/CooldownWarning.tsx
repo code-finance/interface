@@ -15,6 +15,8 @@ export const CooldownWarning = () => {
       sx={{
         '.MuiAlert-message': { p: 0 },
         boxShadow: 'none !important',
+        '.MuiSvgIcon-root': { color: '#FB8509' },
+        bgcolor: `${theme.palette.point.riskMedium} !important`,
       }}
     >
       <Typography variant="detail1" color={theme.palette.text.secondary}>

@@ -320,11 +320,13 @@ export const AssetInput = <T extends Asset = Asset>({
               </Typography>
               {!disableInput && (
                 <Button
-                  size="small"
+                  // size="small"
                   sx={{
                     fontSize: '16px',
                     fontWeight: 600,
                     lineHeight: '130%',
+                    display: 'block',
+                    minWidth: 0,
                     p: 0,
                     textTransform: 'uppercase',
                     border: 'none',
