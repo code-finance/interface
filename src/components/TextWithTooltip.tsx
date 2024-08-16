@@ -45,7 +45,7 @@ export const TextWithTooltip = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: '3px', ...boxSx }} {...boxRest}>
+    <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
       {text && (
         <Typography {...rest} color={textColor}>
           {text}

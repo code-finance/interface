@@ -127,7 +127,7 @@ export const SuppliedPositionsList = () => {
       wrapperSx={{
         pl: 5,
       }}
-      icon={<WalletIcon sx={{ height: '60px', width: '60px', mb: 4 }} />}
+      icon={<WalletIcon sx={{ height: '60px', width: '60px', mb: 4, color: 'white' }} />}
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
       tooltipOpen={tooltipOpen}
       titleComponent={

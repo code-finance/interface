@@ -3,6 +3,7 @@ import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-
 import { valueToBigNumber } from '@aave/math-utils';
 import { ExternalLinkIcon, RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import {
   Box,
   Button,
@@ -227,7 +228,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           alignItems: { xs: 'flex-start', xsm: 'center' },
           flexDirection: { xs: 'column', xsm: 'row' },
           gap: { xs: 0, xsm: 2 },
-          borderRadius: { xs: 0, xsm: '6px' },
+          borderRadius: { xs: 0, xsm: '12px' },
           border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
           p: { xs: 0, xsm: '12px 8px' },
           mb: 7,
@@ -397,7 +398,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           </Button>
         ) : ( */}
         <Button
-          variant="outlined"
+          variant="contained"
           sx={{
             p: 2,
             height: '36px',
@@ -405,6 +406,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               bgcolor: theme.palette.text.disabledBg,
               color: theme.palette.text.disabledText,
             }),
+            bgcolor: theme.palette.point.primary,
+            color: theme.palette.text.buttonText,
           }}
           onClick={onStakeAction}
           disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
@@ -417,7 +420,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       </Box>
 
       <Stack
-        spacing={4}
+        gap={3}
         direction={{ xs: 'column', xsm: 'row' }}
         sx={{ mt: 4, alignItems: { xsm: 'start' } }}
       >
@@ -502,7 +505,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               </TextWithTooltip>
             }
             bottomLineComponent={
-              <>
+              <Box sx={{ maxWidth: isCooldownActive ? '150px' : 'unset' }}>
                 {isCooldownActive && !isUnstakeWindowActive ? (
                   <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
                     <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
@@ -518,7 +521,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                     <SecondsToString seconds={stakeCooldownSeconds} />
                   </Typography>
                 )}
-              </>
+              </Box>
             }
             cooldownAmount={
               isCooldownActive || isUnstakeWindowActive ? (
@@ -531,7 +534,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                     pt: 2,
                   }}
                 >
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="detail4" color={theme.palette.text.subTitle}>
                     <Trans>Amount in cooldown</Trans>
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -552,7 +555,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             {isUnstakeWindowActive && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Button
-                  variant="gradient"
+                  variant="contained"
                   fullWidth
                   onClick={onUnstakeAction}
                   data-cy={`unstakeBtn_${stakedToken}`}
@@ -595,13 +598,18 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             {isCooldownActive && !isUnstakeWindowActive && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   fullWidth
                   disabled
                   data-cy={`awaitCoolDownBtn_${stakedToken}`}
-                  sx={{ height: '36px' }}
+                  sx={{
+                    p: 3,
+                    bgcolor: theme.palette.text.disabledBg,
+                    color: theme.palette.text.disabledText,
+                  }}
                 >
-                  <Trans>Cooling down...</Trans>
+                  <AutorenewIcon sx={{ mr: 1 }} />
+                  <Trans>Cooling down ...</Trans>
                 </Button>
                 {availableToReactivateCooldown && (
                   <DarkTooltip
@@ -636,14 +644,18 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               </Box>
             )}
 
-            {!isCooldownActive && (
+            {isCooldownActive && (
               <Button
                 sx={{
                   p: 3,
-                  bgcolor: theme.palette.text.disabledBg,
-                  color: theme.palette.text.disabledText,
+                  ...(+stakeUserData?.userIncentivesToClaim === 0 && {
+                    bgcolor: theme.palette.text.disabledBg,
+                    color: theme.palette.text.disabledText,
+                  }),
+                  bgcolor: theme.palette.point.primary,
+                  color: theme.palette.text.buttonText,
                 }}
-                variant="outlined"
+                variant="contained"
                 fullWidth
                 onClick={onCooldownAction}
                 disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
@@ -679,30 +691,38 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             }}
           >
             <Button
-              variant="outlined"
+              variant="contained"
               onClick={onStakeRewardClaimAction}
               disabled={stakeUserData?.userIncentivesToClaim === '0'}
               data-cy={`claimBtn_${stakedToken}`}
               sx={{
                 flex: 1,
                 p: 3,
-                bgcolor: theme.palette.text.disabledBg,
-                color: theme.palette.text.disabledText,
+                ...(+stakeUserData?.userIncentivesToClaim === 0 && {
+                  bgcolor: theme.palette.text.disabledBg,
+                  color: theme.palette.text.disabledText,
+                }),
+                bgcolor: theme.palette.point.primary,
+                color: theme.palette.text.buttonText,
               }}
             >
               <Trans>Claim</Trans>
             </Button>
             {stakedToken && (
               <Button
-                variant="outlined"
+                variant="contained"
                 onClick={onStakeRewardClaimRestakeAction}
                 disabled={stakeUserData?.userIncentivesToClaim === '0'}
                 data-cy={`restakeBtn_${stakedToken}`}
                 sx={{
                   flex: 1,
                   p: 3,
-                  bgcolor: theme.palette.text.disabledBg,
-                  color: theme.palette.text.disabledText,
+                  ...(+stakeUserData?.userIncentivesToClaim === 0 && {
+                    bgcolor: theme.palette.text.disabledBg,
+                    color: theme.palette.text.disabledText,
+                  }),
+                  bgcolor: theme.palette.point.primary,
+                  color: theme.palette.text.buttonText,
                 }}
               >
                 <Trans>Restake</Trans>

@@ -223,7 +223,18 @@ export function AppHeader() {
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <img sizes="small" src={uiConfig.appLogo} alt="CODE labs" width="120px" />
+          <img
+            style={{
+              fontSize: '20px',
+              filter:
+                theme.palette.mode === 'light'
+                  ? 'invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'
+                  : 'none',
+            }}
+            sizes="small"
+            src={uiConfig.appLogo}
+            alt="CODE labs"
+          />
         </Box>
         {/* <Box sx={{ mr: sm ? 1 : 3 }}>
           {ENABLE_TESTNET && (

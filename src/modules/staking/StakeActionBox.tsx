@@ -35,6 +35,8 @@ export const StakeActionBox = ({
         display: 'flex',
         border: `1px solid ${theme.palette.divider}`,
         position: 'relative',
+        height: '292px',
+        borderRadius: '12px',
         '&:after': {
           content: "''",
           borderRadius: '6px',
@@ -43,7 +45,7 @@ export const StakeActionBox = ({
           bottom: -1,
           left: -1,
           right: -1,
-          background: gradientBorder ? theme.palette.gradients.aaveGradient : 'transparent',
+          // background: gradientBorder ? theme.palette.gradients.aaveGradient : 'transparent',
         },
       })}
     >
@@ -88,7 +90,7 @@ export const StakeActionBox = ({
 
         <Box sx={{ width: '100%', mb: '10px' }}>{children}</Box>
 
-        <Row caption={bottomLineTitle} captionVariant="caption" width="100%" sx={{ mb: '47px' }}>
+        <Row caption={bottomLineTitle} captionVariant="caption" width="100%">
           {bottomLineComponent}
         </Row>
         {cooldownAmount}
