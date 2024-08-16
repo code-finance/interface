@@ -70,6 +70,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                   color: theme.palette.text.mainTitle,
                   cursor: 'pointer',
                   '&.active': { fontWeight: 'bold', color: theme.palette.text.primary },
+                  ':hover': { color: theme.palette.mode === 'light' ? 'black' : 'white' },
                 }}
               >
                 {i18n._(item.title)}

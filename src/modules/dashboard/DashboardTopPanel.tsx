@@ -131,7 +131,7 @@ export const DashboardTopPanel = () => {
             width: '100%',
           }}
         >
-          <div style={{ display: 'flex', gap: '20px', color: theme.palette.text.secondary }}>
+          <div style={{ display: 'flex', gap: '20px', color: theme.palette.text.primary }}>
             <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
               {currentAccount ? (
                 <FormattedNumber
@@ -140,7 +140,7 @@ export const DashboardTopPanel = () => {
                   variant={valueTypographyVariant}
                   visibleDecimals={2}
                   compact
-                  symbolsColor="#F5F5F5"
+                  symbolsColor={theme.palette.text.primary}
                   symbolsVariant={noDataTypographyVariant}
                 />
               ) : (
@@ -168,7 +168,7 @@ export const DashboardTopPanel = () => {
                   variant={valueTypographyVariant}
                   visibleDecimals={2}
                   percent
-                  symbolsColor="#A5A8B6"
+                  symbolsColor={theme.palette.text.primary}
                   symbolsVariant={noDataTypographyVariant}
                 />
               ) : (

@@ -114,6 +114,7 @@ export const SupplyAssetsListItemDesktop = ({
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
+  const theme = useTheme();
 
   const trackEvent = useRootStore((store) => store.trackEvent);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -249,6 +250,13 @@ export const SupplyAssetsListItemDesktop = ({
             height: '36px',
             fontSize: '14px',
             textTransform: 'capitalize',
+            borderColor: theme.palette.text.subText,
+            bgcolor: 'transparent',
+            color: 'text.primary',
+            '&:hover': {
+              color: '#604AEF',
+              borderColor: '#604AEF',
+            },
           }}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           onClick={onDetailsClick}
