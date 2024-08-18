@@ -14,11 +14,14 @@ export const PanelRow: React.FC<BoxProps> = (props) => (
   />
 );
 export const PanelTitle: React.FC<TypographyProps> = (props) => (
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   <Typography
-    {...props}
     variant="body6"
     color="text.primary"
     sx={{ minWidth: '120px', mr: 3, mb: { xs: 6, md: 0 }, ...props.sx }}
+    component="div"
+    {...props}
   />
 );
 
