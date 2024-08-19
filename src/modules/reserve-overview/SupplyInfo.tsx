@@ -47,9 +47,7 @@ export const SupplyInfo = ({
         width: '100%',
       }}
     >
-      <Box
-        sx={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', minWidth: 400 }}
-      >
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 400 }}>
         {showSupplyCapStatus ? (
           // With supply cap
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

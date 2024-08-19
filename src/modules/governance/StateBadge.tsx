@@ -46,25 +46,26 @@ export const lifecycleToBadge = (
 
 const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
   const COLOR_MAP = {
-    [ProposalBadgeState.Created]: theme.palette.primary.light,
-    [ProposalBadgeState.OpenForVoting]: theme.palette.success.main,
-    [ProposalBadgeState.Passed]: theme.palette.success.main,
-    [ProposalBadgeState.Executed]: theme.palette.success.main,
-    [ProposalBadgeState.Cancelled]: theme.palette.error.main,
-    [ProposalBadgeState.Expired]: theme.palette.error.main,
-    [ProposalBadgeState.Failed]: theme.palette.error.main,
+    [ProposalBadgeState.Created]: theme.palette.point.primary,
+    [ProposalBadgeState.OpenForVoting]: theme.palette.point.positive,
+    [ProposalBadgeState.Passed]: theme.palette.point.positive,
+    [ProposalBadgeState.Executed]: theme.palette.point.positive,
+    [ProposalBadgeState.Cancelled]: theme.palette.point.negative,
+    [ProposalBadgeState.Expired]: theme.palette.point.negative,
+    [ProposalBadgeState.Failed]: theme.palette.point.negative,
   };
   const color = COLOR_MAP[state] || '#000';
   return experimental_sx({
-    ...theme.typography.subheader2,
+    ...theme.typography.body4,
     color,
     border: '1px solid',
-    borderColor: alpha(color, 0.5),
-    py: 0.5,
-    px: 2,
-    borderRadius: 1,
+    borderColor: color,
+    px: 3,
+    borderRadius: '6px',
     display: 'inline-flex',
     alignItems: 'center',
+    width: 'fit-content',
+    height: '42px',
   });
 });
 

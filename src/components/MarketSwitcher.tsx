@@ -182,6 +182,10 @@ export const MarketSwitcher = () => {
           );
         },
         sx: {
+          height: '48px',
+          '.MuiSelect-select': {
+            height: '100% !important',
+          },
           '&.MarketSwitcher__select .MuiSelect-outlined': {
             pl: 0,
             py: 0,

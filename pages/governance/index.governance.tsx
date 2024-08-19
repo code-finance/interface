@@ -44,45 +44,8 @@ export default function Governance() {
     <>
       <GovernanceTopPanel />
       <ContentContainer>
-        <StyledToggleButtonGroup
-          color="primary"
-          value={mode}
-          exclusive
-          onChange={(_, value) => setMode(value)}
-          sx={{
-            width: { xs: '100%', xsm: '359px' },
-            height: '44px',
-            mb: 4,
-            display: { xs: 'flex', lg: 'none' },
-          }}
-        >
-          <StyledToggleButton value={Tabs.PROPOSALS} disabled={mode === Tabs.PROPOSALS}>
-            <Typography variant="subheader1">
-              <Trans>Proposals</Trans>
-            </Typography>
-          </StyledToggleButton>
-          <StyledToggleButton value={Tabs.INFORMATION} disabled={mode === Tabs.INFORMATION}>
-            <Typography variant="subheader1">
-              <Trans>Your info</Trans>
-            </Typography>
-          </StyledToggleButton>
-        </StyledToggleButtonGroup>
-        {isMobile ? (
-          mode === Tabs.PROPOSALS ? (
-            <ProposalsV3List />
-          ) : (
-            <UserGovernanceInfo />
-          )
-        ) : (
-          <Grid container spacing={4}>
-            <Grid item md={8}>
-              <ProposalsV3List />
-            </Grid>
-            <Grid item md={4}>
-              <UserGovernanceInfo />
-            </Grid>
-          </Grid>
-        )}
+        <UserGovernanceInfo />
+        <ProposalsV3List />
       </ContentContainer>
     </>
   );

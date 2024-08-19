@@ -10,6 +10,165 @@ import { ProposalV3ListItem } from './ProposalV3ListItem';
 import { stringToState } from './StateBadge';
 import { VoteBar } from './VoteBar';
 
+// const mockListItems: Proposal[] = [
+//   {
+//     subgraphProposal: {
+//       id: '1',
+//       creator: '0xCreatorAddress1',
+//       accessLevel: 'public',
+//       ipfsHash: 'QmHash1',
+//       proposalMetadata: {
+//         id: '1',
+//         title: 'Proposal 1',
+//         rawContent: 'Detailed content for proposal 1',
+//       },
+//       state: 'Active',
+//       votingPortal: {
+//         id: '1',
+//         votingMachineChainId: '1',
+//         votingMachine: '0x0000000000000000000000000000000000000000',
+//         enabled: true,
+//       },
+//       votingConfig: {
+//         id: '1',
+//         cooldownBeforeVotingStart: '3600',
+//         votingDuration: '86400',
+//         yesThreshold: '0.5',
+//         yesNoDifferential: '0.1',
+//         minPropositionPower: '100',
+//       },
+//       payloads: [
+//         {
+//           id: '1_1',
+//           chainId: '1',
+//           accessLevel: 'public',
+//           payloadsController: '0xControllerAddress1',
+//         },
+//       ],
+//       transactions: {
+//         id: '1',
+//         created: {
+//           id: '1',
+//           blockNumber: 123456,
+//           timestamp: 1633024800,
+//         },
+//         active: null,
+//         queued: null,
+//         failed: null,
+//         executed: null,
+//         canceled: null,
+//       },
+//       votingDuration: '86400',
+//       snapshotBlockHash: '0x123',
+//       votes: {
+//         id: '1',
+//         forVotes: '1000',
+//         againstVotes: '100',
+//       },
+//       constants: {
+//         id: '1',
+//         precisionDivider: '1000000',
+//         cooldownPeriod: '3600',
+//         expirationTime: '172800',
+//         cancellationFee: '10',
+//       },
+//     },
+//     lifecycleState: 'Active',
+//     badgeState: 'Open for voting',
+//     votingMachineData: {
+//       proposalData: {
+//         id: '1',
+//         forVotes: '1000',
+//         againstVotes: '100',
+//       },
+//     },
+//     payloadsData: [],
+//     votingInfo: {
+//       forVotes: '1000',
+//       againstVotes: '100',
+//       totalVotes: '1100',
+//     },
+//   },
+//   {
+//     subgraphProposal: {
+//       id: '2',
+//       creator: '0xCreatorAddress2',
+//       accessLevel: 'public',
+//       ipfsHash: 'QmHash2',
+//       proposalMetadata: {
+//         id: '2',
+//         title: 'Proposal 2',
+//         rawContent: 'Detailed content for proposal 2',
+//       },
+//       state: 'Pending',
+//       votingPortal: {
+//         id: '2',
+//         votingMachineChainId: '1',
+//         votingMachine: '0x0000000000000000000000000000000000000000',
+//         enabled: true,
+//       },
+//       votingConfig: {
+//         id: '2',
+//         cooldownBeforeVotingStart: '3600',
+//         votingDuration: '86400',
+//         yesThreshold: '0.5',
+//         yesNoDifferential: '0.1',
+//         minPropositionPower: '100',
+//       },
+//       payloads: [
+//         {
+//           id: '2_1',
+//           chainId: '1',
+//           accessLevel: 'public',
+//           payloadsController: '0xControllerAddress2',
+//         },
+//       ],
+//       transactions: {
+//         id: '2',
+//         created: {
+//           id: '2',
+//           blockNumber: 123457,
+//           timestamp: 1633025800,
+//         },
+//         active: null,
+//         queued: null,
+//         failed: null,
+//         executed: null,
+//         canceled: null,
+//       },
+//       votingDuration: '86400',
+//       snapshotBlockHash: '0x456',
+//       votes: {
+//         id: '2',
+//         forVotes: '2000',
+//         againstVotes: '200',
+//       },
+//       constants: {
+//         id: '2',
+//         precisionDivider: '1000000',
+//         cooldownPeriod: '3600',
+//         expirationTime: '172800',
+//         cancellationFee: '10',
+//       },
+//     },
+//     lifecycleState: 'Pending',
+//     badgeState: 'Failed',
+//     votingMachineData: {
+//       proposalData: {
+//         id: '2',
+//         forVotes: '2000',
+//         againstVotes: '200',
+//       },
+//     },
+//     payloadsData: [],
+//     votingInfo: {
+//       forVotes: '2000',
+//       againstVotes: '200',
+//       totalVotes: '2200',
+//     },
+//   },
+// ];
+
 export const ProposalsV3List = () => {
   const [proposalFilter, setProposalFilter] = useState<string>('all');
   const filterState = stringToState(proposalFilter);
@@ -34,7 +193,7 @@ export const ProposalsV3List = () => {
   }
 
   return (
-    <Paper>
+    <Paper variant="elevation" sx={{ mt: 5, py: 9, px: 5 }}>
       <ProposalListHeader
         proposalFilter={proposalFilter}
         handleProposalFilterChange={setProposalFilter}

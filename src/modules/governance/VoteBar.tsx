@@ -2,28 +2,26 @@ import { Trans } from '@lingui/macro';
 import { Box, BoxProps, experimental_sx, Skeleton, styled, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-const OuterBar = styled('div')(
+const OuterBar = styled('div')(({ theme }) =>
   experimental_sx({
     position: 'relative',
     width: '100%',
-    height: '8px',
-    bgcolor: 'divider',
+    height: '12px',
     display: 'block',
     borderRadius: '6px',
+    backgroundColor: theme.palette.background.tertiary,
   })
 );
 
-const InnerBar = styled('span', {
-  shouldForwardProp: (prop) => prop !== 'yae' && prop !== 'percent',
-})<{ percent: number; yae?: boolean }>(({ percent, yae }) =>
+const InnerBar = styled('span')<{ percent: number; yae?: boolean }>(({ theme, percent, yae }) =>
   experimental_sx({
     position: 'absolute',
     top: 0,
     left: 0,
     width: `${percent * 100}%`,
     maxWidth: '100%',
-    height: '8px',
-    bgcolor: yae ? 'success.main' : 'error.light',
+    height: '12px',
+    backgroundColor: yae ? theme.palette.point.positive : theme.palette.point.negative,
     display: 'block',
     borderRadius: '6px',
   })
@@ -40,12 +38,12 @@ interface VoteBarProps extends BoxProps {
 export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
-      <Box sx={{ display: 'flex' }}>
-        <Typography variant="description" sx={{ mr: 2 }}>
+      <Box sx={{ display: 'flex', mb: 2 }}>
+        <Typography sx={{ mr: 2 }} variant="detail2" color="text.primary">
           {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
         {loading ? (
-          <Typography variant="secondary14" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
+          <Typography variant="detail2" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
             <Skeleton width={40} />
           </Typography>
         ) : (
@@ -54,13 +52,14 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
               value={votes}
               visibleDecimals={0}
               sx={{ mr: 1 }}
-              variant="secondary14"
+              variant="detail2"
+              color="text.primary"
               roundDown
               compact={compact}
             />
             {!compact && (
-              <Typography variant="description" component="span" color="text.secondary">
-                AAVE
+              <Typography component="span" variant="detail2" color="text.primary">
+                CODE
               </Typography>
             )}
           </Box>
@@ -70,7 +69,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
             <Skeleton width={40} />
           </Typography>
         ) : (
-          <FormattedNumber value={percent} percent variant="caption" color="text.secondary" />
+          <FormattedNumber value={percent} percent variant="detail3" color="text.mainTitle" />
         )}
       </Box>
       {loading ? (

@@ -6,7 +6,6 @@ export const Warning = ({ children, sx, ...rest }: AlertProps) => {
     alignItems: 'center',
     width: '100%',
     display: 'flex',
-    justifyContent: 'space-between',
   };
 
   return (

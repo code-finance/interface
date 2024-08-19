@@ -149,7 +149,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 width: '100%',
               }}
             >
-              <Box sx={{ flex: 1, height: '100%', display: 'flex', minWidth: 400 }}>
+              <Box sx={{ flex: 1, display: 'flex', minWidth: 400 }}>
                 <PanelItem
                   sx={{ minWidth: '150px' }}
                   title={

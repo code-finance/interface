@@ -2,11 +2,11 @@ import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { ComponentProps, useMemo, useRef, useState } from 'react';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
-  wrapperSx?: BoxProps;
+  wrapperSx?: ComponentProps<typeof Box>['sx'];
   placeholder: string;
   disableFocus?: boolean;
 }
@@ -44,6 +44,10 @@ export const SearchInput = ({
           border: `1px solid ${theme.palette.border.contents}`,
           borderRadius: 2,
           height: '42px',
+          '& input::placeholder': {
+            ...theme.typography.detail2,
+            color: theme.palette.text.subTitle,
+          },
         }),
         ...(Array.isArray(wrapperSx) ? wrapperSx : [wrapperSx]),
       ]}

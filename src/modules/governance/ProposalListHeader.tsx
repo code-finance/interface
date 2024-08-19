@@ -1,15 +1,20 @@
 import { Trans } from '@lingui/macro';
+import { Sort as SortIcon } from '@mui/icons-material';
 import {
   Box,
+  Button,
+  Menu,
   MenuItem,
   Select,
   SelectChangeEvent,
+  SvgIcon,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import React, { useState } from 'react';
 import { useRootStore } from 'src/store/root';
-import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
+import { GOVERNANCE_PAGE, TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
 
 import { SearchInput } from '../../components/SearchInput';
 import { TitleWithSearchBar } from '../../components/TitleWithSearchBar';
@@ -34,13 +39,35 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
 }) => {
   return (
     <>
-      <Typography variant="h3" sx={{ flexGrow: 1 }}>
+      <Typography variant="h2" sx={{ flexGrow: 1, minWidth: 300 }} color="text.primary">
         <Trans>Proposals</Trans>
       </Typography>
-      <Typography>
-        <Trans>Filter</Trans>
-      </Typography>
-      <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
+      <Select
+        id="filter"
+        value={proposalFilter}
+        renderValue={(value) => (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <SvgIcon height={9} width={9}>
+              <SortIcon />
+            </SvgIcon>
+            {value === 'all' ? 'All proposals' : value}
+          </Box>
+        )}
+        sx={{
+          minWidth: 140,
+          outline: 'none',
+          '.MuiSelect-select': {
+            pr: '12px !important',
+          },
+          '.MuiSelect-icon': {
+            display: 'none',
+          },
+          fieldset: {
+            borderWidth: '1px !important',
+          },
+        }}
+        onChange={handleChange}
+      >
         <MenuItem value="all">
           <Trans>All proposals</Trans>
         </MenuItem>
@@ -109,22 +136,16 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
 
   return (
     <Box
-      sx={{
-        px: 6,
-        py: 4,
+      sx={(theme) => ({
+        pb: 16,
         display: 'flex',
-        flexDirection: {
-          xs: 'column',
-          md: 'row',
-        },
-        alignItems: {
-          xs: 'flex-start',
-          md: 'center',
-        },
-        gap: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 2,
+        flexWrap: 'wrap',
         borderBottom: '1px solid',
-        borderColor: 'divider',
-      }}
+        borderColor: theme.palette.border.divider,
+      })}
     >
       {!md ? (
         <ProposalListHeaderMobile

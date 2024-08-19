@@ -189,6 +189,9 @@ declare module '@mui/material/Typography' {
 
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
+    transparent: true;
+
+    // to be removed
     surface: true;
     gradient: true;
   }
@@ -508,6 +511,16 @@ export function getThemedComponents(theme: Theme) {
               color: theme.palette.text.disabledText,
             },
           },
+          {
+            props: { color: 'primary', variant: 'transparent' },
+            style: {
+              border: '1px solid',
+              background: 'transparent',
+              textTransform: 'uppercase',
+              borderColor: theme.palette.text.subText,
+              color: theme.palette.text.primary,
+            },
+          },
         ],
       },
       MuiTypography: {
@@ -546,28 +559,24 @@ export function getThemedComponents(theme: Theme) {
         },
       },
       MuiMenu: {
+        styleOverrides: {
+          minWidth: 240,
+          marginTop: '4px',
+          background: theme.palette.background.secondary,
+          border: '1px solid',
+          borderColor: theme.palette.border.contents,
+        },
         defaultProps: {
           PaperProps: {
-            elevation: 0,
             variant: 'outlined',
-            style: {
-              minWidth: 240,
-              marginTop: '4px',
-            },
           },
         },
       },
       MuiList: {
+        defaultProps: {},
         styleOverrides: {
-          root: {
-            '.MuiMenuItem-root+.MuiDivider-root, .MuiDivider-root': {
-              marginTop: '4px',
-              marginBottom: '4px',
-            },
-          },
           padding: {
-            paddingTop: '4px',
-            paddingBottom: '4px',
+            padding: 0,
           },
         },
       },
@@ -575,14 +584,17 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             padding: '13.5px 12px',
-            fontSize: '16px',
-            fontWeight: 400,
+            ...theme.typography.body7,
+            color: theme.palette.text.primary,
           },
         },
         defaultProps: {
           sx: {
             '&.Mui-selected': {
-              backgroundColor: theme.palette.background.group,
+              backgroundColor: theme.palette.background.contents,
+              '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+              },
             },
           },
         },
@@ -860,8 +872,13 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           outlined: {
             backgroundColor: theme.palette.background.surface,
-            padding: '6px 12px',
-            color: theme.palette.primary.light,
+            borderColor: theme.palette.border.contents,
+            padding: '0px 12px',
+            height: '42px',
+            color: theme.palette.text.secondary,
+            ...theme.typography.body6,
+            display: 'flex',
+            alignItems: 'center',
           },
         },
       },
