@@ -131,7 +131,7 @@ export const SuppliedPositionsList = () => {
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mb: 3, mr: 4, color: '#fff' }}>
+        <Typography component="div" color="text.buttonText" variant="h2" sx={{ mb: 3, mr: 4 }}>
           Your supplies
         </Typography>
       }

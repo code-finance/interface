@@ -28,7 +28,7 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
   if (!approvalHash && !isSigned && tryPermit)
     return (
       <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2 }}>
-        <Typography variant="body7" color={theme.palette.text.subTitle}>
+        <Typography variant="body7" color="text.subTitle" sx={{ lineHeight: 1 }}>
           <Trans>Approve with</Trans>&nbsp;
         </Typography>
         <ApprovalMethodToggleButton

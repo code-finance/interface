@@ -47,32 +47,41 @@ export const TxSuccessView = ({
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
+          width: '100%',
         }}
       >
         {action && amount && symbol && (
-          <Typography>
+          <Typography variant="body5" color="text.secondary">
             <Trans>
-              You {action} <FormattedNumber value={Number(amount)} compact variant="secondary14" />{' '}
+              You {action}{' '}
+              <FormattedNumber
+                value={Number(amount)}
+                compact
+                variant="body5"
+                color="text.secondary"
+                symbolsVariant="body5"
+                symbolsColor="text.secondary"
+              />{' '}
               {symbol}
             </Trans>
           </Typography>
         )}
 
         {customAction && (
-          <Typography>
+          <Typography variant="body5" color="text.secondary">
             {customText}
             {customAction}
           </Typography>
         )}
 
         {!action && !amount && symbol && (
-          <Typography>
+          <Typography variant="body5" color="text.secondary">
             Your {symbol} {collateral ? 'now' : 'is not'} used as collateral
           </Typography>
         )}
 
         {rate && (
-          <Typography>
+          <Typography variant="body5" color="text.secondary">
             <Trans>
               You switched to {rate === InterestRate.Variable ? 'variable' : 'stable'} rate
             </Trans>
@@ -82,28 +91,32 @@ export const TxSuccessView = ({
         {addToken && symbol && (
           <Box
             sx={(theme) => ({
-              border: theme.palette.mode === 'dark' ? `1px solid ${theme.palette.divider}` : 'none',
-              background: theme.palette.mode === 'dark' ? 'none' : '#F7F7F9',
+              background: theme.palette.background.secondary,
               borderRadius: '12px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              mt: '24px',
+              mt: 6,
+              width: '100%',
+              py: 4,
+              px: 3,
             })}
           >
             <TokenIcon
               symbol={addToken.symbol}
               aToken={addToken && addToken.aToken ? true : false}
-              sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
+              sx={{ fontSize: '36px', mb: '12px' }}
             />
-            <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
+            <Typography variant="body7" color="text.secondary">
               <Trans>
                 Add {addToken && addToken.aToken ? 'aToken ' : 'token '} to wallet to track your
                 balance.
               </Trans>
             </Typography>
             <Button
+              variant="contained"
+              size="small"
               onClick={() => {
                 addERC20Token({
                   address: addToken.address,
@@ -112,9 +125,7 @@ export const TxSuccessView = ({
                   image: !/_/.test(addToken.symbol) ? base64 : undefined,
                 });
               }}
-              variant={theme.palette.mode === 'dark' ? 'outlined' : 'contained'}
-              size="medium"
-              sx={{ mt: '8px', mb: '12px' }}
+              sx={{ height: '36px', px: 2, mt: 3 }}
             >
               {addToken.symbol && !/_/.test(addToken.symbol) && (
                 <Base64Token
@@ -123,8 +134,8 @@ export const TxSuccessView = ({
                   aToken={addToken.aToken}
                 />
               )}
-              <WalletIcon sx={{ width: '20px', height: '20px' }} />
-              <Typography variant="buttonM" color="white" ml="4px">
+              <WalletIcon sx={{ width: '24px', height: '24px', mr: 1 }} />
+              <Typography>
                 <Trans>Add to wallet</Trans>
               </Typography>
             </Button>

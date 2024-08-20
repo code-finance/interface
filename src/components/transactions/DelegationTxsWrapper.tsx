@@ -103,7 +103,7 @@ export const DelegationTxsWrapper = ({
           disabled={approvalParams.disabled || blocked}
           onClick={() => approvalParams.handleClick && approvalParams.handleClick()}
           size="large"
-          sx={{ minHeight: '44px' }}
+          sx={{ height: '45px' }}
           data-cy="approvalButton"
         >
           {approvalParams.loading && (
@@ -118,7 +118,7 @@ export const DelegationTxsWrapper = ({
         disabled={disabled || blocked || readOnlyModeAddress !== undefined}
         onClick={handleClick}
         size="large"
-        sx={{ minHeight: '44px', ...(approvalParams ? { mt: 2 } : {}) }}
+        sx={{ height: '45px', ...(approvalParams ? { mt: 2 } : {}) }}
         data-cy="actionButton"
       >
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}

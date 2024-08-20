@@ -27,7 +27,7 @@ export const PermissionView = () => {
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
-        <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>
+        <Button onClick={close} variant="contained" size="large" sx={{ height: '45px' }}>
           <Trans>Close</Trans>
         </Button>
       </Box>

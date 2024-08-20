@@ -35,6 +35,7 @@ const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ the
   flex: 1,
   color: theme.palette.text.primary,
   backgroundColor: theme.palette.text.buttonBgTap,
+  border: 0,
   '&:not(:disabled):hover': {
     backgroundColor: theme.palette.background.modulePopup,
   },

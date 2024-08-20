@@ -221,16 +221,16 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         main: getColor(colors.red[400], colors.red[300]),
       },
       error: {
-        main: getColor('#FF2D2D', '#F44336'),
+        main: getColor(colors.red[400], colors.red[300]),
       },
       warning: {
-        main: getColor('#F89F1A', '#FFA726'),
+        main: getColor(colors.orange[400], colors.orange[400]),
       },
       info: {
         main: getColor('#0062D2', '#29B6F6'),
       },
       success: {
-        main: getColor('#1FC74E', '#38E067'),
+        main: getColor(colors.green[500], colors.green[300]),
       },
       text: {
         primary: getColor(colors.gray[950], colors.gray[50]),

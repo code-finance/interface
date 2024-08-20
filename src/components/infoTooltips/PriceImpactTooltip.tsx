@@ -31,15 +31,22 @@ export const PriceImpactTooltip = ({
 
   return (
     <TextWithTooltip
-      variant="secondary12"
-      color="text.secondary"
+      variant="detail5"
+      iconSize={18}
+      iconColor="text.subTitle"
+      color="text.subTitle"
       event={{
         eventName: GENERAL.TOOL_TIP,
         eventParams: { tooltip: 'Price Impact' },
       }}
       text={
         <Box
-          sx={{ display: 'flex', alignItems: 'center', color: warning ? 'warning.main' : 'unset' }}
+          sx={(theme) => ({
+            display: 'flex',
+            alignItems: 'center',
+            color: warning ? 'warning.main' : 'text.subTitle',
+            ...theme.typography.detail5,
+          })}
         >
           <Trans>
             Price impact{' '}
@@ -54,9 +61,9 @@ export const PriceImpactTooltip = ({
               <FormattedNumber
                 value={priceImpact}
                 visibleDecimals={2}
-                variant="secondary12"
-                color="text.secondary"
-                sx={{ marginLeft: '4px', color: warning ? 'warning.main' : 'unset' }}
+                variant="detail5"
+                color="text.subTitle"
+                sx={{ marginLeft: '4px', color: warning ? 'warning.main' : 'text.subTitle' }}
               />
             )}
             %

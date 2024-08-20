@@ -9,21 +9,23 @@ const contentSx = {
   borderRadius: '4px',
   display: 'inline-flex',
   alignItems: 'center',
-  p: '2px',
-  mt: '2px',
   cursor: 'pointer',
   '&:hover': { opacity: 0.6 },
+  height: '24px',
+  pl: 2,
+  pr: 1,
 };
 
 interface InfoIconProps {
   color?: string;
 }
+
 const InfoIcon = ({ color }: InfoIconProps) => (
   <SvgIcon
     sx={{
       ml: '3px',
       color: color ? color : 'text.muted',
-      fontSize: '14px',
+      fontSize: '16px',
     }}
   >
     <InformationCircleIcon />
@@ -106,7 +108,7 @@ export const UnavailableDueToIsolationBadge = () => {
       }
     >
       <Box sx={contentSx}>
-        <Typography variant="description" color="error.main">
+        <Typography variant="body7" color="warning.main">
           <Trans>Unavailable</Trans>
         </Typography>
         <InfoIcon />

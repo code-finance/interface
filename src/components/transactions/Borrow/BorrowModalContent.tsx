@@ -6,7 +6,7 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -66,38 +66,45 @@ const BorrowModeSwitch = ({
           text={<Trans>Borrow APY rate</Trans>}
           key="APY type_modal"
           variant="description"
+          iconSize={16}
         />
       }
-      captionVariant="description"
+      captionVariant="body7"
+      captionColor="text.secondary"
       mb={5}
       flexDirection="column"
       align="flex-start"
-      captionColor="text.secondary"
     >
       <StyledTxModalToggleGroup
-        color="primary"
+        color="standard"
         value={interestRateMode}
         exclusive
         onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ mt: 0.5 }}
+        sx={{ mt: 2 }}
       >
-        <StyledTxModalToggleButton
-          value={InterestRate.Variable}
-          disabled={interestRateMode === InterestRate.Variable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
+        <StyledTxModalToggleButton value={InterestRate.Variable}>
+          <Typography variant="body7">
             <Trans>Variable</Trans>
           </Typography>
-          <FormattedNumber value={variableRate} percent variant="secondary14" />
+          <FormattedNumber
+            value={variableRate}
+            percent
+            variant="body7"
+            symbolsVariant="body7"
+            symbolsColor="inherit"
+          />
         </StyledTxModalToggleButton>
-        <StyledTxModalToggleButton
-          value={InterestRate.Stable}
-          disabled={interestRateMode === InterestRate.Stable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
+        <StyledTxModalToggleButton value={InterestRate.Stable}>
+          <Typography variant="body7" sx={{ mr: 1 }}>
             <Trans>Stable</Trans>
           </Typography>
-          <FormattedNumber value={stableRate} percent variant="secondary14" />
+          <FormattedNumber
+            value={stableRate}
+            percent
+            variant="body7"
+            symbolsVariant="body7"
+            symbolsColor="inherit"
+          />
         </StyledTxModalToggleButton>
       </StyledTxModalToggleGroup>
     </Row>
