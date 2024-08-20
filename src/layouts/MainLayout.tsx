@@ -8,6 +8,8 @@ import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 
 export function MainLayout({ children }: { children: ReactNode }) {
+  const APP_BANNER_VERSION = '1.0.0';
+
   return (
     <>
       {/*<TopBarNotify*/}
