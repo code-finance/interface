@@ -182,7 +182,7 @@ export const SuppliedPositionsList = () => {
         <div
           style={{
             backgroundColor: theme.palette.background.primary,
-            margin: '0px -20px -20px -20px',
+            margin: '20px -20px -40px -20px',
             borderRadius: '12px',
           }}
         >

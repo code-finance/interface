@@ -43,7 +43,7 @@ export const navigation: Navigation[] = [
     //   !ENABLE_TESTNET,
   },
   {
-    link: ROUTES.referralprogram,
+    link: ROUTES.referral,
     title: t`Referral Program`,
     dataCy: 'menuReferral',
   },
