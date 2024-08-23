@@ -12,8 +12,8 @@ export const ChainAvailabilityText: React.FC<ChainAvailabilityTextProps> = ({
 }) => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...wrapperSx }}>
-      <img src={'/icons/ethereum.svg'} style={{ width: 48, height: 48 }} alt="icon" />
-      <Typography variant="h1" sx={{ ml: 2, color: 'text.primary', lineHeight: 1 }}>
+      <img width="48px" height="48px" src={'/icons/networks/ethereum.svg'} />
+      <Typography variant="h1" sx={{ ml: 2, color: 'text.primary' }}>
         <Trans>CODE {page}</Trans>
       </Typography>
     </Box>

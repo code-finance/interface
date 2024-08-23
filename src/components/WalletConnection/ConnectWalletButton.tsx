@@ -9,9 +9,10 @@ const WalletModal = dynamic(() => import('./WalletModal').then((module) => modul
 
 export interface ConnectWalletProps {
   funnel?: string;
+  isSwitchWallet?: boolean;
 }
 
-export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) => {
+export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, isSwitchWallet }) => {
   const { setWalletModalOpen } = useWalletModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -26,7 +27,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) =>
           setWalletModalOpen(true);
         }}
       >
-        <Trans>Connect wallet</Trans>
+        {isSwitchWallet ? <Trans>Switch wallet</Trans> : <Trans>Connect wallet</Trans>}
       </Button>
       <WalletModal />
     </>
