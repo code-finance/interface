@@ -1,8 +1,15 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { marketContainerProps } from 'pages/markets.page';
 import * as React from 'react';
+import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
+import { MARKETS } from 'src/utils/mixPanelEvents';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
@@ -11,6 +18,19 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 
 export const MarketsTopPanel = () => {
   const { reserves, loading } = useAppDataContext();
+  const [currentMarket, setCurrentMarket] = useRootStore((store) => [
+    store.currentMarket,
+    store.setCurrentMarket,
+  ]);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const [currentNetworkConfig] = useRootStore((state) => [
+    state.currentNetworkConfig,
+    state.currentChainId,
+  ]);
+  const handleUpdateEthMarket = (market: CustomMarket) => {
+    setCurrentMarket(market);
+  };
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));

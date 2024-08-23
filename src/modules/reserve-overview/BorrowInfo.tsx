@@ -53,9 +53,7 @@ export const BorrowInfo = ({
         width: '100%',
       }}
     >
-      <Box
-        sx={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', minWidth: 400 }}
-      >
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 400 }}>
         {showBorrowCapStatus ? (
           // With a borrow cap
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>

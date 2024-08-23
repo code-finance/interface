@@ -13,15 +13,15 @@ export const UserGovernanceInfo = () => {
   return account ? (
     <>
       <VotingPowerInfoPanel />
-      <DelegatedInfoPanel />
-      <RepresentativesInfoPanel />
+      {/*<DelegatedInfoPanel />*/}
+      {/*<RepresentativesInfoPanel />*/}
     </>
   ) : (
-    <Paper sx={{ p: 6 }}>
-      <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
-        <Trans>Your info</Trans>
+    <Paper sx={(theme) => ({ px: 6, py: 7, background: theme.palette.background.group })}>
+      <Typography variant="h3" color="text.buttonText" sx={{ mb: { xs: 2, xsm: 4 } }}>
+        <Trans>Your supplies</Trans>
       </Typography>
-      <Typography sx={{ mb: 6 }} color="text.secondary">
+      <Typography sx={{ mb: 7 }} color="text.buttonText" variant="body2">
         <Trans>Please connect a wallet to view your personal information here.</Trans>
       </Typography>
       <ConnectWalletButton funnel="Governance Page" />

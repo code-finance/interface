@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
@@ -31,8 +32,8 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          p: '6px',
-          mb: '20px',
+          mb: 3,
+          width: '100%',
         }}
       >
         <Box
@@ -48,12 +49,12 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
             justifyContent: 'center',
           }}
         >
-          <SvgIcon sx={{ color: 'success.main', fontSize: '60px' }}>
+          <SvgIcon sx={(theme) => ({ color: theme.palette.point.positive, fontSize: '60px' })}>
             <CheckCircleIcon />
           </SvgIcon>
         </Box>
 
-        <Typography sx={{ mt: 5, mb: 2 }} variant="body1">
+        <Typography sx={{ mt: 5, mb: 2 }} variant="body1" color="title.primary">
           <Trans>All done!</Trans>
         </Typography>
 
@@ -62,34 +63,34 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
 
       {!hideTx && (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Link
-            variant="helperText"
+          <Button
+            component={Link}
+            variant="outlined"
             href={currentNetworkConfig.explorerLinkBuilder({
               tx: txHash ? txHash : mainTxState.txHash,
             })}
             sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'right',
-              p: '0px 4px 0px 8px',
-              width: 'max-content',
-              marginLeft: 'auto',
               color: theme.palette.text.subTitle,
+              p: '3px 4px 3px 8px',
               borderRadius: '4px',
-              border: `1px solid ${theme.palette.text.subTitle}`,
+              ...theme.typography.detail2,
+              border: `1px solid ${theme.palette.border.contents}`,
+              height: '24px',
+              width: 146,
+              ml: 'auto',
             }}
             underline="hover"
             target="_blank"
             rel="noreferrer noopener"
           >
             <Trans>Review tx details</Trans>
-            <ExtLinkIcon />
-          </Link>
+            <CallMadeOutlinedIcon sx={{ fontSize: 16, ml: 0.5 }} />
+          </Button>
           <Button
             onClick={close}
             variant="contained"
             size="large"
-            sx={{ minHeight: '44px', mt: 12 }}
+            sx={{ height: '45px', mt: 12 }}
             data-cy="closeButton"
           >
             <Trans>Ok, Close</Trans>

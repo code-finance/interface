@@ -30,6 +30,13 @@ import {
 import StyledToggleButton from './StyledToggleButton';
 import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
+export const MULTIPLE_MARKET_OPTIONS = [
+  CustomMarket.proto_mainnet_v3,
+  CustomMarket.proto_lido_v3,
+  'fork_proto_lido_v3',
+  'fork_proto_mainnet_v3',
+];
+
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
   const network: BaseNetworkConfig = networkConfigs[market.chainId];
@@ -48,9 +55,17 @@ export const getMarketHelpData = (marketName: string) => {
     'Kovan',
     'Rinkeby',
   ];
+
   const arrayName = marketName.split(' ');
+
   const testChainName = arrayName.filter((el) => testChains.indexOf(el) > -1);
-  const marketTitle = arrayName.filter((el) => !testChainName.includes(el)).join(' ');
+
+  const marketTitle =
+    // Note: We keep Eth for Lido market and fetch Lido market data
+    marketName === 'Ethereum Lido Market'
+      ? 'Ethereum'
+      : arrayName.filter((el) => !testChainName.includes(el)).join(' ');
+
   return {
     name: marketTitle,
     testChainName: testChainName[0],
@@ -159,6 +174,7 @@ export const MarketSwitcher = () => {
         ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
+
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
@@ -175,13 +191,18 @@ export const MarketSwitcher = () => {
                   })}
                 >
                   {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                  {upToLG && ' Market'}
+                  {/* {upToLG && ' Market'} */}
+                  {upToLG && ''}
                 </Typography>
               </Box>
             </Box>
           );
         },
         sx: {
+          height: '48px',
+          '.MuiSelect-select': {
+            height: '100% !important',
+          },
           '&.MarketSwitcher__select .MuiSelect-outlined': {
             pl: 0,
             py: 0,

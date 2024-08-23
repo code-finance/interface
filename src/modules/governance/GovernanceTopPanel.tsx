@@ -1,7 +1,6 @@
-import { ChainId } from '@aave/contract-helpers';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { Link } from 'src/components/primitives/Link';
@@ -20,9 +19,9 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
 
   return (
     <Button
-      variant="surface"
+      variant="transparent"
       size="small"
-      sx={{ minWidth: 'unset' }}
+      sx={{ px: 6, py: '9px' }}
       component={Link}
       href={href}
       target="_blank"
@@ -31,8 +30,8 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {text}
-        <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
-          <ExternalLinkIcon />
+        <SvgIcon sx={{ ml: 1, fontSize: 17 }}>
+          <CallMadeOutlinedIcon />
         </SvgIcon>
       </Box>
     </Button>
@@ -40,36 +39,29 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
 }
 
 export const GovernanceTopPanel = () => {
-  const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <TopInfoPanel
       titleComponent={
         <Box mb={4}>
-          <ChainAvailabilityText page="Governance" wrapperSx={{ mb: 4 }} />
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
-              sx={{ ml: 2, mr: 3 }}
-            >
-              <Trans>Aave Governance</Trans>
-            </Typography>
-          </Box>
-
-          <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
+          <ChainAvailabilityText page="Governance" wrapperSx={{ mb: 3 }} />
+          <Typography color="text.secondary" variant="body3">
             <Trans>
-              Aave is a fully decentralized, community governed protocol by the AAVE token-holders.
-              AAVE token-holders collectively discuss, propose, and vote on upgrades to the
-              protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new
-              proposals or delagate to an address of choice. To learn more check out the Governance
+              CODE is a fully decentralized, community governed protocol by the CODE token-holders.
+              CODE token-holders collectively discuss, propose, and vote on upgrades to the
+              protocol. CODE token-holders (Ethereum, kaia network only) can either vote themselves
+              on new proposals or delegate to an address of choice. To learn more check out the
+              Governance
             </Trans>{' '}
             <Link
               onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'FAQ Docs Governance' })}
               href="https://docs.aave.com/faq/governance"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
+              sx={(theme) => ({
+                textDecoration: 'underline',
+                color: theme.palette.text.secondary,
+                ...theme.typography.body3,
+              })}
             >
               <Trans>documentation</Trans>
             </Link>
@@ -82,15 +74,13 @@ export const GovernanceTopPanel = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
+          gap: 2,
           flexWrap: 'wrap',
-          maxWidth: 'sm',
         }}
       >
         <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
         <ExternalLink text="FORUM" href="https://governance.aave.com/" />
         <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
-        <ExternalLink text="GOVERNANCE V2" href="https://governance-v2.aave.com/" />
       </Box>
     </TopInfoPanel>
   );

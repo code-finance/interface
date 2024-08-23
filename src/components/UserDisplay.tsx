@@ -17,6 +17,7 @@ type UserDisplayProps = {
   subtitleProps?: Omit<UserNameTextProps, 'address' | 'domainName'>;
   withLink?: boolean;
   funnel?: string;
+  size?: number;
 };
 
 export const UserDisplay: React.FC<UserDisplayProps> = ({
@@ -26,6 +27,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
   subtitleProps,
   withLink,
   funnel,
+  size,
 }) => {
   const { account, defaultDomain, domainsLoading, accountLoading } = useRootStore(
     (state) => ({
@@ -48,7 +50,7 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
       <Avatar
         fallbackImage={fallbackImage}
         loading={loading}
-        badge={<ExclamationBadge size={BadgeSize.SM} />}
+        badge={<ExclamationBadge size={size || BadgeSize.SM} />}
         invisibleBadge={!readOnlyMode}
         {...avatarProps}
       />
@@ -59,15 +61,17 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
               address={account}
               loading={loading}
               domainName={defaultDomain.name}
-              variant="h4"
+              variant="body8"
               link={withLink ? `https://etherscan.io/address/${account}` : undefined}
               funnel={funnel}
+              iconSize={24}
               {...titleProps}
             />
             <UserNameText
               address={account}
               loading={loading}
-              variant="caption"
+              variant="body8"
+              iconSize={24}
               {...subtitleProps}
             />
           </>
@@ -76,7 +80,8 @@ export const UserDisplay: React.FC<UserDisplayProps> = ({
             address={account}
             domainName={defaultDomain?.name}
             loading={loading}
-            variant="h4"
+            variant="body8"
+            iconSize={24}
             link={withLink ? `https://etherscan.io/address/${account}` : undefined}
             funnel={funnel}
             {...titleProps}

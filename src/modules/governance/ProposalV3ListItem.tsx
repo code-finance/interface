@@ -16,10 +16,14 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
   return (
     <Box
       sx={{
-        p: 6,
+        py: 8,
+        px: 2,
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 5,
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
       component={Link}
@@ -28,23 +32,30 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
     >
       <Stack
         direction="column"
-        gap={2}
+        gap={5}
         sx={{
-          width: {
-            xs: '100%',
-            lg: '70%',
-          },
-          pr: { xs: 0, lg: 8 },
+          flex: 1,
+          pr: { xs: 0, lg: 5 },
+          gap: 5,
           display: 'flex',
+          height: '128px',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
         }}
       >
-        <Stack direction="row" gap={3} alignItems="center">
-          <StateBadge state={proposal.badgeState} loading={false} />
-        </Stack>
-        <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {proposal.subgraphProposal.proposalMetadata.title}
+        <StateBadge state={proposal.badgeState} loading={false} />
+        <Typography
+          variant="h5"
+          sx={{
+            overflow: 'hidden',
+            display: '-webkit-box',
+            '-webkit-line-clamp': '2',
+            '-webkit-box-orient': 'vertical',
+          }}
+          color="text.primary"
+        >
+          {proposal.subgraphProposal.proposalMetadata.title} 432 4123 4234 234 23 4132 423 4321 4
+          2314 234 1234 321 4123 4123 41 324 1324 1234 234 23 42 423 4123
         </Typography>
       </Stack>
       <Stack
@@ -52,8 +63,9 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
         direction="column"
         justifyContent="center"
         sx={{
+          maxWidth: { xs: '100%', lg: '320px' },
+          width: '100%',
           pl: { xs: 0, lg: 18 },
-          mt: { xs: 7, lg: 0 },
         }}
       >
         <VoteBar
@@ -63,11 +75,7 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
           sx={{ mb: 4 }}
           compact
         />
-        <VoteBar
-          percent={proposal.votingInfo.againstPercent}
-          votes={proposal.votingInfo.againstVotes}
-          compact
-        />
+        <VoteBar percent={0.6} votes={120} compact />
       </Stack>
     </Box>
   );

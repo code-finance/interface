@@ -120,10 +120,10 @@ export const TxActionsWrapper = ({
     return {
       content: (
         <ApprovalTooltip
-          variant="buttonL"
           iconSize={18}
           iconMargin={2}
-          color="white"
+          color="text.buttonText"
+          iconColor="text.buttonText"
           text={<Trans>Approve {symbol} to continue</Trans>}
         />
       ),
@@ -137,7 +137,7 @@ export const TxActionsWrapper = ({
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', mt: 5, mb: 12 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', mt: 5 }}>
           <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>
       )}
@@ -148,7 +148,11 @@ export const TxActionsWrapper = ({
           disabled={approvalParams.disabled || blocked}
           onClick={() => approvalParams.handleClick && approvalParams.handleClick()}
           size="large"
-          sx={{ minHeight: '44px', mt: 12 }}
+          sx={{
+            height: '45px',
+            borderRadius: '8px',
+            mt: 12,
+          }}
           data-cy="approvalButton"
         >
           {approvalParams.loading && (
@@ -164,7 +168,8 @@ export const TxActionsWrapper = ({
         onClick={handleClick}
         size="large"
         sx={{
-          minHeight: '44px',
+          height: '45px',
+          borderRadius: '8px',
           p: 3,
           mt: 12,
           ...(approvalParams ? { mt: 2 } : {}),

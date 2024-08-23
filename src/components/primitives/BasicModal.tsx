@@ -29,11 +29,11 @@ export const BasicModal = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        '.MuiPaper-root': {
+        '& > .MuiPaper-root': {
           outline: 'none',
           borderRadius: 0,
           background: theme.palette.background.primary,
-          boxShadow: '2px 8px 28px 3px rgba(32, 32, 32, 0.13)',
+          boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
         },
       })}
       onClick={(e) => {
@@ -57,12 +57,14 @@ export const BasicModal = ({
         {children}
 
         {withCloseButton && (
-          <Box sx={{ position: 'absolute', top: '26px', right: '16px' }}>
-            <IconButton onClick={handleClose} data-cy={'close-button'}>
-              <SvgIcon sx={{ fontSize: '28px', color: 'text.primary' }}>
-                <XIcon data-cy={'CloseModalIcon'} />
-              </SvgIcon>
-            </IconButton>
+          <Box sx={{ position: 'absolute', top: '34px', right: '18px' }}>
+            <SvgIcon
+              sx={{ fontSize: '24px', color: 'text.primary', cursor: 'pointer' }}
+              onClick={handleClose}
+              data-cy={'close-button'}
+            >
+              <XIcon data-cy={'CloseModalIcon'} />
+            </SvgIcon>
           </Box>
         )}
       </Paper>

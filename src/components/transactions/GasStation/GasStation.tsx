@@ -83,7 +83,7 @@ export const GasStation: React.FC<GasStationProps> = ({
 
   return (
     <Stack gap={6} sx={{ width: '100%' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <LocalGasStationIcon
             sx={{ fontSize: '20px', mr: 1.5, color: theme.palette.text.subTitle }}
@@ -96,10 +96,12 @@ export const GasStation: React.FC<GasStationProps> = ({
               <FormattedNumber
                 value={totalGasCostsUsd}
                 symbol="USD"
-                color={theme.palette.text.subTitle}
+                color="text.subTitle"
                 variant="detail3"
+                symbolsColor="text.subTitle"
+                symbolsVariant="detail3"
               />
-              <GasTooltip />
+              <GasTooltip iconSize={18} iconColor="text.subTitle" />
             </>
           ) : (
             '-'
