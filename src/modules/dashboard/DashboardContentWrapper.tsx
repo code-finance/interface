@@ -35,7 +35,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   return (
     <Box>
-      {currentAccount && MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
+      {/* {currentAccount && MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
         <Box pb={2} sx={{ width: upFromSm ? '320px' : '100%' }}>
           <StyledTxModalToggleGroup
             color="secondary"
@@ -84,7 +84,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             </StyledTxModalToggleButton>
           </StyledTxModalToggleGroup>
         </Box>
-      )}
+      )} */}
 
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
       <Box
