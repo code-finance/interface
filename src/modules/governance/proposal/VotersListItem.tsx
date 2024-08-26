@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
+import { Avatar, Box, SvgIcon, Typography, useTheme } from '@mui/material';
 import { blo } from 'blo';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -23,6 +23,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
   const { voter: address, ensName } = voter;
   const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const theme = useTheme();
 
   // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length.
   // This takes into account if the list should be compact or not, and adjusts accordingly to keep items of about equal length.
@@ -69,7 +70,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
     <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
+          <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: '6px' }} />
           <Link
             href={`https://etherscan.io/address/${address}`}
             onClick={() =>
@@ -77,14 +78,14 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             }
           >
             <Typography
-              variant="subheader1"
+              variant="detail3"
               color="primary"
               sx={{ display: 'flex', alignItems: 'center' }}
             >
               {displayName(ensName)}
-              <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
+              {/* <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
                 <ExternalLinkIcon />
-              </SvgIcon>
+              </SvgIcon> */}
             </Typography>
           </Link>
         </Box>
@@ -97,12 +98,15 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             maxWidth: compact ? 82 : 96,
           }}
         >
-          <Typography variant="subheader1" color={voter.support ? 'success.main' : 'error.main'}>
+          <Typography
+            variant="detail1"
+            color={voter.support ? theme.palette.point.positive : theme.palette.point.negative}
+          >
             {voter.support ? 'YAE' : 'NAY'}
           </Typography>
           <FormattedNumber
-            variant="subheader1"
-            color="primary"
+            variant="detail2"
+            color="primary !important"
             value={displayVotingPower}
             visibleDecimals={displayVotingPowerDecimals}
             roundDown

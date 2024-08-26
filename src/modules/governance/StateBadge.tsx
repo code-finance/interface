@@ -71,7 +71,11 @@ const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
 
 export function StateBadge({ state, loading }: StateBadgeProps) {
   if (loading || !state) return <Skeleton width={70} />;
-  return <Badge state={state}>{state}</Badge>;
+  return (
+    <Badge sx={{ px: '4px', py: '3px', fontSize: '14px' }} state={state}>
+      {state}
+    </Badge>
+  );
 }
 
 export const getProposalStates = () => {

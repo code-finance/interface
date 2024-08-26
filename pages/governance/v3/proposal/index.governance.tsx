@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
@@ -47,24 +47,28 @@ export default function ProposalPage() {
       <ProposalTopPanel />
 
       <ContentContainer>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
-            <ProposalOverview
-              proposal={proposal}
-              error={!!newProposalError}
-              loading={proposalLoading}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            {proposal && <VoteInfo proposal={proposal} />}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: '20px',
+          }}
+        >
+          <Box flex={1}>{proposal && <VoteInfo proposal={proposal} />}</Box>
+          <Box flex={1}>
             <VotingResults
               proposal={proposal}
               proposalVotes={proposalVotes}
               loading={proposalLoading}
             />
-            <ProposalLifecycle proposal={proposal} />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
+        <ProposalOverview
+          proposal={proposal}
+          error={!!newProposalError}
+          loading={proposalLoading}
+        />
       </ContentContainer>
     </>
   );

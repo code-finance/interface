@@ -13,6 +13,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
 import { networkConfigs } from '../../../ui-config/networksConfig';
+import { ProposalLifecycle } from './ProposalLifecycle';
 
 interface VoteInfoProps {
   proposal: Proposal;
@@ -45,32 +46,29 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+    <Paper sx={{ px: '24px', py: '28px', bgcolor: 'background.top' }}>
       <Row
-        sx={{ mb: 8 }}
+        sx={{ mb: '24px' }}
         caption={
           <>
-            <Typography variant="h3">
-              <Trans>Your voting info</Trans>
+            <Typography variant="h2" color={'text.primary'} sx={{ mb: '16px' }}>
+              <Trans>Your info</Trans>
             </Typography>
             {network && (
               <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  color: 'text.secondary',
                 }}
               >
-                <Typography variant="caption">
+                <Typography variant="body2">
                   <Trans>Voting is on</Trans>
                 </Typography>
                 <Box
                   sx={{
-                    height: 16,
-                    width: 16,
-                    ml: 1,
-                    mr: 1,
-                    mb: 1,
+                    height: '24px',
+                    width: '24px',
+                    mx: '6px',
                   }}
                 >
                   <img
@@ -79,7 +77,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                     style={{ height: '100%', width: '100%' }}
                   />
                 </Box>
-                <Typography variant="caption">{network?.displayName}</Typography>
+                <Typography variant="body2" color={'text.primary'}>
+                  {network?.displayName}
+                </Typography>
               </Box>
             )}
           </>
@@ -94,12 +94,13 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
           )}
           {user && voteOngoing && (
             <Row
+              sx={{ mb: '28px' }}
               caption={
                 <>
-                  <Typography variant="description">
+                  <Typography variant="h3" color="text.mainTitle" mb="8px">
                     <Trans>Voting power</Trans>
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="detail2" color="text.mainTitle">
                     (AAVE + stkAAVE)
                   </Typography>
                 </>
@@ -107,7 +108,8 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
             >
               <FormattedNumber
                 value={powerAtProposalStart || 0}
-                variant="main16"
+                variant="body1"
+                color={'text.mainTitle'}
                 visibleDecimals={2}
               />
             </Row>
@@ -130,8 +132,10 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
             </Warning>
           )}
           {showCannotVoteMsg && (
-            <Warning severity="warning" sx={{ my: 2 }}>
-              <Trans>Not enough voting power to participate in this proposal</Trans>
+            <Warning severity="warning" sx={{ mb: '40px' }}>
+              <Typography variant="body7" color="text.secondary">
+                <Trans>Not enough voting power to participate in this proposal</Trans>
+              </Typography>
             </Warning>
           )}
           {showCanVoteMsg && (
@@ -155,6 +159,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
               </Button>
             </>
           )}
+          <ProposalLifecycle proposal={proposal} />
         </>
       ) : (
         <ConnectWalletButton />

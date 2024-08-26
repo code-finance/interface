@@ -18,8 +18,8 @@ interface VotingResultsPros {
 
 export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResultsPros) => {
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-      <Typography variant="h3">
+    <Paper sx={{ px: '24px', py: '28px', bgcolor: 'background.top' }}>
+      <Typography variant="h2" color={'text.primary'} sx={{ mb: '55px' }}>
         <Trans>Voting results</Trans>
       </Typography>
       {proposal ? (
@@ -34,125 +34,168 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           <VoteBar
             percent={proposal.votingInfo.againstPercent}
             votes={proposal.votingInfo.againstVotes}
-            sx={{ mt: 3 }}
+            sx={{ mt: '19px' }}
             loading={loading}
           />
           {proposalVotes && (
             <VotersListContainer proposal={proposal.votingInfo} proposalVotes={proposalVotes} />
           )}
-          <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="description">
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-              }}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: 'column',
+              gap: '24px',
+              mb: '100px',
+            }}
+          >
+            <Row
+              caption={
+                <Typography variant="body6">
+                  <Trans>State</Trans>
+                </Typography>
+              }
+              sx={{ height: '24px' }}
             >
-              <StateBadge state={proposal.badgeState} loading={loading} />
-              {/*
-              <Box sx={{ mt: 0.5 }}>
-                <FormattedProposalTime
-                  state={proposal.proposalState}
-                  startTimestamp={proposal.startTimestamp}
-                  executionTime={proposal.executionTime}
-                  expirationTimestamp={proposal.expirationTimestamp}
-                  executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  height: '24px',
+                }}
+              >
+                <StateBadge state={proposal.badgeState} loading={loading} />
+                {/*
+                <Box sx={{ mt: 0.5 }}>
+                  <FormattedProposalTime
+                    state={proposal.proposalState}
+                    startTimestamp={proposal.startTimestamp}
+                    executionTime={proposal.executionTime}
+                    expirationTimestamp={proposal.expirationTimestamp}
+                    executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
+                  />
+                </Box>
+                */}
+              </Box>
+            </Row>
+            <Row
+              caption={
+                <Typography variant="body6">
+                  <Trans>Quorum</Trans>
+                </Typography>
+              }
+              sx={{ height: '24px' }}
+            >
+              <CheckBadge
+                loading={loading}
+                text={
+                  proposal.votingInfo.quorumReached ? (
+                    <Typography variant="detail2" color="text.primary">
+                      <Trans>Reached</Trans>
+                    </Typography>
+                  ) : (
+                    <Typography variant="detail2" color="text.primary">
+                      <Trans>Not reached</Trans>
+                    </Typography>
+                  )
+                }
+                checked={proposal.votingInfo.quorumReached}
+                sx={{ height: '24px' }}
+                variant="description"
+              />
+            </Row>
+            <Row
+              caption={
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="body6" color="text.primary" mb={1}>
+                    <Trans>Current votes</Trans>
+                  </Typography>
+                  <Typography variant="detail4" color="text.mainTitle">
+                    Current votes
+                  </Typography>
+                </Box>
+              }
+              sx={{ height: '42px' }}
+              captionVariant="description"
+            >
+              <Box sx={{ textAlign: 'right' }}>
+                <FormattedNumber
+                  variant="detail2"
+                  color="text.primary"
+                  value={proposal.votingInfo.forVotes}
+                  visibleDecimals={2}
+                  roundDown
+                  sx={{ display: 'block' }}
+                />
+                <FormattedNumber
+                  variant="detail4"
+                  color={'text.mainTitle'}
+                  value={proposal.votingInfo.quorum}
+                  visibleDecimals={2}
+                  roundDown
                 />
               </Box>
-              */}
-            </Box>
-          </Row>
-          <Row caption={<Trans>Quorum</Trans>} sx={{ height: 48 }} captionVariant="description">
-            <CheckBadge
-              loading={loading}
-              text={
-                proposal.votingInfo.quorumReached ? (
-                  <Trans>Reached</Trans>
-                ) : (
-                  <Trans>Not reached</Trans>
-                )
-              }
-              checked={proposal.votingInfo.quorumReached}
-              sx={{ height: 48 }}
-              variant="description"
-            />
-          </Row>
-          <Row
-            caption={
-              <>
-                <Trans>Current votes</Trans>
-                <Typography variant="caption" color="text.muted">
-                  Required
+            </Row>
+            <Row
+              caption={
+                <Typography variant="body6" color="text.primary">
+                  <Trans>Differential</Trans>
                 </Typography>
-              </>
-            }
-            sx={{ height: 48 }}
-            captionVariant="description"
-          >
-            <Box sx={{ textAlign: 'right' }}>
-              <FormattedNumber
-                value={proposal.votingInfo.forVotes}
-                visibleDecimals={2}
-                roundDown
-                sx={{ display: 'block' }}
-              />
-
-              <FormattedNumber
-                variant="caption"
-                value={proposal.votingInfo.quorum}
-                visibleDecimals={2}
-                roundDown
-                color="text.muted"
-              />
-            </Box>
-          </Row>
-          <Row
-            caption={<Trans>Differential</Trans>}
-            sx={{ height: 48 }}
-            captionVariant="description"
-          >
-            <CheckBadge
-              loading={loading}
-              text={
-                proposal.votingInfo.differentialReached ? (
-                  <Trans>Reached</Trans>
-                ) : (
-                  <Trans>Not reached</Trans>
-                )
               }
-              checked={proposal.votingInfo.differentialReached}
-              sx={{ height: 48 }}
-              variant="description"
-            />
-          </Row>
-          <Row
-            caption={
-              <>
-                <Trans>Current differential</Trans>
-                <Typography variant="caption" color="text.muted">
-                  Required
-                </Typography>
-              </>
-            }
-            sx={{ height: 48 }}
-            captionVariant="description"
-          >
-            <Box sx={{ textAlign: 'right' }}>
-              <FormattedNumber
-                value={proposal.votingInfo.currentDifferential}
-                visibleDecimals={2}
-                roundDown
-                sx={{ display: 'block' }}
+              sx={{ height: '24px' }}
+              captionVariant="description"
+            >
+              <CheckBadge
+                loading={loading}
+                text={
+                  proposal.votingInfo.differentialReached ? (
+                    <Typography variant="detail2" color="text.primary">
+                      <Trans>Reached</Trans>
+                    </Typography>
+                  ) : (
+                    <Typography variant="detail2" color="text.primary">
+                      <Trans>Not reached</Trans>
+                    </Typography>
+                  )
+                }
+                checked={proposal.votingInfo.differentialReached}
+                variant="description"
               />
-              <FormattedNumber
-                variant="caption"
-                value={proposal.votingInfo.requiredDifferential}
-                visibleDecimals={2}
-                roundDown
-                color="text.muted"
-              />
-            </Box>
-          </Row>
+            </Row>
+            <Row
+              caption={
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="body6" color="text.primary" mb={1}>
+                    <Trans>Current differential</Trans>
+                  </Typography>
+                  <Typography variant="detail4" color="text.mainTitle">
+                    Required
+                  </Typography>
+                </Box>
+              }
+              sx={{ height: '42px' }}
+              captionVariant="description"
+            >
+              <Box sx={{ textAlign: 'right' }}>
+                <FormattedNumber
+                  variant="detail2"
+                  color="text.primary"
+                  value={proposal.votingInfo.currentDifferential}
+                  visibleDecimals={2}
+                  roundDown
+                  sx={{ display: 'block' }}
+                />
+                <FormattedNumber
+                  variant="detail4"
+                  color="text.mainTitle"
+                  value={proposal.votingInfo.requiredDifferential}
+                  visibleDecimals={2}
+                  roundDown
+                />
+              </Box>
+            </Row>
+          </Box>
           {/*
           <Row
             caption={<Trans>Total voting power</Trans>}
