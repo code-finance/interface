@@ -88,5 +88,157 @@ export const MarketsTopPanel = () => {
         />
       </TopInfoPanelItem>
     </TopInfoPanel>
+    // <Box>
+    //   <TopInfoPanel
+    //     containerProps={marketContainerProps}
+    //     pageTitle={<Trans>Markets</Trans>}
+    //     withMarketSwitcher
+    //     multiMarket={MULTIPLE_MARKET_OPTIONS.includes(currentMarket) ? true : false}
+    //   >
+    //     <Box sx={{ display: 'flex', gap: { xs: 3, xsm: 8 } }}>
+    //       <TopInfoPanelItem
+    //         hideIcon
+    //         title={
+    //           <>
+    //             {downToSM ? (
+    //               <>
+    //                 <Trans>Market</Trans>
+    //               </>
+    //             ) : (
+    //               <>
+    //                 <Trans>Total market size</Trans>
+    //               </>
+    //             )}
+    //           </>
+    //         }
+    //         loading={loading}
+    //       >
+    //         <FormattedNumber
+    //           value={aggregatedStats.totalLiquidity.toString()}
+    //           symbol="USD"
+    //           variant={valueTypographyVariant}
+    //           visibleDecimals={2}
+    //           compact
+    //           symbolsColor="#A5A8B6"
+    //           symbolsVariant={symbolsVariant}
+    //         />
+    //       </TopInfoPanelItem>
+    //       <TopInfoPanelItem
+    //         hideIcon
+    //         title={
+    //           <>
+    //             {downToSM ? (
+    //               <Trans>Available</Trans>
+    //             ) : (
+    //               <>
+    //                 <Trans>Total available</Trans>
+    //               </>
+    //             )}
+    //           </>
+    //         }
+    //         loading={loading}
+    //       >
+    //         <FormattedNumber
+    //           value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
+    //           symbol="USD"
+    //           variant={valueTypographyVariant}
+    //           visibleDecimals={2}
+    //           compact
+    //           symbolsColor="#A5A8B6"
+    //           symbolsVariant={symbolsVariant}
+    //         />
+    //       </TopInfoPanelItem>
+    //       <TopInfoPanelItem
+    //         hideIcon
+    //         title={
+    //           <>
+    //             {downToSM ? (
+    //               <Trans>Borrows</Trans>
+    //             ) : (
+    //               <>
+    //                 <Trans>Total borrows</Trans>
+    //               </>
+    //             )}
+    //           </>
+    //         }
+    //         loading={loading}
+    //       >
+    //         <FormattedNumber
+    //           value={aggregatedStats.totalDebt.toString()}
+    //           symbol="USD"
+    //           variant={valueTypographyVariant}
+    //           visibleDecimals={2}
+    //           compact
+    //           symbolsColor="#A5A8B6"
+    //           symbolsVariant={symbolsVariant}
+    //         />
+    //       </TopInfoPanelItem>
+    //     </Box>
+
+    //     {MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
+    //       <Box pb={0} sx={{ width: 'calc(50% - 8px)' }}>
+    //         <StyledTxModalToggleGroup
+    //           color="secondary"
+    //           value={currentMarket}
+    //           exclusive
+    //           onChange={(_, value) => handleUpdateEthMarket(value)}
+    //         >
+    //           <StyledTxModalToggleButton
+    //             maxWidth="160px"
+    //             unselectedBackgroundColor="#383D51"
+    //             value={currentNetworkConfig.isFork ? 'fork_proto_mainnet_v3' : 'proto_mainnet_v3'}
+    //             disabled={
+    //               (currentNetworkConfig.isFork &&
+    //                 currentMarket === ('fork_proto_mainnet_v3' as string)) ||
+    //               (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
+    //             }
+    //             onClick={() =>
+    //               trackEvent(MARKETS.SELECT_V3_ETH_MARKET, { market: 'Ethereum Main' })
+    //             }
+    //           >
+    //             <TokenIcon sx={{ mr: 2 }} symbol="eth-round" />
+
+    //             <Typography variant="buttonM">
+    //               <Box
+    //                 component="span"
+    //                 sx={{
+    //                   display: { xs: 'none', sm: 'inline' },
+    //                 }}
+    //               >
+    //                 <Trans>Ethereum Main</Trans>
+    //               </Box>
+    //               <Box
+    //                 component="span"
+    //                 sx={{
+    //                   display: { xs: 'inline', sm: 'none' },
+    //                 }}
+    //               >
+    //                 <Trans>Main</Trans>
+    //               </Box>
+    //             </Typography>
+    //           </StyledTxModalToggleButton>
+
+    //           <StyledTxModalToggleButton
+    //             maxWidth="160px"
+    //             unselectedBackgroundColor="#383D51"
+    //             disabled={
+    //               (currentNetworkConfig.isFork &&
+    //                 currentMarket === ('fork_proto_lido_v3' as string)) ||
+    //               (!currentNetworkConfig.isFork && currentMarket === 'proto_lido_v3')
+    //             }
+    //             value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
+    //             onClick={() => trackEvent(MARKETS.SELECT_V3_ETH_MARKET, { market: 'Lido' })}
+    //           >
+    //             <TokenIcon sx={{ mr: 2 }} symbol="ldo" />
+
+    //             <Typography variant="buttonM">
+    //               <Trans>Lido</Trans>
+    //             </Typography>
+    //           </StyledTxModalToggleButton>
+    //         </StyledTxModalToggleGroup>
+    //       </Box>
+    //     )}
+    //   </TopInfoPanel>
+    // </Box>
   );
 };

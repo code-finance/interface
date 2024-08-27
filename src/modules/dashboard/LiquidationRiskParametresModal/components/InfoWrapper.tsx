@@ -21,12 +21,11 @@ export const InfoWrapper = ({
   return (
     <Box
       sx={(theme) => ({
-        border: `1px solid ${theme.palette.divider}`,
         mb: 6,
-        borderRadius: '6px',
-        px: 4,
-        pt: 4,
-        pb: 6,
+        borderRadius: '8px',
+        px: 3,
+        py: 4,
+        backgroundColor: theme.palette.background.secondary,
         '&:last-of-type': {
           mb: 0,
         },
@@ -34,19 +33,20 @@ export const InfoWrapper = ({
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ width: 'calc(100% - 72px)' }}>
-          <Typography variant="subheader1" mb={1}>
+          <Typography variant="body4" color="text.secondary" mb={3} component="div">
             {topTitle}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="detail5" color="text.secondary">
             {topDescription}
           </Typography>
         </Box>
-
         <Box
           sx={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '50%',
+            py: '3px',
+            px: '6px',
+            borderRadius: '4px',
+            height: 'fit-content',
+            width: 'fit-content',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -59,7 +59,7 @@ export const InfoWrapper = ({
 
       <Box>{children}</Box>
 
-      <Typography variant="secondary12" color="text.secondary" textAlign="left">
+      <Typography variant="detail5" color="text.secondary" textAlign="left">
         {bottomText}
       </Typography>
     </Box>

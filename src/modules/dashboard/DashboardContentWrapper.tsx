@@ -27,11 +27,23 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const router = useRouter();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const theme = useTheme();
+  const [currentMarket, setCurrentMarket] = useRootStore((store) => [
+    store.currentMarket,
+    store.setCurrentMarket,
+  ]);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   const downToLg = useMediaQuery(breakpoints.down('lg'));
+
+  const upFromSm = useMediaQuery(breakpoints.up('xsm'));
+
+  const handleUpdateEthMarket = (market: CustomMarket) => {
+    setCurrentMarket(market);
+  };
 
   return (
     <Box>
@@ -133,6 +145,30 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             width: paperWidth,
           }}
         >
+          {currentAccount && (
+            <Box
+              sx={{
+                position: 'absolute',
+
+                top: downToLg ? '-130px' : '-90px',
+
+                right: '0px',
+              }}
+            >
+              <Button
+                onClick={() => {
+                  router.push(ROUTES.history);
+                  trackEvent(AUTH.VIEW_TX_HISTORY);
+                }}
+                component="a"
+                variant="surface"
+                size="small"
+              >
+                <Trans>View Transactions</Trans>
+              </Button>
+            </Box>
+          )}
+
           <BorrowedPositionsList />
           <BorrowAssetsList />
         </Box>
