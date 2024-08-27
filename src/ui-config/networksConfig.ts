@@ -55,7 +55,6 @@ const ratesHistoryApiUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/rates-hi
 export const networkConfigs: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
-    privateJsonRPCUrl: 'https://eth-sepolia.g.alchemy.com/v2/VAfNJrTN-TopQjFDwcdLeeDOLDiFQcBP',
     publicJsonRPCUrl: [
       'https://eth-sepolia.public.blastapi.io',
       'https://rpc.sepolia.org',
@@ -448,6 +447,24 @@ export const networkConfigs: Record<string, BaseNetworkConfig> = {
       icon: '/icons/networks/scroll.svg',
       name: 'Scroll Bridge',
       url: 'https://scroll.io/bridge',
+    },
+    ratesHistoryApiUrl,
+  },
+  [324]: {
+    name: 'ZkSync',
+    // privateJsonRPCUrl: 'https://scroll-mainnet.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
+    publicJsonRPCUrl: ['https://1rpc.io/zksync2-era', 'https://zksync.drpc.org'],
+    publicJsonRPCWSUrl: 'wss://zksync.drpc.org',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://explorer.zksync.io/',
+    isTestnet: false,
+    networkLogoPath: '/icons/networks/zksync.svg',
+    bridge: {
+      icon: '/icons/networks/zksync.svg',
+      name: 'Zksync Bridge',
+      url: 'https://portal.zksync.io/bridge/',
     },
     ratesHistoryApiUrl,
   },

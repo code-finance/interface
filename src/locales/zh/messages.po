@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-10 00:18\n"
+"PO-Revision-Date: 2024-08-13 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -177,10 +177,6 @@ msgstr "添加到钱包"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
 msgstr "加 {0} 到钱包来跟踪您的余额。"
-
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Additionally, GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
-msgstr ""
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -389,6 +385,7 @@ msgstr "打折"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Available"
 msgstr "可用"
 
@@ -534,6 +531,10 @@ msgstr "借用信息"
 msgid "Borrow power used"
 msgstr "借用功率"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow rate"
+msgstr ""
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
 msgstr "借款利率变化"
@@ -595,6 +596,10 @@ msgstr "借入这笔款项将降低您的健康因素并增加清算风险。"
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "借贷 {symbol}"
+
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Borrows"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
@@ -838,10 +843,6 @@ msgstr "当前 LTV"
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current differential"
 msgstr "电流差"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Current rewards"
-msgstr ""
 
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
@@ -1099,16 +1100,17 @@ msgstr "输入金额"
 msgid "Error connecting. Try refreshing the page."
 msgstr "连接时出错。尝试刷新页面。"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Estimated borrow rate"
-msgstr ""
-
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "估计复利，包括质押折扣 {0}安全模块中的AAVE。"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Estimated time"
+msgstr ""
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Ethereum Main"
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
@@ -1176,11 +1178,6 @@ msgstr "正在获取数据..."
 msgid "Filter"
 msgstr "滤波器"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Fixed"
-msgstr "固定"
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Fixed rate"
 msgstr "固定利率"
@@ -1211,10 +1208,6 @@ msgstr "安全模块中的资金"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "GHO balance"
-msgstr ""
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
@@ -1426,6 +1419,11 @@ msgstr "了解更多信息。"
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
 
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Lido"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1499,10 +1497,15 @@ msgstr "由于社群的决定，MAI 已暂停。供应、借款和还款受到�
 msgid "MAX"
 msgstr ".MAX"
 
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Main"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "管理分析"
 
+#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "市场"
@@ -1578,8 +1581,8 @@ msgstr "认识 GHO"
 msgid "Menu"
 msgstr "菜单"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Merit Program"
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program rewards are claimed through the"
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx

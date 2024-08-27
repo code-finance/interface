@@ -1,35 +1,42 @@
 import { styled, ToggleButton, ToggleButtonProps } from '@mui/material';
 import React from 'react';
 
-const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
-  border: '0px',
-  flex: 1,
-  backgroundColor: '#383D51',
-  borderRadius: '4px',
+interface CustomToggleButtonProps extends ToggleButtonProps {
+  unselectedBackgroundColor?: string;
+  maxWidth?: string;
+}
 
-  '&.Mui-selected, &.Mui-selected:hover': {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '4px !important',
-  },
+const CustomToggleButton = styled(ToggleButton)<CustomToggleButtonProps>(
+  ({ theme, unselectedBackgroundColor }) => ({
+    border: '0px',
+    flex: 1,
+    backgroundColor: unselectedBackgroundColor || '#383D51',
+    borderRadius: '4px',
 
-  '&.Mui-selected, &.Mui-disabled': {
-    zIndex: 100,
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-
-    '.MuiTypography-subheader1': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
+    '&.Mui-selected, &.Mui-selected:hover': {
+      backgroundColor: '#FFFFFF',
+      borderRadius: '4px !important',
     },
-    '.MuiTypography-secondary14': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
+
+    '&.Mui-selected, &.Mui-disabled': {
+      zIndex: 100,
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+
+      '.MuiTypography-subheader1': {
+        background: theme.palette.gradients.aaveGradient,
+        backgroundClip: 'text',
+        textFillColor: 'transparent',
+      },
+      '.MuiTypography-secondary14': {
+        background: theme.palette.gradients.aaveGradient,
+        backgroundClip: 'text',
+        textFillColor: 'transparent',
+      },
     },
-  },
-})) as typeof ToggleButton;
+  })
+) as typeof ToggleButton;
 
 const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
   flex: 1,
@@ -49,7 +56,7 @@ const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ the
   },
 })) as typeof ToggleButton;
 
-export function StyledTxModalToggleButton(props: ToggleButtonProps) {
+export function StyledTxModalToggleButton(props: CustomToggleButtonProps) {
   return <CustomTxModalToggleButton {...props} />;
 }
 

@@ -8,13 +8,10 @@ import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 
 export function MainLayout({ children }: { children: ReactNode }) {
+  const APP_BANNER_VERSION = '1.0.0';
+
   return (
     <>
-      {/*<TopBarNotify*/}
-      {/*  learnMoreLink="https://governance.aave.com/t/arfc-gho-cross-chain-launch/17616"*/}
-      {/*  buttonText="Learn More"*/}
-      {/*  notifyText="Users can now bridge GHO to Arbitrum with CCIP ✨"*/}
-      {/*/>*/}
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}

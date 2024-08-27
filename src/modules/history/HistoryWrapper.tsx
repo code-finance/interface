@@ -1,15 +1,5 @@
-import { DocumentDownloadIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Paper,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, CircularProgress, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
