@@ -84,6 +84,7 @@ export function VotingPowerInfoPanel() {
                 variant="body3"
                 textColor="text.subText"
                 iconColor="text.subText"
+                iconSize={18}
                 event={{
                   eventName: GENERAL.TOOL_TIP,
                   eventParams: {

@@ -230,12 +230,7 @@ export const SupplyAssetsListItemDesktop = ({
       <ListButtonsColumn>
         <Button
           disabled={disableSupply}
-          sx={{
-            p: 2,
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-          }}
+          size="small"
           variant="contained"
           onClick={() => {
             openSupply(underlyingAsset, currentMarket, name, 'dashboard');
@@ -245,19 +240,10 @@ export const SupplyAssetsListItemDesktop = ({
         </Button>
         <Button
           sx={{
-            p: 2,
-            ml: '4px !important',
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-            borderColor: theme.palette.text.subText,
-            bgcolor: 'transparent',
-            color: 'text.primary',
-            '&:hover': {
-              color: '#604AEF',
-              borderColor: '#604AEF',
-            },
+            ml: 1,
           }}
+          size="small"
+          variant="text"
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           onClick={onDetailsClick}
         >

@@ -32,7 +32,6 @@ import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const MULTIPLE_MARKET_OPTIONS = [
   CustomMarket.proto_mainnet_v3,
-  CustomMarket.proto_lido_v3,
   'fork_proto_lido_v3',
   'fork_proto_mainnet_v3',
 ];
@@ -238,7 +237,7 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="detail4" color="text.secondary" sx={{ px: 4, mb: 1 }}>
+        <Typography variant="detail4" color="text.secondary" sx={{ px: 4, mb: 1 }} component="div">
           <Trans>{ENABLE_TESTNET || STAGING_ENV ? 'Select Testnet Market' : 'Select Market'}</Trans>
         </Typography>
       </Box>

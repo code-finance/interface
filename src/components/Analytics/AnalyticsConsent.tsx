@@ -63,7 +63,6 @@ export default function AnalyticsBanner() {
           borderRadius: '16px',
           boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
           transition: 'transform 0.5s ease-out', // Add this
-
           transform: bannerVisible
             ? isMobile
               ? 'translateX(-50%)'
@@ -79,6 +78,7 @@ export default function AnalyticsBanner() {
           width: '162px',
           height: '45px',
           cursor: 'pointer',
+          outline: 0,
         }}
         declineButtonStyle={{
           background: theme.palette.background.primary,

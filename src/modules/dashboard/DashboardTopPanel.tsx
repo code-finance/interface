@@ -132,7 +132,14 @@ export const DashboardTopPanel = () => {
             width: '100%',
           }}
         >
-          <div style={{ display: 'flex', gap: '20px', color: theme.palette.text.primary }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '20px',
+              color: theme.palette.text.primary,
+              width: '100%',
+            }}
+          >
             <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
               {currentAccount ? (
                 <FormattedNumber
@@ -229,34 +236,20 @@ export const DashboardTopPanel = () => {
                 </Box>
               </TopInfoPanelItem>
             )}
-          </div>
-          {currentAccount && (
-            <Box>
+            {currentAccount && (
               <Button
+                sx={{ ml: 'auto' }}
                 onClick={() => {
                   router.push(ROUTES.history);
                   trackEvent(AUTH.VIEW_TX_HISTORY);
                 }}
                 component="a"
-                variant="outlined"
-                size="small"
-                sx={{
-                  textTransform: 'uppercase',
-                  color: 'text.secondary',
-                  bgcolor: 'transparent',
-                  height: '42px',
-                  p: '10px 24px',
-                  fontSize: '17px',
-                  borderColor: theme.palette.text.subText,
-                  '&:hover': {
-                    bgcolor: 'transparent',
-                  },
-                }}
+                variant="transparent"
               >
                 <Trans>View Transactions</Trans>
               </Button>
-            </Box>
-          )}
+            )}
+          </div>
         </Box>
       </TopInfoPanel>
 

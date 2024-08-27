@@ -18,7 +18,7 @@ export const UserGovernanceInfo = () => {
     </>
   ) : (
     <Paper sx={(theme) => ({ px: 6, py: 7, background: theme.palette.background.group })}>
-      <Typography variant="h3" color="text.buttonText" sx={{ mb: { xs: 2, xsm: 4 } }}>
+      <Typography variant="h2" color="text.buttonText" sx={{ mb: { xs: 2, xsm: 4 } }}>
         <Trans>Your supplies</Trans>
       </Typography>
       <Typography sx={{ mb: 7 }} color="text.buttonText" variant="body2">

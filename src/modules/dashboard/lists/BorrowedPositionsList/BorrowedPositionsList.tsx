@@ -166,22 +166,22 @@ export const BorrowedPositionsList = () => {
       wrapperSx={{
         pl: 5,
       }}
+      icon={<MoneyIcon sx={{ height: '60px', width: '60px', color: 'white' }} />}
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
-      icon={<MoneyIcon sx={{ height: '60px', width: '60px', mb: 3 }} />}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4, color: 'white' }}>
-          <Trans>Your supplies</Trans>
+        <Typography component="div" variant="h2" sx={{ mr: 4 }} color="text.buttonText">
+          <Trans>Your borrows</Trans>
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
       isPosition
+      noData={!sortedReserves.length}
       subTitleComponent={
         showEModeButton ? (
           <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
         ) : undefined
       }
-      noData={!sortedReserves.length}
       subChildrenComponent={
         !sortedReserves.length ? (
           <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />

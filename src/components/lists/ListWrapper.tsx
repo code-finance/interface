@@ -115,10 +115,11 @@ export const ListWrapper = ({
               display: 'flex',
               alignItems: 'start',
               justifyContent: 'space-between',
+              width: '100%',
               ...wrapperSx,
             }}
           >
-            <Box sx={{ minWidth: 0 }}>
+            <Box sx={{ minWidth: 0, width: '100%' }}>
               <Box
                 sx={{
                   width: '100%',
@@ -206,7 +207,7 @@ export const ListWrapper = ({
           </Box>
         </Box>
 
-        <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
+        {children && <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>}
       </Box>
     </Paper>
   );

@@ -181,14 +181,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
         PaperProps={{
-          sx: (theme) => ({
-            backgroundColor: theme.palette.background.secondary,
-            border: `1px solid ${theme.palette.border.contents}`,
-            width: 205,
+          sx: () => ({
             maxHeight: 300,
-            mt: 1,
-            boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
-            borderRadius: 2,
           }),
         }}
         MenuListProps={{
@@ -199,8 +193,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
       >
         <MenuItem
           onClick={() => handleFilterClick(undefined)}
+          selected={allSelected}
           sx={{
-            background: allSelected ? theme.palette.background.contents : undefined,
             display: 'flex',
             justifyContent: 'space-between',
           }}
@@ -232,12 +226,10 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
                   key={optionKey}
                   onClick={() => handleFilterClick(option)}
                   sx={{
-                    background: currentFilter.includes(option)
-                      ? theme.palette.background.contents
-                      : undefined,
                     display: 'flex',
                     justifyContent: 'space-between',
                   }}
+                  selected={currentFilter.includes(option)}
                 >
                   <FilterLabel filter={option} />
                   {currentFilter.includes(option) && (

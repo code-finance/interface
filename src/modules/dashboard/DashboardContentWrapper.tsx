@@ -47,57 +47,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   return (
     <Box>
-      {/* {currentAccount && MULTIPLE_MARKET_OPTIONS.includes(currentMarket) && (
-        <Box pb={2} sx={{ width: upFromSm ? '320px' : '100%' }}>
-          <StyledTxModalToggleGroup
-            color="secondary"
-            value={currentMarket}
-            exclusive
-            onChange={(_, value) => handleUpdateEthMarket(value)}
-          >
-            <StyledTxModalToggleButton
-              maxWidth={upFromSm ? '160px' : undefined}
-              unselectedBackgroundColor="#383D51"
-              value={currentNetworkConfig.isFork ? 'fork_proto_mainnet_v3' : 'proto_mainnet_v3'}
-              disabled={
-                (currentNetworkConfig.isFork &&
-                  currentMarket === ('fork_proto_mainnet_v3' as string)) ||
-                (!currentNetworkConfig.isFork && currentMarket === 'proto_mainnet_v3')
-              }
-              onClick={() =>
-                trackEvent(DASHBOARD.SELECT_V3_ETH_MARKET, { market: 'Ethereum Main' })
-              }
-            >
-              <TokenIcon sx={{ mr: 2 }} symbol="eth-round" />
-
-              <Typography variant="buttonM">
-                <Trans>Ethereum Main</Trans>
-              </Typography>
-            </StyledTxModalToggleButton>
-
-            <StyledTxModalToggleButton
-              maxWidth={upFromSm ? '160px' : undefined}
-              unselectedBackgroundColor="#383D51"
-              disabled={
-                (currentNetworkConfig.isFork &&
-                  currentMarket === ('fork_proto_lido_v3' as string)) ||
-                (!currentNetworkConfig.isFork && currentMarket === ('proto_lido_v3' as string))
-              }
-              value={currentNetworkConfig.isFork ? 'fork_proto_lido_v3' : 'proto_lido_v3'}
-              // disabled={currentMarket === 'proto_lido_v3' || 'fork_proto_lido_v3' ? true : false}
-
-              onClick={() => trackEvent(DASHBOARD.SELECT_V3_ETH_MARKET, { market: 'Lido' })}
-            >
-              <TokenIcon sx={{ mr: 2 }} symbol="ldo" />
-
-              <Typography variant="buttonM">
-                <Trans>Lido</Trans>
-              </Typography>
-            </StyledTxModalToggleButton>
-          </StyledTxModalToggleGroup>
-        </Box>
-      )} */}
-
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}
       <Box
         sx={{
@@ -113,27 +62,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             width: paperWidth,
           }}
         >
-          {currentAccount && !isBorrow && downToLg && (
-            <Box>
-              <Button
-                sx={(theme) => ({
-                  position: 'absolute',
-                  top: '-120px',
-                  right: '0px',
-                  color: theme.palette.text.secondary,
-                })}
-                onClick={() => {
-                  router.push(ROUTES.history);
-                  trackEvent(AUTH.VIEW_TX_HISTORY);
-                }}
-                variant="outlined"
-                size="small"
-              >
-                <Trans>View Transactions</Trans>
-              </Button>
-            </Box>
-          )}
-
           <SuppliedPositionsList />
           <SupplyAssetsList />
         </Box>
@@ -145,30 +73,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
             width: paperWidth,
           }}
         >
-          {currentAccount && (
-            <Box
-              sx={{
-                position: 'absolute',
-
-                top: downToLg ? '-130px' : '-90px',
-
-                right: '0px',
-              }}
-            >
-              <Button
-                onClick={() => {
-                  router.push(ROUTES.history);
-                  trackEvent(AUTH.VIEW_TX_HISTORY);
-                }}
-                component="a"
-                variant="surface"
-                size="small"
-              >
-                <Trans>View Transactions</Trans>
-              </Button>
-            </Box>
-          )}
-
           <BorrowedPositionsList />
           <BorrowAssetsList />
         </Box>

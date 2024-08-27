@@ -3,7 +3,7 @@ import { SvgIcon, SvgIconProps } from '@mui/material';
 export const MoneyIcon = ({ sx, ...rest }: SvgIconProps) => {
   return (
     <SvgIcon
-      sx={{ fill: 'none', stroke: '#A5A8B6', ...sx }}
+      sx={{ fill: 'none', ...sx }}
       viewBox="0 0 60 60"
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Wallet"

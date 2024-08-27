@@ -127,17 +127,22 @@ export const SuppliedPositionsList = () => {
       wrapperSx={{
         pl: 5,
       }}
-      icon={<WalletIcon sx={{ height: '60px', width: '60px', mb: 4, color: 'white' }} />}
+      icon={<WalletIcon sx={{ height: '60px', width: '60px', color: 'white' }} />}
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" color="text.buttonText" variant="h2" sx={{ mb: 3, mr: 4 }}>
+        <Typography component="div" color="text.buttonText" variant="h2" sx={{ mr: 4 }}>
           Your supplies
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"
       isPosition
       noData={!sortedReserves.length}
+      subChildrenComponent={
+        !sortedReserves.length ? (
+          <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />
+        ) : null
+      }
       topInfo={
         <>
           {!!sortedReserves.length && (
@@ -201,9 +206,7 @@ export const SuppliedPositionsList = () => {
             </Fragment>
           ))}
         </div>
-      ) : (
-        <DashboardContentNoData text={<Trans>Nothing supplied yet</Trans>} />
-      )}
+      ) : null}
     </ListWrapper>
   );
 };
