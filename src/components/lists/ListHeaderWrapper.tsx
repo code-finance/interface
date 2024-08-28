@@ -2,11 +2,11 @@ import { Box, BoxProps } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface ListHeaderWrapperProps extends BoxProps {
-  px?: 4 | 6;
+  px?: number;
   children: ReactNode;
 }
 
-export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapperProps) => {
+export const ListHeaderWrapper = ({ px = 0, children, ...rest }: ListHeaderWrapperProps) => {
   return (
     <Box
       {...rest}
@@ -14,8 +14,7 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
         display: 'flex',
         alignItems: 'flex-end',
         px,
-        pt: 4,
-        pb: 1,
+        py: 4,
         position: 'sticky',
         top: 0,
         zIndex: 100,

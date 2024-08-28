@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box } from '@mui/system';
 import { Fragment, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -127,8 +128,12 @@ export const SuppliedPositionsList = () => {
       wrapperSx={{
         pl: 5,
       }}
+      paperSx={(theme) => ({
+        backgroundColor: theme.palette.background.group,
+        py: 7,
+        px: 6,
+      })}
       icon={<WalletIcon sx={{ height: '60px', width: '60px', color: 'white' }} />}
-      paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
       tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography component="div" color="text.buttonText" variant="h2" sx={{ mr: 4 }}>
@@ -157,6 +162,7 @@ export const SuppliedPositionsList = () => {
                 percent
                 tooltip={
                   <TotalSupplyAPYTooltip
+                    iconColor="text.buttonText"
                     setOpen={setTooltipOpen}
                     event={{
                       eventName: GENERAL.TOOL_TIP,
@@ -170,6 +176,7 @@ export const SuppliedPositionsList = () => {
                 value={user?.totalCollateralUSD || 0}
                 tooltip={
                   <CollateralTooltip
+                    iconColor="text.buttonText"
                     setOpen={setTooltipOpen}
                     event={{
                       eventName: GENERAL.TOOL_TIP,
@@ -187,8 +194,10 @@ export const SuppliedPositionsList = () => {
         <div
           style={{
             backgroundColor: theme.palette.background.primary,
-            margin: '20px -20px -40px -20px',
-            borderRadius: '12px',
+            margin: '20px -24px -28px -24px',
+            borderRadius: '0 0 15px 15px',
+            paddingBlock: '8px',
+            paddingInline: '20px',
           }}
         >
           {!downToXSM && <RenderHeader />}
@@ -198,9 +207,17 @@ export const SuppliedPositionsList = () => {
                 {downToXSM ? (
                   <SuppliedPositionsListMobileItem {...item} />
                 ) : (
-                  <div style={{ padding: '0 20px' }}>
+                  <Box
+                    sx={{
+                      p: 0,
+                      '&:not(:last-child)': {
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                      },
+                    }}
+                  >
                     <SuppliedPositionsListItem {...item} />
-                  </div>
+                  </Box>
                 )}
               </AssetCapsProvider>
             </Fragment>

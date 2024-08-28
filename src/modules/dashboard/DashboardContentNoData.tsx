@@ -7,7 +7,7 @@ interface DashboardContentNoDataProps {
 
 export const DashboardContentNoData = ({ text }: DashboardContentNoDataProps) => {
   return (
-    <Box sx={{ mt: 3 }}>
+    <Box sx={{ mt: 4, mb: 2 }}>
       <Typography color="text.buttonText" typography="body2">
         {text}
       </Typography>

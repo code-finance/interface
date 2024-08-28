@@ -578,6 +578,11 @@ export function getThemedComponents(theme: Theme) {
             border: '1px solid',
             borderColor: theme.palette.border.contents,
           },
+          list: {
+            'li.MuiMenuItem-root.Mui-selected': {
+              background: theme.palette.background.contents,
+            },
+          },
         },
         defaultProps: {
           PaperProps: {

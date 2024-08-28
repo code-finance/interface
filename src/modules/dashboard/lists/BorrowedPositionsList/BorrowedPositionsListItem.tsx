@@ -138,7 +138,15 @@ const BorrowedPositionsListItemDesktop = ({
       showBorrowCapTooltips
       showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW)}
     >
-      <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
+      <ListValueColumn
+        symbol={reserve.symbol}
+        value={totalBorrows}
+        subValue={totalBorrowsUSD}
+        topColor={'text.primary'}
+        topVariant={'body6'}
+        bottomColor={'text.mainTitle'}
+        bottomVariant={'detail2'}
+      />
 
       <ListAPRColumn value={borrowAPY} incentives={incentives} symbol={reserve.symbol} />
 

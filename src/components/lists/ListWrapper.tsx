@@ -20,6 +20,7 @@ interface ListWrapperProps {
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
   paperSx?: PaperProps['sx'];
+  collapsedSx?: PaperProps['sx'];
   icon?: ReactNode;
   isPosition?: boolean;
 }
@@ -38,6 +39,7 @@ export const ListWrapper = ({
   paperSx,
   icon,
   isPosition,
+  collapsedSx,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -106,7 +108,7 @@ export const ListWrapper = ({
         ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
       ]}
     >
-      <Box display="flex" flexDirection={'column'} gap={5}>
+      <Box display="flex" flexDirection={'column'} gap={4}>
         <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
           {!!icon && icon}
           <Box
@@ -125,7 +127,7 @@ export const ListWrapper = ({
                   width: '100%',
                   display: 'flex',
                   alignItems: { xs: 'flex-start', xsm: 'center' },
-                  py: '3.6px',
+                  py: '4px',
                   flexDirection: { xs: 'column', xsm: 'row' },
                 }}
               >
@@ -156,6 +158,7 @@ export const ListWrapper = ({
             {!!localStorageName && !noData && (
               <Box
                 sx={{
+                  alignSelf: 'center',
                   display: 'flex',
                   alignItems: 'center',
                   cursor: 'pointer',
@@ -187,9 +190,12 @@ export const ListWrapper = ({
                 }}
               >
                 <Typography
-                  variant="buttonM"
+                  variant="body5"
                   color={isPosition ? 'white' : 'text.secondary'}
-                  sx={{ display: 'flex', alignItems: 'center' }}
+                  sx={[
+                    { display: 'flex', alignItems: 'center' },
+                    ...(Array.isArray(collapsedSx) ? collapsedSx : [collapsedSx]),
+                  ]}
                 >
                   {collapsed ? (
                     <>

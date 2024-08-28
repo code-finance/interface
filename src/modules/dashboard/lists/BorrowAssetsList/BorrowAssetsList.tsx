@@ -205,11 +205,13 @@ export const BorrowAssetsList = () => {
 
   return (
     <ListWrapper
+      paperSx={{ mt: 5 }}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to borrow</Trans>
         </Typography>
       }
+      collapsedSx={(theme) => ({ color: theme.palette.text.mainTitle })}
       localStorageName="borrowAssetsDashboardTableCollapse"
       withTopMargin
       noData={borrowDisabled}

@@ -204,7 +204,7 @@ export const SupplyAssetsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
+      <ListHeaderWrapper sx={{ mt: 5 }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -242,11 +242,13 @@ export const SupplyAssetsList = () => {
 
   return (
     <ListWrapper
+      paperSx={{ mt: 5 }}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to supply</Trans>
         </Typography>
       }
+      collapsedSx={(theme) => ({ color: theme.palette.text.mainTitle })}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       noData={supplyDisabled}
