@@ -1,9 +1,10 @@
 import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ExternalLinkIcon, RefreshIcon } from '@heroicons/react/outline';
+import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import CallMadeIcon from '@mui/icons-material/CallMade';
 import {
   Box,
   Button,
@@ -30,6 +31,8 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { StakeActionBox } from './StakeActionBox';
@@ -110,6 +113,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const now = useCurrentTimestamp(1);
   const { openSwitch } = useModalContext();
   const theme = useTheme();
+  const { chainId } = useWeb3Context();
+  const networkConfig = getNetworkConfig(chainId);
 
   if (!stakeData || !stakeUserData) {
     return <StakingPanelSkeleton />;
@@ -172,11 +177,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const TokenContractTooltip = (
     <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
       <IconButton
+        sx={{ p: 0 }}
         LinkComponent={Link}
         href={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
       >
-        <SvgIcon sx={{ fontSize: '14px' }}>
-          <ExternalLinkIcon />
+        <SvgIcon sx={{ fontSize: '20px', color: 'text.primary', ml: '4px' }}>
+          <CallMadeIcon />
         </SvgIcon>
       </IconButton>
     </DarkTooltip>
@@ -195,10 +201,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         <Stack>
           <Typography variant="body4" color="text.primary">
             <Stack direction="row" alignItems="center" gap={0} mb={4}>
-              <Trans>Stake CODE on </Trans>
-              <TokenIcon symbol={icon} sx={{ width: '24px', height: '24px', ml: 2 }} />
+              <Box sx={{ mr: 2 }}>
+                <Trans>Stake {stakeTitle} on </Trans>
+              </Box>
+              <img width="24px" height="24px" src={networkConfig?.networkLogoPath} />
               <Typography variant="h2">
-                <Box sx={{ fontSize: '24px', ml: 1.5 }}>{stakeTitle}</Box>
+                <Box sx={{ fontSize: '24px', ml: 1.5 }}>{networkConfig?.name} mainnet</Box>
               </Typography>
               {TokenContractTooltip}
             </Stack>
