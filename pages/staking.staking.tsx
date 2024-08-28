@@ -207,7 +207,7 @@ export default function Staking() {
                   </Box>
                 </StakingPanel>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 lg={6}
@@ -246,7 +246,7 @@ export default function Staking() {
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bptv2, 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid
                 item
