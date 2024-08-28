@@ -39,8 +39,8 @@ export const ListHeaderTitle = ({
   return (
     <Typography
       component="div"
-      variant="subheader2"
-      color="text.secondary"
+      variant="detail2"
+      color="text.subTitle"
       noWrap
       onClick={() => (!!onClick ? onClick() : !!sortKey && handleSorting(sortKey))}
       sx={{

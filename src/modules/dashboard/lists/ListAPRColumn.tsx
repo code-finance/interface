@@ -23,7 +23,14 @@ export const ListAPRColumn = ({
   return (
     <ListColumn>
       <Box sx={{ display: 'flex' }}>
-        <IncentivesCard value={value} incentives={incentives} symbol={symbol} />
+        <IncentivesCard
+          value={value}
+          incentives={incentives}
+          symbol={symbol}
+          variant="body6"
+          color="text.primary"
+          symbolsVariant="body6"
+        />
         {tooltip}
       </Box>
       {children}

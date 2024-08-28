@@ -1,5 +1,5 @@
-import { Box, Tooltip } from '@mui/material';
-import { ReactNode } from 'react';
+import { Box, Tooltip, Typography } from '@mui/material';
+import { ComponentProps, ReactNode } from 'react';
 
 import { ListColumn, ListColumnProps } from '../../../components/lists/ListColumn';
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
@@ -12,6 +12,10 @@ interface ListValueColumnProps {
   capsComponent?: ReactNode;
   disabled?: boolean;
   listColumnProps?: ListColumnProps;
+  topColor?: string;
+  topVariant?: ComponentProps<typeof Typography>['variant'];
+  bottomColor?: string;
+  bottomVariant?: ComponentProps<typeof Typography>['variant'];
 }
 
 const Content = ({
@@ -20,15 +24,21 @@ const Content = ({
   subValue,
   disabled,
   capsComponent,
+  topColor,
+  topVariant,
+  bottomColor,
+  bottomVariant,
 }: ListValueColumnProps) => {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <FormattedNumber
           value={value}
-          variant="secondary14"
+          variant={topVariant || 'body6'}
+          symbolsVariant={topVariant || 'body6'}
+          color={disabled ? 'text.disabledText' : topColor || 'text.subTitle'}
+          symbolsColor={disabled ? 'text.disabledText' : topColor || 'text.subTitle'}
           sx={{ mb: !withTooltip && !!subValue ? '2px' : 0 }}
-          color={disabled ? 'text.disabled' : 'text.main'}
           data-cy={`nativeAmount`}
         />
         {capsComponent}
@@ -38,8 +48,10 @@ const Content = ({
         <FormattedNumber
           value={subValue}
           symbol="USD"
-          variant="secondary12"
-          color="text.secondary"
+          variant={bottomVariant || 'body6'}
+          symbolsVariant={bottomVariant || 'body6'}
+          color={bottomColor || 'text.subTitle'}
+          symbolsColor={bottomColor || 'text.subTitle'}
         />
       )}
     </>
@@ -54,6 +66,10 @@ export const ListValueColumn = ({
   capsComponent,
   disabled,
   listColumnProps = {},
+  topColor,
+  topVariant,
+  bottomColor,
+  bottomVariant,
 }: ListValueColumnProps) => {
   return (
     <ListColumn {...listColumnProps}>
@@ -71,16 +87,20 @@ export const ListValueColumn = ({
               <FormattedNumber
                 value={subValue || 0}
                 symbol="USD"
-                variant="secondary14"
+                variant={topVariant || 'body6'}
+                color={topColor || 'text.subTitle'}
+                symbolsColor={topColor || 'text.subTitle'}
+                symbolsVariant={topVariant || 'body6'}
                 sx={{ mb: '2px' }}
-                symbolsColor="common.white"
                 compact={false}
               />
               <FormattedNumber
                 value={value}
-                variant="secondary12"
+                variant={bottomVariant || 'body6'}
+                color={bottomColor || 'text.subTitle'}
+                symbolsColor={bottomColor || 'text.subTitle'}
+                symbolsVariant={bottomVariant || 'body6'}
                 symbol={symbol}
-                symbolsColor="common.white"
                 compact={false}
               />
             </Box>
@@ -114,6 +134,10 @@ export const ListValueColumn = ({
           capsComponent={capsComponent}
           disabled={disabled}
           withTooltip={withTooltip}
+          topVariant={topVariant || 'body6'}
+          topColor={topColor || 'text.subTitle'}
+          bottomColor={bottomColor || 'text.subTitle'}
+          bottomVariant={bottomVariant || 'body6'}
         />
       )}
     </ListColumn>

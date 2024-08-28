@@ -85,19 +85,25 @@ export const LTVContent = ({
               value={currentLiquidationThreshold}
               visibleDecimals={2}
               color="error.main"
-              variant="subheader2"
+              variant="detail1"
               percent
               symbolsColor="error.main"
             />
             <Typography
-              sx={{ display: 'flex' }}
-              variant="helperText"
+              sx={{ display: 'flex', width: '80%', mx: 'auto' }}
+              variant="detail4"
               lineHeight="12px"
               color="error.main"
             >
-              <Trans>
-                Liquidation <br /> threshold
-              </Trans>
+              <Trans>Liquidation</Trans>
+            </Typography>
+            <Typography
+              sx={{ display: 'flex', width: '80%', mx: 'auto' }}
+              variant="detail4"
+              lineHeight="12px"
+              color="error.main"
+            >
+              <Trans>threshold</Trans>
             </Typography>
           </Box>
         </Box>
@@ -144,18 +150,24 @@ export const LTVContent = ({
               bottom: 'calc(100% + 2px)',
             }}
           >
-            <FormattedNumber value={loanToValue} percent visibleDecimals={2} variant="main12" />
+            <FormattedNumber
+              value={loanToValue}
+              percent
+              visibleDecimals={2}
+              variant="detail1"
+              color="text.primary"
+            />
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <Typography variant="helperText" color="text.muted" mr={0.5}>
+              <Typography variant="detail4" color="text.primary" mr={0.5}>
                 <Trans>MAX</Trans>
               </Typography>
               <FormattedNumber
                 value={currentLoanToValue}
                 percent
                 visibleDecimals={2}
-                variant="helperText"
-                color="text.muted"
-                symbolsColor="text.muted"
+                variant="detail4"
+                color="text.primary"
+                symbolsColor="text.primary"
               />
             </Box>
           </Box>

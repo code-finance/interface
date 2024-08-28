@@ -25,7 +25,7 @@ export const PausedTooltip = () => {
         </Stack>
       }
     >
-      <SvgIcon sx={{ fontSize: '20px', color: 'error.main', ml: 2 }}>
+      <SvgIcon sx={{ fontSize: '20px', color: 'warning.main', ml: 2 }}>
         <ExclamationIcon />
       </SvgIcon>
     </Tooltip>

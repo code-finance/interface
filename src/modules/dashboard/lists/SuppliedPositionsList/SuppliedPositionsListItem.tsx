@@ -31,13 +31,8 @@ export const SuppliedPositionsListItem = ({
   const { debtCeiling } = useAssetCaps();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const theme = useTheme();
-  let showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
-  if (
-    reserve.symbol === GHO_SYMBOL &&
-    !GHO_SWITCH_FEATURE_MARKETS.includes(currentMarketData.marketTitle)
-  ) {
-    showSwitchButton = false;
-  }
+
+  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
@@ -72,6 +67,10 @@ export const SuppliedPositionsListItem = ({
         value={Number(underlyingBalance)}
         subValue={Number(underlyingBalanceUSD)}
         disabled={Number(underlyingBalance) === 0}
+        topColor={'text.primary'}
+        topVariant={'body6'}
+        bottomColor={'text.mainTitle'}
+        bottomVariant={'detail2'}
       />
 
       <ListAPRColumn

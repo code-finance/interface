@@ -205,41 +205,39 @@ export const BorrowAssetsList = () => {
 
   return (
     <ListWrapper
+      paperSx={{ mt: 5 }}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to borrow</Trans>
         </Typography>
       }
+      collapsedSx={(theme) => ({ color: theme.palette.text.mainTitle })}
       localStorageName="borrowAssetsDashboardTableCollapse"
       withTopMargin
       noData={borrowDisabled}
-      subChildrenComponent={
-        <>
-          <Box sx={{ mb: 8, bgcolor: theme.palette.point.riskRow }}>
-            {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
-              <MarketWarning marketName="Harmony" />
-            )}
-
-            {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
-              <MarketWarning marketName="Fantom" />
-            )}
-            {borrowDisabled && currentMarketData.marketTitle === 'Ethereum AMM' && (
-              <MarketWarning marketName="Ethereum AMM" />
-            )}
-
-            {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
-              <Warning severity="error">
-                <Trans>
-                  Be careful - You are very close to liquidation. Consider depositing more
-                  collateral or paying down some of your borrowed positions
-                </Trans>
-              </Warning>
-            )}
-          </Box>
-        </>
-      }
     >
       <>
+        <Box sx={{ bgcolor: theme.palette.point.riskRow }}>
+          {borrowDisabled && currentNetworkConfig.name === 'Harmony' && (
+            <MarketWarning marketName="Harmony" />
+          )}
+
+          {borrowDisabled && currentNetworkConfig.name === 'Fantom' && (
+            <MarketWarning marketName="Fantom" />
+          )}
+          {borrowDisabled && currentMarketData.marketTitle === 'Ethereum AMM' && (
+            <MarketWarning marketName="Ethereum AMM" />
+          )}
+
+          {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
+            <Warning severity="error">
+              <Trans>
+                Be careful - You are very close to liquidation. Consider depositing more collateral
+                or paying down some of your borrowed positions
+              </Trans>
+            </Warning>
+          )}
+        </Box>
         {!borrowDisabled && (
           <>
             {user?.isInIsolationMode && (
@@ -270,21 +268,14 @@ export const BorrowAssetsList = () => {
             )}
           </>
         )}
-        {ghoReserve &&
-          !downToXSM &&
-          displayGhoForMintableMarket({ symbol: ghoReserve.symbol, currentMarket }) && (
-            <AssetCapsProvider asset={ghoReserve.reserve}>
-              <GhoBorrowAssetsListItem {...ghoReserve} />
-            </AssetCapsProvider>
-          )}
         {!downToXSM && !!borrowReserves.length && <RenderHeader />}
-        {ghoReserve &&
-          downToXSM &&
-          displayGhoForMintableMarket({ symbol: ghoReserve.symbol, currentMarket }) && (
-            <AssetCapsProvider asset={ghoReserve.reserve}>
-              <GhoBorrowAssetsListItem {...ghoReserve} />
-            </AssetCapsProvider>
-          )}
+        {/*{ghoReserve &&*/}
+        {/*  downToXSM &&*/}
+        {/*  displayGhoForMintableMarket({ symbol: ghoReserve.symbol, currentMarket }) && (*/}
+        {/*    <AssetCapsProvider asset={ghoReserve.reserve}>*/}
+        {/*      <GhoBorrowAssetsListItem {...ghoReserve} />*/}
+        {/*    </AssetCapsProvider>*/}
+        {/*  )}*/}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>

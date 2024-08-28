@@ -1,5 +1,5 @@
 import { DuplicateIcon } from '@heroicons/react/outline';
-import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -92,6 +92,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const handleCopy = async () => {
     navigator.clipboard.writeText(currentAccount);
     trackEvent(AUTH.COPY_ADDRESS);
+    handleClose();
+  };
+
+  const handleCopyReferralCode = async () => {
+    navigator.clipboard.writeText('E24C0234B9');
     handleClose();
   };
 
@@ -212,97 +217,93 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         </ListItemText>
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
-      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-        <Box
-          component={component}
+      <Box
+        component={component}
+        sx={{
+          color: { xs: '#F1F1F3', md: theme.palette.text.primary },
+          height: '48px',
+          display: 'flex',
+          py: 1.5,
+        }}
+        onClick={handleCopyReferralCode}
+      >
+        <ListItemText>
+          <Box sx={{ fontSize: '16px', color: theme.palette.text.primary, pl: 8, fontWeight: 600 }}>
+            <Trans>E24C0234B9</Trans>
+          </Box>
+        </ListItemText>
+        <ListItemIcon
           sx={{
-            color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-            height: '48px',
-            display: 'flex',
-            py: 1.5,
+            color: theme.palette.text.primary,
+            pl: 4,
+            mr: 0,
           }}
-          onClick={handleViewOnExplorer}
         >
-          <ListItemText>
-            <Box
-              sx={{ fontSize: '16px', color: theme.palette.text.primary, pl: 8, fontWeight: 600 }}
-            >
-              <Trans>E24C0234B9</Trans>
-            </Box>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              color: theme.palette.text.primary,
-              pl: 4,
-              mr: 0,
-            }}
-          >
-            <SvgIcon fontSize="small">
-              <ArrowForwardIosIcon />
-            </SvgIcon>
-          </ListItemIcon>
-        </Box>
-      </Link>
-      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-        <Box
-          component={component}
+          <SvgIcon fontSize="small">
+            <ArrowForwardIosIcon />
+          </SvgIcon>
+        </ListItemIcon>
+      </Box>
+      <Box
+        component={component}
+        sx={{
+          color: { xs: '#F1F1F3', md: theme.palette.text.primary },
+          height: '48px',
+          p: '6px 12px',
+        }}
+        onClick={handleCopyReferralCode}
+      >
+        <ListItemIcon
           sx={{
-            color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-            height: '48px',
-            p: '6px 12px',
+            color: theme.palette.text.primary,
+            p: 0,
+            lineHeight: 1.3,
           }}
-          onClick={handleViewOnExplorer}
         >
-          <ListItemIcon
-            sx={{
-              color: theme.palette.text.primary,
-              p: 0,
-              lineHeight: 1.3,
-            }}
+          <SvgIcon fontSize="small">
+            <AccountCircleOutlinedIcon />
+          </SvgIcon>
+        </ListItemIcon>
+        <ListItemText>
+          <Box
+            sx={{ fontSize: '17px', color: theme.palette.text.secondary, p: 0, lineHeight: 1.3 }}
           >
-            <SvgIcon fontSize="small">
-              <AccountCircleOutlinedIcon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText>
-            <Box
-              sx={{ fontSize: '17px', color: theme.palette.text.secondary, p: 0, lineHeight: 1.3 }}
-            >
-              <Trans>Copy referral code</Trans>
-            </Box>
-          </ListItemText>
-        </Box>
-      </Link>
+            <Trans>Copy referral code</Trans>
+          </Box>
+        </ListItemText>
+      </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
       {networkConfig?.explorerLinkBuilder && (
-        <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-          <Box
-            component={component}
-            sx={{
-              color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-              height: '48px',
-              p: '6px 12px',
-            }}
-            onClick={handleViewOnExplorer}
-          >
-            <ListItemIcon
+        <Box>
+          <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
+            <Box
+              component={component}
               sx={{
-                color: theme.palette.text.primary,
+                color: { xs: '#F1F1F3', md: theme.palette.text.primary },
+                height: '48px',
+                p: '6px 12px',
               }}
+              onClick={handleViewOnExplorer}
             >
-              <SvgIcon fontSize="small">
-                <CallMadeOutlinedIcon />
-              </SvgIcon>
-            </ListItemIcon>
-            <ListItemText>
-              <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
-                <Trans>View on Explorer</Trans>
-              </Box>
-            </ListItemText>
-          </Box>
-        </Link>
+              <ListItemIcon
+                sx={{
+                  color: theme.palette.text.primary,
+                }}
+              >
+                <SvgIcon fontSize="small">
+                  <CallMadeOutlinedIcon />
+                </SvgIcon>
+              </ListItemIcon>
+              <ListItemText>
+                <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+                  <Trans>View on Explorer</Trans>
+                </Box>
+              </ListItemText>
+            </Box>
+          </Link>
+          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+        </Box>
       )}
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
       {!md && (
         <Box
           component={component}

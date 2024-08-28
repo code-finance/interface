@@ -15,6 +15,7 @@ export const ListItemIsolationBadge = ({ children }: ListItemIsolationBadgeProps
         alignItems: { xs: 'flex-end', xsm: 'center' },
         justifyContent: 'center',
         flexDirection: 'column',
+        gap: 1,
       }}
     >
       {children}

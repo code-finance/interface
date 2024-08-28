@@ -13,12 +13,6 @@ export const FaucetButton = () => {
   return (
     <DarkTooltip title="Get free assets to test the Aave Protocol">
       <Button
-        sx={{
-          bgcolor: 'transparent',
-          '&:hover': { bgcolor: 'transparent' },
-          color: 'text.primary',
-          borderColor: theme.palette.text.subText,
-        }}
         startIcon={
           <img
             src={currentNetworkConfig.networkLogoPath}
@@ -33,7 +27,7 @@ export const FaucetButton = () => {
         }
         component={Link}
         href={ROUTES.faucet}
-        variant="outlined"
+        variant="text"
         size="small"
       >
         <Typography variant="buttonS">

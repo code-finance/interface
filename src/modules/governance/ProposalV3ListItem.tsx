@@ -54,8 +54,7 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
           }}
           color="text.primary"
         >
-          {proposal.subgraphProposal.proposalMetadata.title} 432 4123 4234 234 23 4132 423 4321 4
-          2314 234 1234 321 4123 4123 41 324 1324 1234 234 23 42 423 4123
+          {proposal.subgraphProposal.proposalMetadata.title}
         </Typography>
       </Stack>
       <Stack

@@ -7,8 +7,10 @@ interface DashboardContentNoDataProps {
 
 export const DashboardContentNoData = ({ text }: DashboardContentNoDataProps) => {
   return (
-    <Box>
-      <Typography color="white">{text}</Typography>
+    <Box sx={{ mt: 4, mb: 2 }}>
+      <Typography color="text.buttonText" typography="body2">
+        {text}
+      </Typography>
     </Box>
   );
 };

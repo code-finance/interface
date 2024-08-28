@@ -91,173 +91,113 @@ export const DashboardTopPanel = () => {
           .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
           .toFixed();
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
+  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
+  const noDataTypographyVariant = downToSM ? 'secondary16' : 'body1';
 
   return (
     <>
-      {showMigrateButton && downToSM && (
-        <Box sx={{ width: '100%' }}>
-          <Link href={ROUTES.migrationTool}>
-            <Button
-              variant="gradient"
+      <TopInfoPanel pageTitle={<Trans>Dashboard</Trans>} withMarketSwitcher>
+        <TopInfoPanelItem hideIcon title={<Trans>Net worth</Trans>} loading={loading}>
+          {currentAccount ? (
+            <FormattedNumber
+              value={Number(user?.netWorthUSD || 0)}
+              symbol="USD"
+              variant={valueTypographyVariant}
+              visibleDecimals={2}
+              compact
+              symbolsVariant={noDataTypographyVariant}
+            />
+          ) : (
+            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
+          )}
+        </TopInfoPanelItem>
+        <TopInfoPanelItem
+          title={
+            <span style={{ display: 'flex' }}>
+              <Trans>Net APY</Trans>
+              <NetAPYTooltip
+                iconSize={18}
+                event={{
+                  eventName: GENERAL.TOOL_TIP,
+                  eventParams: { tooltip: 'NET APY: Dashboard Banner' },
+                }}
+              />
+            </span>
+          }
+          loading={loading}
+          hideIcon
+        >
+          {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
+            <FormattedNumber
+              value={user ? user.netAPY : 0}
+              variant={valueTypographyVariant}
+              visibleDecimals={2}
+              percent
+              symbolsColor={theme.palette.text.primary}
+              symbolsVariant={noDataTypographyVariant}
+            />
+          ) : (
+            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
+          )}
+        </TopInfoPanelItem>
+        {currentAccount && user?.healthFactor !== '-1' && (
+          <TopInfoPanelItem title={<Trans>Health factor</Trans>} loading={loading} hideIcon>
+            <HealthFactorNumber
+              value={user?.healthFactor || '-1'}
+              variant={valueTypographyVariant}
+              onInfoClick={() => {
+                trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
+                setOpen(true);
+              }}
+            />
+          </TopInfoPanelItem>
+        )}
+        {currentAccount && claimableRewardsUsd > 0 && (
+          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} loading={loading} hideIcon>
+            <Box
               sx={{
-                height: '40px',
-                width: '100%',
+                display: 'flex',
+                alignItems: { xs: 'flex-start', xsm: 'center' },
+                flexDirection: { xs: 'column', xsm: 'row' },
               }}
             >
-              <Typography variant="buttonM">
-                <Trans>Migrate to {market.marketTitle} v3 Market</Trans>
-              </Typography>
-            </Button>
-          </Link>
-        </Box>
-      )}
-      <TopInfoPanel
-        titleComponent={
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <PageTitle
-              pageTitle={<Trans>Dashboard</Trans>}
-              withMarketSwitcher={true}
-              bridge={currentNetworkConfig.bridge}
-            />
-          </Box>
-        }
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-        >
-          <div style={{ display: 'flex', gap: '20px', color: theme.palette.text.primary }}>
-            <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
-              {currentAccount ? (
+              <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'Claim_Box'}>
                 <FormattedNumber
-                  value={Number(user?.netWorthUSD || 0)}
-                  symbol="USD"
+                  value={claimableRewardsUsd}
                   variant={valueTypographyVariant}
                   visibleDecimals={2}
                   compact
-                  symbolsColor={theme.palette.text.primary}
+                  symbol="USD"
                   symbolsVariant={noDataTypographyVariant}
+                  data-cy={'Claim_Value'}
                 />
-              ) : (
-                <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
-              )}
-            </TopInfoPanelItem>
-            <TopInfoPanelItem
-              title={
-                <div style={{ display: 'flex' }}>
-                  <Trans>Net APY</Trans>
-                  <NetAPYTooltip
-                    event={{
-                      eventName: GENERAL.TOOL_TIP,
-                      eventParams: { tooltip: 'NET APY: Dashboard Banner' },
-                    }}
-                  />
-                </div>
-              }
-              loading={loading}
-              hideIcon
-            >
-              {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
-                <FormattedNumber
-                  value={user ? user.netAPY : 0}
-                  variant={valueTypographyVariant}
-                  visibleDecimals={2}
-                  percent
-                  symbolsColor={theme.palette.text.primary}
-                  symbolsVariant={noDataTypographyVariant}
-                />
-              ) : (
-                <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
-              )}
-            </TopInfoPanelItem>
-            {currentAccount && user?.healthFactor !== '-1' && (
-              <TopInfoPanelItem
-                title={
-                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                    <Trans>Health factor</Trans>
-                  </Box>
-                }
-                loading={loading}
-                hideIcon
-              >
-                <HealthFactorNumber
-                  value={user?.healthFactor || '-1'}
-                  variant={valueTypographyVariant}
-                  onInfoClick={() => {
-                    trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
-                    setOpen(true);
-                  }}
-                />
-              </TopInfoPanelItem>
-            )}
-            {currentAccount && claimableRewardsUsd > 0 && (
-              <TopInfoPanelItem title={<Trans>Available rewards</Trans>} loading={loading} hideIcon>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: { xs: 'flex-start', xsm: 'center' },
-                    flexDirection: { xs: 'column', xsm: 'row' },
-                  }}
-                >
-                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'Claim_Box'}>
-                    <FormattedNumber
-                      value={claimableRewardsUsd}
-                      variant={valueTypographyVariant}
-                      visibleDecimals={2}
-                      compact
-                      symbol="USD"
-                      symbolsColor="#A5A8B6"
-                      symbolsVariant={noDataTypographyVariant}
-                      data-cy={'Claim_Value'}
-                    />
-                  </Box>
-                  <Button
-                    variant="gradient"
-                    size="small"
-                    onClick={() => openClaimRewards()}
-                    sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
-                    data-cy={'Dashboard_Claim_Button'}
-                  >
-                    <Trans>Claim</Trans>
-                  </Button>
-                </Box>
-              </TopInfoPanelItem>
-            )}
-          </div>
-          {currentAccount && (
-            <Box>
+              </Box>
               <Button
-                onClick={() => {
-                  router.push(ROUTES.history);
-                  trackEvent(AUTH.VIEW_TX_HISTORY);
-                }}
-                component="a"
                 variant="outlined"
                 size="small"
-                sx={{
-                  textTransform: 'uppercase',
-                  color: 'text.secondary',
-                  bgcolor: 'transparent',
-                  height: '42px',
-                  p: '10px 24px',
-                  fontSize: '17px',
-                  borderColor: theme.palette.text.subText,
-                  '&:hover': {
-                    bgcolor: 'transparent',
-                  },
-                }}
+                onClick={() => openClaimRewards()}
+                sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+                data-cy={'Dashboard_Claim_Button'}
               >
-                <Trans>View Transactions</Trans>
+                <Trans>Claim</Trans>
               </Button>
             </Box>
-          )}
-        </Box>
+          </TopInfoPanelItem>
+        )}
+        {currentAccount && (
+          <Button
+            sx={{ ml: 'auto', width: '221px', height: '42px' }}
+            onClick={() => {
+              router.push(ROUTES.history);
+              trackEvent(AUTH.VIEW_TX_HISTORY);
+            }}
+            component="a"
+            size="small"
+            variant="transparent"
+          >
+            <Trans>View Transactions</Trans>
+          </Button>
+        )}
       </TopInfoPanel>
 
       <LiquidationRiskParametresInfoModal

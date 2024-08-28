@@ -204,7 +204,7 @@ export const SupplyAssetsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper sx={{ bgcolor: theme.palette.background.primary }}>
+      <ListHeaderWrapper sx={{ mt: 5 }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
@@ -242,50 +242,48 @@ export const SupplyAssetsList = () => {
 
   return (
     <ListWrapper
+      paperSx={{ mt: 5 }}
       titleComponent={
         <Typography component="div" variant="h2" sx={{ mr: 4 }}>
           <Trans>Assets to supply</Trans>
         </Typography>
       }
+      collapsedSx={(theme) => ({ color: theme.palette.text.mainTitle })}
       localStorageName="supplyAssetsDashboardTableCollapse"
       withTopMargin
       noData={supplyDisabled}
-      subChildrenComponent={
-        <>
-          <Box>
-            {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
-              <MarketWarning marketName="Harmony" />
-            ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
-              <MarketWarning marketName="Fantom" />
-            ) : supplyDisabled && currentMarketData.marketTitle === 'Ethereum AMM' ? (
-              <MarketWarning marketName="Ethereum AMM" />
-            ) : user?.isInIsolationMode ? (
-              <Warning severity="warning">
-                <Trans>
-                  Collateral usage is limited because of isolation mode.{' '}
-                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
-                    Learn More
-                  </Link>
-                </Trans>
-              </Warning>
-            ) : (
-              filteredSupplyReserves.length === 0 &&
-              (isTestnet ? (
-                <Warning severity="info">
-                  <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
-                  <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
-                    <Trans>{networkName} Faucet</Trans>
-                  </Link>
-                </Warning>
-              ) : (
-                <WalletEmptyInfo name={networkName} bridge={bridge} chainId={currentChainId} />
-              ))
-            )}
-          </Box>
-        </>
-      }
     >
       <>
+        <Box>
+          {supplyDisabled && currentNetworkConfig.name === 'Harmony' ? (
+            <MarketWarning marketName="Harmony" />
+          ) : supplyDisabled && currentNetworkConfig.name === 'Fantom' ? (
+            <MarketWarning marketName="Fantom" />
+          ) : supplyDisabled && currentMarketData.marketTitle === 'Ethereum AMM' ? (
+            <MarketWarning marketName="Ethereum AMM" />
+          ) : user?.isInIsolationMode ? (
+            <Warning severity="warning">
+              <Trans>
+                Collateral usage is limited because of isolation mode.{' '}
+                <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                  Learn More
+                </Link>
+              </Trans>
+            </Warning>
+          ) : (
+            filteredSupplyReserves.length === 0 &&
+            (isTestnet ? (
+              <Warning severity="info">
+                <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
+                <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
+                  <Trans>{networkName} Faucet</Trans>
+                </Link>
+              </Warning>
+            ) : (
+              <WalletEmptyInfo name={networkName} bridge={bridge} chainId={currentChainId} />
+            ))
+          )}
+        </Box>
         {filteredSupplyReserves.length >= 1 && (
           <DashboardListTopPanel
             value={isShowZeroAssets}

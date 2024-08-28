@@ -27,14 +27,16 @@ export const ListTopInfoItem = ({ title, value, percent, tooltip }: ListTopInfoI
         bgcolor: theme.palette.background.chip,
       }}
     >
-      <Typography color={theme.palette.text.buttonText} sx={{ mr: 1 }} noWrap>
+      <Typography variant="detail2" color={theme.palette.text.buttonText} sx={{ mr: 1 }} noWrap>
         {title}
       </Typography>
       <FormattedNumber
-        symbolsColor={theme.palette.text.buttonText}
+        symbolsColor="text.buttonText"
         value={value}
         percent={percent}
-        variant="secondary14"
+        variant="detail2"
+        symbolsVariant="detail2"
+        color="text.buttonText"
         symbol="USD"
       />
 
