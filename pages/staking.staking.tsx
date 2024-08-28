@@ -161,7 +161,7 @@ export default function Staking() {
             </Box>
 
             <Grid container spacing={4}>
-              {/* <Grid
+              <Grid
                 item
                 xs={12}
                 lg={STAGING_ENV || ENABLE_TESTNET ? 12 : 6}
@@ -206,7 +206,7 @@ export default function Staking() {
                     <GhoDiscountProgram />
                   </Box>
                 </StakingPanel>
-              </Grid> */}
+              </Grid>
               <Grid
                 item
                 xs={12}
