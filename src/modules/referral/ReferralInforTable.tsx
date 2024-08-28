@@ -2,25 +2,16 @@ import { Trans } from '@lingui/macro';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { Box, Typography, useTheme } from '@mui/material';
+import { PropsWithChildren } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+
+import { WrapTypography } from '../../components/WrapTypography';
 
 export const ReferralInforTable = () => {
   const theme = useTheme();
   return (
-    <Box sx={{ display: 'flex', gap: '20px' }}>
-      <Box
-        sx={{
-          flex: 1,
-          pl: 6,
-          pr: 5,
-          py: 8,
-          borderRadius: 4,
-          bgcolor: theme.palette.background.top,
-        }}
-      >
-        <Typography variant="h2" color="text.primary" mb={10}>
-          <Trans>Your info</Trans>
-        </Typography>
+    <Box sx={{ display: 'flex', gap: '20px', alignItems: 'stretch', flexWrap: 'wrap' }}>
+      <BoxWrapper title={'Your info'}>
         <Box sx={{ px: 2 }}>
           <Box sx={{ display: 'flex', mb: '60px' }}>
             <Box
@@ -30,12 +21,20 @@ export const ReferralInforTable = () => {
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 flex: 1,
+                overflow: 'hidden',
               }}
             >
-              <Typography variant="body3" color="text.secondary" mb="7.5px">
+              <WrapTypography
+                variant="body3"
+                color="text.secondary"
+                mb={2}
+                sx={{ display: 'flex', alignItems: 'center', lineHeight: '20px' }}
+              >
                 <Trans>Your referral code</Trans>
-                <ContentCopyIcon sx={{ width: '24px', height: '24px', ml: '4px' }} />
-              </Typography>
+                <ContentCopyIcon
+                  sx={{ width: '20px', height: '20px', ml: '4px', color: 'inherit' }}
+                />
+              </WrapTypography>
               <Typography variant="body1" color="text.primary">
                 <Trans>E24C0206B9</Trans>
               </Typography>
@@ -47,11 +46,17 @@ export const ReferralInforTable = () => {
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 flex: 1,
+                overflow: 'hidden',
               }}
             >
-              <Typography variant="body3" color="text.secondary" mb="8px">
+              <WrapTypography
+                variant="body3"
+                color="text.secondary"
+                mb={2}
+                sx={{ lineHeight: '20px' }}
+              >
                 <Trans>Recipients of your referral code</Trans>
-              </Typography>
+              </WrapTypography>
               <Typography variant="body1" color="text.primary">
                 <Trans>19 People</Trans>
               </Typography>
@@ -61,6 +66,7 @@ export const ReferralInforTable = () => {
             <Typography
               variant="body1"
               sx={{ display: 'flex', alignItems: 'center', color: 'text.primary' }}
+              mb={2}
             >
               <VerifiedIcon
                 sx={{
@@ -72,12 +78,17 @@ export const ReferralInforTable = () => {
               />
               <Trans>Friend&apos;s referral code applied</Trans>
             </Typography>
-            <Typography variant="body3" color="text.secondary">
-              <Trans>You provide special referral rewards to your friends.</Trans>
+            <Typography
+              variant="body3"
+              color="text.secondary"
+              sx={{ display: 'flex', alignItems: 'center' }}
+            >
+              <Trans>You have a preferred interest rate benefit.</Trans>
+              <ContentCopyIcon sx={{ width: '20px', height: '20px', ml: 1, color: 'inherit' }} />
             </Typography>
           </Box>
-          <Box mb="43px">
-            <Typography variant="body3" color="text.secondary">
+          <Box>
+            <Typography variant="body3" color="text.secondary" mb={2} component="div">
               <Trans>Friend&apos;s referral code</Trans>
             </Typography>
             <Typography variant="body1" color="text.primary">
@@ -85,21 +96,8 @@ export const ReferralInforTable = () => {
             </Typography>
           </Box>
         </Box>
-      </Box>
-      <Box
-        sx={{
-          flex: 1,
-          pl: '24px',
-          pr: '20px',
-          pt: '32px',
-          pb: '28px',
-          borderRadius: '16px',
-          bgcolor: theme.palette.background.top,
-        }}
-      >
-        <Typography variant="h2" color="text.primary" mb={8}>
-          <Trans>Referral reward calculator</Trans>
-        </Typography>
+      </BoxWrapper>
+      <BoxWrapper title={'Referral reward calculator'}>
         <Box
           sx={{
             display: 'flex',
@@ -162,152 +160,94 @@ export const ReferralInforTable = () => {
         <Box
           sx={{
             display: 'flex',
-            gap: '9px',
+            gap: 2,
           }}
         >
-          <Box
-            sx={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              px: '16px',
-              py: '12px',
-              bgcolor: theme.palette.background.primary,
-              borderRadius: '11px',
-            }}
-          >
-            <Typography
-              variant="body6"
-              sx={{
-                color: theme.palette.text.disabled,
-                mb: '16px',
-                textAlign: 'center',
-              }}
-            >
-              <Trans>Monthly</Trans>
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                mb: '8px',
-              }}
-            >
-              <Typography variant="detail2" color={theme.palette.text.disabled}>
-                <Trans>0</Trans>
-              </Typography>
-              <Typography variant="detail2" color={theme.palette.text.disabled}>
-                <Trans>CODE</Trans>
-              </Typography>
-            </Box>
-            <FormattedNumber
-              variant="detail2"
-              symbolsVariant="detail2"
-              symbolsColor={theme.palette.text.disabled}
-              symbol="USD"
-              value={0}
-              sx={{ color: theme.palette.text.disabled }}
-              visibleDecimals={2}
-            />
-          </Box>
-          <Box
-            sx={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              px: '16px',
-              py: '12px',
-              bgcolor: theme.palette.background.primary,
-              borderRadius: '11px',
-            }}
-          >
-            <Typography
-              variant="body6"
-              sx={{
-                color: theme.palette.text.disabled,
-                mb: '16px',
-                textAlign: 'center',
-              }}
-            >
-              <Trans>Quarterly</Trans>
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                mb: '8px',
-              }}
-            >
-              <Typography variant="detail2" color={theme.palette.text.disabled}>
-                <Trans>0</Trans>
-              </Typography>
-              <Typography variant="detail2" color={theme.palette.text.disabled}>
-                <Trans>CODE</Trans>
-              </Typography>
-            </Box>
-            <FormattedNumber
-              variant="detail2"
-              symbolsVariant="detail2"
-              symbolsColor={theme.palette.text.disabled}
-              symbol="USD"
-              value={0}
-              sx={{ color: theme.palette.text.disabled }}
-              visibleDecimals={2}
-            />
-          </Box>
-          <Box
-            sx={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              px: '16px',
-              py: '12px',
-              bgcolor: theme.palette.background.primary,
-              borderRadius: '11px',
-            }}
-          >
-            <Typography
-              variant="body6"
-              sx={{
-                color: theme.palette.text.disabled,
-                mb: '16px',
-                textAlign: 'center',
-              }}
-            >
-              <Trans>Annually</Trans>
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                mb: '8px',
-              }}
-            >
-              <Typography variant="detail2" color={theme.palette.text.disabled}>
-                <Trans>0</Trans>
-              </Typography>
-              <Typography variant="detail2" color={theme.palette.text.disabled}>
-                <Trans>CODE</Trans>
-              </Typography>
-            </Box>
-            <FormattedNumber
-              variant="detail2"
-              symbolsVariant="detail2"
-              symbolsColor={theme.palette.text.disabled}
-              symbol="USD"
-              value={0}
-              sx={{ color: theme.palette.text.disabled }}
-              visibleDecimals={2}
-            />
-          </Box>
+          <EstimateReward title={'Monthly'} />
+          <EstimateReward title={'Quarterly'} />
+          <EstimateReward title={'Annually'} />
         </Box>
+      </BoxWrapper>
+    </Box>
+  );
+};
+
+type BoxWrapper = {
+  title: string;
+};
+const BoxWrapper = ({ children, title }: PropsWithChildren<BoxWrapper>) => {
+  return (
+    <Box
+      sx={(theme) => ({
+        flex: 1,
+        py: 7,
+        px: 6,
+        borderRadius: 4,
+        backgroundColor: theme.palette.background.top,
+        minWidth: '430px',
+      })}
+    >
+      <Typography variant="h2" color="text.primary" mb={10}>
+        <Trans>{title}</Trans>
+      </Typography>
+      {children}
+    </Box>
+  );
+};
+
+type EstimateRewardType = {
+  title: string;
+};
+const EstimateReward = ({ title }: EstimateRewardType) => {
+  const theme = useTheme();
+  return (
+    <Box
+      sx={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        px: 4,
+        py: 3,
+        backgroundColor: theme.palette.background.primary,
+        borderRadius: 3,
+      }}
+    >
+      <Typography
+        variant="body6"
+        color="text.mainTitle"
+        component="div"
+        sx={{
+          mb: 4,
+          textAlign: 'center',
+        }}
+      >
+        <Trans>{title}</Trans>
+      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mb: 2,
+        }}
+      >
+        <Typography variant="detail2" color="text.mainTitle">
+          <Trans>0</Trans>
+        </Typography>
+        <Typography variant="detail2" color="text.mainTitle">
+          <Trans>CODE</Trans>
+        </Typography>
       </Box>
+      <FormattedNumber
+        variant="detail2"
+        symbolsVariant="detail2"
+        symbolsColor="text.mainTitle"
+        color="text.mainTitle"
+        symbol="USD"
+        value={0}
+        visibleDecimals={2}
+      />
     </Box>
   );
 };

@@ -40,21 +40,17 @@ export default function Home() {
             }}
           >
             <StyledToggleButtonGroup
+              sx={{ width: { xs: '100%', sm: 'unset' } }}
               color="primary"
               value={mode}
               exclusive
               onChange={(_, value) => setMode(value)}
-              sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
             >
-              <StyledToggleButton value="supply" disabled={mode === 'supply'}>
-                <Typography variant="subheader1">
-                  <Trans>Supply</Trans>
-                </Typography>
+              <StyledToggleButton value="supply">
+                <Trans>Supply</Trans>
               </StyledToggleButton>
-              <StyledToggleButton value="borrow" disabled={mode === 'borrow'}>
-                <Typography variant="subheader1">
-                  <Trans>Borrow</Trans>
-                </Typography>
+              <StyledToggleButton value="borrow">
+                <Trans>Borrow</Trans>
               </StyledToggleButton>
             </StyledToggleButtonGroup>
           </Box>

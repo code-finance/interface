@@ -50,6 +50,10 @@ export const BorrowAssetsListItem = ({
         value={Number(availableBorrows)}
         subValue={Number(availableBorrowsInUSD)}
         disabled={Number(availableBorrows) === 0}
+        topColor={'text.primary'}
+        topVariant={'body6'}
+        bottomColor={'text.mainTitle'}
+        bottomVariant={'detail2'}
         withTooltip={false}
         capsComponent={
           <CapsHint
