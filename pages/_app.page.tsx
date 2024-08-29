@@ -141,32 +141,32 @@ export default function MyApp(props: MyAppProps) {
           <Web3ReactProvider getLibrary={getWeb3Library}>
             <Web3ContextProvider>
               <AppGlobalStyles>
-                <AddressBlocked>
-                  <ModalContextProvider>
-                    <SharedDependenciesProvider>
-                      <AppDataProvider>
-                        <GasStationProvider>
-                          {getLayout(<Component {...pageProps} />)}
-                          <SupplyModal />
-                          <WithdrawModal />
-                          <BorrowModal />
-                          <RepayModal />
-                          <CollateralChangeModal />
-                          <RateSwitchModal />
-                          <DebtSwitchModal />
-                          <ClaimRewardsModal />
-                          <EmodeModal />
-                          <SwapModal />
-                          <FaucetModal />
-                          <TransactionEventHandler />
-                          <SwitchModal />
-                          <StakingMigrateModal />
-                          <BridgeModal />
-                        </GasStationProvider>
-                      </AppDataProvider>
-                    </SharedDependenciesProvider>
-                  </ModalContextProvider>
-                </AddressBlocked>
+                {/* <AddressBlocked> */}
+                <ModalContextProvider>
+                  <SharedDependenciesProvider>
+                    <AppDataProvider>
+                      <GasStationProvider>
+                        {getLayout(<Component {...pageProps} />)}
+                        <SupplyModal />
+                        <WithdrawModal />
+                        <BorrowModal />
+                        <RepayModal />
+                        <CollateralChangeModal />
+                        <RateSwitchModal />
+                        <DebtSwitchModal />
+                        <ClaimRewardsModal />
+                        <EmodeModal />
+                        <SwapModal />
+                        <FaucetModal />
+                        <TransactionEventHandler />
+                        <SwitchModal />
+                        <StakingMigrateModal />
+                        <BridgeModal />
+                      </GasStationProvider>
+                    </AppDataProvider>
+                  </SharedDependenciesProvider>
+                </ModalContextProvider>
+                {/* </AddressBlocked> */}
               </AppGlobalStyles>
             </Web3ContextProvider>
           </Web3ReactProvider>
