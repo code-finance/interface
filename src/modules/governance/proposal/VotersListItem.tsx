@@ -72,17 +72,15 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
           <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: '6px' }} />
           <Link
+            color={'text.primary'}
             href={`https://etherscan.io/address/${address}`}
             onClick={() =>
               trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'AIP VOTERS', Link: 'Etherscan' })
             }
           >
-            <Typography
-              variant="detail3"
-              color="primary"
-              sx={{ display: 'flex', alignItems: 'center' }}
-            >
-              {displayName(ensName)}
+            <Typography variant="detail3" sx={{ display: 'flex', alignItems: 'center' }}>
+              {/* {displayName(ensName)} */}
+              {address}
               {/* <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
                 <ExternalLinkIcon />
               </SvgIcon> */}

@@ -90,16 +90,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     }}
                   >
                     <Box>
-                      <StateBadge
-                        wrapperSx={{
-                          px: '12px !important',
-                          py: '10px',
-                          color: theme.palette.point.positive,
-                          borderColor: theme.palette.point.positive,
-                        }}
-                        state={proposal.badgeState}
-                        loading={loading}
-                      />
+                      <StateBadge state={proposal.badgeState} loading={loading} />
                       {/* <Button
                         sx={{
                           px: '12px',
@@ -204,59 +195,83 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
             </Typography>
           )}
           {proposal ? (
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                table({ node, ...props }) {
-                  return (
-                    <TableContainer component={Paper} variant="outlined">
-                      <Table {...props} sx={{ wordBreak: 'normal' }} />
-                    </TableContainer>
-                  );
-                },
-                tr({ node, ...props }) {
-                  return (
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 }, mt: '16px' }}
-                      {...props}
-                    />
-                  );
-                },
-                td({ children, style }) {
-                  return <TableCell style={style}>{children}</TableCell>;
-                },
-                th({ children, style }) {
-                  return <TableCell style={style}>{children}</TableCell>;
-                },
-                tbody({ children }) {
-                  return <TableBody>{children}</TableBody>;
-                },
-                thead({ node, ...props }) {
-                  return <TableHead {...props} />;
-                },
-                img({ src: _src, alt }) {
-                  if (!_src) return null;
-                  const src = /^\.\.\//.test(_src)
-                    ? _src.replace(
-                        '../',
-                        'https://raw.githubusercontent.com/aave/aip/main/content/'
-                      )
-                    : _src;
-                  return <CenterAlignedImage src={src} alt={alt} />;
-                },
-                a({ node, ...rest }) {
-                  return <StyledLink {...rest} />;
-                },
-                h2({ node, ...rest }) {
-                  return <Typography variant="h3" mt={'40px'} mb={0} gutterBottom {...rest} />;
-                },
-                p({ node, ...rest }) {
-                  return <Typography variant="body2" {...rest} />;
-                },
-              }}
-            >
-              {proposal.subgraphProposal.proposalMetadata.description}
-            </ReactMarkdown>
+            <Box sx={{ px: '8px' }}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  table({ node, ...props }) {
+                    return (
+                      <TableContainer component={Paper} variant="outlined">
+                        <Table {...props} sx={{ wordBreak: 'normal' }} />
+                      </TableContainer>
+                    );
+                  },
+                  tr({ node, ...props }) {
+                    return (
+                      <TableRow
+                        // sx={{ '&:last-child td, &:last-child th': { border: 0 }, mt: '16px' }}
+                        {...props}
+                      />
+                    );
+                  },
+                  td({ children, style }) {
+                    return <TableCell style={style}>{children}</TableCell>;
+                  },
+                  th({ children, style }) {
+                    return <TableCell style={style}>{children}</TableCell>;
+                  },
+                  tbody({ children }) {
+                    return <TableBody>{children}</TableBody>;
+                  },
+                  thead({ node, ...props }) {
+                    return <TableHead {...props} />;
+                  },
+                  ul({ children, style }) {
+                    return (
+                      <ul
+                        style={{
+                          paddingLeft: '10px',
+                          marginLeft: '10px',
+                          ...style,
+                        }}
+                      >
+                        {children}
+                      </ul>
+                    );
+                  },
+                  img({ src: _src, alt }) {
+                    if (!_src) return null;
+                    const src = /^\.\.\//.test(_src)
+                      ? _src.replace(
+                          '../',
+                          'https://raw.githubusercontent.com/aave/aip/main/content/'
+                        )
+                      : _src;
+                    return <CenterAlignedImage src={src} alt={alt} />;
+                  },
+                  a({ node, ...rest }) {
+                    return <StyledLink {...rest} />;
+                  },
+                  h2({ node, ...rest }) {
+                    return (
+                      <Typography variant="h3" mt={'40px'} mb={'16px'} gutterBottom {...rest} />
+                    );
+                  },
+                  p({ node, ...rest }) {
+                    return <Typography variant="body2" {...rest} />;
+                  },
+                  li({ node, ...rest }) {
+                    return (
+                      <li>
+                        <Typography variant="body2" px={0} {...rest} />
+                      </li>
+                    );
+                  },
+                }}
+              >
+                {proposal.subgraphProposal.proposalMetadata.description}
+              </ReactMarkdown>
+            </Box>
           ) : (
             <>
               <Skeleton variant="text" sx={{ my: 4 }} />
