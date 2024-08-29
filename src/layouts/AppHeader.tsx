@@ -86,8 +86,8 @@ const SWITCH_VISITED_KEY = 'switchVisited';
 export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
-  const sm = useMediaQuery(breakpoints.down('sm'));
-  const smd = useMediaQuery('(max-width:1120px)');
+  const sm = useMediaQuery(breakpoints.up('sm'));
+  const lg = useMediaQuery(breakpoints.up('lg'));
   const theme = useTheme();
 
   const [visitedSwitch, setVisitedSwitch] = useState(() => {
@@ -116,7 +116,7 @@ export function AppHeader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = 64;
+  const headerHeight = lg ? 54 : 68;
 
   const toggleWalletWigit = (state: boolean) => {
     if (md) setMobileDrawerOpen(state);
@@ -143,51 +143,6 @@ export function AppHeader() {
     // Set window.location to trigger a page reload when navigating to the the dashboard
     window.location.href = '/';
   };
-
-  const handleSwitchClick = () => {
-    localStorage.setItem(SWITCH_VISITED_KEY, 'true');
-    setVisitedSwitch(true);
-    openSwitch();
-  };
-
-  const handleBridgeClick = () => {
-    openBridge();
-  };
-
-  const testnetTooltip = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
-      <Typography variant="subheader1">
-        <Trans>Testnet mode is ON</Trans>
-      </Typography>
-      <Typography variant="description">
-        <Trans>The app is running in testnet mode. Learn how it works in</Trans>{' '}
-        <Link
-          href="https://docs.aave.com/faq/testing-aave"
-          style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'underline' }}
-        >
-          FAQ.
-        </Link>
-      </Typography>
-      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableTestnet}>
-        <Trans>Disable testnet</Trans>
-      </Button>
-    </Box>
-  );
-
-  const forkTooltip = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
-      <Typography variant="subheader1">
-        <Trans>Fork mode is ON</Trans>
-      </Typography>
-      <Typography variant="description">
-        <Trans>The app is running in fork mode.</Trans>
-      </Typography>
-      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableFork}>
-        <Trans>Disable fork</Trans>
-      </Button>
-    </Box>
-  );
-
   return (
     <HideOnScroll>
       <Box
@@ -201,12 +156,11 @@ export function AppHeader() {
           zIndex: theme.zIndex.appBar,
           backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
           padding: {
-            xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
-            xsm: '8px 20px',
+            xs: '5px 12px 5px 20px',
+            xsm: '20px 40px 0',
           },
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
         })}
       >
         <Box
@@ -215,7 +169,7 @@ export function AppHeader() {
           aria-label="Go to homepage"
           sx={{
             lineHeight: 0,
-            mr: 3,
+            mr: 2,
             transition: '0.3s ease all',
             '&:hover': { opacity: 0.7 },
           }}
@@ -223,116 +177,29 @@ export function AppHeader() {
         >
           <img
             style={{
-              fontSize: '20px',
-              filter:
-                theme.palette.mode === 'light'
-                  ? 'invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)'
-                  : 'none',
+              color: theme.palette.text.primary,
+              height: '30px',
+              width: 'auto',
             }}
             sizes="small"
-            src={uiConfig.appLogo}
+            src={sm ? uiConfig.appLogo : uiConfig.appLogoMobile}
             alt="CODE labs"
           />
         </Box>
-        {/* <Box sx={{ mr: sm ? 1 : 3 }}>
-          {ENABLE_TESTNET && (
-            <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
-              <Button
-                variant="surface"
-                size="small"
-                color="primary"
-                sx={{
-                  backgroundColor: '#B6509E',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
-                }}
-              >
-                TESTNET
-                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-                  <InformationCircleIcon />
-                </SvgIcon>
-              </Button>
-            </ContentWithTooltip>
-          )}
-        </Box>
-        <Box sx={{ mr: sm ? 1 : 3 }}>
-          {FORK_ENABLED && currentMarketData?.isFork && (
-            <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
-              <Button
-                variant="surface"
-                size="small"
-                color="primary"
-                sx={{
-                  backgroundColor: '#B6509E',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
-                }}
-              >
-                FORK
-                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-                  <InformationCircleIcon />
-                </SvgIcon>
-              </Button>
-            </ContentWithTooltip>
-          )}
-        </Box> */}
 
-        <Box sx={{ display: { xs: 'none', md: 'block', flex: 1 } }}>
+        <Box sx={{ display: { xs: 'none', lg: 'block', flex: 1 } }}>
           <NavItems />
         </Box>
 
-        {/* <NoSsr>
-          <StyledBadge
-            invisible={visitedSwitch}
-            variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
-          >
-            <Button
-              onClick={handleBridgeClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-            >
-              {!smd && (
-                <Typography component="span" typography="subheader1">
-                  Bridge GHO
-                </Typography>
-              )}
-              <SvgIcon fontSize="small">
-                <SparklesIcon />
-              </SvgIcon>
-            </Button>
-          </StyledBadge>
-        </NoSsr>
-
-        <NoSsr>
-          <StyledBadge
-            invisible={true}
-            variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
-          >
-            <Button
-              onClick={handleSwitchClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-              aria-label="Switch tool"
-            >
-              {!smd && (
-                <Typography component="span" typography="subheader1">
-                  Switch tokens
-                </Typography>
-              )}
-              <SvgIcon fontSize="small">
-                <SwitchHorizontalIcon />
-              </SvgIcon>
-            </Button>
-          </StyledBadge>
-        </NoSsr> */}
-
         {!mobileMenuOpen && (
           <Box
-            sx={{ bgcolor: theme.palette.background.modulePopup, borderRadius: 2, height: '48px' }}
+            sx={{
+              bgcolor: theme.palette.background.modulePopup,
+              borderRadius: 3,
+              height: lg ? '48px' : '44px',
+              ml: 'auto',
+              overflow: 'hidden',
+            }}
           >
             <WalletWidget
               open={walletWidgetOpen}
@@ -344,14 +211,14 @@ export function AppHeader() {
 
         <Box
           sx={{
-            display: { xs: 'none', md: 'block' },
+            display: { xs: 'none', lg: 'block' },
           }}
         >
           <SettingsMenu />
         </Box>
 
         {!walletWidgetOpen && (
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ display: { xs: 'flex', lg: 'none' }, ml: mobileMenuOpen ? 'auto' : 'unset' }}>
             <MobileMenu
               open={mobileMenuOpen}
               setOpen={toggleMobileMenu}

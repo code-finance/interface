@@ -1,3 +1,4 @@
 export const uiConfig = {
-  appLogo: '/aave-com-logo-header.svg',
+  appLogo: '/codelabs-logo-large.svg',
+  appLogoMobile: '/codelabs-logo-small.svg',
 };

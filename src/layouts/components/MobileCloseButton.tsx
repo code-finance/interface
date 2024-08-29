@@ -1,5 +1,5 @@
 import { XIcon } from '@heroicons/react/outline';
-import { IconButton, SvgIcon } from '@mui/material';
+import { Button, IconButton, SvgIcon } from '@mui/material';
 import React from 'react';
 
 interface MobileCloseButtonProps {
@@ -8,10 +8,13 @@ interface MobileCloseButtonProps {
 
 export const MobileCloseButton = ({ setOpen }: MobileCloseButtonProps) => {
   return (
-    <IconButton onClick={() => setOpen(false)} sx={{ p: 0, mr: { xs: -2, xsm: 1 } }}>
-      <SvgIcon sx={{ color: '#F1F1F3', fontSize: '32px' }}>
+    <Button
+      onClick={() => setOpen(false)}
+      sx={{ ml: 'auto', p: 2, minWidth: 'unset', width: '40px', height: '40px' }}
+    >
+      <SvgIcon sx={{ color: 'text.secondary' }} fontSize="small">
         <XIcon />
       </SvgIcon>
-    </IconButton>
+    </Button>
   );
 };

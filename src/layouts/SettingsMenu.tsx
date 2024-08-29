@@ -1,6 +1,8 @@
 import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Button, Menu, MenuItem, SvgIcon, Typography, useTheme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Box, Theme } from '@mui/system';
 import React, { useState } from 'react';
 import { DEFAULT_LOCALE } from 'src/libs/LanguageProvider';
 import { useRootStore } from 'src/store/root';
@@ -23,7 +25,17 @@ type LanguageCode = keyof typeof LANG_MAP;
 
 // Example usage
 
+const useStyles = makeStyles(() => ({
+  menuPaper: {
+    boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
+    padding: '20px 12px',
+    borderRadius: '12px',
+    width: '300px',
+  },
+}));
+
 export function SettingsMenu() {
+  const classes = useStyles();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -56,49 +68,61 @@ export function SettingsMenu() {
 
   return (
     <>
-      <Button
-        variant="surface"
-        aria-label="settings"
-        id="settings-button"
-        aria-controls={settingsOpen ? 'settings-menu' : undefined}
-        aria-expanded={settingsOpen ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleSettingsClick}
+      <Box
         sx={{
-          p: '12px',
-          minWidth: 'unset',
-          ml: 2,
+          p: 0,
           bgcolor: theme.palette.background.modulePopup,
+          ml: 2,
           height: '48px',
           width: '48px',
-          borderRadius: '12px',
+          borderRadius: 3,
+          overflow: 'hidden',
         }}
       >
-        <SvgIcon sx={{ color: theme.palette.text.primary }} fontSize="small">
-          <CogIcon />
-        </SvgIcon>
-      </Button>
-
+        <Button
+          variant="surface"
+          aria-label="settings"
+          id="settings-button"
+          aria-controls={settingsOpen ? 'settings-menu' : undefined}
+          aria-expanded={settingsOpen ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={handleSettingsClick}
+          sx={{
+            p: 3,
+            minWidth: 'unset',
+            background: 'transparent',
+          }}
+        >
+          <SvgIcon sx={{ color: theme.palette.text.primary, fontSize: '24px !important' }}>
+            <CogIcon />
+          </SvgIcon>
+        </Button>
+      </Box>
       <Menu
         id="settings-menu"
         MenuListProps={{
           'aria-labelledby': 'settings-button',
         }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         anchorEl={anchorEl}
         open={settingsOpen}
         onClose={handleClose}
+        classes={{
+          paper: classes.menuPaper,
+        }}
         sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}
         keepMounted={true}
       >
-        <MenuItem disabled sx={{ mb: '4px' }}>
-          <Typography variant="subheader2" color="text.secondary">
-            <Trans>Global settings</Trans>
+        <Box sx={{ px: 1.5, py: '9px' }}>
+          <Typography variant="detail2" color="text.mainTitle">
+            <Trans>Settings</Trans>
           </Typography>
-        </MenuItem>
+        </Box>
 
-        <DarkModeSwitcher component={MenuItem} />
+        <DarkModeSwitcher />
         {PROD_ENV && <TestNetModeSwitcher />}
-        <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
+        <LanguageListItem onClick={handleLanguageClick} />
       </Menu>
 
       <Menu
@@ -110,6 +134,9 @@ export function SettingsMenu() {
         open={languagesOpen}
         onClose={handleClose}
         keepMounted={true}
+        classes={{
+          paper: classes.menuPaper,
+        }}
       >
         <LanguagesList onClick={handleCloseLanguage} component={MenuItem} />
       </Menu>

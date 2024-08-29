@@ -33,14 +33,18 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
     <Box
       component={component}
       onClick={onClick}
-      sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}
+      sx={{ px: 1.5, py: '9px', display: 'flex', alignItems: 'center' }}
     >
       <ListItemText>
-        <Trans>Language</Trans>
+        <Typography variant="body5" color="text.primary">
+          <Trans>Language</Trans>
+        </Typography>
       </ListItemText>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {i18n._(langMap[i18n.locale as keyof typeof langMap])}{' '}
-        <SvgIcon fontSize="small" sx={{ color: { xs: '#F1F1F3', md: 'text.primary' }, ml: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+        <Typography variant="body5" color="text.primary" sx={{ lineHeight: 1 }}>
+          {i18n._(langMap[i18n.locale as keyof typeof langMap])}{' '}
+        </Typography>
+        <SvgIcon sx={{ color: 'inherit', ml: 1, fontSize: '24px !important' }}>
           <ChevronRightIcon />
         </SvgIcon>
       </Box>
@@ -53,49 +57,29 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
 
   return (
     <>
-      <Box
-        component={component}
-        sx={{ color: { xs: '#F1F1F3', md: 'text.primary' }, mb: '4px' }}
-        onClick={onClick}
-      >
-        <ListItemIcon
-          sx={{
-            minWidth: 'unset !important',
-            mr: 2,
-            color: { xs: '#F1F1F3', md: 'primary.light' },
-          }}
-        >
-          <SvgIcon fontSize="small">
-            <ChevronLeftIcon />
-          </SvgIcon>
-        </ListItemIcon>
+      <Box sx={{ mb: '4px' }} onClick={onClick}>
         <ListItemText disableTypography>
-          <Typography variant="subheader2">
+          <Typography variant="detail2" color="text.mainTitle" component="div" sx={{ mb: '4px' }}>
             <Trans>Select language</Trans>
           </Typography>
         </ListItemText>
       </Box>
 
       {Object.keys(langMap).map((lang) => (
-        <Box
-          component={component}
-          key={lang}
-          onClick={() => dynamicActivateLanguage(lang)}
-          sx={{
-            color: { xs: '#F1F1F3', md: 'text.primary' },
-            '.MuiListItemIcon-root': { minWidth: 'unset' },
-            '.MuiMenuItemIcon-root': { minWidth: 'unset' },
-          }}
-        >
+        <Box component={component} key={lang} onClick={() => dynamicActivateLanguage(lang)}>
           <ListItemIcon
             sx={{ mr: 3, borderRadius: '2px', overflow: 'hidden', width: 20, height: 14 }}
           >
             <img src={`/icons/flags/${lang}.svg`} width="100%" height="100%" alt={`${lang} icon`} />
           </ListItemIcon>
-          <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
+          <ListItemText>
+            <Typography variant="body5" color="text.primary">
+              {i18n._(langMap[lang as keyof typeof langMap])}
+            </Typography>
+          </ListItemText>
           {lang === i18n.locale && (
             <ListItemIcon sx={{ m: 0 }}>
-              <SvgIcon fontSize="small" sx={{ color: { xs: '#F1F1F3', md: 'text.primary' } }}>
+              <SvgIcon fontSize="small" sx={{ color: 'text.primary' }}>
                 <CheckIcon />
               </SvgIcon>
             </ListItemIcon>
