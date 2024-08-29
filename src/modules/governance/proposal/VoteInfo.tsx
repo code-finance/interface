@@ -88,7 +88,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
       {user ? (
         <>
           {user && !didVote && !voteOngoing && (
-            <Typography sx={{ textAlign: 'center' }} color="text.muted">
+            <Typography variant="h3" sx={{ textAlign: 'left', mb: '28px' }} color="text.mainTitle">
               <Trans>You did not participate in this proposal</Trans>
             </Typography>
           )}
