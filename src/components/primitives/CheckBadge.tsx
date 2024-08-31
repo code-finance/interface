@@ -1,4 +1,6 @@
-import { CheckCircleIcon, QuestionMarkCircleIcon, XCircleIcon } from '@heroicons/react/solid';
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import { Box, BoxProps, Typography, TypographyProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -19,15 +21,15 @@ export function CheckBadge({
   const { palette } = useTheme();
   return (
     <Box {...rest} sx={{ display: 'flex', alignItems: 'center', ...rest.sx }}>
-      <Typography variant={variant} component="span" sx={{ mr: 1 }}>
+      <Typography variant={variant} component="span" sx={{ mr: 2 }}>
         {text}
       </Typography>
       {loading ? (
-        <QuestionMarkCircleIcon height={16} />
+        <QuestionMarkCircleIcon height={24} />
       ) : checked ? (
-        <CheckCircleIcon height={16} color={palette.success.main} />
+        <CheckOutlinedIcon height={24} sx={{ color: palette.success.main }} />
       ) : (
-        <XCircleIcon height={16} color={palette.error.main} />
+        <HighlightOffOutlinedIcon height={24} sx={{ color: palette.error.main }} />
       )}
     </Box>
   );

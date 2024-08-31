@@ -57,11 +57,11 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
               roundDown
               compact={compact}
             />
-            {!compact && (
+            {/* {!compact && (
               <Typography component="span" variant="detail2" color="text.primary">
                 CODE
               </Typography>
-            )}
+            )} */}
           </Box>
         )}
         {loading ? (

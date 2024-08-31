@@ -26,7 +26,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  // const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -34,7 +34,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
   const TotalFundsTooltip = () => {
     return (
-      <TextWithTooltip iconSize={18}>
+      <TextWithTooltip iconSize={24} color={'text.secondary'}>
         <Box>
           {Object.entries(tvl)
             .sort((a, b) => b[1] - a[1])
@@ -51,10 +51,10 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
   return (
     <TopInfoPanel
       titleComponent={
-        <Box mb={4}>
+        <Box mb={'40px'}>
           <ChainAvailabilityText wrapperSx={{ mb: 3 }} page="Staking" />
 
-          <Typography sx={{ color: '#8E92A3', maxWidth: '1260px', mb: 10 }}>
+          <Typography variant="body3" sx={{ color: 'text.secondary', maxWidth: '1260px', mb: 10 }}>
             <Trans>
               CODE holders (Ethereum, Kaia network only) can stake their assets in the Safety Module
               to add more security to the protocol and earn Safety Incentives. In the case of a
@@ -63,7 +63,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
+              sx={{ textDecoration: 'underline', color: 'text.secondary' }}
               onClick={() =>
                 trackEvent(GENERAL.EXTERNAL_LINK, {
                   Link: 'Staking Risks',
@@ -79,18 +79,19 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
       <TopInfoPanelItem
         hideIcon
         title={
-          <Stack direction="row" alignItems="center" sx={{ fontSize: '18px' }}>
-            <Trans>Funds in the Safety Module</Trans>
+          <Stack direction="row" alignItems="center">
+            <Typography variant="body3" color={'text.secondary'}>
+              <Trans>Funds in the Safety Module</Trans>
+            </Typography>
             <TotalFundsTooltip />
           </Stack>
         }
         loading={loading}
       >
         <FormattedNumber
-          sx={{ fontSize: '22px', mt: 2 }}
           value={total}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant={'body1'}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}
@@ -100,17 +101,16 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
       <TopInfoPanelItem
         hideIcon
         title={
-          <Box sx={{ fontSize: '18px' }}>
+          <Typography variant="body3" color={'text.secondary'}>
             <Trans>Total emission per day</Trans>
-          </Box>
+          </Typography>
         }
         loading={loading}
       >
         <FormattedNumber
-          sx={{ fontSize: '22px', mt: 2 }}
           value={stkEmission || 0}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant={'body1'}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}

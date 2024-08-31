@@ -48,13 +48,21 @@ export const VotersListModal = ({
           bgcolor: 'background.secondary',
         }}
       />
-      <Box sx={{ ...borderBaseStyle, mt: '10px' }}>
+      <Box
+        sx={{
+          ...borderBaseStyle,
+          mt: '10px',
+          px: '12px',
+          py: '16px',
+          bgcolor: 'background.secondary',
+        }}
+      >
         <Row
           sx={{
-            px: 4,
-            py: 2,
             borderBottom: '1px solid',
             borderColor: 'divider',
+            pb: '16px',
+            mb: '16px',
           }}
         >
           <Typography variant="detail2" color="text.secondary">
@@ -65,11 +73,12 @@ export const VotersListModal = ({
           </Typography>
         </Row>
         <VotersList
+          isModal
           voters={voters.yaeVotes}
           sx={{
-            p: 4,
             mb: 0,
             maxHeight: 318,
+            bgcolor: 'background.secondary',
           }}
         />
       </Box>
@@ -88,13 +97,21 @@ export const VotersListModal = ({
           bgcolor: 'background.secondary',
         }}
       />
-      <Box sx={{ ...borderBaseStyle, mt: '10px' }}>
+      <Box
+        sx={{
+          ...borderBaseStyle,
+          mt: '10px',
+          px: '12px',
+          py: '16px',
+          bgcolor: 'background.secondary',
+        }}
+      >
         <Row
           sx={{
-            px: 4,
-            py: 2,
             borderBottom: '1px solid',
             borderColor: 'divider',
+            pb: '16px',
+            mb: '16px',
           }}
         >
           <Typography variant="detail2" color="text.secondary">
@@ -105,11 +122,12 @@ export const VotersListModal = ({
           </Typography>
         </Row>
         <VotersList
+          isModal
           voters={voters.nayVotes}
           sx={{
-            p: 4,
             mb: 0,
             maxHeight: 318,
+            bgcolor: 'background.secondary',
           }}
         />
       </Box>

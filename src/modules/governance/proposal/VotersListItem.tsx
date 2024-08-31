@@ -1,6 +1,7 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { Avatar, Box, SvgIcon, Typography, useTheme } from '@mui/material';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
+import { Avatar, Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { blo } from 'blo';
+import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
@@ -8,7 +9,6 @@ import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
-// import type { GovernanceVoter } from './VotersListContainer';
 
 type EnhancedProposalVote = ProposalVote & {
   ensName?: string;
@@ -17,9 +17,14 @@ type EnhancedProposalVote = ProposalVote & {
 type VotersListItemProps = {
   compact: boolean;
   voter: EnhancedProposalVote;
+  isModal: boolean;
 };
 
-export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
+export const VotersListItem = ({
+  compact,
+  voter,
+  isModal,
+}: VotersListItemProps): JSX.Element | null => {
   const { voter: address, ensName } = voter;
   const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -67,7 +72,13 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
   if (Number(voter.votingPower) <= 0) return null;
 
   return (
-    <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
+    <Box
+      sx={{
+        my: isModal ? '16px' : '20px',
+        '&:first-of-type': { mt: 0 },
+        '&:last-of-type': { mb: 0 },
+      }}
+    >
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box
           sx={{
@@ -91,13 +102,15 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
                 position: 'relative',
                 alignItems: 'center',
                 maxWidth: '122px',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
               }}
             >
               {/* {displayName(ensName)} */}
-              {address}
+              <CompactableTypography
+                compactMode={isModal ? CompactMode.LR : CompactMode.SXL}
+                compact
+              >
+                {address}
+              </CompactableTypography>
               {/* <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
                 <ExternalLinkIcon />
               </SvgIcon> */}

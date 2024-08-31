@@ -142,7 +142,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                   <Trans>Differential</Trans>
                 </Typography>
               }
-              sx={{ height: '24px' }}
+              sx={{ height: '24px', display: 'flex', alignItems: 'center' }}
               captionVariant="description"
             >
               <CheckBadge

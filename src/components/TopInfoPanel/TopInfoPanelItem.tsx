@@ -68,7 +68,7 @@ export const TopInfoPanelItem = ({
           </Box>
         ))}
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, gap: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Typography variant="body3" color="text.secondary">
             {title}
