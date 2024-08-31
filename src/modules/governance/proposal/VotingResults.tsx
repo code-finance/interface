@@ -18,7 +18,7 @@ interface VotingResultsPros {
 
 export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResultsPros) => {
   return (
-    <Paper sx={{ px: '24px', py: '28px', bgcolor: 'background.top' }}>
+    <Paper sx={{ pl: '24px', py: '28px', pr: '20px', bgcolor: 'background.top' }}>
       <Typography variant="h2" color={'text.primary'} sx={{ mb: '55px' }}>
         <Trans>Voting results</Trans>
       </Typography>
@@ -28,7 +28,6 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             yae
             percent={proposal.votingInfo.forPercent}
             votes={proposal.votingInfo.forVotes}
-            sx={{ mt: 8 }}
             loading={loading}
           />
           <VoteBar

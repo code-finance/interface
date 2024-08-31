@@ -89,13 +89,14 @@ export const VotersListContainer = ({ proposal, proposalVotes }: VotersListProps
       <VotersList
         compact={mdScreen}
         voters={proposalVotes.combinedVotes.slice(0, 10)}
-        sx={{ mb: '24px', pl: '12px', pr: '30px', py: '12px' }}
+        sx={{ pl: '12px', pr: '30px', py: '12px' }}
       />
       {proposalVotes.combinedVotes.length > 10 && (
         <Button
           sx={{
             px: '10px',
             py: '12px',
+            mt: '24px',
             borderRadius: '8px',
           }}
           variant="outlined"

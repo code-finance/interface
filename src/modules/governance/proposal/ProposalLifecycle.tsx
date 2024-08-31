@@ -303,8 +303,8 @@ const ProposalStep = ({
       <TimelineSeparator>
         <TimelineDot
           sx={{
-            width: '16px',
-            height: '16px',
+            width: '20px',
+            height: '20px',
             background: completed
               ? theme.palette.point.primary
               : active
@@ -328,9 +328,9 @@ const ProposalStep = ({
       <TimelineContent sx={{ p: '0px 0px 0px 20px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', pt: 0 }}>
           <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {networkLogo && <Avatar sx={{ width: 16, height: 16, mr: 2 }} src={networkLogo} />}
-              <Typography variant="body2" mb="6px">
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: '6px' }}>
+              {networkLogo && <Avatar sx={{ width: 24, height: 24, mr: 2 }} src={networkLogo} />}
+              <Typography variant="body2">
                 <Trans>{stepName}</Trans>
               </Typography>
             </Box>
@@ -359,7 +359,7 @@ const ProposalStep = ({
           )}
         </Box>
         {substeps && subtimelineOpen && (
-          <Timeline sx={{ py: 0 }}>
+          <Timeline sx={{ px: 0, py: 0 }}>
             {substeps.map((elem) => (
               <ProposalStep key={elem.stepName?.toString()} {...elem} />
             ))}
