@@ -1,5 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
+import {
+  Box,
+  FormControlLabel,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Switch,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { SETTINGS } from 'src/utils/mixPanelEvents';
@@ -23,30 +31,28 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
   };
 
   return (
-    <Box
-      component={component}
-      onClick={toggleTestnetsEnabled}
-      sx={{
-        cursor: 'pointer',
-        color: { xs: '#F1F1F3', md: 'text.primary' },
-        py: { xs: 1.5, md: 2 },
-      }}
-    >
+    <Box component={component} onClick={toggleTestnetsEnabled} sx={{ px: 1.5, py: '9px' }}>
       <ListItemText>
-        <Trans>Testnet mode</Trans>
+        <Typography variant="body5" color="text.primary">
+          <Trans>Testnet mode</Trans>
+        </Typography>
       </ListItemText>
       <FormControlLabel
-        sx={{ mr: 0 }}
+        sx={{ mx: 0 }}
         value="testnetsMode"
         control={
           <Switch
             disableRipple
             onClick={() => trackEvent(SETTINGS.TESTNET_MODE)}
             checked={testnetsEnabled}
-            sx={{ '.MuiSwitch-track': { bgcolor: { xs: '#FFFFFF1F', md: 'primary.light' } } }}
+            sx={{ ml: 1 }}
           />
         }
-        label={testnetsEnabled ? 'On' : 'Off'}
+        label={
+          <Typography variant="body5" color="text.primary">
+            {testnetsEnabled ? 'on' : 'off'}
+          </Typography>
+        }
         labelPlacement="start"
       />
     </Box>

@@ -6,6 +6,7 @@ import {
   ListItemText,
   MenuItem,
   Switch,
+  Typography,
   useTheme,
 } from '@mui/material';
 import React from 'react';
@@ -24,29 +25,28 @@ export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Box
-      component={component}
-      onClick={colorMode.toggleColorMode}
-      sx={{
-        color: { xs: '#F1F1F3', md: 'text.primary' },
-        py: { xs: 1.5, md: 2 },
-      }}
-    >
+    <Box component={component} onClick={colorMode.toggleColorMode} sx={{ px: 1.5, py: '9px' }}>
       <ListItemText>
-        <Trans>Dark mode</Trans>
+        <Typography variant="body5" color="text.primary">
+          <Trans>Dark mode</Trans>
+        </Typography>
       </ListItemText>
       <FormControlLabel
-        sx={{ mr: 0 }}
         value="darkmode"
+        sx={{ mx: 0 }}
         control={
           <Switch
             onClick={() => trackEvent(SETTINGS.DARK_MODE, { mode: theme.palette.mode })}
             disableRipple
             checked={theme.palette.mode === 'dark'}
-            sx={{ '.MuiSwitch-track': { bgcolor: { xs: '#FFFFFF1F', md: 'primary.light' } } }}
+            sx={{ ml: 1 }}
           />
         }
-        label={theme.palette.mode === 'dark' ? 'On' : 'Off'}
+        label={
+          <Typography variant="body5" color="text.primary">
+            {theme.palette.mode === 'dark' ? 'on' : 'off'}
+          </Typography>
+        }
         labelPlacement="start"
       />
     </Box>

@@ -3,6 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import CallMadeIcon from '@mui/icons-material/CallMade';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import {
@@ -22,6 +23,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/system';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
@@ -44,15 +47,24 @@ interface WalletWidgetProps {
   headerHeight: number;
 }
 
+const useStyles = makeStyles(() => ({
+  menuPaper: {
+    boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
+    padding: '20px 12px',
+    borderRadius: '12px',
+    width: '300px',
+  },
+}));
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
-
+  const classes = useStyles();
   const { setWalletModalOpen } = useWalletModalContext();
   const theme = useTheme();
   const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const md = useMediaQuery(breakpoints.down('md'));
+  const lg = useMediaQuery(breakpoints.up('lg'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -112,7 +124,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
-
+  console.log(networkConfig);
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
       <Typography
@@ -127,19 +139,19 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Trans>Account</Trans>
       </Typography>
 
-      <Box component={component} disabled sx={{ p: 0, ml: 1 }}>
+      <Box component={component} disabled sx={{ my: 1, px: 1.5, py: 3 }}>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            height: '44px',
           }}
         >
           <UserDisplay
             avatarProps={{ size: AvatarSize.LG }}
             titleProps={{
-              typography: 'h4',
+              variant: 'body8',
+              color: 'text.primary',
               addressCompactMode: CompactMode.MD,
             }}
             subtitleProps={{
@@ -148,185 +160,134 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             }}
           />
           {readOnlyModeAddress && (
-            <Warning
-              severity="warning"
-              sx={{ mt: 3, mb: 0, ...(md ? { background: '#301E04', color: '#FFDCA8' } : {}) }}
-            >
+            <Warning severity="warning" sx={{ mt: 3, mb: 0 }}>
               <Trans>Read-only mode.</Trans>
             </Warning>
           )}
         </Box>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
 
-      <Box component={component} disabled>
+      <Box component={component} disabled sx={{ my: 1, px: 1.5, py: 3 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              mb: 5,
-            }}
-          >
-            <Typography variant="caption" color={{ xs: '#FFFFFFB2', md: 'text.secondary' }}>
-              <Trans>Network</Trans>
-            </Typography>
-          </Box>
+          <Typography variant="detail2" color="text.mainTitle" sx={{ mb: 5 }}>
+            <Trans>Network</Trans>
+          </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box
-              sx={{
-                bgcolor: networkColor,
-                width: 6,
-                height: 6,
-                mr: 2,
-                boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
+            <img
+              style={{
+                width: 24,
+                height: 24,
+                marginRight: '8px',
                 borderRadius: '50%',
               }}
+              src={networkConfig.networkLogoPath}
+              alt={networkConfig.name}
             />
-            <Typography color={{ xs: '#F1F1F3', md: 'text.primary' }} variant="subheader1">
+            <Typography variant="body6" color="text.secondary">
               {networkConfig.name}
             </Typography>
           </Box>
         </Box>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
 
-      <Box
-        component={component}
-        sx={{
-          color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' },
-          height: '48px',
-          py: 1.5,
-        }}
-        onClick={handleCopy}
-      >
-        <ListItemIcon
-          sx={{
-            color: theme.palette.text.primary,
-          }}
-        >
-          <SvgIcon fontSize="small">
+      <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleCopy}>
+        <ListItemIcon sx={{ mr: 1 }}>
+          <SvgIcon
+            sx={(theme) => ({ fontSize: '24px !important', color: theme.palette.text.secondary })}
+          >
             <DuplicateIcon />
           </SvgIcon>
         </ListItemIcon>
         <ListItemText>
-          <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+          <Typography variant="body5" color="text.mainTitle">
             <Trans>Copy address</Trans>
-          </Box>
+          </Typography>
         </ListItemText>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
-      <Box
-        component={component}
-        sx={{
-          color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-          height: '48px',
-          display: 'flex',
-          py: 1.5,
-        }}
-        onClick={handleCopyReferralCode}
-      >
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
+      <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleCopyReferralCode}>
         <ListItemText>
-          <Box sx={{ fontSize: '16px', color: theme.palette.text.primary, pl: 8, fontWeight: 600 }}>
+          <Typography variant="body6" color="text.primary" sx={{ pl: 8 }}>
             <Trans>E24C0234B9</Trans>
-          </Box>
+          </Typography>
         </ListItemText>
-        <ListItemIcon
-          sx={{
-            color: theme.palette.text.primary,
-            pl: 4,
-            mr: 0,
-          }}
-        >
-          <SvgIcon fontSize="small">
+        <ListItemIcon sx={{ mr: 0 }}>
+          <SvgIcon
+            sx={(theme) => ({ fontSize: '18px !important', color: theme.palette.text.secondary })}
+          >
             <ArrowForwardIosIcon />
           </SvgIcon>
         </ListItemIcon>
       </Box>
-      <Box
-        component={component}
-        sx={{
-          color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-          height: '48px',
-          p: '6px 12px',
-        }}
-        onClick={handleCopyReferralCode}
-      >
-        <ListItemIcon
-          sx={{
-            color: theme.palette.text.primary,
-            p: 0,
-            lineHeight: 1.3,
-          }}
-        >
-          <SvgIcon fontSize="small">
+      <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleCopyReferralCode}>
+        <ListItemIcon sx={{ mr: 1 }}>
+          <SvgIcon
+            sx={(theme) => ({ fontSize: '24px !important', color: theme.palette.text.secondary })}
+          >
             <AccountCircleOutlinedIcon />
           </SvgIcon>
         </ListItemIcon>
         <ListItemText>
-          <Box
-            sx={{ fontSize: '17px', color: theme.palette.text.secondary, p: 0, lineHeight: 1.3 }}
-          >
+          <Typography variant="body5" color="text.secondary">
             <Trans>Copy referral code</Trans>
-          </Box>
+          </Typography>
         </ListItemText>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
       {networkConfig?.explorerLinkBuilder && (
         <Box>
           <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
             <Box
               component={component}
-              sx={{
-                color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-                height: '48px',
-                p: '6px 12px',
-              }}
+              sx={{ my: 1, px: 1.5, py: 3 }}
               onClick={handleViewOnExplorer}
             >
               <ListItemIcon
                 sx={{
-                  color: theme.palette.text.primary,
+                  mr: 1,
                 }}
               >
-                <SvgIcon fontSize="small">
-                  <CallMadeOutlinedIcon />
+                <SvgIcon
+                  sx={(theme) => ({
+                    fontSize: '24px !important',
+                    color: theme.palette.text.secondary,
+                  })}
+                >
+                  <CallMadeIcon />
                 </SvgIcon>
               </ListItemIcon>
               <ListItemText>
-                <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+                <Typography variant="body5" color="text.secondary">
                   <Trans>View on Explorer</Trans>
-                </Box>
+                </Typography>
               </ListItemText>
             </Box>
           </Link>
-          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
         </Box>
       )}
       {!md && (
-        <Box
-          component={component}
-          sx={{
-            color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' },
-            height: '48px',
-            py: 1.5,
-          }}
-          onClick={handleDisconnect}
-        >
+        <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleDisconnect}>
           <ListItemIcon
             sx={{
-              color: theme.palette.text.primary,
+              mr: 1,
             }}
           >
-            <SvgIcon fontSize="small">
+            <SvgIcon
+              sx={(theme) => ({
+                fontSize: '24px !important',
+                color: theme.palette.text.secondary,
+              })}
+            >
               <LogoutOutlinedIcon />
             </SvgIcon>
           </ListItemIcon>
           <ListItemText>
-            <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+            <Typography variant="body5" color="text.secondary">
               <Trans>Disconnect</Trans>
-            </Box>
+            </Typography>
           </ListItemText>
         </Box>
         // <Box>
@@ -397,7 +358,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       {md && connected && open ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading ? (
-        <Skeleton height={36} width={126} />
+        <Skeleton height={'100%'} width={167} />
       ) : (
         <Button
           variant={connected ? 'surface' : 'gradient'}
@@ -407,10 +368,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleClick}
+          size="small"
           sx={{
-            p: connected ? '12px' : undefined,
+            p: 3,
             minWidth: hideWalletAccountText ? 'unset' : undefined,
-            height: '48px',
+            height: lg ? '48px' : '44px',
+            background: 'transparent',
           }}
           endIcon={
             connected &&
@@ -418,7 +381,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             !md && (
               <SvgIcon
                 sx={{
-                  display: { xs: 'none', md: 'block' },
+                  display: { xs: 'none', md: 'block', fontSize: '24px !important' },
                 }}
               >
                 {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
@@ -428,12 +391,14 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         >
           {connected ? (
             <UserDisplay
-              avatarProps={{ size: AvatarSize.SM }}
+              avatarProps={{ size: 24 }}
               oneLiner={true}
-              titleProps={{ variant: 'buttonM' }}
+              titleProps={{ variant: 'body5', color: 'text.primary', lineHeight: 0 }}
             />
           ) : (
-            <Trans>Connect wallet</Trans>
+            <Typography variant="body5">
+              <Trans>Connect wallet</Trans>
+            </Typography>
           )}
         </Button>
       )}
@@ -450,15 +415,17 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           MenuListProps={{
             'aria-labelledby': 'wallet-button',
           }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
           keepMounted={true}
+          classes={{
+            paper: classes.menuPaper,
+          }}
         >
-          <MenuList
-            disablePadding
-            sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 }, px: 3, py: 5 }}
-          >
+          <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
             <Content component={MenuItem} />
           </MenuList>
         </Menu>

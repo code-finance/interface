@@ -45,37 +45,41 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         .map((item, index) => (
           <ListItem
             sx={{
-              width: { xs: '100%', md: 'unset' },
-              mr: { xs: 0, md: 2 },
+              width: 'fit-content',
+              height: '100%',
             }}
             data-cy={item.dataCy}
             disablePadding
             key={index}
           >
-            {md ? (
-              <Typography
-                component={Link}
-                href={item.link}
-                variant="h2"
-                color="#F1F1F3"
-                sx={{ width: '100%', p: 4 }}
-                onClick={() => handleClick(item.title, true)}
-              >
-                {i18n._(item.title)}
-              </Typography>
-            ) : (
-              <Link
-                href={item.link}
-                sx={{
-                  color: theme.palette.text.mainTitle,
-                  cursor: 'pointer',
-                  '&.active': { fontWeight: 'bold', color: theme.palette.text.primary },
-                  ':hover': { color: theme.palette.mode === 'light' ? 'black' : 'white' },
-                }}
-              >
-                {i18n._(item.title)}
-              </Link>
-            )}
+            {/*{md ? (*/}
+            {/*  <Typography*/}
+            {/*    component={Link}*/}
+            {/*    href={item.link}*/}
+            {/*    variant="h2"*/}
+            {/*    color="#F1F1F3"*/}
+            {/*    sx={{ width: '100%', p: 4 }}*/}
+            {/*    onClick={() => handleClick(item.title, true)}*/}
+            {/*  >*/}
+            {/*    {i18n._(item.title)}*/}
+            {/*  </Typography>*/}
+            {/*) : (*/}
+            <Typography
+              component={Link}
+              color="text.mainTitle"
+              href={item.link}
+              sx={(theme) => ({
+                color: theme.palette.text.mainTitle,
+                transition: '0.3s',
+                lineHeight: 1,
+                ...theme.typography.h4,
+                '&.active': { ...theme.typography.h3, color: theme.palette.text.primary },
+                ':hover': { opacity: 0.7 },
+              })}
+            >
+              {i18n._(item.title)}
+            </Typography>
+            {/*)}*/}
           </ListItem>
         ))}
 

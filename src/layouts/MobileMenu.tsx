@@ -1,4 +1,4 @@
-import { MenuIcon } from '@heroicons/react/outline';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -52,20 +52,23 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
 
   return (
     <>
-      {open ? (
-        <MobileCloseButton setOpen={setOpen} />
-      ) : (
-        <Button
-          id="settings-button-mobile"
-          variant="surface"
-          sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
-          onClick={() => setOpen(true)}
-        >
-          <SvgIcon sx={{ color: '#F1F1F3' }} fontSize="small">
-            <MenuIcon />
-          </SvgIcon>
-        </Button>
-      )}
+      <Button
+        id="settings-button-mobile"
+        sx={{
+          p: 2,
+          minWidth: 'unset',
+          ml: 2,
+          width: '40px',
+          height: '40px',
+          border: 'none',
+          background: 'transparent',
+        }}
+        onClick={() => setOpen(!open)}
+      >
+        <SvgIcon sx={{ color: 'text.secondary' }} fontSize="small">
+          {!open ? <MenuIcon /> : <XIcon />}
+        </SvgIcon>
+      </Button>
 
       <DrawerWrapper open={open} setOpen={setOpen} headerHeight={headerHeight}>
         {!isLanguagesListOpen ? (
