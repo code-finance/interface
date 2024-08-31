@@ -39,7 +39,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
   return (
     <Box {...rest}>
       <Box sx={{ display: 'flex', mb: 2 }}>
-        <Typography sx={{ mr: 2 }} variant="detail2" color="text.primary">
+        <Typography sx={{ mr: 1 }} variant="detail2" color="text.primary">
           {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
         {loading ? (

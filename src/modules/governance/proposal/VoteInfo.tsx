@@ -1,6 +1,6 @@
 import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography, useTheme } from '@mui/material';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -13,6 +13,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
 import { networkConfigs } from '../../../ui-config/networksConfig';
+import { ProposalLifecycle } from './ProposalLifecycle';
 
 interface VoteInfoProps {
   proposal: Proposal;
@@ -24,6 +25,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
   const voteOnProposal = proposal.votingMachineData.votedInfo;
   const votingChainId = proposal.subgraphProposal.votingPortal.votingMachineChainId;
   const network = networkConfigs[votingChainId];
+  const theme = useTheme();
 
   const blockHash =
     proposal.subgraphProposal.snapshotBlockHash === constants.HashZero
@@ -45,32 +47,29 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+    <Paper sx={{ pl: '24px', pr: '20px', py: '28px', bgcolor: 'background.top' }}>
       <Row
-        sx={{ mb: 8 }}
+        sx={{ mb: '24px' }}
         caption={
           <>
-            <Typography variant="h3">
-              <Trans>Your voting info</Trans>
+            <Typography variant="h2" color={'text.primary'} sx={{ mb: '16px' }}>
+              <Trans>Your info</Trans>
             </Typography>
             {network && (
               <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  color: 'text.secondary',
                 }}
               >
-                <Typography variant="caption">
+                <Typography variant="body2">
                   <Trans>Voting is on</Trans>
                 </Typography>
                 <Box
                   sx={{
-                    height: 16,
-                    width: 16,
-                    ml: 1,
-                    mr: 1,
-                    mb: 1,
+                    height: '24px',
+                    width: '24px',
+                    mx: '6px',
                   }}
                 >
                   <img
@@ -79,7 +78,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                     style={{ height: '100%', width: '100%' }}
                   />
                 </Box>
-                <Typography variant="caption">{network?.displayName}</Typography>
+                <Typography variant="body2" color={'text.primary'}>
+                  {network?.displayName}
+                </Typography>
               </Box>
             )}
           </>
@@ -88,18 +89,42 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
       {user ? (
         <>
           {user && !didVote && !voteOngoing && (
-            <Typography sx={{ textAlign: 'center' }} color="text.muted">
-              <Trans>You did not participate in this proposal</Trans>
-            </Typography>
+            <Box sx={{ mb: '28px' }}>
+              <Warning
+                severity="warning"
+                sx={{
+                  px: '4px !important',
+                  mb: 0,
+                  '.MuiAlert-message': { p: 0 },
+                  boxShadow: 'none !important',
+                  '.MuiSvgIcon-root': { color: '#FB8509' },
+                  bgcolor: `${theme.palette.point.riskMedium} !important`,
+                }}
+              >
+                <Typography
+                  variant="body7"
+                  sx={{
+                    textAlign: 'left',
+                    bgcolor: theme.palette.point.riskMedium,
+                    display: 'flex',
+                    flexShrink: 1,
+                  }}
+                  color="text.secondary"
+                >
+                  <Trans>You did not participate in this proposal</Trans>
+                </Typography>
+              </Warning>
+            </Box>
           )}
           {user && voteOngoing && (
             <Row
+              sx={{ mb: '28px' }}
               caption={
                 <>
-                  <Typography variant="description">
+                  <Typography variant="h3" color="text.mainTitle" mb="8px">
                     <Trans>Voting power</Trans>
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="detail2" color="text.mainTitle">
                     (AAVE + stkAAVE)
                   </Typography>
                 </>
@@ -107,31 +132,53 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
             >
               <FormattedNumber
                 value={powerAtProposalStart || 0}
-                variant="main16"
+                variant="body1"
+                color={'text.mainTitle'}
                 visibleDecimals={2}
               />
             </Row>
           )}
           {showAlreadyVotedMsg && (
-            <Warning severity={voteOnProposal.support ? 'success' : 'error'} sx={{ my: 2 }}>
-              <Typography variant="subheader1">
-                <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
-              </Typography>
-              <Typography variant="caption">
-                <Trans>
-                  With a voting power of{' '}
-                  <FormattedNumber
-                    value={formatUnits(proposal.votingMachineData.votedInfo.votingPower, 18) || 0}
-                    variant="caption"
-                    visibleDecimals={2}
-                  />
-                </Trans>
-              </Typography>
-            </Warning>
+            <Box sx={{ mb: '28px' }}>
+              <Warning
+                severity={voteOnProposal.support ? 'success' : 'warning'}
+                sx={
+                  voteOnProposal.support
+                    ? {
+                        bgcolor: `${theme.palette.point.noti} !important`,
+                        px: '4px !important',
+                        mb: 0,
+                        '.MuiAlert-message': { p: 0 },
+                      }
+                    : { mb: 0 }
+                }
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="body6" color="text.secondary">
+                    <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
+                  </Typography>
+                  <Typography variant="body7" color="text.secondary">
+                    <Trans>
+                      With a voting power of{' '}
+                      <FormattedNumber
+                        value={
+                          formatUnits(proposal.votingMachineData.votedInfo.votingPower, 18) || 0
+                        }
+                        variant="body7"
+                        color="text.secondary"
+                        visibleDecimals={2}
+                      />
+                    </Trans>
+                  </Typography>
+                </Box>
+              </Warning>
+            </Box>
           )}
           {showCannotVoteMsg && (
-            <Warning severity="warning" sx={{ my: 2 }}>
-              <Trans>Not enough voting power to participate in this proposal</Trans>
+            <Warning severity="warning" sx={{ px: '4px', mb: '40px' }}>
+              <Typography variant="body7" color="text.secondary">
+                <Trans>Not enough voting power to participate in this proposal</Trans>
+              </Typography>
             </Warning>
           )}
           {showCanVoteMsg && (
@@ -155,6 +202,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
               </Button>
             </>
           )}
+          <ProposalLifecycle proposal={proposal} />
         </>
       ) : (
         <ConnectWalletButton />

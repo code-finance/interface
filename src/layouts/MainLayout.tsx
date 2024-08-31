@@ -7,12 +7,18 @@ import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 
-export function MainLayout({ children }: { children: ReactNode }) {
+export function MainLayout({
+  children,
+  isGovernanceDetails,
+}: {
+  children: ReactNode;
+  isGovernanceDetails?: boolean;
+}) {
   const APP_BANNER_VERSION = '1.0.0';
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isGovernanceDetails={isGovernanceDetails} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}
       </Box>

@@ -2,6 +2,7 @@ import { PayloadState, ProposalV3State, VotingMachineProposalState } from '@aave
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import CallMadeIcon from '@mui/icons-material/CallMade';
 import {
   Timeline,
   TimelineConnector,
@@ -213,8 +214,8 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
   }
 
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-      <Typography variant="h3">
+    <Box sx={{ height: '100%' }}>
+      <Typography variant="h2" color="text.primary" mb="32px">
         <Trans>Proposal details</Trans>
       </Typography>
       <Timeline
@@ -224,6 +225,8 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
             flex: 0,
             padding: 0,
           },
+          p: '0px 0px 0px 20px',
+          my: 0,
         }}
       >
         {proposalSteps.map((elem) => (
@@ -231,28 +234,36 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         ))}
       </Timeline>
       {discussionUrl && (
-        <Button
-          component={Link}
-          target="_blank"
-          rel="noopener"
-          onClick={() =>
-            trackEvent(GENERAL.EXTERNAL_LINK, {
-              AIP: proposal.subgraphProposal.id,
-              Link: 'Forum Discussion',
-            })
-          }
-          href={discussionUrl[0]}
-          variant="outlined"
-          endIcon={
-            <SvgIcon>
-              <ExternalLinkIcon />
-            </SvgIcon>
-          }
-        >
-          <Trans>Forum discussion</Trans>
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            sx={{
+              pl: '24px',
+              pr: '20px',
+              py: '10px',
+              borderRadius: '8px',
+              border: '1px solid',
+              borderColor: 'border.contents',
+            }}
+            component={Link}
+            target="_blank"
+            rel="noopener"
+            onClick={() =>
+              trackEvent(GENERAL.EXTERNAL_LINK, {
+                AIP: proposal.subgraphProposal.id,
+                Link: 'Forum Discussion',
+              })
+            }
+            href={discussionUrl[0]}
+            variant="surface"
+          >
+            <Typography variant="body4" color="text.secondary">
+              <Trans>Forum discussion</Trans>
+            </Typography>
+            <CallMadeIcon sx={{ width: '24px', height: '24px', ml: 1, color: 'text.secondary' }} />
+          </Button>
+        </Box>
       )}
-    </Paper>
+    </Box>
   );
 };
 const formatTime = (timestamp: number) => {
@@ -292,13 +303,14 @@ const ProposalStep = ({
       <TimelineSeparator>
         <TimelineDot
           sx={{
+            width: '16px',
+            height: '16px',
             background: completed
-              ? theme.palette.primary.main
+              ? theme.palette.point.primary
               : active
-              ? 'unset'
+              ? 'white'
               : theme.palette.text.disabled,
-            borderColor:
-              completed || active ? theme.palette.primary.main : theme.palette.text.disabled,
+            borderColor: completed || active ? theme.palette.primary.main : 'none',
             my: 1,
           }}
           variant={active ? 'outlined' : 'filled'}
@@ -306,22 +318,24 @@ const ProposalStep = ({
         {!lastStep && (
           <TimelineConnector
             sx={{
-              background: completed ? theme.palette.primary.main : theme.palette.text.disabled,
+              background: theme.palette.text.disabled,
+              width: '1px',
+              color: 'text.subTitle',
             }}
           />
         )}
       </TimelineSeparator>
-      <TimelineContent sx={{ pt: 0 }}>
+      <TimelineContent sx={{ p: '0px 0px 0px 20px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', pt: 0 }}>
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {networkLogo && <Avatar sx={{ width: 16, height: 16, mr: 2 }} src={networkLogo} />}
-              <Typography variant="main14">
+              <Typography variant="body2" mb="6px">
                 <Trans>{stepName}</Trans>
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Typography variant="tooltip" color="text.muted">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pb: '28px' }}>
+              <Typography variant="detail2" color="text.mainTitle">
                 {formatTime(timestamp)}
               </Typography>
               {transactionHash && (
@@ -336,13 +350,16 @@ const ProposalStep = ({
             </Box>
           </Box>
           {substeps && (
-            <IconButton sx={{ p: 0, ml: 'auto' }} onClick={toggleSubtimeline}>
+            <IconButton
+              sx={{ width: '24px', height: '24px', p: 0, ml: 'auto', color: 'text.secondary' }}
+              onClick={toggleSubtimeline}
+            >
               {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
             </IconButton>
           )}
         </Box>
         {substeps && subtimelineOpen && (
-          <Timeline>
+          <Timeline sx={{ py: 0 }}>
             {substeps.map((elem) => (
               <ProposalStep key={elem.stepName?.toString()} {...elem} />
             ))}

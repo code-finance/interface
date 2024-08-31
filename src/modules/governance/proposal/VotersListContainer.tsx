@@ -73,27 +73,38 @@ export const VotersListContainer = ({ proposal, proposalVotes }: VotersListProps
   if (!proposalVotes || proposalVotes.combinedVotes.length === 0) return <Box sx={{ mt: 8 }} />;
 
   return (
-    <Box sx={{ my: 8 }}>
-      <Row sx={{ mb: 3 }}>
-        <Typography variant="subheader2" color="text.secondary">
+    <Box sx={{ my: '60px' }}>
+      <Row sx={{ mb: 4 }}>
+        <Typography variant="body4" color="text.primary">
           {proposalVotes.combinedVotes.length > 10 ? (
             <Trans>Top 10 addresses</Trans>
           ) : (
             <Trans>Addresses</Trans>
           )}
         </Typography>
-        <Typography variant="subheader2" color="text.secondary">
+        <Typography variant="detail3" color="text.mainTitle">
           <Trans>Votes</Trans>
         </Typography>
       </Row>
       <VotersList
         compact={mdScreen}
         voters={proposalVotes.combinedVotes.slice(0, 10)}
-        sx={{ my: 4, pr: 2.25 }}
+        sx={{ mb: '24px', pl: '12px', pr: '30px', py: '12px' }}
       />
       {proposalVotes.combinedVotes.length > 10 && (
-        <Button variant="outlined" fullWidth onClick={handleOpenAllVotes}>
-          <Trans>View all votes</Trans>
+        <Button
+          sx={{
+            px: '10px',
+            py: '12px',
+            borderRadius: '8px',
+          }}
+          variant="outlined"
+          fullWidth
+          onClick={handleOpenAllVotes}
+        >
+          <Typography variant="body6" color="text.primary">
+            <Trans>View all votes</Trans>
+          </Typography>
         </Button>
       )}
       {votersModalOpen && (

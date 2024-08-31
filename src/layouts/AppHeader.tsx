@@ -83,7 +83,7 @@ function HideOnScroll({ children }: Props) {
 
 const SWITCH_VISITED_KEY = 'switchVisited';
 
-export function AppHeader() {
+export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boolean }) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.up('sm'));
@@ -154,7 +154,11 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
+          backgroundColor: isGovernanceDetails
+            ? 'transparent'
+            : theme.palette.mode === 'light'
+            ? '#e6e4f4'
+            : '#28216d',
           padding: {
             xs: '5px 12px 5px 20px',
             xsm: '20px 40px 0',

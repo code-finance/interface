@@ -1,6 +1,6 @@
 import { ArrowLeftIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
@@ -12,9 +12,20 @@ export const ProposalTopPanel = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <TopInfoPanel>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: '18px' }}>
+    <TopInfoPanel isGovernanceDetails>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          // padding: '12px',
+          borderRadius: '8px',
+          bgcolor: 'background.primary',
+          border: '1px solid',
+          borderColor: 'text.subText',
+        }}
+      >
         <Button
+          sx={{ px: '12px !important' }}
           component={Link}
           href={ROUTES.governance}
           variant="surface"
@@ -27,7 +38,9 @@ export const ProposalTopPanel = () => {
             </SvgIcon>
           }
         >
-          <Trans>Go Back</Trans>
+          <Typography variant="body7" color="text.primary">
+            <Trans>Go Back</Trans>
+          </Typography>
         </Button>
       </Box>
     </TopInfoPanel>
