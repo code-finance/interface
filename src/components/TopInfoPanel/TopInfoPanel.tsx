@@ -8,6 +8,7 @@ interface TopInfoPanelProps extends PageTitleProps {
   titleComponent?: ReactNode;
   containerProps?: ContainerProps;
   multiMarket?: boolean;
+  isGovernanceDetails?: boolean;
 }
 
 export const TopInfoPanel = ({
@@ -19,11 +20,12 @@ export const TopInfoPanel = ({
   multiMarket,
   children,
   containerProps = {},
+  isGovernanceDetails,
 }: TopInfoPanelProps) => {
   return (
     <Box
       sx={{
-        bgcolor: 'background.top',
+        bgcolor: isGovernanceDetails ? 'transparent' : 'background.top',
         pt: { xs: 10, md: 20 },
         pb: { xs: 18, md: 15 },
       }}

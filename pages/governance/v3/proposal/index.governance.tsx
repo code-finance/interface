@@ -76,7 +76,7 @@ export default function ProposalPage() {
 
 ProposalPage.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <MainLayout>
+    <MainLayout isGovernanceDetails>
       {page}
       <GovVoteModal />
     </MainLayout>

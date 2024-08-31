@@ -225,6 +225,8 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
             flex: 0,
             padding: 0,
           },
+          p: '0px 0px 0px 20px',
+          my: 0,
         }}
       >
         {proposalSteps.map((elem) => (
@@ -323,7 +325,7 @@ const ProposalStep = ({
           />
         )}
       </TimelineSeparator>
-      <TimelineContent sx={{ pl: '20px', py: 0 }}>
+      <TimelineContent sx={{ p: '0px 0px 0px 20px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', pt: 0 }}>
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>

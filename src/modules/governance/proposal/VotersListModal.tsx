@@ -44,10 +44,11 @@ export const VotersListModal = ({
         sx={{
           ...borderBaseStyle,
           px: 4,
-          py: 2,
+          py: 4,
+          bgcolor: 'background.secondary',
         }}
       />
-      <Box sx={{ ...borderBaseStyle, mt: 3 }}>
+      <Box sx={{ ...borderBaseStyle, mt: '10px' }}>
         <Row
           sx={{
             px: 4,
@@ -56,10 +57,10 @@ export const VotersListModal = ({
             borderColor: 'divider',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary">
             <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -83,10 +84,11 @@ export const VotersListModal = ({
         sx={{
           ...borderBaseStyle,
           px: 4,
-          py: 2,
+          py: 4,
+          bgcolor: 'background.secondary',
         }}
       />
-      <Box sx={{ ...borderBaseStyle, mt: 3 }}>
+      <Box sx={{ ...borderBaseStyle, mt: '10px' }}>
         <Row
           sx={{
             px: 4,
@@ -95,10 +97,10 @@ export const VotersListModal = ({
             borderColor: 'divider',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary">
             <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -116,11 +118,11 @@ export const VotersListModal = ({
 
   return (
     <BasicModal open={open} setOpen={close} contentMaxWidth={mdUp ? 800 : 360}>
-      <Typography variant="h2">
+      <Typography variant="h5" color="text.primary" mb="32px">
         <Trans>Votes</Trans>
       </Typography>
       {mdUp ? (
-        <Grid container spacing={4} sx={{ mt: 4 }}>
+        <Grid container spacing={4}>
           <Grid item xs={6}>
             {yesVotesUI}
           </Grid>

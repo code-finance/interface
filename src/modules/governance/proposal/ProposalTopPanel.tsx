@@ -12,7 +12,7 @@ export const ProposalTopPanel = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <TopInfoPanel>
+    <TopInfoPanel isGovernanceDetails>
       <Box
         sx={{
           display: 'flex',

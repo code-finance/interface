@@ -47,9 +47,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <Paper sx={{ px: '24px', py: '28px', bgcolor: 'background.top' }}>
+    <Paper sx={{ pl: '24px', pr: '20px', py: '28px', bgcolor: 'background.top' }}>
       <Row
-        sx={{ mb: '28px' }}
+        sx={{ mb: '24px' }}
         caption={
           <>
             <Typography variant="h2" color={'text.primary'} sx={{ mb: '16px' }}>
@@ -175,7 +175,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
             </Box>
           )}
           {showCannotVoteMsg && (
-            <Warning severity="warning" sx={{ mb: '40px' }}>
+            <Warning severity="warning" sx={{ px: '4px', mb: '40px' }}>
               <Typography variant="body7" color="text.secondary">
                 <Trans>Not enough voting power to participate in this proposal</Trans>
               </Typography>

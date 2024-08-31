@@ -69,7 +69,13 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
   return (
     <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+        >
           <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: '6px' }} />
           <Link
             color={'text.primary'}
@@ -78,7 +84,18 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
               trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'AIP VOTERS', Link: 'Etherscan' })
             }
           >
-            <Typography variant="detail3" sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography
+              variant="detail3"
+              sx={{
+                display: 'block',
+                position: 'relative',
+                alignItems: 'center',
+                maxWidth: '122px',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+              }}
+            >
               {/* {displayName(ensName)} */}
               {address}
               {/* <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
