@@ -90,7 +90,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     }}
                   >
                     <Box>
-                      <StateBadge state={proposal.badgeState} loading={loading} />
+                      <StateBadge
+                        wrapperSx={{ px: '12px', py: '10px' }}
+                        state={proposal.badgeState}
+                        loading={loading}
+                      />
                       {/* <Button
                         sx={{
                           px: '12px',

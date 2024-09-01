@@ -1,4 +1,4 @@
-import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
+import { alpha, BoxProps, experimental_sx, Skeleton, styled } from '@mui/material';
 import invariant from 'tiny-invariant';
 
 import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal';
@@ -6,6 +6,7 @@ import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal'
 interface StateBadgeProps {
   state?: ProposalBadgeState;
   loading?: boolean;
+  wrapperSx: BoxProps['sx'];
 }
 
 export enum ProposalBadgeState {
@@ -69,10 +70,10 @@ const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
   });
 });
 
-export function StateBadge({ state, loading }: StateBadgeProps) {
+export function StateBadge({ state, loading, wrapperSx }: StateBadgeProps) {
   if (loading || !state) return <Skeleton width={70} />;
   return (
-    <Badge sx={{ px: '4px', py: '3px', fontSize: '14px' }} state={state}>
+    <Badge sx={{ px: '4px', py: '3px', fontSize: '14px', ...wrapperSx }} state={state}>
       {state}
     </Badge>
   );

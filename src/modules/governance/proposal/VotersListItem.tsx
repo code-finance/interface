@@ -75,6 +75,7 @@ export const VotersListItem = ({
     <Box
       sx={{
         my: isModal ? '16px' : '20px',
+        pr: isModal ? '20px' : '0',
         '&:first-of-type': { mt: 0 },
         '&:last-of-type': { mb: 0 },
       }}
@@ -123,9 +124,21 @@ export const VotersListItem = ({
             flexGrow: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
-            maxWidth: compact ? 82 : 96,
+            maxWidth: compact ? 82 : 130,
+            gap: '12px',
           }}
         >
+          {!isModal && (
+            <Link
+              color={'text.primary'}
+              href={`https://etherscan.io/address/${address}`}
+              onClick={() =>
+                trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'AIP VOTERS', Link: 'Etherscan' })
+              }
+            >
+              <CallMadeOutlinedIcon sx={{ width: 24, height: 24 }} />
+            </Link>
+          )}
           <Typography
             variant="detail1"
             color={voter.support ? theme.palette.point.positive : theme.palette.point.negative}

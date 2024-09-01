@@ -21,6 +21,7 @@ export const VotersList = ({
   return (
     <Box
       sx={{
+        mr: isModal ? '13px' : 0,
         maxHeight: '224px',
         bgcolor: 'background.point',
         overflow: 'hidden',

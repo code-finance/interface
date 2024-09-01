@@ -68,7 +68,7 @@ export const VotersListModal = ({
           <Typography variant="detail2" color="text.secondary">
             <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
-          <Typography variant="detail2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary" px="8px">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -117,7 +117,7 @@ export const VotersListModal = ({
           <Typography variant="detail2" color="text.secondary">
             <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
-          <Typography variant="detail2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary" px="8px">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
