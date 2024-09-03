@@ -6,7 +6,7 @@ import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal'
 interface StateBadgeProps {
   state?: ProposalBadgeState;
   loading?: boolean;
-  wrapperSx: BoxProps['sx'];
+  wrapperSx?: BoxProps['sx'];
 }
 
 export enum ProposalBadgeState {
