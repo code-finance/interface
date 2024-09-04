@@ -29,22 +29,28 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
   let healthFactorColor: AlertColor = 'success';
+  let healthFactorText = 'Low Risk';
   const hf = Number(healthFactor);
   if (hf > 1.1 && hf <= 3) {
     healthFactorColor = 'warning';
+    healthFactorText = 'Medium Risk';
   } else if (hf <= 1.1) {
     healthFactorColor = 'error';
+    healthFactorText = 'High Risk';
   }
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   let ltvColor: AlertColor = 'success';
+  let ltvText = 'Low Risk';
   const ltvPercent = Number(loanToValue) * 100;
   const currentLtvPercent = Number(currentLoanToValue) * 100;
   const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;
   if (ltvPercent >= Math.min(currentLtvPercent, liquidationThresholdPercent)) {
     ltvColor = 'error';
+    ltvText = 'High Risk';
   } else if (ltvPercent > currentLtvPercent / 2 && ltvPercent < currentLtvPercent) {
     ltvColor = 'warning';
+    ltvText = 'Medium Risk';
   }
 
   return (
@@ -79,11 +85,14 @@ export const LiquidationRiskParametresInfoModal = ({
           </Trans>
         }
         topValue={
-          <HealthFactorNumber
-            value={healthFactor}
+          <Typography
             variant="detail2"
-            sx={{ color: 'common.white' }}
-          />
+            color="text.buttonText"
+            textTransform={'uppercase'}
+            whiteSpace={'nowrap'}
+          >
+            {healthFactorText}
+          </Typography>
         }
         bottomText={
           <Trans>
@@ -102,13 +111,14 @@ export const LiquidationRiskParametresInfoModal = ({
           <Trans>Your current loan to value based on your collateral supplied.</Trans>
         }
         topValue={
-          <FormattedNumber
-            value={loanToValue}
-            percent
-            variant="main12"
-            color="common.white"
-            symbolsColor="common.white"
-          />
+          <Typography
+            variant="detail2"
+            color="text.buttonText"
+            textTransform={'uppercase'}
+            whiteSpace={'nowrap'}
+          >
+            {ltvText}
+          </Typography>
         }
         bottomText={
           <Trans>

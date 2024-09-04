@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { AlertColor, Box, Typography, useTheme } from '@mui/material';
+import { AlertColor, Box, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -17,10 +17,7 @@ export const LTVContent = ({
   loanToValue,
   currentLoanToValue,
   currentLiquidationThreshold,
-  color,
 }: LTVContentProps) => {
-  const { palette } = useTheme();
-
   const LTVLineWidth = valueToBigNumber(loanToValue)
     .multipliedBy(100)
     .precision(20, BigNumber.ROUND_UP)
@@ -36,84 +33,18 @@ export const LTVContent = ({
     .precision(20, BigNumber.ROUND_UP)
     .toNumber();
 
-  const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;
-
+  const dotPosition = +loanToValue <= 0 ? 100 : 100 - LTVLineWidth;
+  const thresholdPosition =
+    currentLiquidationThresholdLeftPosition <= 0
+      ? 100
+      : 100 - currentLiquidationThresholdLeftPosition;
   return (
     <Box sx={{ position: 'relative', margin: '45px 0 55px' }}>
       <Box
         sx={{
           position: 'absolute',
-          top: 'calc(100% + 6px)',
-          left: `${
-            currentLiquidationThresholdLeftPosition > 100
-              ? 100
-              : currentLiquidationThresholdLeftPosition
-          }%`,
-          zIndex: 2,
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            '&:after': {
-              content: "''",
-              position: 'absolute',
-              left: liquidationThresholdPercent > 75 ? 'auto' : '50%',
-              transform: liquidationThresholdPercent > 75 ? 'translateX(0)' : 'translateX(-50%)',
-              right: liquidationThresholdPercent > 75 ? 0 : 'auto',
-              bottom: '100%',
-              height: '10px',
-              width: '2px',
-              bgcolor: 'error.main',
-            },
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              position: 'absolute',
-              left: liquidationThresholdPercent > 75 ? 'auto' : '50%',
-              transform: liquidationThresholdPercent > 75 ? 'translateX(0)' : 'translateX(-50%)',
-              right: liquidationThresholdPercent > 75 ? 0 : 'auto',
-              flexDirection: 'column',
-              alignItems: liquidationThresholdPercent > 75 ? 'flex-end' : 'center',
-              textAlign: liquidationThresholdPercent > 75 ? 'right' : 'center',
-            }}
-          >
-            <FormattedNumber
-              value={currentLiquidationThreshold}
-              visibleDecimals={2}
-              color="error.main"
-              variant="detail1"
-              percent
-              symbolsColor="error.main"
-            />
-            <Typography
-              sx={{ display: 'flex', width: '80%', mx: 'auto' }}
-              variant="detail4"
-              lineHeight="12px"
-              color="error.main"
-            >
-              <Trans>Liquidation</Trans>
-            </Typography>
-            <Typography
-              sx={{ display: 'flex', width: '80%', mx: 'auto' }}
-              variant="detail4"
-              lineHeight="12px"
-              color="error.main"
-            >
-              <Trans>threshold</Trans>
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 'calc(100% + 6px)',
-          left: `${LTVLineWidth > 100 ? 100 : LTVLineWidth}%`,
+          bottom: 'calc(100% + 10px)',
+          left: `${dotPosition > 100 ? 100 : dotPosition}%`,
           zIndex: 3,
         }}
       >
@@ -126,12 +57,12 @@ export const LTVContent = ({
               height: 0,
               borderStyle: 'solid',
               borderWidth: '6px 4px 0 4px',
-              borderColor: `${theme.palette.primary.main} transparent transparent transparent`,
+              borderColor: `${theme.palette.text.primary} transparent transparent transparent`,
               content: "''",
               position: 'absolute',
-              left: LTVLineWidth > 75 ? 'auto' : '50%',
-              right: LTVLineWidth > 75 ? 0 : 'auto',
-              transform: LTVLineWidth > 75 ? 'translateX(0)' : 'translateX(-50%)',
+              left: dotPosition > 98 ? 'auto' : '50%',
+              right: dotPosition > 98 ? 0 : 'auto',
+              transform: dotPosition > 98 ? 'translateX(0)' : 'translateX(-50%)',
             },
           })}
         >
@@ -139,14 +70,12 @@ export const LTVContent = ({
             sx={{
               display: 'flex',
               position: 'absolute',
-              left: LTVLineWidth > 75 ? 'auto' : LTVLineWidth < 15 ? '0' : '50%',
-              transform:
-                LTVLineWidth > 75 || LTVLineWidth < 15 ? 'translateX(0)' : 'translateX(-50%)',
-              right: LTVLineWidth > 75 ? 0 : 'auto',
+              left: dotPosition > 98 ? 'auto' : dotPosition < 4 ? '0' : '50%',
+              transform: dotPosition > 98 || dotPosition < 4 ? 'translateX(0)' : 'translateX(-50%)',
+              right: dotPosition > 98 ? 0 : 'auto',
               flexDirection: 'column',
-              alignItems:
-                LTVLineWidth > 75 ? 'flex-end' : LTVLineWidth < 15 ? 'flex-start' : 'center',
-              textAlign: LTVLineWidth > 75 ? 'right' : LTVLineWidth < 15 ? 'left' : 'center',
+              alignItems: dotPosition > 98 ? 'flex-end' : dotPosition < 4 ? 'flex-start' : 'center',
+              textAlign: dotPosition > 98 ? 'right' : dotPosition < 4 ? 'left' : 'center',
               bottom: 'calc(100% + 2px)',
             }}
           >
@@ -154,61 +83,78 @@ export const LTVContent = ({
               value={loanToValue}
               percent
               visibleDecimals={2}
-              variant="detail1"
+              variant="detail2"
               color="text.primary"
             />
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <Typography variant="detail4" color="text.primary" mr={0.5}>
-                <Trans>MAX</Trans>
-              </Typography>
-              <FormattedNumber
-                value={currentLoanToValue}
-                percent
-                visibleDecimals={2}
-                variant="detail4"
-                color="text.primary"
-                symbolsColor="text.primary"
-              />
-            </Box>
           </Box>
         </Box>
       </Box>
 
       <Box
         sx={{
-          height: '4px',
+          height: '8px',
           width: '100%',
-          borderRadius: '1px',
           position: 'relative',
-          bgcolor: 'divider',
+          borderRadius: '6px',
+          transform: 'matrix(-1, 0, 0, 1, 0, 0)',
+          background: 'linear-gradient(90deg, #1FC74E 0%, #FF8080 50%, #FF2D2D 100%)',
+        }}
+      />
+      <Box
+        sx={{
+          maxWidth: '20%',
+          textAlign: 'center',
+          pt: 2,
+          '&:after': {
+            content: "''",
+            position: 'absolute',
+            bottom: '13%',
+            left: `${thresholdPosition > 100 ? 100 : thresholdPosition}%`,
+            transform: 'translateX(-50%)',
+            height: '20px',
+            width: '2px',
+            bgcolor: 'error.main',
+          },
         }}
       >
         <Box
           sx={{
+            display: 'flex',
             position: 'absolute',
-            left: 0,
-            height: '4px',
-            borderRadius: '1px',
-            width: `${LTVLineWidth > 100 ? 100 : LTVLineWidth}%`,
-            maxWidth: '100%',
-            bgcolor: `${color}.main`,
-            zIndex: 2,
+            flexDirection: 'column',
+            textAlign:
+              thresholdPosition > 90 ? 'right' : thresholdPosition < 15 ? 'left' : 'center',
+            alignItems:
+              thresholdPosition > 90
+                ? 'flex-end'
+                : thresholdPosition < 15
+                ? 'flex-start'
+                : 'center',
+            transform:
+              thresholdPosition > 90 || thresholdPosition < 15
+                ? 'translateX(0)'
+                : 'translateX(-50%)',
+            right: thresholdPosition > 90 ? 0 : 'auto',
+            left:
+              thresholdPosition > 90
+                ? 'auto'
+                : thresholdPosition < 10
+                ? '0'
+                : `${thresholdPosition > 100 ? 100 : thresholdPosition}%`,
           }}
-        />
-
-        {LTVLineWidth < CurrentLTVLineWidth && (
-          <Box
-            sx={{
-              position: 'absolute',
-              left: 0,
-              height: '4px',
-              borderRadius: '1px',
-              width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
-              maxWidth: '100%',
-              background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${palette[color].main} 4px, ${palette[color].main} 7px)`,
-            }}
+        >
+          <FormattedNumber
+            value={currentLiquidationThreshold}
+            visibleDecimals={2}
+            color="error.main"
+            variant="detail1"
+            percent
+            symbolsColor="error.main"
           />
-        )}
+          <Typography sx={{ display: 'flex', width: '80%' }} variant="detail4" color="error.main">
+            <Trans>Liquidation threshold</Trans>
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

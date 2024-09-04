@@ -16,12 +16,16 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
   let healthFactorColor = '';
+  let healthFactorText = '';
   if (formattedHealthFactor >= 3) {
     healthFactorColor = palette.success.main;
+    healthFactorText = 'Low Risk';
   } else if (formattedHealthFactor < 1.1) {
     healthFactorColor = palette.error.main;
+    healthFactorText = 'High Risk';
   } else {
     healthFactorColor = palette.warning.main;
+    healthFactorText = 'Medium Risk';
   }
 
   return (
@@ -34,19 +38,9 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       }}
       data-cy={'HealthFactorTopPannel'}
     >
-      {value === '-1' ? (
-        <Typography variant="secondary14" color={palette.success.main}>
-          ∞
-        </Typography>
-      ) : (
-        <FormattedNumber
-          value={formattedHealthFactor}
-          sx={{ color: healthFactorColor, ...rest.sx }}
-          visibleDecimals={2}
-          compact
-          {...rest}
-        />
-      )}
+      <Box sx={{ color: healthFactorColor, p: '3px 6px', borderRadius: 1, ...rest.sx }} {...rest}>
+        {healthFactorText}
+      </Box>
 
       {onInfoClick && (
         <Button
