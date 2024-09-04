@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
+import LogoLarge from '/public/codelabs-logo-large.svg';
+import LogoSmall from '/public/codelabs-logo-small.svg';
+
 import { Link } from '../components/primitives/Link';
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
 import { uiConfig } from '../uiConfig';
@@ -127,16 +130,23 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          <img
-            style={{
-              color: theme.palette.text.primary,
-              height: '30px',
-              width: 'auto',
-            }}
-            sizes="small"
-            src={sm ? uiConfig.appLogo : uiConfig.appLogoMobile}
-            alt="CODE labs"
-          />
+          {sm ? (
+            <LogoLarge
+              style={{
+                color: theme.palette.text.primary,
+                height: '30px',
+                width: 'auto',
+              }}
+            />
+          ) : (
+            <LogoSmall
+              style={{
+                color: theme.palette.text.primary,
+                height: '30px',
+                width: 'auto',
+              }}
+            />
+          )}
         </Box>
 
         <Box sx={{ display: { xs: 'none', lg: 'block', flex: 1 } }}>
