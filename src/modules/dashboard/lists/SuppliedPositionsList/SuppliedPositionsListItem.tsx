@@ -99,55 +99,44 @@ export const SuppliedPositionsListItem = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {showSwitchButton ? (
-          <Button
-            disabled={disableSwap}
-            variant="contained"
-            onClick={() => {
-              // track
+        {/*{showSwitchButton ? (*/}
+        {/*  <Button*/}
+        {/*    disabled={disableSwap}*/}
+        {/*    variant="contained"*/}
+        {/*    onClick={() => {*/}
+        {/*      // track*/}
 
-              trackEvent(GENERAL.OPEN_MODAL, {
-                modal: 'Swap Collateral',
-                market: currentMarket,
-                assetName: reserve.name,
-                asset: underlyingAsset,
-              });
-              openSwap(underlyingAsset);
-            }}
-            data-cy={`swapButton`}
-          >
-            <Trans>Switch</Trans>
-          </Button>
-        ) : (
-          <Button
-            sx={{
-              p: 2,
-              height: '36px',
-              fontSize: '14px',
-              textTransform: 'capitalize',
-            }}
-            disabled={disableSupply}
-            variant="contained"
-            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-          >
-            <Trans>Supply</Trans>
-          </Button>
-        )}
+        {/*      trackEvent(GENERAL.OPEN_MODAL, {*/}
+        {/*        modal: 'Swap Collateral',*/}
+        {/*        market: currentMarket,*/}
+        {/*        assetName: reserve.name,*/}
+        {/*        asset: underlyingAsset,*/}
+        {/*      });*/}
+        {/*      openSwap(underlyingAsset);*/}
+        {/*    }}*/}
+        {/*    data-cy={`swapButton`}*/}
+        {/*  >*/}
+        {/*    <Trans>Switch</Trans>*/}
+        {/*  </Button>*/}
+        {/*) : (*/}
+        {/*  <Button*/}
+        {/*    sx={{*/}
+        {/*      p: 2,*/}
+        {/*      height: '36px',*/}
+        {/*      fontSize: '14px',*/}
+        {/*      textTransform: 'capitalize',*/}
+        {/*    }}*/}
+        {/*    disabled={disableSupply}*/}
+        {/*    variant="contained"*/}
+        {/*    onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}*/}
+        {/*  >*/}
+        {/*    <Trans>Supply</Trans>*/}
+        {/*  </Button>*/}
+        {/*)}*/}
         <Button
-          sx={{
-            p: 2,
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-            borderColor: theme.palette.text.subText,
-            bgcolor: 'transparent',
-            color: 'text.primary',
-            '&:hover': {
-              bgcolor: 'transparent',
-            },
-          }}
+          size="small"
           disabled={disableWithdraw}
-          variant="outlined"
+          variant="text"
           onClick={() => {
             openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
           }}

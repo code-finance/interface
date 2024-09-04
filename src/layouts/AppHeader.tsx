@@ -1,28 +1,9 @@
-import {
-  InformationCircleIcon,
-  SparklesIcon,
-  SwitchHorizontalIcon,
-} from '@heroicons/react/outline';
-import { Trans } from '@lingui/macro';
-import {
-  Badge,
-  Button,
-  NoSsr,
-  Slide,
-  styled,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useScrollTrigger,
-  useTheme,
-} from '@mui/material';
+import { Badge, Slide, styled, useMediaQuery, useScrollTrigger, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { Link } from '../components/primitives/Link';
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
@@ -35,39 +16,6 @@ import WalletWidget from './WalletWidget';
 interface Props {
   children: React.ReactElement;
 }
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    top: '2px',
-    right: '2px',
-    borderRadius: '20px',
-    width: '10px',
-    height: '10px',
-    backgroundColor: theme.palette.mode === 'light' ? '#e6e4f4' : '#28216d',
-    color: `${theme.palette.secondary.main}`,
-    '&::after': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      borderRadius: '50%',
-      animation: 'ripple 1.2s infinite ease-in-out',
-      border: '1px solid currentColor',
-      content: '""',
-    },
-  },
-  '@keyframes ripple': {
-    '0%': {
-      transform: 'scale(.8)',
-      opacity: 1,
-    },
-    '100%': {
-      transform: 'scale(2.4)',
-      opacity: 0,
-    },
-  },
-}));
 
 function HideOnScroll({ children }: Props) {
   const { breakpoints } = useTheme();
@@ -116,7 +64,7 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = lg ? 54 : 68;
+  const headerHeight = lg ? 54 : 88;
 
   const toggleWalletWigit = (state: boolean) => {
     if (md) setMobileDrawerOpen(state);
@@ -161,7 +109,7 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
             : '#28216d',
           padding: {
             xs: '5px 12px 5px 20px',
-            xsm: '20px 40px 0',
+            xsm: '20px 40px',
           },
           display: 'flex',
           alignItems: 'center',

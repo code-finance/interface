@@ -2,7 +2,6 @@ import {
   CheckCircleIcon,
   ChevronDownIcon,
   ExclamationCircleIcon,
-  ExclamationIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline';
 import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
@@ -488,9 +487,9 @@ export function getThemedComponents(theme: Theme) {
               borderColor: theme.palette.primary.main,
               color: theme.palette.primary.main,
               '&:hover': {
-                background: theme.palette.text.buttonText,
-                color: theme.palette.point.primary,
-                opacity: 0.8,
+                // background: theme.palette.text.buttonText,
+                // color: theme.palette.point.primary,
+                // opacity: 0.8,
               },
             },
           },

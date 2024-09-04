@@ -82,9 +82,12 @@ const BorrowModeSwitch = ({
         onChange={(_, value) => setInterestRateMode(value)}
         sx={{ mt: 2 }}
       >
-        <StyledTxModalToggleButton value={InterestRate.Variable}>
+        <StyledTxModalToggleButton
+          value={InterestRate.Variable}
+          sx={{ minWidth: 'auto !important' }}
+        >
           <Typography variant="body7">
-            <Trans>Variable</Trans>
+            <Trans>Variable</Trans>&nbsp;
           </Typography>
           <FormattedNumber
             value={variableRate}
@@ -94,7 +97,7 @@ const BorrowModeSwitch = ({
             symbolsColor="inherit"
           />
         </StyledTxModalToggleButton>
-        <StyledTxModalToggleButton value={InterestRate.Stable}>
+        <StyledTxModalToggleButton value={InterestRate.Stable} sx={{ minWidth: 'auto !important' }}>
           <Typography variant="body7" sx={{ mr: 1 }}>
             <Trans>Stable</Trans>
           </Typography>

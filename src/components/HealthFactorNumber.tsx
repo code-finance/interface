@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 
@@ -30,7 +30,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
         display: 'inline-flex',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 4,
+        gap: 3,
       }}
       data-cy={'HealthFactorTopPannel'}
     >
@@ -49,25 +49,21 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       )}
 
       {onInfoClick && (
-        <Box
+        <Button
           onClick={onInfoClick}
           sx={(theme) => ({
             px: 2,
             py: '3px',
             border: `1px solid ${theme.palette.border.contents}`,
             ...theme.typography.detail2,
-            cursor: 'pointer',
-            borderRadius: 1,
-            textTransform: 'uppercase',
             color: theme.palette.text.secondary,
-            transition: '0.3s',
-            '&:hover': {
-              opacity: 0.8,
-            },
+            borderRadius: 1,
           })}
+          size="small"
+          variant="transparent"
         >
           <Trans>Risk details</Trans>
-        </Box>
+        </Button>
       )}
     </Box>
   );

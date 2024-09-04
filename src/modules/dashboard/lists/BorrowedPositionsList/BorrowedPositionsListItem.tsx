@@ -107,14 +107,11 @@ const BorrowedPositionsListItemDesktop = ({
   reserve,
   borrowRateMode,
   disableBorrow,
-  disableSwitch,
   disableRepay,
-  showSwitchButton,
   totalBorrows,
   totalBorrowsUSD,
   borrowAPY,
   incentives,
-  onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
   onOpenRateSwitch,
@@ -164,48 +161,10 @@ const BorrowedPositionsListItemDesktop = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {showSwitchButton ? (
-          <Button
-            disabled={disableSwitch}
-            variant="contained"
-            onClick={onDetbSwitchClick}
-            data-cy={`swapButton`}
-          >
-            <Trans>Switch</Trans>
-          </Button>
-        ) : (
-          <Button
-            sx={{
-              p: 2,
-              height: '36px',
-              fontSize: '14px',
-              textTransform: 'capitalize',
-              borderColor: theme.palette.text.subText,
-            }}
-            disabled={disableBorrow}
-            variant="contained"
-            onClick={onOpenBorrow}
-          >
-            <Trans>Borrow</Trans>
-          </Button>
-        )}
-        <Button
-          sx={{
-            p: 2,
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-            borderColor: theme.palette.text.subText,
-            bgcolor: 'transparent',
-            color: 'text.primary',
-            '&:hover': {
-              bgcolor: 'transparent',
-            },
-          }}
-          disabled={disableRepay}
-          variant="outlined"
-          onClick={onOpenRepay}
-        >
+        <Button disabled={disableBorrow} variant="text" size="small" onClick={onOpenBorrow}>
+          <Trans>Borrow</Trans>
+        </Button>
+        <Button disabled={disableRepay} size="small" variant="contained" onClick={onOpenRepay}>
           <Trans>Repay</Trans>
         </Button>
       </ListButtonsColumn>

@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
@@ -67,7 +68,7 @@ export const TokenLinkDropdown = ({
             })}
           >
             <SvgIcon sx={{ fontSize: '14px' }}>
-              <ExternalLinkIcon />
+              <CallMadeOutlinedIcon />
             </SvgIcon>
           </Box>
         </CircleIcon>

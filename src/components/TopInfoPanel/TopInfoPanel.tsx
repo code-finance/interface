@@ -26,7 +26,7 @@ export const TopInfoPanel = ({
     <Box
       sx={{
         bgcolor: isGovernanceDetails ? 'transparent' : 'background.top',
-        pt: { xs: 10, md: 20 },
+        pt: { xs: 10, md: 15 },
         pb: { xs: 18, md: 15 },
       }}
     >

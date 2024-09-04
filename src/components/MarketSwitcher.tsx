@@ -131,14 +131,6 @@ export const MarketSwitcher = () => {
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const isV3MarketsAvailable = availableMarkets
-    .map((marketId: CustomMarket) => {
-      const { market } = getMarketInfoById(marketId);
-
-      return market.v3;
-    })
-    .some((item) => !!item);
-
   const handleMarketSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     trackEvent(DASHBOARD.CHANGE_MARKET, { market: e.target.value });
     setCurrentMarket(e.target.value as unknown as CustomMarket);
@@ -155,6 +147,9 @@ export const MarketSwitcher = () => {
         mr: 2,
         '& .MuiOutlinedInput-notchedOutline': {
           border: 'none',
+        },
+        '& .MuiSelect-select.MuiSelect-outlined': {
+          overflow: 'visible !important',
         },
       }}
       SelectProps={{

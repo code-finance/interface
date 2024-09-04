@@ -16,11 +16,10 @@ export const ListTopInfoItem = ({ title, value, percent, tooltip }: ListTopInfoI
     <Paper
       variant="outlined"
       sx={{
-        mr: 2,
-        borderRadius: '4px',
+        borderRadius: 1,
         color: theme.palette.text.buttonText,
         border: 'none',
-        p: '3px 4px',
+        p: '3px 6px',
         display: 'flex',
         alignItems: 'center',
         boxShadow: 'none',

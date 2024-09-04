@@ -133,6 +133,62 @@ export const ListWrapper = ({
               >
                 {titleComponent}
                 {subTitleComponent}
+                {!!localStorageName && !noData && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      alignSelf: 'flex-start',
+                      ml: 'auto',
+                      minHeight: '28px',
+                      pl: 3,
+                      // span: {
+                      //   width: '14px',
+                      //   height: '2px',
+                      //   bgcolor: 'text.secondary',
+                      //   position: 'relative',
+                      //   ml: 1,
+                      //   '&:after': {
+                      //     content: "''",
+                      //     position: 'absolute',
+                      //     width: '14px',
+                      //     height: '2px',
+                      //     bgcolor: 'text.secondary',
+                      //     transition: 'all 0.2s ease',
+                      //     transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
+                      //     opacity: collapsed ? 1 : 0,
+                      //   },
+                      // },
+                    }}
+                    onClick={() => {
+                      handleTrackingEvents();
+                      !!localStorageName && !noData
+                        ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
+                        : undefined;
+                    }}
+                  >
+                    <Typography
+                      variant="body5"
+                      color={isPosition ? 'white' : 'text.secondary'}
+                      sx={[
+                        { display: 'flex', alignItems: 'center' },
+                        ...(Array.isArray(collapsedSx) ? collapsedSx : [collapsedSx]),
+                      ]}
+                    >
+                      {collapsed ? (
+                        <>
+                          <Trans>Show</Trans> <KeyboardArrowDownIcon sx={{ ml: 1 }} />
+                        </>
+                      ) : (
+                        <>
+                          <Trans>Hide</Trans> <KeyboardArrowUpIcon sx={{ ml: 1 }} />
+                        </>
+                      )}
+                    </Typography>
+                    <span />
+                  </Box>
+                )}
               </Box>
 
               {topInfo && (
@@ -143,7 +199,7 @@ export const ListWrapper = ({
                     px: { xs: 4, xsm: 0 },
                     pb: { xs: collapsed && !noData ? 6 : 2, xsm: 0 },
                     flexWrap: 'wrap',
-                    gap: 1.5,
+                    gap: 1,
                     overflowX: tooltipOpen ? 'hidden' : 'auto',
                   }}
                 >
@@ -154,62 +210,6 @@ export const ListWrapper = ({
                 <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
               )}
             </Box>
-
-            {!!localStorageName && !noData && (
-              <Box
-                sx={{
-                  alignSelf: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  minHeight: '28px',
-                  pl: 3,
-                  // span: {
-                  //   width: '14px',
-                  //   height: '2px',
-                  //   bgcolor: 'text.secondary',
-                  //   position: 'relative',
-                  //   ml: 1,
-                  //   '&:after': {
-                  //     content: "''",
-                  //     position: 'absolute',
-                  //     width: '14px',
-                  //     height: '2px',
-                  //     bgcolor: 'text.secondary',
-                  //     transition: 'all 0.2s ease',
-                  //     transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
-                  //     opacity: collapsed ? 1 : 0,
-                  //   },
-                  // },
-                }}
-                onClick={() => {
-                  handleTrackingEvents();
-                  !!localStorageName && !noData
-                    ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
-                    : undefined;
-                }}
-              >
-                <Typography
-                  variant="body5"
-                  color={isPosition ? 'white' : 'text.secondary'}
-                  sx={[
-                    { display: 'flex', alignItems: 'center' },
-                    ...(Array.isArray(collapsedSx) ? collapsedSx : [collapsedSx]),
-                  ]}
-                >
-                  {collapsed ? (
-                    <>
-                      <Trans>Show</Trans> <KeyboardArrowDownIcon sx={{ ml: 1 }} />
-                    </>
-                  ) : (
-                    <>
-                      <Trans>Hide</Trans> <KeyboardArrowUpIcon sx={{ ml: 1 }} />
-                    </>
-                  )}
-                </Typography>
-                <span />
-              </Box>
-            )}
           </Box>
         </Box>
 

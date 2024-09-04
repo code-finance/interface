@@ -186,7 +186,7 @@ export const DashboardTopPanel = () => {
         )}
         {currentAccount && (
           <Button
-            sx={{ ml: 'auto', width: '221px', height: '42px' }}
+            sx={{ ml: 'auto', width: '221px', height: '42px', alignSelf: 'center' }}
             onClick={() => {
               router.push(ROUTES.history);
               trackEvent(AUTH.VIEW_TX_HISTORY);

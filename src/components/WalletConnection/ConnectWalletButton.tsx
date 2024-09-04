@@ -20,7 +20,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, isSw
     <>
       <Button
         sx={{ height: '45px', width: '234px' }}
-        size="small"
+        size="medium"
         variant="outlined"
         onClick={() => {
           trackEvent(AUTH.CONNECT_WALLET, { funnel: funnel });
