@@ -96,7 +96,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         ) : null}
       </Box>
 
-      <PanelRow>
+      <PanelRow sx={{ mt: { xs: 6, sm: 10 } }}>
         <PanelTitle>Supply Info</PanelTitle>
         <SupplyInfo
           reserve={reserve}

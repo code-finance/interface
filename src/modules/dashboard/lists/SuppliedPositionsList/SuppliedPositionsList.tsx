@@ -136,7 +136,7 @@ export const SuppliedPositionsList = () => {
       icon={<WalletIcon sx={{ height: '60px', width: '60px', color: 'white' }} />}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" color="text.buttonText" variant="h2" sx={{ mr: 4 }}>
+        <Typography component="div" color="text.buttonText" variant="h2" sx={{ mr: 4, mb: 4 }}>
           Your supplies
         </Typography>
       }

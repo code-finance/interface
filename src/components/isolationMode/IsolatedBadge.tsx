@@ -12,8 +12,7 @@ const contentSx = {
   cursor: 'pointer',
   '&:hover': { opacity: 0.6 },
   height: '24px',
-  pl: 2,
-  pr: 1,
+  padding: '3px 4px',
 };
 
 interface InfoIconProps {
@@ -92,7 +91,12 @@ export const IsolatedDisabledBadge = () => {
         <Typography variant="description" color="error.main">
           <Trans>Unavailable</Trans>
         </Typography>
-        <InfoIcon />
+        <Typography
+          color="warning.main"
+          sx={{ lineHeight: 1, display: 'flex', alignItems: 'center' }}
+        >
+          <InfoIcon />
+        </Typography>
       </Box>
     </ContentWithTooltip>
   );
@@ -111,7 +115,12 @@ export const UnavailableDueToIsolationBadge = () => {
         <Typography variant="body7" color="warning.main">
           <Trans>Unavailable</Trans>
         </Typography>
-        <InfoIcon />
+        <Typography
+          color="warning.main"
+          sx={{ lineHeight: 1, display: 'flex', alignItems: 'center' }}
+        >
+          <InfoIcon />
+        </Typography>
       </Box>
     </ContentWithTooltip>
   );

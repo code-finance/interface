@@ -20,6 +20,7 @@ import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
+import { WrapTypography } from '../../components/WrapTypography';
 import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
 
 export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
@@ -33,8 +34,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
   return (
     <ListItem
-      px={6}
-      minHeight={76}
+      py={2}
+      minHeight={93}
       onClick={() => {
         trackEvent(MARKETS.DETAILS_NAVIGATION, {
           type: 'Row',
@@ -44,30 +45,36 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
         });
         router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket));
       }}
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: 'pointer', px: 0 }}
       button
       data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
         <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
         <Box sx={{ pl: 3, overflow: 'hidden' }}>
-          <Typography variant="body6" noWrap color="text.primary" component="div">
+          <Typography variant="body6" noWrap color="text.primary" component="div" mb={1}>
             {reserve.name}
           </Typography>
 
           <Box
             sx={{
-              p: { xs: '0', xsm: '3px 0px' },
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              flexWrap: 'nowrap',
             }}
           >
-            <Typography variant="detail2" color="text.mainTitle" noWrap component="div">
+            <WrapTypography
+              variant="detail2"
+              color="text.mainTitle"
+              noWrap
+              component="div"
+              sx={{ py: '3px' }}
+            >
               {reserve.symbol}
-              {reserve.isIsolated && (
-                <span style={{ marginLeft: '16px' }}>
-                  <IsolatedEnabledBadge />
-                </span>
-              )}
-            </Typography>
+            </WrapTypography>
+            {reserve.isIsolated && <IsolatedEnabledBadge />}
           </Box>
         </Box>
         {reserve.symbol === 'AMPL' && <AMPLToolTip />}

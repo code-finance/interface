@@ -183,7 +183,11 @@ export const DetailsNumberLineWithSub = ({
                       {symbol}
                     </Typography>
                   )}
-                  {ArrowRightIcon}
+                  <Typography color={color} sx={{ lineHeight: 1 }}>
+                    <SvgIcon sx={{ fontSize: '14px', mx: 1 }}>
+                      <ArrowNarrowRightIcon />
+                    </SvgIcon>
+                  </Typography>
                 </>
               )}
               {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '24px' }} />}
@@ -206,7 +210,11 @@ export const DetailsNumberLineWithSub = ({
                     symbolsColor="text.subTitle"
                     symbolsVariant="detail5"
                   />
-                  {ArrowRightIcon}
+                  <Typography color="text.subTitle" sx={{ lineHeight: 1 }}>
+                    <SvgIcon sx={{ fontSize: '14px', mx: 1 }}>
+                      <ArrowNarrowRightIcon />
+                    </SvgIcon>
+                  </Typography>
                 </>
               )}
               <FormattedNumber

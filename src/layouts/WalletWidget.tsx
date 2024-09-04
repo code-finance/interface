@@ -124,7 +124,6 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
-  console.log(networkConfig);
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
       <Typography

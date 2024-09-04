@@ -65,7 +65,7 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Button
             component={Link}
-            variant="outlined"
+            variant="transparent"
             href={currentNetworkConfig.explorerLinkBuilder({
               tx: txHash ? txHash : mainTxState.txHash,
             })}
@@ -74,10 +74,9 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
               p: '3px 4px 3px 8px',
               borderRadius: '4px',
               ...theme.typography.detail2,
-              border: `1px solid ${theme.palette.border.contents}`,
               height: '24px',
-              width: 146,
               ml: 'auto',
+              textTransform: 'lowercase',
             }}
             underline="hover"
             target="_blank"

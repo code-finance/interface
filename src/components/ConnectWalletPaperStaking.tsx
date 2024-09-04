@@ -36,19 +36,17 @@ export const ConnectWalletPaperStaking = ({
           <CircularProgress />
         ) : (
           <>
-            <Box sx={{ px: '20px', py: '40px', width: '100%' }}>
-              <Typography variant="h6" sx={{ mb: 8 }} color={'text.primary'}>
-                <Trans>Please, connect your wallet</Trans>
-              </Typography>
-              <Typography sx={{ mb: 10, fontSize: '20px' }} color="text.secondary">
-                {description || (
-                  <Trans>
-                    Please connect your wallet to see your supplies, borrowings, and open positions.
-                  </Trans>
-                )}
-              </Typography>
-              <ConnectWalletButton funnel={'Staking page'} />
-            </Box>
+            <Typography variant="h2" sx={{ mb: 8 }} color={'text.primary'}>
+              <Trans>Please, connect your wallet</Trans>
+            </Typography>
+            <Typography sx={{ mb: 10, fontSize: '20px', fontWeight: 500 }} color="text.secondary">
+              {description || (
+                <Trans>
+                  Please connect your wallet to see your supplies, borrowings, and open positions.
+                </Trans>
+              )}
+            </Typography>
+            <ConnectWalletButton funnel={'Staking page'} />
             <Box
               pt={'28px'}
               sx={{

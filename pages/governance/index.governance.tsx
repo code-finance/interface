@@ -1,9 +1,6 @@
-import { Trans } from '@lingui/macro';
-import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsV3List } from 'src/modules/governance/ProposalsV3List';
