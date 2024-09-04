@@ -61,7 +61,6 @@ export const TextWithTooltip = ({
             width: iconSize,
             height: iconSize,
             borderRadius: '50%',
-            p: '3px',
             minWidth: 0,
           }}
           onClick={() => {
