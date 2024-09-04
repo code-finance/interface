@@ -7,7 +7,9 @@ import { Link } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -22,6 +24,8 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
 }) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   let stakingAPY = '';
+  const { chainId } = useWeb3Context();
+  const networkConfig = getNetworkConfig(chainId);
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
 
@@ -81,8 +85,8 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
       >
         <TokenIcon symbol={icon} sx={{ width: '24px', height: '24px' }} />
         <Stack direction="column" alignItems="start">
-          <Typography color="text.primary" sx={{ fontSize: '18px', textAlign: 'left' }}>
-            Stake CODE on {stakedToken} mainnet
+          <Typography variant="body2" color="text.primary" sx={{ textAlign: 'left' }}>
+            Stake {stakedToken} on {networkConfig?.name} mainnet
           </Typography>
         </Stack>
       </Box>
@@ -96,7 +100,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         }}
       >
         <Box display={'flex'} flexDirection={'column'} gap={2}>
-          <Typography color="text.secondary" sx={{ fontSize: '14px' }}>
+          <Typography color="text.mainTitle" variant="detail2">
             <Trans>Staking APR</Trans>
           </Typography>
 
@@ -119,10 +123,11 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           )}
 
           <FormattedNumber
+            variant="detail2"
             value={parseFloat(stakingAPY || '0') / 10000}
             symbol="USD"
-            color="text.secondary"
-            sx={{ fontSize: '14px' }}
+            color="text.mainTitle"
+            symbolsColor="text.mainTitle"
           />
         </Box>
       </Box>

@@ -1,4 +1,4 @@
-import { Box, Container, ContainerProps } from '@mui/material';
+import { Box, BoxProps, Container, ContainerProps } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { PageTitle, PageTitleProps } from './PageTitle';
@@ -9,6 +9,7 @@ interface TopInfoPanelProps extends PageTitleProps {
   containerProps?: ContainerProps;
   multiMarket?: boolean;
   isGovernanceDetails?: boolean;
+  wrapperSx?: BoxProps['sx'];
 }
 
 export const TopInfoPanel = ({
@@ -21,6 +22,7 @@ export const TopInfoPanel = ({
   children,
   containerProps = {},
   isGovernanceDetails,
+  wrapperSx,
 }: TopInfoPanelProps) => {
   return (
     <Box
@@ -28,6 +30,7 @@ export const TopInfoPanel = ({
         bgcolor: isGovernanceDetails ? 'transparent' : 'background.top',
         pt: { xs: 10, md: 20 },
         pb: { xs: 18, md: 15 },
+        ...wrapperSx,
       }}
     >
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>

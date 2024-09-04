@@ -75,6 +75,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
           </Typography>
         </Box>
       }
+      wrapperSx={{ pb: '54px' }}
     >
       <TopInfoPanelItem
         hideIcon

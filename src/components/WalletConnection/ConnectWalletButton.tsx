@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useWalletModalContext } from 'src/hooks/useWalletModal';
 import { useRootStore } from 'src/store/root';
@@ -19,7 +19,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, isSw
   return (
     <>
       <Button
-        sx={{ height: '45px', width: '234px' }}
+        sx={{ height: '45px', px: '60px', py: '12px' }}
         size="small"
         variant="outlined"
         onClick={() => {
@@ -27,7 +27,15 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, isSw
           setWalletModalOpen(true);
         }}
       >
-        {isSwitchWallet ? <Trans>Switch wallet</Trans> : <Trans>Connect wallet</Trans>}
+        {isSwitchWallet ? (
+          <Typography variant="body7">
+            <Trans>Switch wallet</Trans>
+          </Typography>
+        ) : (
+          <Typography variant="body7">
+            <Trans>Connect wallet</Trans>
+          </Typography>
+        )}
       </Button>
       <WalletModal />
     </>

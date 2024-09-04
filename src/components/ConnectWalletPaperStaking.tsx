@@ -25,8 +25,8 @@ export const ConnectWalletPaperStaking = ({
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        px: 5,
-        py: 25,
+        px: '20px',
+        py: '60px',
         flex: 1,
         ...sx,
       }}
@@ -36,30 +36,33 @@ export const ConnectWalletPaperStaking = ({
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 8 }} color={'text.primary'}>
-              <Trans>Please, connect your wallet</Trans>
-            </Typography>
-            <Typography sx={{ mb: 10, fontSize: '20px' }} color="text.secondary">
-              {description || (
-                <Trans>
-                  Please connect your wallet to see your supplies, borrowings, and open positions.
-                </Trans>
-              )}
-            </Typography>
-            <ConnectWalletButton funnel={'Staking page'} />
+            <Box sx={{ px: '20px', py: '40px', width: '100%' }}>
+              <Typography variant="h6" sx={{ mb: 8 }} color={'text.primary'}>
+                <Trans>Please, connect your wallet</Trans>
+              </Typography>
+              <Typography sx={{ mb: 10, fontSize: '20px' }} color="text.secondary">
+                {description || (
+                  <Trans>
+                    Please connect your wallet to see your supplies, borrowings, and open positions.
+                  </Trans>
+                )}
+              </Typography>
+              <ConnectWalletButton funnel={'Staking page'} />
+            </Box>
             <Box
-              pt={17}
+              pt={'28px'}
               sx={{
                 width: '100%',
                 textAlign: 'right',
-                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
                 flexDirection: 'row',
                 display: 'flex',
                 gap: 3,
               }}
             >
-              <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} />
-              {/* <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} /> */}
+              {/* <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} /> */}
+              <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
               <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
             </Box>
           </>
