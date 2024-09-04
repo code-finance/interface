@@ -1,6 +1,6 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+// eslint-disable-next-line import/namespace
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -52,7 +52,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
     <TopInfoPanel
       titleComponent={
         <Box mb={'40px'}>
-          <ChainAvailabilityText wrapperSx={{ mb: 3 }} page="Staking" />
+          <ChainAvailabilityText wrapperSx={{ mb: 3 }} title="Staking" />
 
           <Typography variant="body3" sx={{ color: 'text.secondary', maxWidth: '1260px', mb: 10 }}>
             <Trans>

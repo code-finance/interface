@@ -41,7 +41,7 @@ export const ConnectWalletPaperReferral = ({
         ) : (
           <Box sx={{ px: '20px', py: '40px', width: '100%' }}>
             <Typography variant="h6" sx={{ mb: 8 }} color={'text.primary'}>
-              <Trans>{titleHeader}</Trans>
+              {titleHeader}
             </Typography>
             <Typography
               sx={{ mb: 10, fontSize: '20px', fontWeight: 500, lineHeight: '130%' }}
