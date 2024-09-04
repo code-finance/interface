@@ -170,7 +170,8 @@ export const TxActionsWrapper = ({
         sx={{
           height: '45px',
           borderRadius: '8px',
-          p: 3,
+          px: '10px',
+          py: '12px',
           mt: 12,
           ...(approvalParams ? { mt: 2 } : {}),
           ...(disabled
@@ -185,7 +186,7 @@ export const TxActionsWrapper = ({
         data-cy="actionButton"
       >
         {loading && <CircularProgress color="inherit" size="16px" sx={{ mr: 2 }} />}
-        {content}
+        <Typography variant="body6">{content}</Typography>
       </Button>
       {readOnlyModeAddress && (
         <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>

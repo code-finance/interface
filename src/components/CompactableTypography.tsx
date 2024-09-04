@@ -25,7 +25,7 @@ const compactModeMap = {
     to: 4,
   },
   [CompactMode.MD]: {
-    from: 7,
+    from: 6,
     to: 4,
   },
   [CompactMode.LG]: {

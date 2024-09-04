@@ -318,6 +318,7 @@ export const AssetInput = <T extends Asset = Asset>({
                 {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
                 <FormattedNumber
                   value={asset.balance}
+                  visibleDecimals={2}
                   compact
                   variant="body7"
                   color="text.mainTitle"

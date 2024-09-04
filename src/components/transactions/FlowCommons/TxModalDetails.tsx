@@ -99,7 +99,7 @@ export const DetailsNumberLine = ({
   ...rest
 }: DetailsNumberLineProps) => {
   return (
-    <Row caption={description} captionVariant="body7" captionColor="text.primary" mb={4}>
+    <Row caption={description} captionVariant="body7" captionColor="text.secondary" mb={4}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
@@ -113,6 +113,8 @@ export const DetailsNumberLine = ({
               color="text.secondary"
               symbolsColor="text.secondary"
               symbolsVariant="body7"
+              visibleDecimals={2}
+              roundDown
               {...rest}
             />
             {futureValue && (
@@ -157,7 +159,7 @@ export const DetailsNumberLineWithSub = ({
     <Row
       caption={description}
       captionVariant="body7"
-      captionColor="text.primary"
+      captionColor="text.secondary"
       mb={4}
       align="flex-start"
     >
@@ -177,7 +179,12 @@ export const DetailsNumberLineWithSub = ({
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {value && (
                 <>
-                  <FormattedNumber value={value} variant="body7" color={color} />
+                  <FormattedNumber
+                    visibleDecimals={2}
+                    value={value}
+                    variant="body7"
+                    color={color}
+                  />
                   {!hideSymbolSuffix && (
                     <Typography ml={1} variant="body7" color={color}>
                       {symbol}
@@ -191,7 +198,12 @@ export const DetailsNumberLineWithSub = ({
                 </>
               )}
               {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '24px' }} />}
-              <FormattedNumber value={futureValue} variant="body7" color={color} />
+              <FormattedNumber
+                visibleDecimals={2}
+                value={futureValue}
+                variant="body7"
+                color={color}
+              />
               {!hideSymbolSuffix && (
                 <Typography ml={1} variant="body7" color={color}>
                   {symbol}
@@ -243,7 +255,7 @@ export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine)
     <Row
       caption={<Trans>Collateralization</Trans>}
       captionVariant="body7"
-      captionColor="text.primary"
+      captionColor="text.secondary"
       mb={4}
     >
       <CollateralState collateralType={collateralType} />
@@ -353,7 +365,7 @@ export const DetailsHFLine = ({
     <Row
       caption={<Trans>Health factor</Trans>}
       captionVariant="body7"
-      captionColor="text.primary"
+      captionColor="text.secondary"
       mb={4}
       align="flex-start"
     >

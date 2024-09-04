@@ -27,7 +27,8 @@ import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/system';
 import React, { useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
-import { CompactMode } from 'src/components/CompactableTypography';
+import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
+import { ReferralCodeToolTip } from 'src/components/infoTooltips/ReferralCodeToolTip';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
@@ -138,7 +139,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Trans>Account</Trans>
       </Typography>
 
-      <Box component={component} disabled sx={{ my: 1, px: 1.5, py: 3 }}>
+      <Box
+        component={'li'}
+        sx={{ my: 1, px: 1.5, py: 3, backgroundColor: 'transparent !important' }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -157,6 +161,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               addressCompactMode: CompactMode.LG,
               typography: 'caption',
             }}
+            checkVerify
           />
           {readOnlyModeAddress && (
             <Warning severity="warning" sx={{ mt: 3, mb: 0 }}>
@@ -206,11 +211,24 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         </ListItemText>
       </Box>
       <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
-      <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleCopyReferralCode}>
+      <Box
+        component={'li'}
+        sx={{ display: 'flex', mt: 1, px: 1.5, py: 3, alignItems: 'center' }}
+        onClick={handleCopyReferralCode}
+      >
         <ListItemText>
-          <Typography variant="body6" color="text.primary" sx={{ pl: 8 }}>
-            <Trans>E24C0234B9</Trans>
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CompactableTypography
+              color="text.primary"
+              variant="body6"
+              compactMode={CompactMode.SM}
+              compact
+              sx={{ pl: '38px' }}
+            >
+              73WakrfVbNJBaAmhQtEeDv
+            </CompactableTypography>
+            <ReferralCodeToolTip iconSize={20} iconColor="text.secondary" />
+          </Box>
         </ListItemText>
         <ListItemIcon sx={{ mr: 0 }}>
           <SvgIcon
@@ -220,7 +238,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </SvgIcon>
         </ListItemIcon>
       </Box>
-      <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleCopyReferralCode}>
+      <Box component={component} sx={{ mb: 1, px: 1.5, py: 3 }} onClick={handleCopyReferralCode}>
         <ListItemIcon sx={{ mr: 1 }}>
           <SvgIcon
             sx={(theme) => ({ fontSize: '24px !important', color: theme.palette.text.secondary })}
@@ -392,7 +410,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             <UserDisplay
               avatarProps={{ size: 24 }}
               oneLiner={true}
-              titleProps={{ variant: 'body5', color: 'text.primary', lineHeight: 0 }}
+              titleProps={{
+                variant: 'body5',
+                color: 'text.primary',
+                lineHeight: 0,
+                addressCompactMode: CompactMode.MD,
+              }}
             />
           ) : (
             <Typography variant="body5">
@@ -424,7 +447,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             paper: classes.menuPaper,
           }}
         >
-          <MenuList disablePadding sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}>
+          <MenuList
+            disablePadding
+            sx={{
+              '.MuiMenuItem-root.Mui-disabled': { opacity: 1 },
+            }}
+          >
             <Content component={MenuItem} />
           </MenuList>
         </Menu>
