@@ -52,7 +52,7 @@ export const StakeActionBox = ({
       <Box
         sx={(theme) => ({
           flex: 1,
-          p: 4,
+          p: '40px 16px 20px 16px',
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',

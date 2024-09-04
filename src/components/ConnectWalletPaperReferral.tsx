@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
+import { Box, CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
@@ -29,8 +29,8 @@ export const ConnectWalletPaperReferral = ({
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        px: 5,
-        py: 25,
+        px: '20px',
+        py: '60px',
         flex: 1,
         ...sx,
       }}
@@ -39,7 +39,7 @@ export const ConnectWalletPaperReferral = ({
         {loading ? (
           <CircularProgress />
         ) : (
-          <>
+          <Box sx={{ px: '20px', py: '40px', width: '100%' }}>
             <Typography variant="h6" sx={{ mb: 8 }} color={'text.primary'}>
               <Trans>{titleHeader}</Trans>
             </Typography>
@@ -50,7 +50,7 @@ export const ConnectWalletPaperReferral = ({
               {description}
             </Typography>
             <ConnectWalletButton isSwitchWallet={isSwitchWallet} funnel={'Referral page'} />
-          </>
+          </Box>
         )}
       </>
     </Paper>

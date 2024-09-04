@@ -27,7 +27,7 @@ import {
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
-import { DashboardEModeButton } from '../../DashboardEModeButton';
+// import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
@@ -178,11 +178,11 @@ export const BorrowedPositionsList = () => {
       localStorageName="borrowedAssetsDashboardTableCollapse"
       isPosition
       noData={!sortedReserves.length}
-      subTitleComponent={
-        showEModeButton ? (
-          <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
-        ) : undefined
-      }
+      // subTitleComponent={
+      //   showEModeButton ? (
+      //     <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
+      //   ) : undefined
+      // }
       subChildrenComponent={
         !sortedReserves.length ? (
           <DashboardContentNoData text={<Trans>Nothing borrowed yet</Trans>} />

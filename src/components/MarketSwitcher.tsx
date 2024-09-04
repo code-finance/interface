@@ -189,7 +189,8 @@ export const MarketSwitcher = () => {
                     mr: 1,
                   })}
                 >
-                  {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
+                  {getMarketHelpData(market.marketTitle).name + ' Market'}{' '}
+                  {market.isFork ? 'Fork' : ''}
                   {/* {upToLG && ' Market'} */}
                   {upToLG && ''}
                 </Typography>
@@ -350,7 +351,7 @@ export const MarketSwitcher = () => {
               logo={network.networkLogoPath}
               testChainName={marketNaming.testChainName}
             />
-            {marketNaming.name} {market.isFork ? 'Fork' : ''}
+            {marketNaming.name + ' Market'} {market.isFork ? 'Fork' : ''}
             <ListItemText sx={{ textAlign: 'right' }}>
               <Typography color="text.muted" variant="description">
                 {marketNaming.testChainName}

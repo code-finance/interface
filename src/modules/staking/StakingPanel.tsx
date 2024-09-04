@@ -241,7 +241,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           gap: { xs: 0, xsm: 2 },
           borderRadius: { xs: 0, xsm: '12px' },
           border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
-          p: { xs: 0, xsm: '12px 8px' },
+          p: { xs: 0, xsm: '8px 12px' },
           mb: 7,
           background: {
             xs: 'unset',
@@ -317,11 +317,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           }}
         >
           <Stack direction="row">
-            <Typography
-              variant={xsm ? 'detail2' : 'description'}
-              color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
-              sx={{ mb: 2 }}
-            >
+            <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: 2 }}>
               <Trans>Staking APR</Trans>
             </Typography>
             {distributionEnded && (
@@ -346,8 +342,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <FormattedNumber
               sx={{ mr: 2 }}
               value={stakeData.stakeApyFormatted}
+              color={'text.mainTitle'}
               symbol="USD"
-              variant="secondary14"
+              symbolsColor="text.mainTitle"
+              variant="detail2"
             />
             {/* {stakedToken === 'GHO' ? (
               stakeUserData.stakeTokenUserBalance !== '0' ? (
@@ -368,14 +366,16 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'detail2' : 'description'}
-            color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
-            sx={{ mb: 2 }}
-          >
+          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: 2 }}>
             <Trans>Max slashing</Trans>
           </Typography>
-          <FormattedNumber value={maxSlash} percent variant="secondary14" />
+          <FormattedNumber
+            symbolsColor="text.mainTitle"
+            color={'text.mainTitle'}
+            value={maxSlash}
+            percent
+            variant="detail2"
+          />
         </Box>
         <Box
           sx={{
@@ -387,14 +387,15 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'detail2' : 'description'}
-            color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
-            sx={{ mb: 2 }}
-          >
+          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: 2 }}>
             <Trans>Wallet Balance</Trans>
           </Typography>
-          <FormattedNumber value={availableToStake.toString()} />
+          <FormattedNumber
+            color={'text.mainTitle'}
+            variant="detail2"
+            symbolsColor="text.mainTitle"
+            value={availableToStake.toString()}
+          />
         </Box>
 
         {/**Stake action */}
@@ -427,7 +428,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           fullWidth={!xsm}
           data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
         >
-          <Trans>Stake</Trans>
+          <Typography variant="detail2">
+            <Trans>Stake</Trans>
+          </Typography>
         </Button>
         {/* )} */}
       </Box>
@@ -674,7 +677,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
                 data-cy={`coolDownBtn_${stakedToken}`}
               >
-                <Trans>Cooldown to unstake</Trans>
+                <Typography variant="body6">
+                  <Trans>Cooldown to unstake</Trans>
+                </Typography>
               </Button>
             )}
           </StakeActionBox>
@@ -719,7 +724,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 color: theme.palette.text.buttonText,
               }}
             >
-              <Trans>Claim</Trans>
+              <Typography variant="body7">
+                <Trans>Claim</Trans>
+              </Typography>
             </Button>
             {stakedToken && (
               <Button
@@ -738,7 +745,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                   color: theme.palette.text.buttonText,
                 }}
               >
-                <Trans>Restake</Trans>
+                <Typography variant="body7">
+                  <Trans>Restake</Trans>
+                </Typography>
               </Button>
             )}
           </Box>

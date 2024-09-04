@@ -54,16 +54,18 @@ export const ConnectWalletPaperStaking = ({
               sx={{
                 width: '100%',
                 textAlign: 'right',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
+                justifyContent: 'space-between',
                 flexDirection: 'row',
                 display: 'flex',
                 gap: 3,
               }}
             >
               {/* <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} /> */}
-              <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
-              <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
+              <Box sx={{ flex: 1 }}>
+                <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
+              </Box>
+              <Box sx={{ flex: 1 }} />
+              {/* <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} /> */}
             </Box>
           </>
         )}

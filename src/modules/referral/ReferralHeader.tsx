@@ -5,12 +5,6 @@ import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 export const ReferralHeader = () => {
   return (
     <TopInfoPanel
-      containerProps={{
-        sx: {
-          mt: '13px',
-          mb: '12px',
-        },
-      }}
       titleComponent={
         <Box>
           <Box sx={{ display: 'flex', mb: 3, alignItems: 'center' }}>

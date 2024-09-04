@@ -164,7 +164,7 @@ export default function Staking() {
               <Grid
                 item
                 xs={12}
-                lg={STAGING_ENV || ENABLE_TESTNET ? 12 : 6}
+                lg={6}
                 sx={{
                   display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' },
                 }}
@@ -248,7 +248,7 @@ export default function Staking() {
                 />
               </Grid> */}
 
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 lg={6}
@@ -317,7 +317,7 @@ export default function Staking() {
                     )}
                   </StakingPanel>
                 )}
-              </Grid>
+              </Grid> */}
             </Grid>
           </>
         ) : (
