@@ -2,10 +2,14 @@ import { Trans } from '@lingui/macro';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import * as React from 'react';
-import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
+import {
+  ChainAvailabilityText,
+  ChainAvailabilityText2,
+} from 'src/components/ChainAvailabilityText';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { ChainId } from '@aave/contract-helpers';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 
@@ -81,6 +85,9 @@ export const GovernanceTopPanel = () => {
         <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
         <ExternalLink text="FORUM" href="https://governance.aave.com/" />
         <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
+      </Box>
+      <Box sx={{ width: '100%', mt: 5 }}>
+        <ChainAvailabilityText2 chainId={ChainId.mainnet} />
       </Box>
     </TopInfoPanel>
   );

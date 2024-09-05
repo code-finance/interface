@@ -54,7 +54,7 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
           </Box>
         )}
         sx={{
-          minWidth: 140,
+          minWidth: 157,
           outline: 'none',
           '.MuiSelect-select': {
             pr: '12px !important',
@@ -67,6 +67,14 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
           },
         }}
         onChange={handleChange}
+        MenuProps={{
+          sx: {
+            '.MuiPaper-root': {
+              minWidth: '183px !important',
+              transform: 'translateX(12px) !important',
+            },
+          },
+        }}
       >
         <MenuItem value="all">
           <Trans>All proposals</Trans>
@@ -79,7 +87,8 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
       </Select>
       <SearchInput
         wrapperSx={{
-          width: '280px',
+          maxWidth: '393px',
+          width: '100%',
         }}
         placeholder="Search proposals"
         onSearchTermChange={handleSearchQueryChange}

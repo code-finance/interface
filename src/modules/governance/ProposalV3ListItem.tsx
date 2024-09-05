@@ -22,7 +22,6 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         alignItems: 'center',
-        flexDirection: { xs: 'column', md: 'row' },
         gap: 5,
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
@@ -64,7 +63,6 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
         sx={{
           maxWidth: { xs: '100%', lg: '320px' },
           width: '100%',
-          pl: { xs: 0, lg: 18 },
         }}
       >
         <VoteBar

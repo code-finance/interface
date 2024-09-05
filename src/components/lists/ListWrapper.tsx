@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
@@ -41,9 +41,11 @@ export const ListWrapper = ({
   isPosition,
   collapsedSx,
 }: ListWrapperProps) => {
-  const [isCollapse, setIsCollapse] = useState(
-    localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
-  );
+  const [isCollapse, setIsCollapse] = useState(false);
+  useEffect(() => {
+    if (localStorageName && localStorage.getItem(localStorageName) === 'true') setIsCollapse(true);
+  }, [localStorageName]);
+
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleTrackingEvents = () => {

@@ -115,6 +115,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               pageTitle={<Trans>Reserve History</Trans>}
               withMarketSwitcher={true}
               bridge={currentNetworkConfig.bridge}
+              viewOnly
             />
             {/*<Box sx={{ display: 'flex', alignItems: 'center' }}>*/}
             {/*  <MarketLogo size={20} logo={network.networkLogoPath} />*/}
@@ -216,11 +217,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           </TopInfoPanelItem>
         </>
       )}
-      {isGho ? (
-        <GhoReserveTopDetails reserve={poolReserve} />
-      ) : (
-        <ReserveTopDetails underlyingAsset={underlyingAsset} />
-      )}
+      <ReserveTopDetails underlyingAsset={underlyingAsset} />
     </TopInfoPanel>
   );
 };

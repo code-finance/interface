@@ -122,7 +122,7 @@ enum SelectedMarketVersion {
   V3,
 }
 
-export const MarketSwitcher = () => {
+export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
   const { currentMarket, setCurrentMarket } = useProtocolDataContext();
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
     SelectedMarketVersion.V3
@@ -141,6 +141,7 @@ export const MarketSwitcher = () => {
       select
       aria-label="select market"
       data-cy="marketSelector"
+      disabled={viewOnly}
       value={currentMarket}
       onChange={handleMarketSelect}
       sx={{
@@ -150,22 +151,28 @@ export const MarketSwitcher = () => {
         },
         '& .MuiSelect-select.MuiSelect-outlined': {
           overflow: 'visible !important',
+          '&.Mui-disabled': {
+            '-webkit-text-fill-color': 'unset',
+          },
         },
       }}
       SelectProps={{
         native: false,
         className: 'MarketSwitcher__select',
-        IconComponent: (props) => (
-          <SvgIcon
-            fontSize="medium"
-            {...props}
-            sx={(theme) => ({
-              color: `${theme.palette.text.primary} !important`,
-            })}
-          >
-            <ChevronDownIcon />
-          </SvgIcon>
-        ),
+        IconComponent: (props) =>
+          viewOnly ? (
+            <></>
+          ) : (
+            <SvgIcon
+              fontSize="medium"
+              {...props}
+              sx={(theme) => ({
+                color: `${theme.palette.text.primary} !important`,
+              })}
+            >
+              <ChevronDownIcon />
+            </SvgIcon>
+          ),
         renderValue: (marketId) => {
           const { market, network } = getMarketInfoById(marketId as CustomMarket);
 

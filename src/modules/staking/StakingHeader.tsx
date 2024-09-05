@@ -34,7 +34,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
 
   const TotalFundsTooltip = () => {
     return (
-      <TextWithTooltip iconSize={21} color={'text.secondary'}>
+      <TextWithTooltip iconSize={18}>
         <Box>
           {Object.entries(tvl)
             .sort((a, b) => b[1] - a[1])

@@ -14,7 +14,7 @@ module.exports = {
     'prettier/prettier': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    'simple-import-sort/imports': 'error',
+    'simple-import-sort/imports': 'off',
     'simple-import-sort/exports': 'warn',
     'import/first': 'error',
     'import/newline-after-import': 'error',

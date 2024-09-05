@@ -1,5 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, Container, styled, SvgIcon, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  styled,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 
@@ -50,6 +58,8 @@ export function AppFooter() {
     store.setAnalyticsConfigOpen,
     store.setFeedbackOpen,
   ]);
+  const { breakpoints } = useTheme();
+  const md = useMediaQuery(breakpoints.down('md'));
 
   const FOOTER_LINKS = [
     {
@@ -98,27 +108,34 @@ export function AppFooter() {
         sx={{
           flex: 0,
           display: 'flex',
-          paddingBlock: ['20px 40px', '20px 60px'],
           width: '100%',
+          paddingBlock: { xs: '40px 80px', md: '20px 60px' },
           justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: '20px',
-          flexDirection: ['column', 'column', 'row'],
+          alignItems: { xs: 'flex-start', md: 'center' },
+          gap: 8,
+          flexDirection: { xs: 'column', md: 'row' },
         }}
       >
-        <Box sx={{ display: 'flex', gap: { sm: 4, md: 6 }, alignItems: 'center' }}>
+        <Box
+          sx={{ display: 'flex', gap: { xs: 7, md: 6 }, alignItems: 'center', flexWrap: 'wrap' }}
+        >
           {FOOTER_LINKS.map((link) => (
-            <StyledLink onClick={link.onClick} key={link.key} href={link.href}>
-              <Typography variant="h4">{link.label}</Typography>
+            <StyledLink
+              onClick={link.onClick}
+              key={link.key}
+              href={link.href}
+              sx={{ py: { xs: '10px', md: 3 } }}
+            >
+              <Typography variant={md ? 'h4' : 'body7'}>{link.label}</Typography>
             </StyledLink>
           ))}
         </Box>
-        <Box sx={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', gap: { xs: 5, md: 3 }, alignItems: 'center' }}>
           {FOOTER_ICONS.map((icon) => (
-            <StyledLink href={icon.href} key={icon.title}>
+            <StyledLink href={icon.href} key={icon.title} sx={{ p: { md: '5px' } }}>
               <SvgIcon
                 sx={{
-                  fontSize: [24, 24, 36],
+                  fontSize: { xs: 40, md: 36 },
                 }}
               >
                 {icon.icon}

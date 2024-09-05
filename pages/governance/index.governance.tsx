@@ -27,9 +27,6 @@ enum Tabs {
 }
 
 export default function Governance() {
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('lg'));
-  const [mode, setMode] = useState(Tabs.PROPOSALS);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {

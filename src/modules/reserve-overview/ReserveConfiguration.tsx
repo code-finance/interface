@@ -147,6 +147,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 flexWrap: { xs: 'wrap', mdlg: 'nowrap' },
                 gap: 7,
                 width: '100%',
+                overflow: 'hidden',
               }}
             >
               <Box sx={{ flex: 1, display: 'flex', minWidth: 400 }}>
