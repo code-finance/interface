@@ -143,6 +143,7 @@ export const DashboardTopPanel = () => {
         {currentAccount && user?.healthFactor !== '-1' && (
           <TopInfoPanelItem title={<Trans>Health factor</Trans>} loading={loading} hideIcon>
             <HealthFactorNumber
+              isHeader
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
               onInfoClick={() => {

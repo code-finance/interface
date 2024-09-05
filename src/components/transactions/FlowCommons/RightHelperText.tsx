@@ -27,7 +27,7 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
   // a signature is not submitted on-chain so there is no link to review
   if (!approvalHash && !isSigned && tryPermit)
     return (
-      <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2 }}>
+      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
         <Typography variant="body7" color="text.subTitle" sx={{ lineHeight: 1 }}>
           <Trans>Approve with</Trans>&nbsp;
         </Typography>

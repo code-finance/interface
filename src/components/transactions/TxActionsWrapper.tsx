@@ -137,7 +137,7 @@ export const TxActionsWrapper = ({
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', mt: 5 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', mt: '48px' }}>
           <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
         </Box>
       )}
@@ -151,7 +151,7 @@ export const TxActionsWrapper = ({
           sx={{
             height: '45px',
             borderRadius: '8px',
-            mt: 12,
+            mt: 2,
           }}
           data-cy="approvalButton"
         >

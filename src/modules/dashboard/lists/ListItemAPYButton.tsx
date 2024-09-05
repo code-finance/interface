@@ -61,8 +61,9 @@ export const ListItemAPYButton = ({
           padding: '3px 4px',
           ...theme.typography.detail2,
           borderColor: theme.palette.border.divider,
+          textTransform: 'uppercase',
         })}
-        variant="transparent"
+        variant="contained"
         onClick={handleClick}
         size="small"
         endIcon={
@@ -73,7 +74,8 @@ export const ListItemAPYButton = ({
             </SvgIcon>
           )
         }
-        disabled={disabled}
+        // disabled={disabled}
+        disabled={true}
         data-cy={`apyButton_${borrowRateMode}`}
       >
         {borrowRateMode}

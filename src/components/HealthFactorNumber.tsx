@@ -5,13 +5,20 @@ import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
+import { TextWithTooltip } from './TextWithTooltip';
 
 interface HealthFactorNumberProps extends TypographyProps {
   value: string;
+  isHeader?: boolean;
   onInfoClick?: () => void;
 }
 
-export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactorNumberProps) => {
+export const HealthFactorNumber = ({
+  value,
+  onInfoClick,
+  isHeader,
+  ...rest
+}: HealthFactorNumberProps) => {
   const { palette } = useTheme();
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
@@ -38,8 +45,22 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       }}
       data-cy={'HealthFactorTopPannel'}
     >
-      <Box sx={{ color: healthFactorColor, p: '3px 6px', borderRadius: 1, ...rest.sx }} {...rest}>
-        {healthFactorText}
+      <Box sx={{ color: healthFactorColor, borderRadius: 1, ...rest.sx }} {...rest}>
+        {isHeader ? (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormattedNumber
+              variant="body1"
+              symbolsColor={healthFactorColor}
+              percent
+              value={formattedHealthFactor / 100}
+            />
+            <TextWithTooltip iconSize={24} iconColor="text.primary">
+              {/* <Trans></Trans> */}
+            </TextWithTooltip>
+          </Box>
+        ) : (
+          healthFactorText
+        )}
       </Box>
 
       {onInfoClick && (
