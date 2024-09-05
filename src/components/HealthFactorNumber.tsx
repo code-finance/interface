@@ -54,8 +54,8 @@ export const HealthFactorNumber = ({
               percent
               value={formattedHealthFactor / 100}
             />
-            <TextWithTooltip iconSize={24} iconColor="text.primary">
-              {/* <Trans></Trans> */}
+            <TextWithTooltip iconSize={18} iconColor="text.primary">
+              <>{healthFactorText}</>
             </TextWithTooltip>
           </Box>
         ) : (

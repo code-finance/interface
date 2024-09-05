@@ -1,7 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { marketContainerProps } from 'pages/markets.page';
+// import { marketContainerProps } from 'pages/markets.page';
 import * as React from 'react';
 import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
