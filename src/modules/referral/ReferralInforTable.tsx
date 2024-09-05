@@ -1,14 +1,42 @@
 import { Trans } from '@lingui/macro';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import VerifiedIcon from '@mui/icons-material/Verified';
-import { Box, Typography, useTheme } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import {
+  Box,
+  IconButton,
+  InputBase,
+  MenuItem,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import React, { PropsWithChildren } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { WrapTypography } from '../../components/WrapTypography';
+import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
+import { ReferralCodeToolTip } from 'src/components/infoTooltips/ReferralCodeToolTip';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 
 export const ReferralInforTable = () => {
   const theme = useTheme();
+  const [network, setNetwork] = React.useState('Ethereum');
+  const [coins, setCoins] = React.useState('USDT');
+  const [value, setValue] = React.useState('');
+  const menuItems = [
+    { value: 'Ethereum', label: 'Ethereum' },
+    { value: 'Kaia', label: 'Kaia' },
+    { value: 'TON', label: 'TON' },
+    { value: 'Solana', label: 'Solana' },
+  ];
+  const menuCoins = [
+    { value: 'USDT', label: 'USDT' },
+    { value: 'sDAI', label: 'sDAI' },
+    { value: 'USDe', label: 'USDe' },
+    { value: 'WBTC', label: 'WBTC' },
+  ];
   return (
     <Box sx={{ display: 'flex', gap: '20px', alignItems: 'stretch', flexWrap: 'wrap' }}>
       <BoxWrapper title={'Your info'}>
@@ -35,9 +63,17 @@ export const ReferralInforTable = () => {
                   sx={{ width: '20px', height: '20px', ml: '4px', color: 'inherit' }}
                 />
               </WrapTypography>
-              <Typography variant="body1" color="text.primary">
-                <Trans>E24C0206B9</Trans>
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <CompactableTypography
+                  color="text.primary"
+                  variant="body1"
+                  compactMode={CompactMode.SM}
+                  compact
+                >
+                  73WakrfVbNJBaAmhQtEeDv
+                </CompactableTypography>
+                <ReferralCodeToolTip iconSize={20} iconColor="text.primary" />
+              </Box>
             </Box>
             <Box
               sx={{
@@ -83,16 +119,23 @@ export const ReferralInforTable = () => {
               color="text.secondary"
               sx={{ display: 'flex', alignItems: 'center' }}
             >
-              <Trans>You have a preferred interest rate benefit.</Trans>
-              <ContentCopyIcon sx={{ width: '20px', height: '20px', ml: 1, color: 'inherit' }} />
+              <Trans>You provide special referral rewards to your friends.</Trans>
+              {/* <ContentCopyIcon sx={{ width: '20px', height: '20px', ml: 1, color: 'inherit' }} /> */}
             </Typography>
           </Box>
           <Box>
             <Typography variant="body3" color="text.secondary" mb={2} component="div">
               <Trans>Friend&apos;s referral code</Trans>
             </Typography>
-            <Typography variant="body1" color="text.primary">
-              <Trans>EDE406F0BC</Trans>
+            <Typography
+              sx={{ display: 'flex', alignItems: 'center' }}
+              variant="body1"
+              color="text.primary"
+            >
+              <Trans>mhvXdrZT4jP5T8vBxuvm75</Trans>
+              <TextWithTooltip iconSize={18} iconColor="text.primary">
+                <Trans>mhvXdrZT4jP5T8vBxuvm75</Trans>
+              </TextWithTooltip>
             </Typography>
           </Box>
         </Box>
@@ -110,7 +153,40 @@ export const ReferralInforTable = () => {
             <Trans>Amount</Trans>
           </Typography>
           <Typography variant="body6" color="text.secondary">
-            <Trans>Ethereum</Trans>
+            <TextField
+              select
+              value={network}
+              onChange={(e) => setNetwork(e.target.value as string)}
+              size="small"
+              sx={{
+                '& .MuiOutlinedInput-notchedOutline': {
+                  border: 'none',
+                  p: '0 !important',
+                },
+                '& .MuiSelect-select.MuiSelect-outlined': {
+                  overflow: 'visible !important',
+                  '&.Mui-disabled': {
+                    '-webkit-text-fill-color': 'unset',
+                  },
+                  pl: 0,
+                  pr: '26px',
+                },
+              }}
+              variant="outlined"
+            >
+              {menuItems.map(({ value, label }) => (
+                <MenuItem sx={{ p: '12px', width: '160px' }} key={value} value={value}>
+                  <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} />{' '}
+                  <Typography
+                    variant={value === network ? 'body6' : 'body7'}
+                    color={value === network ? 'text.secondary' : 'text.primary'}
+                    ml={1}
+                  >
+                    {label}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </TextField>
           </Typography>
         </Box>
         <Box
@@ -128,12 +204,101 @@ export const ReferralInforTable = () => {
               mb: '12px',
             }}
           >
-            <Typography variant="body8" color={theme.palette.text.disabled}>
-              <Trans>0.0</Trans>
-            </Typography>
-            <Typography variant="body5" color="text.primary">
-              <Trans>USDT</Trans>
-            </Typography>
+            <InputBase
+              sx={{
+                flex: 1,
+                'input::placeholder': {
+                  color: theme.palette.text.disabledText,
+                },
+              }}
+              placeholder="0.00"
+              value={value}
+              autoFocus
+              onChange={(e) => setValue(e.target.value)}
+              inputProps={{
+                'aria-label': 'amount input',
+                style: {
+                  textOverflow: 'ellipsis',
+                  padding: 0,
+                  ...theme.typography.body8,
+                  color: theme.palette.text.primary,
+                },
+              }}
+              // eslint-disable-next-line
+              inputComponent={NumberFormatCustom as any}
+            />
+            {value !== '' && (
+              <IconButton
+                sx={{
+                  minWidth: 0,
+                  color: 'text.subText',
+                  '&:hover': {
+                    color: 'text.disabledBg',
+                  },
+                }}
+                onClick={() => {
+                  setValue('');
+                }}
+              >
+                <CancelIcon height={24} width={24} />
+              </IconButton>
+            )}
+            <TextField
+              select
+              value={coins}
+              onChange={(e) => setCoins(e.target.value as string)}
+              size="small"
+              sx={{
+                '& .MuiOutlinedInput-notchedOutline': {
+                  border: 'none',
+                },
+                '& .MuiSelect-select.MuiSelect-outlined': {
+                  overflow: 'visible !important',
+                  '&.Mui-disabled': {
+                    '-webkit-text-fill-color': 'unset',
+                  },
+                  pl: 0,
+                  pr: '26px',
+                },
+              }}
+              SelectProps={{
+                MenuProps: {
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  },
+                  PaperProps: {
+                    sx: (theme) => ({
+                      ml: '10px',
+                      overflowY: 'auto',
+                      borderRadius: '8px',
+                      backgroundColor: theme.palette.background.secondary,
+                      border: `1px solid ${theme.palette.border.contents}`,
+                      boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
+                    }),
+                    style: {
+                      minWidth: 160,
+                    },
+                    variant: 'outlined',
+                    elevation: 0,
+                  },
+                },
+              }}
+              variant="outlined"
+            >
+              {menuCoins.map(({ value, label }) => (
+                <MenuItem sx={{ p: '12px' }} key={value} value={value}>
+                  <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} />{' '}
+                  <Typography
+                    variant={value === coins ? 'body5' : 'body7'}
+                    color="text.primary"
+                    ml={1}
+                  >
+                    {label}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </TextField>
           </Box>
           <Box>
             <FormattedNumber
@@ -147,10 +312,27 @@ export const ReferralInforTable = () => {
             />
           </Box>
         </Box>
-        <Box mb="40px">
-          <Typography variant="detail5" sx={{ mt: '6px', color: theme.palette.text.subTitle }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: '40px',
+            mt: '6px',
+          }}
+        >
+          <Typography variant="detail5" sx={{ color: theme.palette.text.subTitle }}>
             <Trans>Current borrow APY</Trans>
           </Typography>
+          <FormattedNumber
+            variant="detail5"
+            symbolsVariant="detail5"
+            symbolsColor="text.subTitle"
+            color="text.subTitle"
+            percent
+            value={0}
+            visibleDecimals={2}
+          />
         </Box>
         <Box mb="20px">
           <Typography variant="h2" color="text.primary" mb="20px">
@@ -235,9 +417,12 @@ const EstimateReward = ({ title }: EstimateRewardType) => {
         <Typography variant="detail2" color="text.mainTitle">
           <Trans>0</Trans>
         </Typography>
-        <Typography variant="detail2" color="text.mainTitle">
-          <Trans>CODE</Trans>
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <img width="18px" height="18px" src={'/icons/networks/ethereum.svg'} />{' '}
+          <Typography variant="detail2" color="text.mainTitle" ml="2px">
+            <Trans>CODE</Trans>
+          </Typography>
+        </Box>
       </Box>
       <FormattedNumber
         variant="detail2"
