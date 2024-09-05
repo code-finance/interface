@@ -1,22 +1,18 @@
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
 import { useProposal } from 'src/hooks/governance/useProposal';
 import { useProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { VotingResults } from 'src/modules/governance/proposal/VotingResults';
-
-import { ContentContainer } from '../../../../src/components/ContentContainer';
+import { ContentContainer } from 'src/components/ContentContainer';
 
 const GovVoteModal = dynamic(() =>
-  import('../../../../src/components/transactions/GovVote/GovVoteModal').then(
-    (module) => module.GovVoteModal
-  )
+  import('src/components/transactions/GovVote/GovVoteModal').then((module) => module.GovVoteModal)
 );
 
 export default function ProposalPage() {
