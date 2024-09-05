@@ -184,7 +184,7 @@ export default function Staking() {
                     openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
                   }
                 >
-                  <Box
+                  {/* <Box
                     sx={{
                       mt: {
                         xs: '20px',
@@ -204,7 +204,7 @@ export default function Staking() {
                     }}
                   >
                     <GhoDiscountProgram />
-                  </Box>
+                  </Box> */}
                 </StakingPanel>
               </Grid>
               {/* <Grid
