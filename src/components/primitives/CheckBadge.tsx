@@ -21,7 +21,7 @@ export function CheckBadge({
   const { palette } = useTheme();
   return (
     <Box {...rest} sx={{ display: 'flex', alignItems: 'center', ...rest.sx }}>
-      <Typography variant={variant} component="span" sx={{ mr: 2 }}>
+      <Typography variant={variant} component="span" sx={{ mr: 2 }} lineHeight={1}>
         {text}
       </Typography>
       {loading ? (

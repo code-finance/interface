@@ -204,7 +204,7 @@ export const SupplyAssetsList = () => {
 
   const RenderHeader: React.FC = () => {
     return (
-      <ListHeaderWrapper sx={{ mt: 5 }}>
+      <ListHeaderWrapper sx={{ mt: 4 }}>
         {head.map((col) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}

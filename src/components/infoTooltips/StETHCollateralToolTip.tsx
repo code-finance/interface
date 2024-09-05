@@ -8,7 +8,7 @@ export const StETHCollateralToolTip = () => {
     <TextWithTooltip
       wrapperProps={{ ml: 2 }}
       color="warning.main"
-      iconSize={20}
+      iconSize={18}
       icon={<ExclamationIcon />}
     >
       <StETHCollateralWarning />

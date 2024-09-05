@@ -11,6 +11,7 @@ interface Navigation {
   title: string;
   isVisible?: (data: MarketDataType) => boolean | undefined;
   dataCy?: string;
+  activeChildren?: string[];
 }
 
 export const navigation: Navigation[] = [
@@ -18,16 +19,19 @@ export const navigation: Navigation[] = [
     link: ROUTES.dashboard,
     title: t`Supply & Borrow`,
     dataCy: 'menuDashboard',
+    activeChildren: [],
   },
   {
     link: ROUTES.markets,
     title: t`Markets`,
     dataCy: 'menuMarkets',
+    activeChildren: [ROUTES.marketDetail],
   },
   {
     link: ROUTES.staking,
     title: t`Staking`,
     dataCy: 'menuStake',
+    activeChildren: [],
     // isVisible: () =>
     //   process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
     //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
@@ -37,6 +41,7 @@ export const navigation: Navigation[] = [
     link: ROUTES.governance,
     title: t`Governance`,
     dataCy: 'menuGovernance',
+    activeChildren: [ROUTES.governance],
     // isVisible: () =>
     //   process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
     //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
@@ -46,11 +51,13 @@ export const navigation: Navigation[] = [
     link: ROUTES.referral,
     title: t`Referral Program`,
     dataCy: 'menuReferral',
+    activeChildren: [],
   },
   {
     link: ROUTES.docs,
     title: t`Docs`,
     dataCy: 'menuDocs',
+    activeChildren: [],
   },
   // {
   //   link: ROUTES.faucet,

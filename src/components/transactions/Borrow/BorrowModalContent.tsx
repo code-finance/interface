@@ -66,7 +66,7 @@ const BorrowModeSwitch = ({
           text={<Trans>Borrow APY rate</Trans>}
           key="APY type_modal"
           variant="description"
-          iconSize={16}
+          iconSize={18}
         />
       }
       captionVariant="body7"

@@ -2,29 +2,34 @@ import { Trans } from '@lingui/macro';
 import { Box, BoxProps, experimental_sx, Skeleton, styled, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-const OuterBar = styled('div')(({ theme }) =>
+const OuterBar = styled('div')<{ bg?: string }>(({ theme, bg }) =>
   experimental_sx({
     position: 'relative',
     width: '100%',
     height: '12px',
     display: 'block',
     borderRadius: '6px',
-    backgroundColor: theme.palette.background.tertiary,
+    backgroundColor: bg ? bg : theme.palette.background.tertiary,
   })
 );
 
-const InnerBar = styled('span')<{ percent: number; yae?: boolean }>(({ theme, percent, yae }) =>
-  experimental_sx({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: `${percent * 100}%`,
-    maxWidth: '100%',
-    height: '12px',
-    backgroundColor: yae ? theme.palette.point.positive : theme.palette.point.negative,
-    display: 'block',
-    borderRadius: '6px',
-  })
+const InnerBar = styled('span')<{ percent: number; yae?: boolean; backgroundColor?: string }>(
+  ({ backgroundColor, theme, percent, yae }) =>
+    experimental_sx({
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: `${percent * 100}%`,
+      maxWidth: '100%',
+      height: '12px',
+      backgroundColor: backgroundColor
+        ? backgroundColor
+        : yae
+        ? theme.palette.point.positive
+        : theme.palette.point.negative,
+      display: 'block',
+      borderRadius: '6px',
+    })
 );
 
 interface VoteBarProps extends BoxProps {
@@ -33,9 +38,10 @@ interface VoteBarProps extends BoxProps {
   yae?: boolean;
   loading?: boolean;
   compact?: boolean;
+  bg?: string;
 }
 
-export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: VoteBarProps) {
+export function VoteBar({ percent, yae, votes, loading, compact, bg, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
       <Box sx={{ display: 'flex', mb: 2 }}>
@@ -75,7 +81,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
       {loading ? (
         <Skeleton variant="rectangular" height={8} sx={{ borderRadius: '6px' }} />
       ) : (
-        <OuterBar>
+        <OuterBar bg={bg}>
           <InnerBar percent={percent} yae={yae} />
         </OuterBar>
       )}

@@ -47,7 +47,7 @@ export default function ProposalPage() {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'flex-start',
+            alignItems: 'stretch',
             gap: '20px',
           }}
         >

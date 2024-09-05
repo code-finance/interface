@@ -31,7 +31,11 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
   };
 
   return (
-    <Box component={component} onClick={toggleTestnetsEnabled} sx={{ px: 1.5, py: '9px' }}>
+    <Box
+      component={component}
+      onClick={toggleTestnetsEnabled}
+      sx={{ px: { xs: 0, lg: 1.5 }, py: '9px' }}
+    >
       <ListItemText>
         <Typography variant="body5" color="text.primary">
           <Trans>Testnet mode</Trans>

@@ -74,38 +74,38 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
         {!isLanguagesListOpen ? (
           <>
             <MenuItemsWrapper title={<Trans>Menu</Trans>}>
-              <NavItems setOpen={setOpen} />
+              <NavItems />
             </MenuItemsWrapper>
             <MenuItemsWrapper title={<Trans>Global settings</Trans>}>
-              <List>
+              <List sx={{ p: { xs: '8px 16px', lg: 0 } }}>
                 <DarkModeSwitcher />
                 {PROD_ENV && <TestNetModeSwitcher />}
                 <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
               </List>
             </MenuItemsWrapper>
-            <MenuItemsWrapper title={<Trans>Links</Trans>}>
-              <List>
-                <ListItem
-                  sx={{ color: '#F1F1F3' }}
-                  component={Link}
-                  href={'/v3-migration'}
-                  onClick={() => setOpen(false)}
-                >
-                  <ListItemText>
-                    <Trans>Migrate to Aave V3</Trans>
-                  </ListItemText>
-                </ListItem>
-                {moreNavigation.map((item, index) => (
-                  <ListItem component={Link} href={item.link} sx={{ color: '#F1F1F3' }} key={index}>
-                    <ListItemIcon sx={{ minWidth: 'unset', mr: 3 }}>
-                      <SvgIcon sx={{ fontSize: '20px', color: '#F1F1F3' }}>{item.icon}</SvgIcon>
-                    </ListItemIcon>
+            {/*<MenuItemsWrapper title={<Trans>Links</Trans>}>*/}
+            {/*  <List>*/}
+            {/*    <ListItem*/}
+            {/*      sx={{ color: '#F1F1F3' }}*/}
+            {/*      component={Link}*/}
+            {/*      href={'/v3-migration'}*/}
+            {/*      onClick={() => setOpen(false)}*/}
+            {/*    >*/}
+            {/*      <ListItemText>*/}
+            {/*        <Trans>Migrate to Aave V3</Trans>*/}
+            {/*      </ListItemText>*/}
+            {/*    </ListItem>*/}
+            {/*    {moreNavigation.map((item, index) => (*/}
+            {/*      <ListItem component={Link} href={item.link} sx={{ color: '#F1F1F3' }} key={index}>*/}
+            {/*        <ListItemIcon sx={{ minWidth: 'unset', mr: 3 }}>*/}
+            {/*          <SvgIcon sx={{ fontSize: '20px', color: '#F1F1F3' }}>{item.icon}</SvgIcon>*/}
+            {/*        </ListItemIcon>*/}
 
-                    <ListItemText>{i18n._(item.title)}</ListItemText>
-                  </ListItem>
-                ))}
-              </List>
-            </MenuItemsWrapper>
+            {/*        <ListItemText>{i18n._(item.title)}</ListItemText>*/}
+            {/*      </ListItem>*/}
+            {/*    ))}*/}
+            {/*  </List>*/}
+            {/*</MenuItemsWrapper>*/}
           </>
         ) : (
           <List sx={{ px: 2 }}>

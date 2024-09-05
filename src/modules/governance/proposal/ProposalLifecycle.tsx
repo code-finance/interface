@@ -39,6 +39,8 @@ import {
   getVotingMachineProposalStateTimestamp,
   ProposalLifecycleStep,
 } from '../utils/formatProposal';
+import * as React from 'react';
+import { ExternalLink } from '../GovernanceTopPanel';
 
 export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -235,32 +237,16 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
       </Timeline>
       {discussionUrl && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button
-            sx={{
-              pl: '24px',
-              pr: '20px',
-              py: '10px',
-              borderRadius: '8px',
-              border: '1px solid',
-              borderColor: 'border.contents',
-            }}
-            component={Link}
-            target="_blank"
-            rel="noopener"
+          <ExternalLink
+            text={<span style={{ textTransform: 'unset' }}>Forum discussion</span>}
+            href={discussionUrl[0]}
             onClick={() =>
               trackEvent(GENERAL.EXTERNAL_LINK, {
                 AIP: proposal.subgraphProposal.id,
                 Link: 'Forum Discussion',
               })
             }
-            href={discussionUrl[0]}
-            variant="surface"
-          >
-            <Typography variant="body4" color="text.secondary">
-              <Trans>Forum discussion</Trans>
-            </Typography>
-            <CallMadeIcon sx={{ width: '24px', height: '24px', ml: 1, color: 'text.secondary' }} />
-          </Button>
+          />
         </Box>
       )}
     </Box>

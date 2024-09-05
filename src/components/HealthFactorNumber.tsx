@@ -47,14 +47,22 @@ export const HealthFactorNumber = ({
     >
       <Box sx={{ color: healthFactorColor, borderRadius: 1, ...rest.sx }} {...rest}>
         {isHeader ? (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              color: theme.palette.text.primary,
+            })}
+          >
             <FormattedNumber
               variant="body1"
+              symbolsVariant="body1"
               symbolsColor={healthFactorColor}
+              color={healthFactorColor}
               percent
               value={formattedHealthFactor / 100}
             />
-            <TextWithTooltip iconSize={18} iconColor="text.primary">
+            <TextWithTooltip iconSize={18} sx={{ color: 'inherit' }}>
               <>{healthFactorText}</>
             </TextWithTooltip>
           </Box>

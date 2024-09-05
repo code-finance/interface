@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Skeleton, Typography } from '@mui/material';
+import { Box, Paper, Skeleton, Typography, useTheme } from '@mui/material';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -17,8 +17,9 @@ interface VotingResultsPros {
 }
 
 export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResultsPros) => {
+  const theme = useTheme();
   return (
-    <Paper sx={{ pl: '24px', py: '28px', pr: '20px', bgcolor: 'background.top' }}>
+    <Paper sx={{ p: '28px 20px 28px 24px', bgcolor: 'background.top', height: '100%' }}>
       <Typography variant="h2" color={'text.primary'} sx={{ mb: '55px' }}>
         <Trans>Voting results</Trans>
       </Typography>
@@ -29,12 +30,14 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
             percent={proposal.votingInfo.forPercent}
             votes={proposal.votingInfo.forVotes}
             loading={loading}
+            bg={theme.palette.background.primary}
           />
           <VoteBar
             percent={proposal.votingInfo.againstPercent}
             votes={proposal.votingInfo.againstVotes}
             sx={{ mt: '19px' }}
             loading={loading}
+            bg={theme.palette.background.primary}
           />
           {proposalVotes && (
             <VotersListContainer proposal={proposal.votingInfo} proposalVotes={proposalVotes} />
@@ -44,8 +47,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               display: 'flex',
               justifyContent: 'space-between',
               flexDirection: 'column',
-              gap: '24px',
-              mb: '100px',
+              gap: 6,
             }}
           >
             <Row
@@ -64,7 +66,11 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                   height: '24px',
                 }}
               >
-                <StateBadge state={proposal.badgeState} loading={loading} />
+                <StateBadge
+                  state={proposal.badgeState}
+                  loading={loading}
+                  wrapperSx={{ py: '3px', px: 1, height: 24, borderRadius: 1 }}
+                />
                 {/*
                 <Box sx={{ mt: 0.5 }}>
                   <FormattedProposalTime
@@ -90,18 +96,15 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
                 loading={loading}
                 text={
                   proposal.votingInfo.quorumReached ? (
-                    <Typography variant="detail2" color="text.primary">
-                      <Trans>Reached</Trans>
-                    </Typography>
+                    <Trans>Reached</Trans>
                   ) : (
-                    <Typography variant="detail2" color="text.primary">
-                      <Trans>Not reached</Trans>
-                    </Typography>
+                    <Trans>Not reached</Trans>
                   )
                 }
                 checked={proposal.votingInfo.quorumReached}
                 sx={{ height: '24px' }}
-                variant="description"
+                variant="detail2"
+                color="text.primary"
               />
             </Row>
             <Row

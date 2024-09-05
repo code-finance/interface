@@ -12,13 +12,15 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 import { ChainId } from '@aave/contract-helpers';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
+import { ReactNode } from 'react';
 
 interface ExternalLinkProps {
-  text: string;
+  text: string | ReactNode;
   href: string;
+  onClick?: () => void;
 }
 
-function ExternalLink({ text, href }: ExternalLinkProps) {
+export function ExternalLink({ text, href, onClick }: ExternalLinkProps) {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
@@ -30,7 +32,7 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
       href={href}
       target="_blank"
       rel="noopener"
-      onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: text })}
+      onClick={onClick ? onClick : () => trackEvent(GENERAL.EXTERNAL_LINK, { Link: String(text) })}
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {text}

@@ -249,7 +249,7 @@ export const ExternalUserDisplay: React.FC<ExternalUserDisplayProps> = ({
         address={address}
         domainName={name}
         link={`https://etherscan.io/address/${address}`}
-        iconSize={14}
+        iconSize={18}
         {...titleProps}
         funnel={'Delegation power panel: Governance'}
       />

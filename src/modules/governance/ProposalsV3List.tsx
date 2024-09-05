@@ -234,7 +234,7 @@ const ProposalListSkeleton = () => {
         sx={{
           width: {
             xs: '100%',
-            lg: '70%',
+            lg: '80%',
           },
           pr: { xs: 0, lg: 8 },
           display: 'flex',

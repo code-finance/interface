@@ -47,7 +47,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <Paper sx={{ pl: '24px', pr: '20px', py: '28px', bgcolor: 'background.top' }}>
+    <Paper sx={{ p: '28px 20px 28px 24px', bgcolor: 'background.top', height: '100%' }}>
       <Row
         sx={{ mb: '24px' }}
         caption={
@@ -62,7 +62,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                   alignItems: 'center',
                 }}
               >
-                <Typography variant="body2">
+                <Typography variant="body2" color={'text.primary'}>
                   <Trans>Voting is on</Trans>
                 </Typography>
                 <Box
@@ -89,30 +89,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
       {user ? (
         <>
           {user && !didVote && !voteOngoing && (
-            <Box sx={{ mb: '28px' }}>
-              <Warning
-                severity="warning"
-                sx={{
-                  px: '4px !important',
-                  mb: 0,
-                  '.MuiAlert-message': { p: 0 },
-                  boxShadow: 'none !important',
-                  '.MuiSvgIcon-root': { color: '#FB8509' },
-                  bgcolor: `${theme.palette.point.riskMedium} !important`,
-                }}
-              >
-                <Typography
-                  variant="body7"
-                  sx={{
-                    textAlign: 'left',
-                    bgcolor: theme.palette.point.riskMedium,
-                    display: 'flex',
-                    flexShrink: 1,
-                  }}
-                  color="text.secondary"
-                >
-                  <Trans>You did not participate in this proposal</Trans>
-                </Typography>
+            <Box sx={{ mt: 7, mb: 10 }}>
+              <Warning severity="error">
+                <Trans>You did not participate in this proposal</Trans>
               </Warning>
             </Box>
           )}

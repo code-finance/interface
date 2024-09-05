@@ -64,7 +64,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const theme = useTheme();
   const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
-  const md = useMediaQuery(breakpoints.down('md'));
+  const lgDown = useMediaQuery(breakpoints.down('lg'));
   const lg = useMediaQuery(breakpoints.up('lg'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -130,8 +130,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       <Typography
         variant="subheader2"
         sx={{
-          display: { xs: 'block', md: 'none' },
-          color: '#A5A8B6',
+          display: { xs: 'block', lg: 'none' },
           px: 4,
           py: 2,
         }}
@@ -141,7 +140,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
       <Box
         component={'li'}
-        sx={{ my: 1, px: 1.5, py: 3, backgroundColor: 'transparent !important' }}
+        sx={{ mb: 1, px: 1.5, pb: 3, backgroundColor: 'transparent !important' }}
       >
         <Box
           sx={{
@@ -170,7 +169,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           )}
         </Box>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
 
       <Box component={component} disabled sx={{ my: 1, px: 1.5, py: 3 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -194,7 +193,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </Box>
         </Box>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
 
       <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleCopy}>
         <ListItemIcon sx={{ mr: 1 }}>
@@ -210,7 +209,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </Typography>
         </ListItemText>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
       <Box
         component={'li'}
         sx={{ display: 'flex', mt: 1, px: 1.5, py: 3, alignItems: 'center' }}
@@ -252,7 +251,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           </Typography>
         </ListItemText>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
       {networkConfig?.explorerLinkBuilder && (
         <Box>
           <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
@@ -282,10 +281,10 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
               </ListItemText>
             </Box>
           </Link>
-          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: theme.palette.border.divider }} />
+          <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
         </Box>
       )}
-      {!md && (
+      {!lgDown && (
         <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleDisconnect}>
           <ListItemIcon
             sx={{
@@ -335,33 +334,16 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         //   </Button>
         // </Box>
       )}
-      {md && (
+      {lgDown && (
         <>
-          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
-          <Box sx={{ padding: '16px 16px 10px' }}>
-            <Button
-              sx={{
-                marginBottom: '16px',
-                background: '#383D51',
-                color: '#F1F1F3',
-              }}
-              fullWidth
-              size="large"
-              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
-              onClick={handleSwitchWallet}
-            >
+          <Box
+            component={component}
+            sx={{ mb: 1, px: 1.5, py: 3, display: 'flex', flexDirection: 'column', gap: 2 }}
+          >
+            <Button fullWidth size="medium" variant="contained" onClick={handleSwitchWallet}>
               Switch wallet
             </Button>
-            <Button
-              sx={{
-                background: '#383D51',
-                color: '#F1F1F3',
-              }}
-              fullWidth
-              size="large"
-              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
-              onClick={handleDisconnect}
-            >
+            <Button fullWidth size="medium" variant="contained" onClick={handleDisconnect}>
               Disconnect
             </Button>
           </Box>
@@ -372,60 +354,76 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   return (
     <>
-      {md && connected && open ? (
+      {lgDown && connected && open ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading ? (
-        <Skeleton height={'100%'} width={167} />
-      ) : (
-        <Button
-          variant={connected ? 'surface' : 'gradient'}
-          aria-label="wallet"
-          id="wallet-button"
-          aria-controls={open ? 'wallet-button' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup="true"
-          onClick={handleClick}
-          size="small"
+        <Box
           sx={{
-            p: 3,
-            minWidth: hideWalletAccountText ? 'unset' : undefined,
+            bgcolor: theme.palette.background.modulePopup,
+            borderRadius: 3,
             height: lg ? '48px' : '44px',
-            background: 'transparent',
           }}
-          endIcon={
-            connected &&
-            !hideWalletAccountText &&
-            !md && (
-              <SvgIcon
-                sx={{
-                  display: { xs: 'none', md: 'block', fontSize: '24px !important' },
-                }}
-              >
-                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-              </SvgIcon>
-            )
-          }
         >
-          {connected ? (
-            <UserDisplay
-              avatarProps={{ size: 24 }}
-              oneLiner={true}
-              titleProps={{
-                variant: 'body5',
-                color: 'text.primary',
-                lineHeight: 0,
-                addressCompactMode: CompactMode.MD,
-              }}
-            />
-          ) : (
-            <Typography variant="body5">
-              <Trans>Connect wallet</Trans>
-            </Typography>
-          )}
-        </Button>
+          <Skeleton height={'100%'} width={167} />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            bgcolor: theme.palette.background.modulePopup,
+            borderRadius: 3,
+            height: lg ? '48px' : '44px',
+          }}
+        >
+          <Button
+            variant={connected ? 'surface' : 'gradient'}
+            aria-label="wallet"
+            id="wallet-button"
+            aria-controls={open ? 'wallet-button' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+            size="small"
+            sx={{
+              p: 3,
+              minWidth: hideWalletAccountText ? 'unset' : undefined,
+              height: lg ? '48px' : '44px',
+              background: 'transparent',
+            }}
+            endIcon={
+              connected &&
+              !hideWalletAccountText &&
+              !lgDown && (
+                <SvgIcon
+                  sx={{
+                    display: { xs: 'none', lg: 'block', fontSize: '24px !important' },
+                  }}
+                >
+                  {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                </SvgIcon>
+              )
+            }
+          >
+            {connected ? (
+              <UserDisplay
+                avatarProps={{ size: 24 }}
+                oneLiner={true}
+                titleProps={{
+                  variant: 'body5',
+                  color: 'text.primary',
+                  lineHeight: 0,
+                  addressCompactMode: CompactMode.MD,
+                }}
+              />
+            ) : (
+              <Typography variant="body5">
+                <Trans>Connect wallet</Trans>
+              </Typography>
+            )}
+          </Button>
+        </Box>
       )}
 
-      {md ? (
+      {lgDown ? (
         <DrawerWrapper open={open} setOpen={setOpen} headerHeight={headerHeight}>
           <List sx={{ px: 2, '.MuiListItem-root.Mui-disabled': { opacity: 1 } }}>
             <Content />

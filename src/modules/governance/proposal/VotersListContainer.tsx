@@ -94,11 +94,11 @@ export const VotersListContainer = ({ proposal, proposalVotes }: VotersListProps
       {proposalVotes.combinedVotes.length > 10 && (
         <Button
           sx={{
-            px: '10px',
-            py: '12px',
-            mt: '24px',
-            borderRadius: '8px',
+            mt: 6,
+            height: '45px',
+            width: '100%',
           }}
+          size="medium"
           variant="outlined"
           fullWidth
           onClick={handleOpenAllVotes}

@@ -18,9 +18,9 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
       hideBackdrop
       sx={{ top: `${headerHeight}px` }}
       PaperProps={{
-        sx: {
-          background: 'rgba(27, 32, 48, 0.98)',
-          backdropFilter: 'blur(20px)',
+        sx: (theme) => ({
+          borderTop: `1px solid ${theme.palette.divider}`,
+          background: 'bg.primary',
           boxShadow: 'none',
           borderRadius: 'unset',
           width: '100%',
@@ -28,7 +28,7 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
           pt: 6,
           pb: 15,
           minHeight: '100vh',
-        },
+        }),
       }}
     >
       {children}

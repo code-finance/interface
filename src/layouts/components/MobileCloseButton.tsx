@@ -10,7 +10,14 @@ export const MobileCloseButton = ({ setOpen }: MobileCloseButtonProps) => {
   return (
     <Button
       onClick={() => setOpen(false)}
-      sx={{ ml: 'auto', p: 2, minWidth: 'unset', width: '40px', height: '40px' }}
+      sx={{
+        p: 2,
+        minWidth: 'unset',
+        width: '40px',
+        height: '40px',
+        border: 'none',
+        background: 'transparent',
+      }}
     >
       <SvgIcon sx={{ color: 'text.secondary' }} fontSize="small">
         <XIcon />

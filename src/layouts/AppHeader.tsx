@@ -1,4 +1,4 @@
-import { Badge, Slide, styled, useMediaQuery, useScrollTrigger, useTheme } from '@mui/material';
+import { Slide, useMediaQuery, useScrollTrigger, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -10,7 +10,6 @@ import LogoSmall from '/public/codelabs-logo-small.svg';
 
 import { Link } from '../components/primitives/Link';
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
-import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
@@ -37,7 +36,7 @@ const SWITCH_VISITED_KEY = 'switchVisited';
 export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boolean }) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
-  const sm = useMediaQuery(breakpoints.up('sm'));
+  const lgDown = useMediaQuery(breakpoints.down('lg'));
   const lg = useMediaQuery(breakpoints.up('lg'));
   const theme = useTheme();
 
@@ -51,9 +50,9 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
     state.setMobileDrawerOpen,
   ]);
 
-  const { openSwitch, openBridge } = useModalContext();
+  // const { openSwitch, openBridge } = useModalContext();
 
-  const { currentMarketData } = useProtocolDataContext();
+  // const { currentMarketData } = useProtocolDataContext();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -67,33 +66,32 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = lg ? 54 : 88;
+  const headerHeight = lg ? 88 : 54;
 
   const toggleWalletWigit = (state: boolean) => {
-    if (md) setMobileDrawerOpen(state);
+    if (lgDown) setMobileDrawerOpen(state);
     setWalletWidgetOpen(state);
   };
-
   const toggleMobileMenu = (state: boolean) => {
-    if (md) setMobileDrawerOpen(state);
+    if (lgDown) setMobileDrawerOpen(state);
     setMobileMenuOpen(state);
   };
 
-  const disableTestnet = () => {
-    localStorage.setItem('testnetsEnabled', 'false');
-    // Set window.location to trigger a page reload when navigating to the the dashboard
-    window.location.href = '/';
-  };
+  // const disableTestnet = () => {
+  //   localStorage.setItem('testnetsEnabled', 'false');
+  //   // Set window.location to trigger a page reload when navigating to the the dashboard
+  //   window.location.href = '/';
+  // };
 
-  const disableFork = () => {
-    localStorage.setItem('testnetsEnabled', 'false');
-    localStorage.removeItem('forkEnabled');
-    localStorage.removeItem('forkBaseChainId');
-    localStorage.removeItem('forkNetworkId');
-    localStorage.removeItem('forkRPCUrl');
-    // Set window.location to trigger a page reload when navigating to the the dashboard
-    window.location.href = '/';
-  };
+  // const disableFork = () => {
+  //   localStorage.setItem('testnetsEnabled', 'false');
+  //   localStorage.removeItem('forkEnabled');
+  //   localStorage.removeItem('forkBaseChainId');
+  //   localStorage.removeItem('forkNetworkId');
+  //   localStorage.removeItem('forkRPCUrl');
+  //   // Set window.location to trigger a page reload when navigating to the the dashboard
+  //   window.location.href = '/';
+  // };
   return (
     <HideOnScroll>
       <Box
@@ -112,7 +110,7 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
             : '#28216d',
           padding: {
             xs: '5px 12px 5px 20px',
-            xsm: '20px 40px',
+            lg: '20px 40px',
           },
           display: 'flex',
           alignItems: 'center',
@@ -130,7 +128,7 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          {sm ? (
+          {lg ? (
             <LogoLarge
               style={{
                 color: theme.palette.text.primary,
@@ -156,11 +154,7 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
         {!mobileMenuOpen && (
           <Box
             sx={{
-              bgcolor: theme.palette.background.modulePopup,
-              borderRadius: 3,
-              height: lg ? '48px' : '44px',
               ml: 'auto',
-              overflow: 'hidden',
             }}
           >
             <WalletWidget

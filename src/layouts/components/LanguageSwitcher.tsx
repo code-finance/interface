@@ -33,7 +33,7 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
     <Box
       component={component}
       onClick={onClick}
-      sx={{ px: 1.5, py: '9px', display: 'flex', alignItems: 'center' }}
+      sx={{ px: { xs: 0, lg: 1.5 }, py: '9px', display: 'flex', alignItems: 'center' }}
     >
       <ListItemText>
         <Typography variant="body5" color="text.primary">
@@ -57,7 +57,22 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
 
   return (
     <>
-      <Box sx={{ mb: '4px' }} onClick={onClick}>
+      <Box
+        sx={{ mb: '4px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+        onClick={onClick}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 'unset !important',
+            mr: 2,
+            color: 'text.mainTitle',
+            display: { xs: 'block', lg: 'none' },
+          }}
+        >
+          <SvgIcon fontSize="small">
+            <ChevronLeftIcon />
+          </SvgIcon>
+        </ListItemIcon>
         <ListItemText disableTypography>
           <Typography variant="detail2" color="text.mainTitle" component="div" sx={{ mb: '4px' }}>
             <Trans>Select language</Trans>

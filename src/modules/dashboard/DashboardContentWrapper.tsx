@@ -35,7 +35,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
-  const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   const downToLg = useMediaQuery(breakpoints.down('lg'));
 
@@ -53,13 +52,14 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           display: isDesktop ? 'flex' : 'block',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
+          gap: 5,
         }}
       >
         <Box
           sx={{
             position: 'relative',
             display: { xs: isBorrow ? 'none' : 'block', lg: 'block' },
-            width: paperWidth,
+            flex: 1,
           }}
         >
           <SuppliedPositionsList />
@@ -70,7 +70,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           sx={{
             position: 'relative',
             display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' },
-            width: paperWidth,
+            flex: 1,
           }}
         >
           <BorrowedPositionsList />

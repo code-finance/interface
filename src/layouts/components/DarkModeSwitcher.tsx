@@ -25,7 +25,11 @@ export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Box component={component} onClick={colorMode.toggleColorMode} sx={{ px: 1.5, py: '9px' }}>
+    <Box
+      component={component}
+      onClick={colorMode.toggleColorMode}
+      sx={{ px: { xs: 0, lg: 1.5 }, py: '9px' }}
+    >
       <ListItemText>
         <Typography variant="body5" color="text.primary">
           <Trans>Dark mode</Trans>
