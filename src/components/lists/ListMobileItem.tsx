@@ -40,7 +40,7 @@ export const ListMobileItem = ({
   return (
     <Box>
       <Divider />
-      <Box sx={{ px: 4, pt: 4, pb: 6 }}>
+      <Box sx={{ px: 0, pt: 4, pb: 6 }}>
         <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
           {loading ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -61,13 +61,15 @@ export const ListMobileItem = ({
               >
                 <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} />
                 <Box sx={{ ml: 2 }}>
-                  <Typography variant="h4">{name}</Typography>
+                  <Typography variant="body2" color="text.primary">
+                    {name}
+                  </Typography>
                   <Box display="flex" alignItems="center">
-                    <Typography variant="subheader2" color="text.muted">
+                    <Typography variant="main16" color="text.secondary">
                       {symbol}
                     </Typography>
                     {isIsolated && (
-                      <span style={{ marginLeft: '8px' }}>
+                      <span style={{ marginLeft: 4, display: 'inline-block' }}>
                         <IsolatedEnabledBadge />
                       </span>
                     )}

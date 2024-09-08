@@ -3,12 +3,12 @@ import { Box, Menu, MenuItem, Typography } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
-import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { RESERVE_DETAILS } from 'src/utils/mixPanelEvents';
+import { WalletIcon3 } from '../../components/icons/WalletIcon3';
 
 interface AddTokenDropdownProps {
   poolReserve: ComputedReserveData;
@@ -105,7 +105,7 @@ export const AddTokenDropdown = ({
               cursor: 'pointer',
             })}
           >
-            <WalletIcon sx={{ width: '14px', height: '14px' }} />
+            <WalletIcon3 sx={{ width: '14px', height: '14px' }} />
           </Box>
         </CircleIcon>
       </Box>

@@ -193,7 +193,14 @@ export const ProposalsV3List = () => {
   }
 
   return (
-    <Paper variant="elevation" sx={{ mt: 5, py: 9, px: 5 }}>
+    <Paper
+      variant="elevation"
+      sx={{
+        mt: { xs: 4, lg: 5 },
+        py: { xs: 4, lg: 9 },
+        px: 4,
+      }}
+    >
       <ProposalListHeader
         proposalFilter={proposalFilter}
         handleProposalFilterChange={setProposalFilter}
@@ -222,7 +229,9 @@ const ProposalListSkeleton = () => {
   return (
     <Box
       sx={{
-        p: 6,
+        p: { xs: '24px 0', md: 6 },
+        overflow: 'hidden',
+        maxWidth: '100%',
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
@@ -234,7 +243,7 @@ const ProposalListSkeleton = () => {
         sx={{
           width: {
             xs: '100%',
-            lg: '80%',
+            md: '80%',
           },
           pr: { xs: 0, lg: 8 },
           display: 'flex',

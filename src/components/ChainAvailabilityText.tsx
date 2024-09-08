@@ -1,4 +1,4 @@
-import { Box, BoxProps, Typography } from '@mui/material';
+import { Box, BoxProps, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
 import { Trans } from '@lingui/macro';
 import { ChainId } from '@aave/contract-helpers';
@@ -9,10 +9,17 @@ type ChainAvailabilityTextProps = {
 };
 
 export const ChainAvailabilityText = ({ wrapperSx, title }: ChainAvailabilityTextProps) => {
+  const theme = useTheme();
+  const md = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...wrapperSx }}>
-      <img width="48px" height="48px" src={'/icons/networks/ethereum.svg'} alt="demo" />
-      <Typography variant="h1" sx={{ ml: 2, color: 'text.primary' }}>
+      <img
+        width={md ? 48 : 28}
+        height={md ? 48 : 28}
+        src={'/icons/networks/ethereum.svg'}
+        alt="demo"
+      />
+      <Typography variant={md ? 'h1' : 'h2'} sx={{ ml: 2, color: 'text.primary' }} component="h1">
         CODE {title}
       </Typography>
     </Box>
@@ -37,6 +44,8 @@ export const ChainAvailabilityText2: React.FC<ChainAvailabilityTextProps2> = ({
   chainId,
   wrapperSx,
 }) => {
+  const theme = useTheme();
+  const md = useMediaQuery(theme.breakpoints.up('md'));
   const network = networkConfigs[chainId];
 
   return (
@@ -46,18 +55,18 @@ export const ChainAvailabilityText2: React.FC<ChainAvailabilityTextProps2> = ({
         ...(Array.isArray(wrapperSx) ? wrapperSx : [wrapperSx]),
       ]}
     >
-      <Typography variant="body1" color="text.secondary">
+      <Typography variant={md ? 'body1' : 'body2'} color="text.secondary">
         <Trans>Available on</Trans>
       </Typography>
       <Box
         sx={{
-          height: 24,
-          width: 24,
+          height: md ? 24 : 20,
+          width: md ? 24 : 20,
         }}
       >
         <img src={network.networkLogoPath} height="100%" width="100%" alt="Ethereum Mainnet" />
       </Box>
-      <Typography variant="body1" color="text.primary">
+      <Typography variant={md ? 'body1' : 'body2'} color="text.primary">
         {networkToTextMapper(chainId, network)}
       </Typography>
     </Box>

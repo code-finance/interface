@@ -18,7 +18,7 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, viewOnly }: PageTitle
       sx={{
         display: 'flex',
         alignItems: { xs: 'flex-start', xsm: 'center' },
-        mb: pageTitle ? 10 : 0,
+        mb: pageTitle ? { xs: 4, md: 10 } : 0,
         flexDirection: { xs: 'column', xsm: 'row' },
       }}
     >

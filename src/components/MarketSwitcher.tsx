@@ -27,8 +27,6 @@ import {
   networkConfigs,
   STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
-import StyledToggleButton from './StyledToggleButton';
-import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const MULTIPLE_MARKET_OPTIONS = [
   CustomMarket.proto_mainnet_v3,
@@ -128,7 +126,7 @@ export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
     SelectedMarketVersion.V3
   );
   const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
+  const upToLG = useMediaQuery(theme.breakpoints.up('xsm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleMarketSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,7 +162,7 @@ export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
             <></>
           ) : (
             <SvgIcon
-              fontSize="medium"
+              fontSize={upToLG ? 'medium' : 'small'}
               {...props}
               sx={(theme) => ({
                 color: `${theme.palette.text.primary} !important`,
@@ -179,13 +177,21 @@ export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
-                size={upToLG ? 48 : 48}
+                size={upToLG ? 48 : 28}
                 logo={network.networkLogoPath}
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />
-              <Box sx={{ ml: 2, mr: 1, display: 'inline-flex', alignItems: 'flex-start' }}>
+              <Box
+                sx={{
+                  ml: { xs: 1, md: 2 },
+                  mr: 1,
+                  display: 'inline-flex',
+                  alignItems: 'flex-start',
+                }}
+              >
                 <Typography
-                  variant={upToLG ? 'h1' : 'h1'}
+                  variant={upToLG ? 'h1' : 'h2'}
+                  component="h1"
                   sx={(theme) => ({
                     color: theme.palette.text.primary,
                     mr: 1,

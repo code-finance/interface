@@ -106,7 +106,7 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
     <>
       <TitleWithSearchBar
         title={<Trans>Proposals</Trans>}
-        titleProps={{ variant: 'h3' }}
+        titleProps={{ variant: 'h2' }}
         onSearchTermChange={handleSearchQueryChange}
         searchPlaceholder="Search proposals"
       />
@@ -146,7 +146,7 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
   return (
     <Box
       sx={(theme) => ({
-        pb: 16,
+        pb: { xs: 4, md: 16 },
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',

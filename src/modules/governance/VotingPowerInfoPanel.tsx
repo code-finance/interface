@@ -15,7 +15,7 @@ export function VotingPowerInfoPanel() {
     <Box
       sx={{
         display: 'flex',
-        gap: { xs: 6, md: 10, lg: 15 },
+        gap: { xs: 4, lg: 15 },
         alignItems: 'flex-end',
         flexWrap: 'wrap',
       }}

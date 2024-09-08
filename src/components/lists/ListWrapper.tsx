@@ -104,8 +104,8 @@ export const ListWrapper = ({
       sx={[
         () => ({
           mt: withTopMargin ? 4 : 0,
-          py: 9,
-          px: 5,
+          py: { xs: 4, md: 9 },
+          px: 4,
         }),
         ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
       ]}
@@ -128,9 +128,10 @@ export const ListWrapper = ({
                 sx={{
                   width: '100%',
                   display: 'flex',
-                  alignItems: { xs: 'flex-start', xsm: 'center' },
                   py: '4px',
-                  flexDirection: { xs: 'column', xsm: 'row' },
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
                 }}
               >
                 {titleComponent}

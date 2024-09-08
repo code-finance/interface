@@ -31,6 +31,7 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
 
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const xsm = useMediaQuery(breakpoints.up('xsm'));
 
   const showSearchIcon = sm && !showSearchBar;
   const showMarketTitle = !sm || !showSearchBar;
@@ -51,7 +52,7 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
       }}
     >
       {showMarketTitle && (
-        <Typography variant="h2" {...titleProps} color="text.primary">
+        <Typography variant={xsm ? 'h2' : 'h3'} {...titleProps} color="text.primary">
           {title}
         </Typography>
       )}

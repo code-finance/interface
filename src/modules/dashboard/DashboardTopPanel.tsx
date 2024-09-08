@@ -91,8 +91,8 @@ export const DashboardTopPanel = () => {
           .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
           .toFixed();
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
-  const noDataTypographyVariant = downToSM ? 'secondary16' : 'body1';
+  const valueTypographyVariant = downToSM ? 'body1' : 'body1';
+  const noDataTypographyVariant = downToSM ? 'body1' : 'body1';
 
   return (
     <>

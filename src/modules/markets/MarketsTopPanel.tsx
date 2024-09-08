@@ -48,8 +48,8 @@ export const MarketsTopPanel = () => {
     }
   );
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
-  const symbolsVariant = downToSM ? 'secondary16' : 'body1';
+  const valueTypographyVariant = downToSM ? 'body6' : 'body1';
+  const symbolsVariant = downToSM ? 'body6' : 'body1';
 
   return (
     <TopInfoPanel pageTitle={<Trans>Markets</Trans>} withMarketSwitcher>

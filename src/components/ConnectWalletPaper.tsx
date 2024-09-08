@@ -22,7 +22,7 @@ export const ConnectWalletPaper = ({ loading, description, ...rest }: ConnectWal
           justifyContent: 'center',
           textAlign: 'center',
           px: 4,
-          py: '100px',
+          py: { xs: 16, md: '100px' },
           flex: 1,
           borderRadius: 4,
           background: theme.palette.background.primary,

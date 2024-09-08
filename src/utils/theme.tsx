@@ -664,16 +664,20 @@ export function getThemedComponents(theme: Theme) {
             flexDirection: 'column',
             flex: 1,
             [theme.breakpoints.up('xs')]: {
+              paddingLeft: '8px',
+              paddingRight: '8px',
+            },
+            [theme.breakpoints.up('xsm')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
             },
             [theme.breakpoints.up('sm')]: {
               paddingLeft: '24px',
-              paddingRight: '24px',
+              paddingRight: '20px',
             },
             [theme.breakpoints.up('md')]: {
-              paddingLeft: '32px',
-              paddingRight: '32px',
+              paddingLeft: '28px',
+              paddingRight: '28px',
             },
           },
         },

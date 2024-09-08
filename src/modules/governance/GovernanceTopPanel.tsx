@@ -50,7 +50,7 @@ export const GovernanceTopPanel = () => {
   return (
     <TopInfoPanel
       titleComponent={
-        <Box mb={4}>
+        <Box mb={4} p={{ xs: '0 16px', md: 0 }}>
           <ChainAvailabilityText title="Governance" wrapperSx={{ mb: 3 }} />
           <Typography color="text.secondary" variant="body3">
             <Trans>
@@ -77,6 +77,7 @@ export const GovernanceTopPanel = () => {
       }
     >
       <Box
+        p={{ xs: '0 16px', md: 0 }}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -88,7 +89,7 @@ export const GovernanceTopPanel = () => {
         <ExternalLink text="FORUM" href="https://governance.aave.com/" />
         <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
       </Box>
-      <Box sx={{ width: '100%', mt: 5 }}>
+      <Box sx={{ width: '100%', mt: { xs: 3, md: 5 } }} p={{ xs: '0 16px', md: 0 }}>
         <ChainAvailabilityText2 chainId={ChainId.mainnet} />
       </Box>
     </TopInfoPanel>

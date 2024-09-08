@@ -1,6 +1,6 @@
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box } from '@mui/material';
-import { ReactNode } from 'react';
+import { Box, Typography } from '@mui/material';
+import { ComponentProps, ReactNode } from 'react';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -10,8 +10,8 @@ interface IncentivesCardProps {
   symbol: string;
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
-  variant?: 'main14' | 'main16' | 'secondary14' | 'body6';
-  symbolsVariant?: 'secondary14' | 'secondary16' | 'body6';
+  variant?: ComponentProps<typeof Typography>['variant'];
+  symbolsVariant?: ComponentProps<typeof Typography>['variant'];
   align?: 'center' | 'flex-end';
   color?: string;
   tooltip?: ReactNode;

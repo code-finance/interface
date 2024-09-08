@@ -1,4 +1,3 @@
-import { useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -20,11 +19,6 @@ const GovRepresentativesModal = dynamic(() =>
     (module) => module.GovRepresentativesModal
   )
 );
-
-enum Tabs {
-  PROPOSALS,
-  INFORMATION,
-}
 
 export default function Governance() {
   const trackEvent = useRootStore((store) => store.trackEvent);

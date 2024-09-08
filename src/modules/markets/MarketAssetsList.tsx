@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -57,7 +57,8 @@ type MarketAssetsListProps = {
 };
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('md'));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   if (sortDesc) {

@@ -25,14 +25,14 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const downToSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'body1';
+  const valueTypographyVariant = downToSM ? 'body1' : 'body1';
+  const symbolsTypographyVariant = downToSM ? 'body1' : 'body1';
 
   return (
     <>

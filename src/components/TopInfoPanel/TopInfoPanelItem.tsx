@@ -25,6 +25,7 @@ export const TopInfoPanelItem = ({
 }: TopInfoPanelItemProps) => {
   const theme = useTheme();
   const upToSM = useMediaQuery(theme.breakpoints.up('sm'));
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
 
   return (
     <Box
@@ -70,7 +71,7 @@ export const TopInfoPanelItem = ({
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography variant="body3" color="text.secondary">
+          <Typography variant={xsm ? 'body3' : 'detail3'} color="text.secondary">
             {title}
           </Typography>
           {titleIcon && titleIcon}
