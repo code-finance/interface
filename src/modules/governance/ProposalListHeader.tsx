@@ -140,7 +140,7 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
   };
   const { breakpoints } = useTheme();
 
-  const md = useMediaQuery(breakpoints.up('md'));
+  const sxm = useMediaQuery(breakpoints.up('sxm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
@@ -156,7 +156,7 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
         borderColor: theme.palette.border.divider,
       })}
     >
-      {!md ? (
+      {!sxm ? (
         <ProposalListHeaderMobile
           proposalFilter={proposalFilter}
           handleChange={handleChange}

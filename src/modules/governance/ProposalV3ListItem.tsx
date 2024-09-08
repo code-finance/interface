@@ -16,13 +16,13 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
   return (
     <Box
       sx={{
-        py: { xs: 6, md: 8 },
-        px: { xs: 0, md: 2 },
+        py: { xs: 6, sxm: 8 },
+        px: { xs: 0, sxm: 2 },
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: { xs: 3, md: 5 },
+        gap: { xs: 3, sxm: 5 },
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
       component={Link}
@@ -34,8 +34,8 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
         gap={5}
         sx={{
           flex: 1,
-          pr: { xs: 0, md: 5 },
-          gap: { xs: 3, md: 5 },
+          pr: { xs: 0, sxm: 5 },
+          gap: { xs: 3, sxm: 5 },
           display: 'flex',
           height: '128px',
           flexDirection: 'column',
@@ -61,7 +61,7 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
         direction="column"
         justifyContent="center"
         sx={{
-          maxWidth: { xs: '100%', lg: '320px' },
+          maxWidth: { xs: '100%', sxm: '320px' },
           width: '100%',
         }}
       >

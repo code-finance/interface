@@ -196,8 +196,8 @@ export const ProposalsV3List = () => {
     <Paper
       variant="elevation"
       sx={{
-        mt: { xs: 4, lg: 5 },
-        py: { xs: 4, lg: 9 },
+        mt: { xs: 4, sxm: 5 },
+        py: { xs: 4, sxm: 9 },
         px: 4,
       }}
     >
@@ -229,7 +229,7 @@ const ProposalListSkeleton = () => {
   return (
     <Box
       sx={{
-        p: { xs: '24px 0', md: 6 },
+        p: { xs: '24px 0', sxm: 6 },
         overflow: 'hidden',
         maxWidth: '100%',
         display: 'flex',
@@ -243,9 +243,9 @@ const ProposalListSkeleton = () => {
         sx={{
           width: {
             xs: '100%',
-            md: '80%',
+            sxm: '80%',
           },
-          pr: { xs: 0, lg: 8 },
+          pr: { xs: 0, sxm: 8 },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -256,12 +256,12 @@ const ProposalListSkeleton = () => {
           sx={{
             width: {
               xs: '100%',
-              lg: '70%',
+              sxm: '70%',
             },
-            pr: { xs: 0, lg: 8 },
+            pr: { xs: 0, sxm: 8 },
             display: 'flex',
             flexDirection: 'column',
-            gap: { xs: 3, lg: 6 },
+            gap: { xs: 3, sxm: 6 },
           }}
         >
           <Skeleton variant="rectangular" height={22} width={220} />
@@ -273,8 +273,8 @@ const ProposalListSkeleton = () => {
         direction="column"
         justifyContent="center"
         sx={{
-          pl: { xs: 0, lg: 18 },
-          mt: { xs: 7, lg: 0 },
+          pl: { xs: 0, sxm: 18 },
+          mt: { xs: 7, sxm: 0 },
         }}
       >
         <VoteBar yae percent={0} votes={0} sx={{ mb: 4 }} loading />
