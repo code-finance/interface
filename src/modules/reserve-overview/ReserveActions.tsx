@@ -26,7 +26,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useTonBalance, useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -88,6 +88,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
   }
 
+  const balanceAmount = isConnectedTonWallet ? `${reserve?.walletBalance}` : balance?.amount;
+
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
   const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
@@ -108,7 +110,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     ).toString();
 
     maxAmountToSupply = getMaxAmountAvailableToSupply(
-      balance?.amount || '0',
+      balanceAmount || '0',
       reserve,
       reserve.underlyingAsset,
       minRemainingBaseTokenBalance
@@ -128,7 +130,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   ).toString();
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
-    balance: balance?.amount || '0',
+    balance: balanceAmount || '0',
     maxAmountToSupply: maxAmountToSupply.toString(),
     maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
@@ -138,7 +140,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     return <ConnectWallet loading={loadingWeb3Context} />;
   }
 
-  if (loadingReserves || loadingWalletBalance) {
+  if ((loadingReserves || loadingWalletBalance) && !isConnectedTonWallet) {
     return <ActionsSkeleton />;
   }
 
@@ -171,7 +173,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       )}
       <Box sx={{ display: 'flex', gap: '8px 2px', flexWrap: 'wrap' }}>
         <WalletBalance
-          balance={balance.amount}
+          balance={balanceAmount}
           symbol={selectedAsset}
           marketTitle={market.marketTitle}
         />
