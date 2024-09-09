@@ -14,8 +14,8 @@ export const ChainAvailabilityText = ({ wrapperSx, title }: ChainAvailabilityTex
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...wrapperSx }}>
       <img
-        width={md ? 48 : 28}
-        height={md ? 48 : 28}
+        width={md ? 44 : 28}
+        height={md ? 44 : 28}
         src={'/icons/networks/ethereum.svg'}
         alt="demo"
       />

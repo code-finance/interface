@@ -201,7 +201,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         >
           <Trans>All transactions</Trans>
           {allSelected && (
-            <SvgIcon sx={{ fontSize: '16px' }}>
+            <SvgIcon sx={{ fontSize: '16px', ml: 2 }}>
               <CheckIcon />
             </SvgIcon>
           )}
@@ -233,7 +233,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
                 >
                   <FilterLabel filter={option} />
                   {currentFilter.includes(option) && (
-                    <SvgIcon sx={{ fontSize: '16px' }}>
+                    <SvgIcon sx={{ fontSize: '16px', ml: 2 }}>
                       <CheckIcon />
                     </SvgIcon>
                   )}

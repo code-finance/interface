@@ -5,7 +5,7 @@ import { ListItem } from '../../components/lists/ListItem';
 
 const HistoryMobileRowItem = () => {
   return (
-    <ListItem px={6} minHeight={68}>
+    <ListItem minHeight={68}>
       <ListColumn isRow maxWidth={280}>
         <Skeleton variant="circular" width={24} height={24} />
         <Box sx={{ pl: 6, overflow: 'hidden' }}>
@@ -26,7 +26,7 @@ const HistoryMobileRowItem = () => {
 export const HistoryMobileItemLoader = () => {
   return (
     <>
-      <ListItem px={6} minHeight={68}>
+      <ListItem minHeight={68}>
         <ListColumn align="left">
           <Skeleton width={80} height={16} sx={{ transform: 'translateY(8px)' }} />
         </ListColumn>

@@ -176,7 +176,7 @@ export const HistoryWrapperMobile = () => {
   //       assetPriceUSD: '1',
   //       borrowRateModeFrom: 'stable',
   //       borrowRateModeTo: 'variable',
-  //       stableBorrowRate: 18
+  //       stableBorrowRate: 18,
   //     },
   //     {
   //       id: '3',
@@ -265,7 +265,7 @@ export const HistoryWrapperMobile = () => {
   //       borrowRateModeFrom: 'stable',
   //       borrowRateModeTo: 'variable',
   //       stableBorrowRate: 18,
-  //       variableBorrowRate: 20
+  //       variableBorrowRate: 20,
   //     },
   //     {
   //       id: '8',
@@ -298,7 +298,7 @@ export const HistoryWrapperMobile = () => {
   //       borrowRateModeFrom: 'Variable',
   //       borrowRateModeTo: 'variable',
   //       stableBorrowRate: 18,
-  //       variableBorrowRate: 20
+  //       variableBorrowRate: 20,
   //     },
   //     {
   //       id: '9',
@@ -333,7 +333,6 @@ export const HistoryWrapperMobile = () => {
 
   return (
     <ListWrapper
-      wrapperSx={showSearchBar ? { px: 5, py: 9 } : undefined}
       titleComponent={
         <Box
           ref={searchBarRef}
@@ -346,56 +345,56 @@ export const HistoryWrapperMobile = () => {
         >
           {!showSearchBar && (
             <Typography component="div" variant="h2" sx={{ mr: 4, height: '36px' }}>
-              <Trans>Transactions1</Trans>
+              <Trans>Transactions</Trans>
             </Typography>
           )}
           {!showSearchBar && (
             <Box sx={{ display: 'flex', gap: '22px' }}>
-              {loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}
-              <Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>
-                <SvgIcon>
-                  <DocumentDownloadIcon width={20} height={20} />
-                </SvgIcon>
-              </Box>
-              <Menu
-                anchorEl={menuAnchorEl}
-                open={Boolean(menuAnchorEl)}
-                onClose={handleDownloadMenuClose}
-              >
-                <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
-                  <Trans>Export data to</Trans>
-                </Typography>
-                <MenuItem
-                  onClick={() => {
-                    handleJsonDownload();
-                    handleDownloadMenuClose();
-                  }}
-                >
-                  <ListItemIcon>
-                    <SvgIcon>
-                      <DocumentDownloadIcon width={22} height={22} />
-                    </SvgIcon>
-                  </ListItemIcon>
-                  <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
-                    <Trans>.JSON</Trans>
-                  </ListItemText>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    handleCsvDownload();
-                    handleDownloadMenuClose();
-                  }}
-                >
-                  <ListItemIcon>
-                    <SvgIcon>
-                      <DocumentDownloadIcon width={22} height={22} />
-                    </SvgIcon>
-                  </ListItemIcon>
-                  <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
-                    <Trans>.CSV</Trans>
-                  </ListItemText>
-                </MenuItem>
-              </Menu>
+              {/*{loadingDownload && <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />}*/}
+              {/*<Box onClick={handleDownloadMenuClick} sx={{ cursor: 'pointer' }}>*/}
+              {/*  <SvgIcon>*/}
+              {/*    <DocumentDownloadIcon width={20} height={20} />*/}
+              {/*  </SvgIcon>*/}
+              {/*</Box>*/}
+              {/*<Menu*/}
+              {/*  anchorEl={menuAnchorEl}*/}
+              {/*  open={Boolean(menuAnchorEl)}*/}
+              {/*  onClose={handleDownloadMenuClose}*/}
+              {/*>*/}
+              {/*  <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>*/}
+              {/*    <Trans>Export data to</Trans>*/}
+              {/*  </Typography>*/}
+              {/*  <MenuItem*/}
+              {/*    onClick={() => {*/}
+              {/*      handleJsonDownload();*/}
+              {/*      handleDownloadMenuClose();*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    <ListItemIcon>*/}
+              {/*      <SvgIcon>*/}
+              {/*        <DocumentDownloadIcon width={22} height={22} />*/}
+              {/*      </SvgIcon>*/}
+              {/*    </ListItemIcon>*/}
+              {/*    <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>*/}
+              {/*      <Trans>.JSON</Trans>*/}
+              {/*    </ListItemText>*/}
+              {/*  </MenuItem>*/}
+              {/*  <MenuItem*/}
+              {/*    onClick={() => {*/}
+              {/*      handleCsvDownload();*/}
+              {/*      handleDownloadMenuClose();*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    <ListItemIcon>*/}
+              {/*      <SvgIcon>*/}
+              {/*        <DocumentDownloadIcon width={22} height={22} />*/}
+              {/*      </SvgIcon>*/}
+              {/*    </ListItemIcon>*/}
+              {/*    <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>*/}
+              {/*      <Trans>.CSV</Trans>*/}
+              {/*    </ListItemText>*/}
+              {/*  </MenuItem>*/}
+              {/*</Menu>*/}
               <Box onClick={() => setShowSearchBar(true)}>
                 <SvgIcon sx={{ cursor: 'pointer' }}>
                   <SearchIcon width={20} height={20} />
@@ -404,7 +403,7 @@ export const HistoryWrapperMobile = () => {
             </Box>
           )}
           {showSearchBar && (
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', px: 0 }}>
+            <Box sx={{ width: '100%', display: 'flex', gap: 2 }}>
               <SearchInput
                 wrapperSx={{
                   width: '320px',
@@ -413,10 +412,8 @@ export const HistoryWrapperMobile = () => {
                 onSearchTermChange={setSearchQuery}
                 key={searchResetKey}
               />
-              <Button onClick={() => handleCancelClick()}>
-                <Typography variant="buttonM">
-                  <Trans>Cancel</Trans>
-                </Typography>
+              <Button onClick={() => handleCancelClick()} size="small">
+                <Trans>Cancel</Trans>
               </Button>
             </Box>
           )}
@@ -433,7 +430,7 @@ export const HistoryWrapperMobile = () => {
       ) : !isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <React.Fragment key={groupIndex}>
-            <Typography variant="body4" color="text.subTitle" sx={{ ml: 4, mt: 6, mb: 2 }}>
+            <Typography variant="body6" color="text.subTitle" sx={{ mt: 6, mb: 2 }} component="div">
               {date}
             </Typography>
             {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {

@@ -382,17 +382,26 @@ export const SupplyAssetsListItemMobile = ({
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mt: 5,
+          gap: 2,
+        }}
+      >
         <Button
           disabled={disableSupply}
           variant="contained"
           onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
-          sx={{ mr: 1.5 }}
+          sx={{ flex: 1, px: { xs: 2, xsm: '46.5px' } }}
           fullWidth
         >
           <Trans>Supply</Trans>
         </Button>
         <Button
+          sx={{ flex: 1, px: { xs: 2, xsm: '46.5px' } }}
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}

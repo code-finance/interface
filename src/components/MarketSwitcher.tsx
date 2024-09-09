@@ -84,6 +84,8 @@ type MarketLogoProps = {
 };
 
 export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) => {
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Box sx={{ mr: 2, width: size, height: size, position: 'relative', ...sx }}>
       <img src={logo} alt="" width="100%" height="100%" />
@@ -91,21 +93,21 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
       {testChainName && (
         <Tooltip title={testChainName} arrow>
           <Box
-            sx={{
-              bgcolor: '#29B6F6',
-              width: '16px',
-              height: '16px',
+            sx={(theme) => ({
+              bgcolor: theme.palette.text.buttonText,
+              width: xsm ? '16px' : '12px',
+              height: xsm ? '16px' : '12px',
               borderRadius: '50%',
-              color: 'common.white',
-              fontSize: '12px',
-              lineHeight: '16px',
+              fontSize: xsm ? '12px' : '10px',
+              lineHeight: 1,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'absolute',
               right: '-2px',
               bottom: '-2px',
-            }}
+              color: theme.palette.text.primary,
+            })}
           >
             {testChainName.split('')[0]}
           </Box>
@@ -177,7 +179,7 @@ export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo
-                size={upToLG ? 48 : 28}
+                size={upToLG ? 44 : 28}
                 logo={network.networkLogoPath}
                 testChainName={getMarketHelpData(market.marketTitle).testChainName}
               />

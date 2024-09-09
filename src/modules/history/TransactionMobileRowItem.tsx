@@ -9,10 +9,11 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
 import { ActionFields, TransactionHistoryItem } from './types';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 
 function ActionTitle({ action }: { action: string }) {
   return (
-    <Typography variant="subheader2" color="text.muted">
+    <Typography variant="body8" color="text.primary">
       <ActionTextMap action={action} />
     </Typography>
   );
@@ -47,7 +48,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
   return (
     <Box>
       <ListItem
-        px={4}
+        px={0}
         sx={{
           borderWidth: `1px 0 0 0`,
           borderStyle: `solid`,
@@ -77,45 +78,32 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
               <ActionTitle action={transaction.action} />
             </Box>
 
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
               <Typography variant="body5" color="text.mainTitle">
                 {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
               </Typography>
-              <Button
-                sx={{
-                  display: 'flex',
-                  ml: 3,
-                  mr: 1,
-                  width: '69px',
-                  height: '20px',
-                  fontSize: '0.6rem',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  pl: 1,
-                  pr: 1,
-                  color: theme.palette.text.secondary,
-                }}
-                variant="text"
-                href={explorerLink}
-                target="_blank"
-                onClick={() =>
-                  trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
-                }
-              >
-                <Trans>Explorer</Trans>
-                <SvgIcon
-                  sx={{
-                    fontSize: '15px',
-                    pl: 1,
-                    pb: 0.5,
-                  }}
-                >
-                  <ArrowOutward />
-                </SvgIcon>
-              </Button>
             </Box>
           </Box>
-          <Box sx={{ py: '28px' }}>
+          <Button
+            sx={(theme) => ({
+              height: '34px',
+              width: '137px',
+              ...theme.typography.body4,
+              textTransform: 'unset',
+              mt: 1.5,
+              alignSelf: 'flex-end',
+            })}
+            variant="transparent"
+            href={explorerLink}
+            target="_blank"
+            onClick={() =>
+              trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
+            }
+          >
+            <Trans>Explorer</Trans>
+            <CallMadeOutlinedIcon fontSize={'small'} sx={{ ml: 1 }} />
+          </Button>
+          <Box sx={{ pt: 4, pb: '14px' }}>
             <ActionDetails transaction={transaction} iconSize="24px" />
           </Box>
         </Box>

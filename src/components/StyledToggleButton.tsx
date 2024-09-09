@@ -50,7 +50,7 @@ export function StyledTxModalToggleButton({ sx, ...props }: CustomToggleButtonPr
   return (
     <CustomTxModalToggleButton
       {...props}
-      sx={[{ minWidth: { sm: '198px' } }, ...(Array.isArray(sx) ? sx : [sx])]}
+      sx={[{ minWidth: { xsm: '198px' } }, ...(Array.isArray(sx) ? sx : [sx])]}
     />
   );
 }
@@ -59,7 +59,7 @@ export default function StyledToggleButton({ sx, ...props }: ToggleButtonProps) 
   return (
     <CustomToggleButton
       {...props}
-      sx={[{ minWidth: { sm: '198px' } }, ...(Array.isArray(sx) ? sx : [sx])]}
+      sx={[{ minWidth: { xsm: '198px' } }, ...(Array.isArray(sx) ? sx : [sx])]}
     />
   );
 }
