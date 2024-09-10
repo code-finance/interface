@@ -10,11 +10,10 @@ import { ReferralProgramDetails } from './ReferralProgramDetails';
 export const ReferralContent = () => {
   const { currentAccount, loading } = useWeb3Context();
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const theme = useTheme();
   const isValidNetWorkWallet = true;
   const [searchTerm, setSearchTerm] = useState<string>('');
   return (
-    <Box sx={{ mt: '40px', mx: '148px', mb: '189px' }}>
+    <Box>
       {currentAccount && !loading ? (
         isValidNetWorkWallet ? (
           <Container sx={{ px: '0 !important' }}>
@@ -40,7 +39,7 @@ export const ReferralContent = () => {
       ) : (
         <ConnectWalletPaperReferral
           titleHeader={<Trans>Please connect a wallet</Trans>}
-          description={<Trans>Connect a wallet to check the referral program. </Trans>}
+          description={<Trans>Connect a wallet to check the referral program. </Trans>}
           loading={loading}
         />
       )}

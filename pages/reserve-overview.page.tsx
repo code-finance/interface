@@ -47,16 +47,9 @@ export default function ReserveOverview() {
 
       <ContentContainer>
         <Box>
+          <ReserveActions reserve={reserve} />
           <Box
             sx={{
-              width: '100%',
-            }}
-          >
-            <ReserveActions reserve={reserve} />
-          </Box>
-          <Box
-            sx={{
-              width: '100%',
               mt: 5,
             }}
           >

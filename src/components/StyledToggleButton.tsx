@@ -8,23 +8,28 @@ interface CustomToggleButtonProps extends ToggleButtonProps {
 
 const CustomToggleButton = styled(ToggleButton)<CustomToggleButtonProps>(({ theme }) => ({
   flex: 1,
-  color: theme.palette.text.primary,
-  backgroundColor: theme.palette.text.buttonText,
+  color: '#111213',
+  backgroundColor: '#FBFBFB',
   border: 0,
   padding: '10px',
   textTransform: 'capitalize',
   ...theme.typography.body7,
   transition: '0.3s',
   '&:not(:disabled):hover': {
-    opacity: 0.9,
+    opacity: 0.8,
+  },
+  '&:not(.Mui-selected):hover': {
+    color: '#111213',
+    backgroundColor: '#FBFBFB',
   },
   '&.Mui-selected, &.Mui-selected:hover': {
-    color: theme.palette.text.buttonBgTap,
-    backgroundColor: theme.palette.text.secondary,
+    color: '#F5F5F5',
+    backgroundColor: '#454854',
   },
   '&.Mui-disabled': {
-    color: theme.palette.text.disabledText,
-    backgroundColor: theme.palette.text.disabledBg,
+    opacity: 0.5,
+    pointerEvents: 'none',
+    border: 'none',
   },
 })) as typeof ToggleButton;
 

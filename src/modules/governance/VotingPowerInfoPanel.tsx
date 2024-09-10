@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Skeleton, Typography } from '@mui/material';
+import { Box, Paper, Skeleton, Typography, useTheme } from '@mui/material';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactMode } from 'src/components/CompactableTypography';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -11,6 +11,8 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 
 export function VotingPowerInfoPanel() {
   const { data: powers } = usePowers();
+  const theme = useTheme();
+  const color = theme.palette.mode === 'light' ? 'text.subText' : 'text.mainTitle';
   return (
     <Box
       sx={{
@@ -43,8 +45,8 @@ export function VotingPowerInfoPanel() {
             <TextWithTooltip
               text="Voting power"
               variant="body3"
-              textColor="text.subText"
-              iconColor="text.subText"
+              textColor={color}
+              iconColor={color}
               iconSize={18}
               event={{
                 eventName: GENERAL.TOOL_TIP,
@@ -78,8 +80,8 @@ export function VotingPowerInfoPanel() {
             <TextWithTooltip
               text="Proposition power"
               variant="body3"
-              textColor="text.subText"
-              iconColor="text.subText"
+              textColor={color}
+              iconColor={color}
               iconSize={18}
               event={{
                 eventName: GENERAL.TOOL_TIP,

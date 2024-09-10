@@ -154,7 +154,10 @@ export const VotersListModal = ({
             color="primary"
             value={voteView}
             exclusive
-            onChange={(_, value) => setVoteView(value)}
+            onChange={(_, value) => {
+              if (!value) return;
+              setVoteView(value);
+            }}
             sx={{ width: '100%', height: '44px', mt: 8, mb: 6 }}
           >
             <StyledToggleButton value="yaes" disabled={voteView === 'yaes'}>

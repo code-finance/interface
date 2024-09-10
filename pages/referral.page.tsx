@@ -1,20 +1,20 @@
-import { Container } from '@mui/material';
 import { ReactNode } from 'react';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ReferralContent } from 'src/modules/referral/ReferralContent';
 import { ReferralHeader } from 'src/modules/referral/ReferralHeader';
+import { ContentContainer } from '../src/components/ContentContainer';
 
 export default function Referral() {
   return (
     <>
       <ReferralHeader />
-      <ReferralContent />
-      {/* <MarketContainer>
-            <MarketAssetsListContainer />
-          </MarketContainer> */}
+      <ContentContainer>
+        <ReferralContent />
+      </ContentContainer>
     </>
   );
 }
+
 interface ReferralContainerProps {
   children: ReactNode;
 }

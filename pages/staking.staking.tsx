@@ -139,7 +139,10 @@ export default function Staking() {
                 color="primary"
                 value={mode}
                 exclusive
-                onChange={(_, value) => setMode(value)}
+                onChange={(_, value) => {
+                  if (!value) return;
+                  setMode(value);
+                }}
                 sx={{ width: { xs: '100%', xsm: '359px' } }}
               >
                 <StyledToggleButton value="aave" disabled={mode === 'aave'}>

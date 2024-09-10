@@ -119,53 +119,21 @@ export const AddTokenDropdown = ({
         keepMounted={true}
         data-cy="addToWaletSelector"
       >
-        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-          <Typography variant="secondary12" color="text.secondary">
-            <Trans>Underlying token</Trans>
-          </Typography>
-        </Box>
-
-        <MenuItem
-          key="underlying"
-          value="underlying"
-          divider
-          onClick={() => {
-            if (currentChainId !== connectedChainId) {
-              switchNetwork(currentChainId).then(() => {
-                setChangingNetwork(true);
-              });
-            } else {
-              trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
-                type: 'Underlying token',
-                asset: poolReserve.underlyingAsset,
-                assetName: poolReserve.name,
-              });
-
-              addERC20Token({
-                address: poolReserve.underlyingAsset,
-                decimals: poolReserve.decimals,
-                symbol: poolReserve.symbol,
-                image: !/_/.test(poolReserve.symbol) ? underlyingBase64 : undefined,
-              });
-            }
-            handleClose();
-          }}
-        >
-          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            {poolReserve.symbol}
-          </Typography>
-        </MenuItem>
-        {!hideAToken && (
-          <Box>
-            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="secondary12" color="text.secondary">
-                <Trans>Aave aToken</Trans>
-              </Typography>
-            </Box>
+        <Box sx={{ px: 3, py: 4, width: '260px' }}>
+          <Box sx={{ pt: 2 }}>
+            <Typography
+              variant="detail2"
+              color="text.mainTitle"
+              sx={{ px: 1.5, my: 1 }}
+              component="div"
+            >
+              <Trans>Underlying token</Trans>
+            </Typography>
             <MenuItem
-              key="atoken"
-              value="atoken"
+              key="underlying"
+              value="underlying"
+              sx={{ py: 4, px: 1.5 }}
+              divider
               onClick={() => {
                 if (currentChainId !== connectedChainId) {
                   switchNetwork(currentChainId).then(() => {
@@ -173,27 +141,75 @@ export const AddTokenDropdown = ({
                   });
                 } else {
                   trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
+                    type: 'Underlying token',
                     asset: poolReserve.underlyingAsset,
                     assetName: poolReserve.name,
                   });
 
                   addERC20Token({
-                    address: poolReserve.aTokenAddress,
+                    address: poolReserve.underlyingAsset,
                     decimals: poolReserve.decimals,
-                    symbol: '',
-                    image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
+                    symbol: poolReserve.symbol,
+                    image: !/_/.test(poolReserve.symbol) ? underlyingBase64 : undefined,
                   });
                 }
                 handleClose();
               }}
             >
-              <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
-              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                {`a${poolReserve.symbol}`}
+              <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '24px' }} />
+              <Typography variant="body6" sx={{ ml: 2 }} noWrap data-cy={`assetName`}>
+                {poolReserve.symbol}
               </Typography>
             </MenuItem>
           </Box>
-        )}
+
+          {!hideAToken && (
+            <Box sx={{ pt: 2 }}>
+              <Typography
+                variant="detail2"
+                color="text.mainTitle"
+                sx={{ px: 1.5, my: 1 }}
+                component="div"
+              >
+                <Trans>Code cToken</Trans>
+              </Typography>
+              <MenuItem
+                key="atoken"
+                value="atoken"
+                sx={{ py: 4, px: 1.5 }}
+                onClick={() => {
+                  if (currentChainId !== connectedChainId) {
+                    switchNetwork(currentChainId).then(() => {
+                      setChangingNetwork(true);
+                    });
+                  } else {
+                    trackEvent(RESERVE_DETAILS.ADD_TO_WALLET, {
+                      asset: poolReserve.underlyingAsset,
+                      assetName: poolReserve.name,
+                    });
+
+                    addERC20Token({
+                      address: poolReserve.aTokenAddress,
+                      decimals: poolReserve.decimals,
+                      symbol: '',
+                      image: !/_/.test(poolReserve.symbol) ? aTokenBase64 : undefined,
+                    });
+                  }
+                  handleClose();
+                }}
+              >
+                <TokenIcon
+                  symbol={poolReserve.iconSymbol}
+                  sx={{ fontSize: '24px' }}
+                  aToken={true}
+                />
+                <Typography variant="body6" sx={{ ml: 2 }} noWrap data-cy={`assetName`}>
+                  {`c${poolReserve.symbol}`}
+                </Typography>
+              </MenuItem>
+            </Box>
+          )}
+        </Box>
       </Menu>
     </>
   );

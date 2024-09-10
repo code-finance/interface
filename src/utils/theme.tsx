@@ -189,6 +189,7 @@ declare module '@mui/material/Typography' {
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     transparent: true;
+    'transparent-link': true;
 
     // to be removed
     surface: true;
@@ -524,6 +525,24 @@ export function getThemedComponents(theme: Theme) {
               borderColor: theme.palette.border.contents,
               color: theme.palette.text.secondary,
               ...theme.typography.body4,
+              '&:hover': {
+                borderColor: theme.palette.point.primary,
+                color: theme.palette.point.primary,
+              },
+            },
+          },
+          {
+            props: { color: 'primary', variant: 'transparent-link' },
+            style: {
+              paddingInline: '8px',
+              paddingBlock: '3px',
+              border: '1px solid',
+              background: 'transparent',
+              textTransform: 'uppercase',
+              borderColor: theme.palette.border.contents,
+              color: theme.palette.text.secondary,
+              ...theme.typography.detail2,
+              borderRadius: '4px',
               '&:hover': {
                 borderColor: theme.palette.point.primary,
                 color: theme.palette.point.primary,

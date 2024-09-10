@@ -18,11 +18,6 @@ const ReserveConfiguration = dynamic(() =>
 );
 
 export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
-  const { currentMarket } = useProtocolDataContext();
-  const { breakpoints } = useTheme();
-  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
-
   return (
     <Paper
       variant="elevation"

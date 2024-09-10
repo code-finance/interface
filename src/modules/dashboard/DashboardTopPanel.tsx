@@ -142,7 +142,12 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
         {currentAccount && user?.healthFactor !== '-1' && (
-          <TopInfoPanelItem title={<Trans>Health factor</Trans>} loading={loading} hideIcon>
+          <TopInfoPanelItem
+            title={<Trans>Health factor</Trans>}
+            loading={loading}
+            hideIcon
+            sx={{ minWidth: { xs: '100%', xsm: '170px' } }}
+          >
             <HealthFactorNumber
               isHeader
               value={user?.healthFactor || '-1'}
@@ -187,31 +192,49 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
         {currentAccount && (
-          <Button
-            sx={{
-              ml: 'auto',
-              mt: { xs: 13.5, xsm: 0 },
-              width: xsm ? '221px' : '170px',
-              height: xsm ? '42px' : '26.5px',
-              px: 2,
-              py: '3px',
-              border: `1px solid ${theme.palette.border.contents}`,
-              ...theme.typography.detail2,
-              color: theme.palette.text.secondary,
-              borderRadius: 1,
-              alignSelf: 'center',
-            }}
-            onClick={() => {
-              router.push(ROUTES.history);
-              trackEvent(AUTH.VIEW_TX_HISTORY);
-            }}
-            size="small"
-            variant="transparent"
-          >
-            <Typography variant={xsm ? 'body4' : 'detail2'}>
-              <Trans>View Transactions</Trans>
-            </Typography>
-          </Button>
+          <>
+            {xsm ? (
+              <Button
+                sx={{
+                  ml: 'auto',
+                  mt: { xsm: 0 },
+                  width: '221px',
+                  height: '42px',
+                  px: 2,
+                  py: '3px',
+                  border: `1px solid ${theme.palette.border.contents}`,
+                  ...theme.typography.detail2,
+                  color: theme.palette.text.secondary,
+                  borderRadius: 1,
+                  alignSelf: 'center',
+                }}
+                onClick={() => {
+                  router.push(ROUTES.history);
+                  trackEvent(AUTH.VIEW_TX_HISTORY);
+                }}
+                size="small"
+                variant="transparent"
+              >
+                <Typography variant="body4">
+                  <Trans>View Transactions</Trans>
+                </Typography>
+              </Button>
+            ) : (
+              <Button
+                sx={{
+                  ml: 'auto',
+                }}
+                onClick={() => {
+                  router.push(ROUTES.history);
+                  trackEvent(AUTH.VIEW_TX_HISTORY);
+                }}
+                size="small"
+                variant="transparent-link"
+              >
+                <Trans>View Transactions</Trans>
+              </Button>
+            )}{' '}
+          </>
         )}
       </TopInfoPanel>
 

@@ -107,8 +107,8 @@ export const TokenLinkDropdown = ({
           target="_blank"
           divider
         >
-          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '24px' }} />
+          <Typography variant="subheader1" sx={{ ml: 2 }} noWrap data-cy={`assetName`}>
             {poolReserve.symbol}
           </Typography>
         </MenuItem>

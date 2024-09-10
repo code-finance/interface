@@ -144,13 +144,21 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <Box
               sx={{
                 display: 'flex',
-                flexWrap: { xs: 'wrap', mdlg: 'nowrap' },
+                flexWrap: { xs: 'wrap', md: 'nowrap' },
                 gap: 7,
                 width: '100%',
                 overflow: 'hidden',
               }}
             >
-              <Box sx={{ flex: 1, display: 'flex', minWidth: 400 }}>
+              <Box
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  minWidth: { xs: 'unset', md: 400 },
+                  gap: 2,
+                  flexWrap: 'wrap',
+                }}
+              >
                 <PanelItem
                   sx={{ minWidth: '150px' }}
                   title={

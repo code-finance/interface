@@ -44,7 +44,10 @@ export default function Home() {
               color="primary"
               value={mode}
               exclusive
-              onChange={(_, value) => setMode(value)}
+              onChange={(_, value) => {
+                if (!value) return;
+                setMode(value);
+              }}
             >
               <StyledToggleButton value="supply">
                 <Trans>Supply</Trans>

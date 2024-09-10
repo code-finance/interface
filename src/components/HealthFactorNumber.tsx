@@ -41,9 +41,9 @@ export const HealthFactorNumber = ({
     <Box
       sx={{
         display: 'inline-flex',
-        flexDirection: xsm ? 'row' : 'column',
-        alignItems: xsm ? 'center' : 'flex-start',
-        gap: xsm ? 3 : 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 3,
       }}
       data-cy={'HealthFactorTopPannel'}
     >
@@ -74,19 +74,7 @@ export const HealthFactorNumber = ({
       </Box>
 
       {onInfoClick && (
-        <Button
-          onClick={onInfoClick}
-          sx={(theme) => ({
-            px: 2,
-            py: '3px',
-            border: `1px solid ${theme.palette.border.contents}`,
-            ...theme.typography.detail2,
-            color: theme.palette.text.secondary,
-            borderRadius: 1,
-          })}
-          size="small"
-          variant="transparent"
-        >
+        <Button onClick={onInfoClick} variant="transparent-link">
           <Trans>Risk details</Trans>
         </Button>
       )}

@@ -104,7 +104,7 @@ export const ListWrapper = ({
       sx={[
         () => ({
           mt: withTopMargin ? 4 : 0,
-          py: { xs: 4, md: 9 },
+          py: { xs: 4, md: 6 },
           px: 4,
         }),
         ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
