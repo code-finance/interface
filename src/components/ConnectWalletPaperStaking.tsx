@@ -36,17 +36,19 @@ export const ConnectWalletPaperStaking = ({
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 8 }} color={'text.primary'}>
-              <Trans>Please, connect your wallet</Trans>
-            </Typography>
-            <Typography sx={{ mb: 10, fontSize: '20px', fontWeight: 500 }} color="text.secondary">
-              {description || (
-                <Trans>
-                  Please connect your wallet to see your supplies, borrowings, and open positions.
-                </Trans>
-              )}
-            </Typography>
-            <ConnectWalletButton funnel={'Staking page'} />
+            <Box mb={'40px'}>
+              <Typography variant="h2" sx={{ mb: 8 }} color={'text.primary'}>
+                <Trans>Please, connect your wallet</Trans>
+              </Typography>
+              <Typography sx={{ mb: 10, fontSize: '20px', fontWeight: 500 }} color="text.secondary">
+                {description || (
+                  <Trans>
+                    Please connect your wallet to see your supplies, borrowings, and open positions.
+                  </Trans>
+                )}
+              </Typography>
+              <ConnectWalletButton funnel={'Staking page'} />
+            </Box>
             <Box
               pt={'28px'}
               sx={{
@@ -60,10 +62,15 @@ export const ConnectWalletPaperStaking = ({
             >
               {/* <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} /> */}
               <Box sx={{ flex: 1 }}>
-                <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
+                <StakingPanelNoWallet stakedToken={'AAVE'} icon={'/icons/networks/ethereum.svg'} />
               </Box>
-              <Box sx={{ flex: 1 }} />
-              {/* <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} /> */}
+              <Box sx={{ flex: 1 }}>
+                <StakingPanelNoWallet
+                  stakedToken={'AAVE'}
+                  icon={'/icons/networks/kaia.svg'}
+                  networkName="Kaia"
+                />
+              </Box>
             </Box>
           </>
         )}

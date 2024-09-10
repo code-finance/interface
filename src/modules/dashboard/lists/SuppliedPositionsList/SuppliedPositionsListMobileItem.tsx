@@ -107,7 +107,7 @@ export const SuppliedPositionsListMobileItem = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        {isSwapButton ? (
+        {/* {isSwapButton ? (
           <Button
             disabled={disableSwap}
             variant="contained"
@@ -125,7 +125,7 @@ export const SuppliedPositionsListMobileItem = ({
           >
             <Trans>Supply</Trans>
           </Button>
-        )}
+        )} */}
         <Button
           disabled={disableWithdraw}
           variant="outlined"

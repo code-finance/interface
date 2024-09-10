@@ -49,7 +49,6 @@ export const TopInfoPanel = ({
           <Box
             sx={{
               display: 'flex',
-              justifyContent: 'space-between',
               alignItems: 'flex-start',
               gap: { xs: 3, xsm: 5 },
               flexWrap: 'wrap',

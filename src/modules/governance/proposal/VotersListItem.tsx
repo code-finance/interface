@@ -29,6 +29,7 @@ export const VotersListItem = ({
   const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.down('xsm'));
 
   // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length.
   // This takes into account if the list should be compact or not, and adjusts accordingly to keep items of about equal length.
@@ -107,7 +108,7 @@ export const VotersListItem = ({
             >
               {/* {displayName(ensName)} */}
               <CompactableTypography
-                compactMode={isModal ? CompactMode.LR : CompactMode.SXL}
+                compactMode={isModal || xsm ? CompactMode.LR : CompactMode.SXL}
                 compact
               >
                 {address}

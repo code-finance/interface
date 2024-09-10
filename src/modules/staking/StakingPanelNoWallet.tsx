@@ -16,11 +16,13 @@ export interface StakingPanelNoWalletProps {
   headerAction?: React.ReactNode;
   stakedToken: string;
   icon: string;
+  networkName?: string;
 }
 
 export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
   stakedToken,
   icon,
+  networkName,
 }) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   let stakingAPY = '';
@@ -83,10 +85,10 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           flex: 1,
         }}
       >
-        <TokenIcon symbol={icon} sx={{ width: '24px', height: '24px' }} />
+        <img width="24px" height="24px" src={icon} />
         <Stack direction="column" alignItems="start">
           <Typography variant="body2" color="text.primary" sx={{ textAlign: 'left' }}>
-            Stake {stakedToken} on {networkConfig?.name} mainnet
+            Stake {stakedToken} on {networkName ? networkName : networkConfig?.name} mainnet
           </Typography>
         </Stack>
       </Box>

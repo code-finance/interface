@@ -2,14 +2,14 @@ import { Trans } from '@lingui/macro';
 import React, { useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+// import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+// import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
 import { WithdrawAndSwitchModalContent } from './WithdrawAndSwitchModalContent';
 import { WithdrawModalContent } from './WithdrawModalContent';
-import { WithdrawType, WithdrawTypeSelector } from './WithdrawTypeSelector';
+import { WithdrawType } from './WithdrawTypeSelector';
 
 export const WithdrawModal = () => {
   const { type, close, args, mainTxState } = useModalContext() as ModalContextType<{
@@ -17,9 +17,9 @@ export const WithdrawModal = () => {
   }>;
   const [withdrawUnWrapped, setWithdrawUnWrapped] = useState(true);
   const [withdrawType, setWithdrawType] = useState(WithdrawType.WITHDRAW);
-  const { currentMarketData } = useProtocolDataContext();
+  // const { currentMarketData } = useProtocolDataContext();
 
-  const isWithdrawAndSwapPossible = isFeatureEnabled.withdrawAndSwitch(currentMarketData);
+  // const isWithdrawAndSwapPossible = isFeatureEnabled.withdrawAndSwitch(currentMarketData);
 
   const handleClose = () => {
     setWithdrawType(WithdrawType.WITHDRAW);
@@ -37,12 +37,12 @@ export const WithdrawModal = () => {
           <UserAuthenticated>
             {(user) => (
               <>
-                {isWithdrawAndSwapPossible && !mainTxState.txHash && (
+                {/* {isWithdrawAndSwapPossible && !mainTxState.txHash && (
                   <WithdrawTypeSelector
                     withdrawType={withdrawType}
                     setWithdrawType={setWithdrawType}
                   />
-                )}
+                )} */}
                 {withdrawType === WithdrawType.WITHDRAW && (
                   <WithdrawModalContent
                     {...params}

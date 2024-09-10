@@ -147,7 +147,7 @@ export default function Staking() {
                     <Trans>Stake AAVE</Trans>
                   </Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="gho" disabled={mode === 'gho'}>
+                {/* <StyledToggleButton value="gho" disabled={mode === 'gho'}>
                   <Typography variant="subheader1">
                     <Trans>Stake GHO</Trans>
                   </Typography>
@@ -156,7 +156,7 @@ export default function Staking() {
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
                   </Typography>
-                </StyledToggleButton>
+                </StyledToggleButton> */}
               </StyledToggleButtonGroup>
             </Box>
 
@@ -206,6 +206,32 @@ export default function Staking() {
                     <GhoDiscountProgram />
                   </Box> */}
                 </StakingPanel>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                lg={6}
+                sx={{
+                  display: { xs: !isStakeAAVE ? 'none' : 'block', lg: 'block' },
+                }}
+              >
+                <StakingPanel
+                  stakeTitle="AAVE"
+                  stakedToken="AAVE"
+                  maxSlash={stkAave?.maxSlashablePercentageFormatted || '0'}
+                  icon="aave"
+                  networkName="Kaia"
+                  networkIcon="/icons/networks/kaia.svg"
+                  stakeData={stkAave}
+                  stakeUserData={stkAaveUserData}
+                  onStakeAction={() => openStake(Stake.aave, 'AAVE')}
+                  onCooldownAction={() => openStakeCooldown(Stake.aave, 'AAVE')}
+                  onUnstakeAction={() => openUnstake(Stake.aave, 'AAVE')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.aave, 'AAVE')}
+                  onStakeRewardClaimRestakeAction={() =>
+                    openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
+                  }
+                />
               </Grid>
               {/* <Grid
                 item

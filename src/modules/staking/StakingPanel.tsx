@@ -86,6 +86,8 @@ export interface StakingPanelProps {
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
   stakeTitle: string;
+  networkName?: string;
+  networkIcon?: string;
   stakedToken: string;
   maxSlash: string;
   icon: string;
@@ -102,6 +104,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   headerAction,
   stakedToken,
   stakeTitle,
+  networkName,
+  networkIcon,
   icon,
   stakeData,
   stakeUserData,
@@ -205,9 +209,15 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 <Trans>Stake {stakeTitle} on </Trans>
               </Typography>
             </Box>
-            <img width="24px" height="24px" src={networkConfig?.networkLogoPath} />
+            <img
+              width="24px"
+              height="24px"
+              src={networkIcon ? networkIcon : networkConfig?.networkLogoPath}
+            />
             <Typography variant="h2">
-              <Box sx={{ fontSize: '24px', ml: 1.5 }}>{networkConfig?.name} mainnet</Box>
+              <Box sx={{ fontSize: '24px', ml: 1.5 }}>
+                {networkName ? networkName : networkConfig?.name} mainnet
+              </Box>
             </Typography>
             {TokenContractTooltip}
           </Stack>

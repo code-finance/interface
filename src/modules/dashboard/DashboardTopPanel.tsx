@@ -190,20 +190,25 @@ export const DashboardTopPanel = () => {
           <Button
             sx={{
               ml: 'auto',
-              mt: { xs: 13, xsm: 0 },
+              mt: { xs: 13.5, xsm: 0 },
               width: xsm ? '221px' : '170px',
-              height: xsm ? '42px' : '22px',
+              height: xsm ? '42px' : '26.5px',
+              px: 2,
+              py: '3px',
+              border: `1px solid ${theme.palette.border.contents}`,
+              ...theme.typography.detail2,
+              color: theme.palette.text.secondary,
+              borderRadius: 1,
               alignSelf: 'center',
             }}
             onClick={() => {
               router.push(ROUTES.history);
               trackEvent(AUTH.VIEW_TX_HISTORY);
             }}
-            component="a"
             size="small"
             variant="transparent"
           >
-            <Typography variant={xsm ? 'body4' : 'detail3'}>
+            <Typography variant={xsm ? 'body4' : 'detail2'}>
               <Trans>View Transactions</Trans>
             </Typography>
           </Button>
