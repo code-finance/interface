@@ -251,7 +251,7 @@ const BorrowedPositionsListItemMobile = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        {showSwitchButton ? (
+        {/* {showSwitchButton ? (
           <Button
             disabled={disableSwitch}
             variant="contained"
@@ -263,12 +263,7 @@ const BorrowedPositionsListItemMobile = ({
           </Button>
         ) : (
           <Button
-            sx={{
-              p: 2,
-              height: '36px',
-              fontSize: '14px',
-              textTransform: 'capitalize',
-            }}
+            size="small"
             disabled={disableBorrow}
             variant="contained"
             onClick={onOpenBorrow}
@@ -276,7 +271,17 @@ const BorrowedPositionsListItemMobile = ({
           >
             <Trans>Borrow</Trans>
           </Button>
-        )}
+        )} */}
+        <Button
+          size="small"
+          disabled={disableBorrow}
+          variant="contained"
+          onClick={onOpenBorrow}
+          sx={{ px: '46.5px', py: '12px', height: '45px' }}
+          fullWidth
+        >
+          <Trans>Borrow</Trans>
+        </Button>
         <Button
           disabled={disableRepay}
           variant="outlined"

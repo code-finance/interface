@@ -35,6 +35,7 @@ export const ListValueRow = ({
           <FormattedNumber
             value={subValue}
             variant="secondary12"
+            symbolsColor="text.secondary"
             color="text.secondary"
             symbol="USD"
             mb={0.5}

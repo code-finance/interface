@@ -171,7 +171,12 @@ export const BorrowedPositionsList = () => {
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.group, py: 7, px: 6 })}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4, mb: 4 }} color="text.buttonText">
+        <Typography
+          component="div"
+          variant={downToXSM ? 'h3' : 'h2'}
+          sx={{ mr: 4, mb: 4 }}
+          color="text.buttonText"
+        >
           <Trans>Your borrows</Trans>
         </Typography>
       }

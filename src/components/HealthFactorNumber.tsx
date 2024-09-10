@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import BigNumber from 'bignumber.js';
 
@@ -20,6 +20,8 @@ export const HealthFactorNumber = ({
   ...rest
 }: HealthFactorNumberProps) => {
   const { palette } = useTheme();
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
   let healthFactorColor = '';
@@ -39,9 +41,9 @@ export const HealthFactorNumber = ({
     <Box
       sx={{
         display: 'inline-flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 3,
+        flexDirection: xsm ? 'row' : 'column',
+        alignItems: xsm ? 'center' : 'flex-start',
+        gap: xsm ? 3 : 0,
       }}
       data-cy={'HealthFactorTopPannel'}
     >

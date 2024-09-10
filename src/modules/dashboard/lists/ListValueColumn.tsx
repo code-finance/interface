@@ -135,9 +135,9 @@ export const ListValueColumn = ({
           disabled={disabled}
           withTooltip={withTooltip}
           topVariant={topVariant || 'body6'}
-          topColor={topColor || 'text.subTitle'}
-          bottomColor={bottomColor || 'text.subTitle'}
-          bottomVariant={bottomVariant || 'body6'}
+          topColor={topColor || 'text.primary'}
+          bottomColor={bottomColor || 'text.mainTitle'}
+          bottomVariant={bottomVariant || 'detail2'}
         />
       )}
     </ListColumn>

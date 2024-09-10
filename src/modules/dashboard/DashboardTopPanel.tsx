@@ -40,6 +40,7 @@ export const DashboardTopPanel = () => {
     : false;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   const router = useRouter();
 
   const { claimableRewardsUsd } = user
@@ -187,7 +188,13 @@ export const DashboardTopPanel = () => {
         )}
         {currentAccount && (
           <Button
-            sx={{ ml: 'auto', width: '221px', height: '42px', alignSelf: 'center' }}
+            sx={{
+              ml: 'auto',
+              mt: { xs: 13, xsm: 0 },
+              width: xsm ? '221px' : '170px',
+              height: xsm ? '42px' : '22px',
+              alignSelf: 'center',
+            }}
             onClick={() => {
               router.push(ROUTES.history);
               trackEvent(AUTH.VIEW_TX_HISTORY);
@@ -196,7 +203,9 @@ export const DashboardTopPanel = () => {
             size="small"
             variant="transparent"
           >
-            <Trans>View Transactions</Trans>
+            <Typography variant={xsm ? 'body4' : 'detail3'}>
+              <Trans>View Transactions</Trans>
+            </Typography>
           </Button>
         )}
       </TopInfoPanel>

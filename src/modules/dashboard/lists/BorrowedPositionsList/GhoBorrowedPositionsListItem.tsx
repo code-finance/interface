@@ -163,6 +163,7 @@ const GhoBorrowedPositionsListItemDesktop = ({
       />
       <ListColumn>
         <GhoIncentivesCard
+          variant="body6"
           withTokenIcon={hasDiscount}
           value={ghoLoadingData || !ghoUserDataFetched ? -1 : borrowRateAfterDiscount}
           data-cy={`apyType`}
@@ -294,8 +295,18 @@ const GhoBorrowedPositionsListItemMobile = ({
         />
       </Row>
       <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={2}>
-        <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
-          <Button variant="outlined" size="small" color="primary">
+        <ContentWithTooltip tooltipContent={FixedAPYTooltipText} withoutHover>
+          <Button
+            sx={(theme) => ({
+              padding: '3px 4px',
+              ...theme.typography.detail2,
+              borderColor: theme.palette.border.divider,
+              textTransform: 'uppercase',
+            })}
+            variant="outlined"
+            size="small"
+            color="primary"
+          >
             GHO RATE
             <SvgIcon sx={{ marginLeft: '2px', fontSize: '14px' }}>
               <InformationCircleIcon />
@@ -304,7 +315,7 @@ const GhoBorrowedPositionsListItemMobile = ({
         </ContentWithTooltip>
       </Row>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        {showSwitchButton ? (
+        {/* {showSwitchButton ? (
           <Button disabled={disableSwitch} variant="contained" fullWidth onClick={onSwitchClick}>
             <Trans>Switch</Trans>
           </Button>
@@ -312,12 +323,22 @@ const GhoBorrowedPositionsListItemMobile = ({
           <Button disabled={borrowDisabled} variant="outlined" onClick={onBorrowClick} fullWidth>
             <Trans>Borrow</Trans>
           </Button>
-        )}
+        )} */}
+        <Button
+          size="small"
+          disabled={borrowDisabled}
+          variant="contained"
+          onClick={onBorrowClick}
+          sx={{ px: '46.5px', py: '12px', height: '45px' }}
+          fullWidth
+        >
+          <Trans>Borrow</Trans>
+        </Button>
         <Button
           disabled={disableRepay}
           variant="outlined"
           onClick={onRepayClick}
-          sx={{ mr: 1.5 }}
+          sx={{ ml: 1.5 }}
           fullWidth
         >
           <Trans>Repay</Trans>

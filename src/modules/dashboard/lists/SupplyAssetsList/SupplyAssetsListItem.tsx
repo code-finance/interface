@@ -201,7 +201,7 @@ export const SupplyAssetsListItemDesktop = ({
           symbol={symbol}
           value={Number(walletBalance)}
           subValue={walletBalanceUSD}
-          withTooltip
+          withTooltip={false}
           disabled={Number(walletBalance) === 0 || isMaxCapReached}
           capsComponent={
             <CapsHint

@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
@@ -18,6 +18,8 @@ const GovVoteModal = dynamic(() =>
 export default function ProposalPage() {
   const { query } = useRouter();
   const proposalId = Number(query.proposalId);
+  const { breakpoints } = useTheme();
+  const xsm = useMediaQuery(breakpoints.up('xsm'));
   const {
     data: proposal,
     isLoading: proposalLoading,
@@ -49,6 +51,7 @@ export default function ProposalPage() {
             justifyContent: 'space-between',
             alignItems: 'stretch',
             gap: '20px',
+            flexDirection: xsm ? 'row' : 'column',
           }}
         >
           <Box flex={1}>{proposal && <VoteInfo proposal={proposal} />}</Box>

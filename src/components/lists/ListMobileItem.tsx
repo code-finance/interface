@@ -61,11 +61,11 @@ export const ListMobileItem = ({
               >
                 <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} />
                 <Box sx={{ ml: 2 }}>
-                  <Typography variant="body2" color="text.primary">
+                  <Typography variant="h4" color="text.primary">
                     {name}
                   </Typography>
                   <Box display="flex" alignItems="center">
-                    <Typography variant="main16" color="text.secondary">
+                    <Typography variant="subheader2" color="text.secondary">
                       {symbol}
                     </Typography>
                     {isIsolated && (

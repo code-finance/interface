@@ -32,7 +32,7 @@ export const TopInfoPanelItem = ({
       sx={{
         display: 'flex',
         alignItems: 'center',
-        minWidth: '170px',
+        minWidth: xsm ? '170px' : '160px',
       }}
     >
       {withLine && (
