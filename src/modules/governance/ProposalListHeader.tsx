@@ -2,8 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Sort as SortIcon } from '@mui/icons-material';
 import {
   Box,
-  Button,
-  Menu,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -12,9 +10,9 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useRootStore } from 'src/store/root';
-import { GOVERNANCE_PAGE, TRANSACTION_HISTORY } from 'src/utils/mixPanelEvents';
+import { GOVERNANCE_PAGE } from 'src/utils/mixPanelEvents';
 
 import { SearchInput } from '../../components/SearchInput';
 import { TitleWithSearchBar } from '../../components/TitleWithSearchBar';
@@ -140,7 +138,7 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
   };
   const { breakpoints } = useTheme();
 
-  const sxm = useMediaQuery(breakpoints.up('sxm'));
+  const sxm = useMediaQuery(breakpoints.up('xsm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (

@@ -261,9 +261,9 @@ const GhoBorrowedPositionsListItemMobile = ({
   borrowDisabled,
   onRepayClick,
   onBorrowClick,
-  onSwitchClick,
-  showSwitchButton,
-  disableSwitch,
+  // onSwitchClick,
+  // showSwitchButton,
+  // disableSwitch,
   disableRepay,
 }: GhoBorrowedPositionsListItemProps) => {
   const { symbol, iconSymbol, name } = reserve;

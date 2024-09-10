@@ -11,6 +11,7 @@ import { BorrowRateModeBlock } from '../actions/BorrowRateModeBlock';
 import { fetchIconSymbolAndNameHistorical } from '../helpers';
 import { PriceUnavailable } from '../PriceUnavailable';
 import { ActionFields, TransactionHistoryItem } from '../types';
+import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 
 export const ActionTextMap = ({ action }: { action: string }) => {
   switch (action) {
@@ -51,13 +52,9 @@ export const ActionDetails = <K extends keyof ActionFields>({
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedSupplyReserve.iconSymbol} sx={{ fontSize: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            +
-          </Typography>
+          <AddCircleOutline
+            sx={(theme) => ({ color: theme.palette.point.positive, fontSize: 22, mx: '11px' })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -114,13 +111,9 @@ export const ActionDetails = <K extends keyof ActionFields>({
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedBorrowReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            &minus;
-          </Typography>
+          <RemoveCircleOutline
+            sx={(theme) => ({ color: theme.palette.point.negative, fontSize: 22, mx: '11px' })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -177,13 +170,9 @@ export const ActionDetails = <K extends keyof ActionFields>({
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedWithdrawReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            &minus;
-          </Typography>
+          <RemoveCircleOutline
+            sx={(theme) => ({ color: theme.palette.point.negative, fontSize: 22, mx: '11px' })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -240,13 +229,9 @@ export const ActionDetails = <K extends keyof ActionFields>({
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedRepayReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            +
-          </Typography>
+          <AddCircleOutline
+            sx={(theme) => ({ color: theme.palette.point.positive, fontSize: 22, mx: '11px' })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -352,19 +337,28 @@ export const ActionDetails = <K extends keyof ActionFields>({
       >;
       const formattedSwapReserve = fetchIconSymbolAndNameHistorical(swapBorrowRateTx.reserve);
       return (
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            width: '100%',
+            overflow: 'hidden',
+            gap: 1,
+          }}
+        >
           <BorrowRateModeBlock
             borrowRateMode={swapBorrowRateTx.borrowRateModeFrom.toString()}
             swapBorrowRateTx={swapBorrowRateTx}
           />
-          <SvgIcon sx={{ fontSize: '20px', px: 1 }}>
+          <SvgIcon sx={{ fontSize: '20px' }}>
             <ArrowNarrowRightIcon />
           </SvgIcon>
           <BorrowRateModeBlock
             borrowRateMode={swapBorrowRateTx.borrowRateModeTo.toString()}
             swapBorrowRateTx={swapBorrowRateTx}
           />
-          <Typography variant="body3" color="text.primary" px={2}>
+          <Typography variant="body3" color="text.primary">
             <Trans>for</Trans>
           </Typography>
           <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
@@ -377,11 +371,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             arrow
             placement="top"
           >
-            <Typography
-              variant="body1"
-              color="text.primary"
-              sx={{ ml: formattedSwapReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
-            >
+            <Typography variant="body1" color="text.primary">
               {swapBorrowRateTx.reserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -404,8 +394,15 @@ export const ActionDetails = <K extends keyof ActionFields>({
         liquidationTx.principalReserve.decimals
       );
       return (
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }} pr={4.5}>
+        <Box
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: { xs: 3, sxm: '18px' },
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant="body2" color="text.primary">
               <Trans>Liquidated collateral</Trans>
             </Typography>
@@ -421,13 +418,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
                   alignItems: 'center',
                 }}
               >
-                <Typography
-                  variant="body1"
-                  color="text.primary"
-                  sx={{ display: 'inline-flex', mb: 0.5 }}
-                >
-                  &minus;
-                </Typography>
+                <RemoveCircleOutline
+                  sx={(theme) => ({
+                    color: theme.palette.point.negative,
+                    fontSize: 22,
+                    ml: '7px',
+                    mr: '11px',
+                  })}
+                />
                 <DarkTooltip
                   wrap
                   title={
@@ -489,7 +487,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
           <SvgIcon sx={{ fontSize: iconSize }}>
             <ArrowNarrowRightIcon />
           </SvgIcon>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }} pl={4.5}>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant="body2" color="text.primary">
               <Trans>Covered debt</Trans>
             </Typography>
@@ -505,13 +503,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
                   alignItems: 'center',
                 }}
               >
-                <Typography
-                  variant="body1"
-                  color="text.primary"
-                  sx={{ display: 'inline-flex', alignItems: 'center', mb: 0.5 }}
-                >
-                  +
-                </Typography>
+                <AddCircleOutline
+                  sx={(theme) => ({
+                    color: theme.palette.point.positive,
+                    fontSize: 22,
+                    ml: '7px',
+                    mr: '11px',
+                  })}
+                />
                 <DarkTooltip
                   wrap
                   title={

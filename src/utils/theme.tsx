@@ -849,7 +849,7 @@ export function getThemedComponents(theme: Theme) {
             fontFamily: FONT,
             fontWeight: 400,
             fontSize: pxToRem(14),
-            minWidth: '375px',
+            minWidth: '340px',
             backgroundColor: theme.palette.mode === 'light' ? colors.gray[50] : colors.gray[800],
             '> div:first-of-type': {
               minHeight: '100vh',

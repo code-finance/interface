@@ -2,7 +2,7 @@ import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Button, Menu, MenuItem, SvgIcon, Typography, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box, Theme } from '@mui/system';
+import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { DEFAULT_LOCALE } from 'src/libs/LanguageProvider';
 import { useRootStore } from 'src/store/root';
