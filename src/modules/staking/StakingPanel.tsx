@@ -252,7 +252,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           borderRadius: { xs: 0, xsm: '12px' },
           border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
           p: { xs: 0, xsm: '8px 12px' },
-          mb: 7,
+          mb: xsm ? '28px' : '16px',
           background: {
             xs: 'unset',
             xsm: 'transparent',
@@ -275,7 +275,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
             alignItems: 'center',
-            py: '24.5px',
+            py: xsm ? '24.5px' : 0,
             mb: { xs: 3, xsm: 0 },
           }}
         >
@@ -327,7 +327,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           }}
         >
           <Stack direction="row">
-            <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: 2 }}>
+            <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: xsm ? 2 : 0 }}>
               <Trans>Staking APR</Trans>
             </Typography>
             {distributionEnded && (
@@ -370,13 +370,13 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           sx={{
             display: { xs: 'flex' },
             width: { xs: '100%', xsm: 'unset' },
-            flexDirection: 'column',
+            flexDirection: xsm ? 'column' : 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: 2 }}>
+          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: xsm ? 2 : 0 }}>
             <Trans>Max slashing</Trans>
           </Typography>
           <FormattedNumber
@@ -392,12 +392,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             display: { xs: 'flex' },
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
-            flexDirection: 'column',
+            flexDirection: xsm ? 'column' : 'row',
             alignItems: 'center',
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: 2 }}>
+          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: xsm ? 2 : 0 }}>
             <Trans>Wallet Balance</Trans>
           </Typography>
           <FormattedNumber
@@ -425,6 +425,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           variant="contained"
           sx={{
             p: 2,
+            mb: xsm ? 0 : '24px',
             height: '36px',
             ...(+availableToStake === 0 && {
               bgcolor: theme.palette.text.disabledBg,
@@ -446,7 +447,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
       </Box>
 
       <Stack
-        gap={3}
+        gap={xsm ? 3 : 4}
         direction={{ xs: 'column', xsm: 'row' }}
         sx={{ mt: 4, alignItems: { xsm: 'start' } }}
       >

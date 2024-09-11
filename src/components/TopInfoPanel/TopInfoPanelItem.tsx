@@ -74,7 +74,7 @@ export const TopInfoPanelItem = ({
           </Box>
         ))}
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: xsm ? 2 : 0, width: '100%' }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Typography variant={xsm ? 'body3' : 'detail3'} color="text.secondary">
             {title}

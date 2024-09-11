@@ -12,7 +12,7 @@ const CustomToggleButton = styled(ToggleButton)<CustomToggleButtonProps>(({ them
   backgroundColor: '#FBFBFB',
   border: 0,
   padding: '10px',
-  textTransform: 'capitalize',
+  textTransform: 'none',
   ...theme.typography.body7,
   transition: '0.3s',
   '&:not(:disabled):hover': {

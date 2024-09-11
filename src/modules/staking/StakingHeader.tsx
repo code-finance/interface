@@ -51,10 +51,13 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
   return (
     <TopInfoPanel
       titleComponent={
-        <Box mb={'40px'}>
+        <Box mb={downToXSM ? '16px' : '40px'}>
           <ChainAvailabilityText wrapperSx={{ mb: 3 }} title="Staking" />
 
-          <Typography variant="body3" sx={{ color: 'text.secondary', maxWidth: '1260px', mb: 10 }}>
+          <Typography
+            variant={downToXSM ? 'description' : 'body3'}
+            sx={{ color: 'text.secondary', maxWidth: '1260px' }}
+          >
             <Trans>
               CODE holders (Ethereum, Kaia network only) can stake their assets in the Safety Module
               to add more security to the protocol and earn Safety Incentives. In the case of a
@@ -80,8 +83,12 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
       <TopInfoPanelItem
         hideIcon
         title={
-          <Stack direction="row" alignItems="center">
-            <Typography variant="body3" color={'text.secondary'}>
+          <Stack
+            sx={{ maxWidth: downToXSM ? '160px' : '300px' }}
+            direction="row"
+            alignItems="center"
+          >
+            <Typography variant={downToXSM ? 'caption' : 'body3'} color={'text.secondary'}>
               <Trans>Funds in the Safety Module</Trans>
             </Typography>
             <TotalFundsTooltip />
@@ -92,7 +99,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         <FormattedNumber
           value={total}
           symbol="USD"
-          variant={'body1'}
+          variant={downToXSM ? 'main16' : 'body1'}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}
@@ -102,7 +109,11 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
       <TopInfoPanelItem
         hideIcon
         title={
-          <Typography variant="body3" color={'text.secondary'}>
+          <Typography
+            sx={{ maxWidth: downToXSM ? '160px' : '' }}
+            variant={downToXSM ? 'caption' : 'body3'}
+            color={'text.secondary'}
+          >
             <Trans>Total emission per day</Trans>
           </Typography>
         }
@@ -111,7 +122,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         <FormattedNumber
           value={stkEmission || 0}
           symbol="USD"
-          variant={'body1'}
+          variant={downToXSM ? 'main16' : 'body1'}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}

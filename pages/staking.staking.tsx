@@ -145,17 +145,17 @@ export default function Staking() {
                 }}
                 sx={{ width: { xs: '100%', xsm: '359px' } }}
               >
-                <StyledToggleButton value="aave" disabled={mode === 'aave'}>
+                <StyledToggleButton value="aave">
                   <Typography variant="subheader1">
-                    <Trans>Stake AAVE</Trans>
+                    <Trans>Stake on Ethereum</Trans>
                   </Typography>
                 </StyledToggleButton>
-                {/* <StyledToggleButton value="gho" disabled={mode === 'gho'}>
+                <StyledToggleButton value="gho">
                   <Typography variant="subheader1">
-                    <Trans>Stake GHO</Trans>
+                    <Trans>Stake on Kaia</Trans>
                   </Typography>
                 </StyledToggleButton>
-                <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
+                {/* <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
                   </Typography>
@@ -210,7 +210,7 @@ export default function Staking() {
                   </Box> */}
                 </StakingPanel>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 lg={6}
@@ -235,28 +235,33 @@ export default function Staking() {
                     openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
                   }
                 />
-              </Grid>
-              {/* <Grid
+              </Grid> */}
+              <Grid
                 item
                 xs={12}
                 lg={6}
                 sx={{ display: { xs: !isStkGho ? 'none' : 'block', lg: 'block' } }}
               >
                 <StakingPanel
-                  stakeTitle="GHO"
-                  stakedToken="GHO"
-                  maxSlash={stkGho?.maxSlashablePercentageFormatted || '0'}
-                  icon="gho"
-                  stakeData={stkGho}
-                  stakeUserData={stkGhoUserData}
-                  onStakeAction={() => openStake(Stake.gho, 'GHO')}
-                  onCooldownAction={() => openStakeCooldown(Stake.gho, 'GHO')}
-                  onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
-                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
+                  stakeTitle="AAVE"
+                  stakedToken="AAVE"
+                  maxSlash={stkAave?.maxSlashablePercentageFormatted || '0'}
+                  icon="aave"
+                  networkName="Kaia"
+                  networkIcon="/icons/networks/kaia.svg"
+                  stakeData={stkAave}
+                  stakeUserData={stkAaveUserData}
+                  onStakeAction={() => openStake(Stake.aave, 'AAVE')}
+                  onCooldownAction={() => openStakeCooldown(Stake.aave, 'AAVE')}
+                  onUnstakeAction={() => openUnstake(Stake.aave, 'AAVE')}
+                  onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.aave, 'AAVE')}
+                  onStakeRewardClaimRestakeAction={() =>
+                    openStakeRewardsRestakeClaim(Stake.aave, 'AAVE')
+                  }
                 />
               </Grid>
 
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 lg={6}
