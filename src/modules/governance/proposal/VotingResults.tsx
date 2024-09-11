@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Skeleton, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -18,9 +18,21 @@ interface VotingResultsPros {
 
 export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResultsPros) => {
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
-    <Paper sx={{ p: '28px 20px 28px 24px', bgcolor: 'background.top', height: '100%' }}>
-      <Typography variant="h2" color={'text.primary'} sx={{ mb: '55px' }}>
+    <Paper
+      sx={{
+        py: { xs: 4, sxm: 9 },
+        px: 4,
+        bgcolor: 'background.top',
+        height: '100%',
+      }}
+    >
+      <Typography
+        variant={xsm ? 'h2' : 'h3'}
+        color={'text.primary'}
+        sx={{ mb: { xs: 4, xsm: '55px' } }}
+      >
         <Trans>Voting results</Trans>
       </Typography>
       {proposal ? (

@@ -94,11 +94,12 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
         <Tooltip title={testChainName} arrow>
           <Box
             sx={(theme) => ({
-              bgcolor: theme.palette.text.buttonText,
+              border: `1px solid ${theme.palette.text.primary}`,
+              bgcolor: theme.palette.background.primary,
               width: xsm ? '16px' : '12px',
               height: xsm ? '16px' : '12px',
               borderRadius: '50%',
-              fontSize: xsm ? '12px' : '10px',
+              fontSize: xsm ? '12px' : '8px',
               lineHeight: 1,
               display: 'flex',
               alignItems: 'center',

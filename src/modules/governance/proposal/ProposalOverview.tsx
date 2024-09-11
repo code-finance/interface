@@ -53,12 +53,23 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
   const trackEvent = useRootStore((store) => store.trackEvent);
   const { breakpoints, palette } = useTheme();
   const lgUp = useMediaQuery(breakpoints.up('lg'));
-  const theme = useTheme();
+  const xsm = useMediaQuery(breakpoints.up('xsm'));
 
   return (
-    <Paper sx={{ px: '20px', py: '36px', mt: '20px' }} data-cy="vote-info-body">
-      <Typography variant="h2" color="text.secondary" mb="40px">
-        <Trans>Proposal overview</Trans>
+    <Paper
+      sx={{
+        py: { xs: 4, sxm: 9 },
+        px: 4,
+        mt: 5,
+      }}
+      data-cy="vote-info-body"
+    >
+      <Typography
+        variant={xsm ? 'h2' : 'h3'}
+        color="text.secondary"
+        sx={{ mb: { xs: 4, xsm: 10 } }}
+      >
+        <Trans> Proposal overview</Trans>
       </Typography>
       <Divider />
       {error ? (
@@ -71,7 +82,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
         <Box sx={{ wordBreak: 'break-word' }}>
           {proposal ? (
             <Box>
-              <Box sx={{ my: '40px' }}>
+              <Box sx={{ my: { xs: 6, xsm: 10 } }}>
                 <Typography variant="h5" sx={{ mb: '20px', color: 'text.primary' }}>
                   {proposal.subgraphProposal.proposalMetadata.title || <Skeleton />}
                 </Typography>
@@ -258,16 +269,25 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   },
                   h2({ node, ...rest }) {
                     return (
-                      <Typography variant="h3" mt={'40px'} mb={'16px'} gutterBottom {...rest} />
+                      <Typography
+                        component="div"
+                        variant={xsm ? 'h3' : 'detail1'}
+                        mt={xsm ? 10 : 6}
+                        mb={xsm ? 4 : 1}
+                        gutterBottom
+                        {...rest}
+                      />
                     );
                   },
                   p({ node, ...rest }) {
-                    return <Typography variant="body2" {...rest} />;
+                    return (
+                      <Typography variant={xsm ? 'body2' : 'detail2'} {...rest} component="div" />
+                    );
                   },
                   li({ node, ...rest }) {
                     return (
                       <li>
-                        <Typography variant="body2" px={0} {...rest} />
+                        <Typography variant={xsm ? 'body2' : 'detail2'} px={0} {...rest} />
                       </li>
                     );
                   },

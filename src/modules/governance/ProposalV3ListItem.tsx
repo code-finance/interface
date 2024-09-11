@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -13,6 +13,8 @@ dayjs.extend(relativeTime);
 
 export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Box
       sx={{
@@ -44,7 +46,7 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
       >
         <StateBadge state={proposal.badgeState} loading={false} />
         <Typography
-          variant="h5"
+          variant={xsm ? 'h5' : 'h3'}
           sx={{
             overflow: 'hidden',
             display: '-webkit-box',

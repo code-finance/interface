@@ -117,7 +117,13 @@ export function AppFooter() {
         }}
       >
         <Box
-          sx={{ display: 'flex', gap: { xs: 7, md: 6 }, alignItems: 'center', flexWrap: 'wrap' }}
+          sx={{
+            display: 'flex',
+            gap: { xs: 7, md: 6 },
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            paddingInline: { xs: 3, md: 0 },
+          }}
         >
           {FOOTER_LINKS.map((link) => (
             <StyledLink

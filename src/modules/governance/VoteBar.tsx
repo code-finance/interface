@@ -59,7 +59,9 @@ export function VoteBar({ percent, yae, votes, loading, compact, bg, ...rest }: 
               visibleDecimals={0}
               sx={{ mr: 1 }}
               variant="detail2"
+              symbolsVariant="detail2"
               color="text.primary"
+              symbolsColor="text.primary"
               roundDown
               compact={compact}
             />
@@ -75,7 +77,14 @@ export function VoteBar({ percent, yae, votes, loading, compact, bg, ...rest }: 
             <Skeleton width={40} />
           </Typography>
         ) : (
-          <FormattedNumber value={percent} percent variant="detail3" color="text.mainTitle" />
+          <FormattedNumber
+            value={percent}
+            percent
+            variant="detail3"
+            color="text.mainTitle"
+            symbolsVariant="detail3"
+            symbolsColor="text.mainTitle"
+          />
         )}
       </Box>
       {loading ? (

@@ -20,6 +20,7 @@ import {
   Paper,
   SvgIcon,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
@@ -44,7 +45,8 @@ import { ExternalLink } from '../GovernanceTopPanel';
 
 export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   if (proposal === undefined) {
     return <></>; // TODO: skeleton
   }
@@ -217,7 +219,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
 
   return (
     <Box sx={{ height: '100%' }}>
-      <Typography variant="h2" color="text.primary" mb="32px">
+      <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary" mb="32px">
         <Trans>Proposal details</Trans>
       </Typography>
       <Timeline
@@ -227,7 +229,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
             flex: 0,
             padding: 0,
           },
-          p: '0px 0px 0px 20px',
+          p: { xs: '6px 12px', xsm: '0px 0px 0px 20px' },
           my: 0,
         }}
       >
@@ -278,6 +280,7 @@ const ProposalStep = ({
   networkLogo,
 }: ProposalStepProps) => {
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   const [subtimelineOpen, setSubtimelineOpen] = useState(false);
 
   const toggleSubtimeline = () => {
@@ -316,12 +319,12 @@ const ProposalStep = ({
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: '6px' }}>
               {networkLogo && <Avatar sx={{ width: 24, height: 24, mr: 2 }} src={networkLogo} />}
-              <Typography variant="body2">
+              <Typography variant={xsm ? 'body2' : 'detail1'}>
                 <Trans>{stepName}</Trans>
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pb: '28px' }}>
-              <Typography variant="detail2" color="text.mainTitle">
+              <Typography variant={xsm ? 'detail2' : 'detail4'} color="text.mainTitle">
                 {formatTime(timestamp)}
               </Typography>
               {transactionHash && (

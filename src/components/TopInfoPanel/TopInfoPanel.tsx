@@ -50,7 +50,7 @@ export const TopInfoPanel = ({
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
-              gap: { xs: 3, xsm: 5 },
+              gap: { xs: '12px 8px', xsm: 5 },
               flexWrap: 'wrap',
               width: '100%',
               ...(multiMarket && { flexDirection: 'column' }),

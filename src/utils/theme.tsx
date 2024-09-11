@@ -692,7 +692,7 @@ export function getThemedComponents(theme: Theme) {
             },
             [theme.breakpoints.up('sm')]: {
               paddingLeft: '24px',
-              paddingRight: '20px',
+              paddingRight: '24px',
             },
             [theme.breakpoints.up('md')]: {
               paddingLeft: '28px',

@@ -1,7 +1,15 @@
 import { Trans } from '@lingui/macro';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
+import {
+  Box,
+  BoxProps,
+  Paper,
+  PaperProps,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { ReactNode, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -42,6 +50,8 @@ export const ListWrapper = ({
   collapsedSx,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(false);
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   useEffect(() => {
     if (localStorageName && localStorage.getItem(localStorageName) === 'true') setIsCollapse(true);
   }, [localStorageName]);
@@ -172,7 +182,7 @@ export const ListWrapper = ({
                     }}
                   >
                     <Typography
-                      variant="body5"
+                      variant={xsm ? 'body5' : 'detail2'}
                       color={isPosition ? 'white' : 'text.secondary'}
                       sx={[
                         { display: 'flex', alignItems: 'center' },
@@ -199,8 +209,8 @@ export const ListWrapper = ({
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    px: { xs: 4, xsm: 0 },
-                    pb: { xs: collapsed && !noData ? 6 : 2, xsm: 0 },
+                    px: 0,
+                    pb: 0,
                     flexWrap: 'wrap',
                     gap: 1,
                     overflowX: tooltipOpen ? 'hidden' : 'auto',
@@ -209,9 +219,7 @@ export const ListWrapper = ({
                   {topInfo}
                 </Box>
               )}
-              {subChildrenComponent && !collapsed && (
-                <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
-              )}
+              {subChildrenComponent && !collapsed && <Box>{subChildrenComponent}</Box>}
             </Box>
           </Box>
         </Box>

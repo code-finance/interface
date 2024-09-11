@@ -40,7 +40,7 @@ export const DashboardTopPanel = () => {
     : false;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
+  const md = useMediaQuery(theme.breakpoints.up('md'));
   const router = useRouter();
 
   const { claimableRewardsUsd } = user
@@ -146,7 +146,7 @@ export const DashboardTopPanel = () => {
             title={<Trans>Health factor</Trans>}
             loading={loading}
             hideIcon
-            sx={{ minWidth: { xs: '100%', xsm: '170px' } }}
+            sx={{ minWidth: { xs: '115px', xsm: '170px' } }}
           >
             <HealthFactorNumber
               isHeader
@@ -160,7 +160,12 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
         {currentAccount && claimableRewardsUsd > 0 && (
-          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} loading={loading} hideIcon>
+          <TopInfoPanelItem
+            sx={{ minWidth: { xs: '115px', xsm: '170px' } }}
+            title={<Trans>Available rewards</Trans>}
+            loading={loading}
+            hideIcon
+          >
             <Box
               sx={{
                 display: 'flex',
@@ -193,7 +198,7 @@ export const DashboardTopPanel = () => {
         )}
         {currentAccount && (
           <>
-            {xsm ? (
+            {md ? (
               <Button
                 sx={{
                   ml: 'auto',
@@ -223,6 +228,7 @@ export const DashboardTopPanel = () => {
               <Button
                 sx={{
                   ml: 'auto',
+                  alignSelf: 'flex-end',
                 }}
                 onClick={() => {
                   router.push(ROUTES.history);

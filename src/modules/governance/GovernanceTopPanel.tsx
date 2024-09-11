@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import {
   ChainAvailabilityText,
@@ -22,12 +22,13 @@ interface ExternalLinkProps {
 
 export function ExternalLink({ text, href, onClick }: ExternalLinkProps) {
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Button
-      variant="transparent"
+      variant={xsm ? 'transparent' : 'transparent-link'}
       size="small"
-      sx={{ px: 6, py: '9px' }}
+      sx={xsm ? { px: 6, py: '9px' } : {}}
       component={Link}
       href={href}
       target="_blank"
@@ -46,13 +47,14 @@ export function ExternalLink({ text, href, onClick }: ExternalLinkProps) {
 
 export const GovernanceTopPanel = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <TopInfoPanel
       titleComponent={
         <Box mb={4}>
           <ChainAvailabilityText title="Governance" wrapperSx={{ mb: 3 }} />
-          <Typography color="text.secondary" variant="body3">
+          <Typography color="text.secondary" variant={xsm ? 'body3' : 'detail2'}>
             <Trans>
               CODE is a fully decentralized, community governed protocol by the CODE token-holders.
               CODE token-holders collectively discuss, propose, and vote on upgrades to the
@@ -63,11 +65,10 @@ export const GovernanceTopPanel = () => {
             <Link
               onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'FAQ Docs Governance' })}
               href="https://docs.aave.com/faq/governance"
-              sx={(theme) => ({
+              sx={{
                 textDecoration: 'underline',
-                color: theme.palette.text.secondary,
-                ...theme.typography.body3,
-              })}
+                color: 'inherit',
+              }}
             >
               <Trans>documentation</Trans>
             </Link>

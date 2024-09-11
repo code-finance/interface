@@ -22,7 +22,6 @@ interface StakingHeaderProps {
 
 export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, loading }) => {
   const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 

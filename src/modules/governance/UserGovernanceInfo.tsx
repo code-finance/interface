@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useRootStore } from 'src/store/root';
 
@@ -8,18 +8,27 @@ import { ListWrapper } from '../../components/lists/ListWrapper';
 
 export const UserGovernanceInfo = () => {
   const account = useRootStore((state) => state.account);
-
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <ListWrapper
       localStorageName={'userGovernanceInfo'}
       noData={!!account}
       collapsedSx={(theme) => ({ color: theme.palette.text.buttonText })}
       titleComponent={
-        <Typography variant="h2" color="text.buttonText" sx={{ mb: { xs: 2, xsm: 4 } }}>
+        <Typography
+          variant={xsm ? 'h2' : 'h3'}
+          color="text.buttonText"
+          sx={{ mb: { xs: 0, xsm: 4 } }}
+        >
           <Trans>Your supplies</Trans>
         </Typography>
       }
-      paperSx={(theme) => ({ px: 6, py: 7, background: theme.palette.background.group })}
+      paperSx={(theme) => ({
+        py: { xs: 4, sxm: 9 },
+        px: 4,
+        background: theme.palette.background.group,
+      })}
     >
       {account ? (
         <VotingPowerInfoPanel />

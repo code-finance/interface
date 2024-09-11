@@ -126,21 +126,29 @@ export const SuppliedPositionsList = () => {
   return (
     <ListWrapper
       wrapperSx={{
-        pl: 5,
+        pl: { xs: 3, xsm: 5 },
       }}
       paperSx={(theme) => ({
         backgroundColor: theme.palette.background.group,
         py: 7,
         px: 6,
       })}
-      icon={<WalletIcon sx={{ height: '60px', width: '60px', color: 'white' }} />}
+      icon={
+        <WalletIcon
+          sx={{
+            height: { xs: '50px', xsm: '60px' },
+            width: { xs: '50px', xsm: '60px' },
+            color: 'white',
+          }}
+        />
+      }
       tooltipOpen={tooltipOpen}
       titleComponent={
         <Typography
           component="div"
           color="text.buttonText"
           variant={downToXSM ? 'h3' : 'h2'}
-          sx={{ mr: 4, mb: 4 }}
+          sx={{ mb: { xs: 2, xsm: 4 } }}
         >
           Your supplies
         </Typography>

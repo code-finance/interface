@@ -35,7 +35,7 @@ export const TopInfoPanelItem = ({
         {
           display: 'flex',
           alignItems: 'center',
-          minWidth: xsm ? '170px' : '150px',
+          minWidth: xsm ? '170px' : '140px',
         },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
