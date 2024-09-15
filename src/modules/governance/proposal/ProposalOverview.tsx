@@ -216,7 +216,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 components={{
                   table({ node, ...props }) {
                     return (
-                      <TableContainer component={Paper} variant="outlined">
+                      <TableContainer
+                        component={Paper}
+                        variant="outlined"
+                        sx={{ my: 4, boxShadow: 'unset', borderRadius: 2 }}
+                      >
                         <Table {...props} sx={{ wordBreak: 'normal' }} />
                       </TableContainer>
                     );
@@ -230,7 +234,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     );
                   },
                   td({ children, style }) {
-                    return <TableCell style={style}>{children}</TableCell>;
+                    return (
+                      <TableCell style={style} sx={(theme) => ({ ...theme.typography.detail2 })}>
+                        {children}
+                      </TableCell>
+                    );
                   },
                   th({ children, style }) {
                     return <TableCell style={style}>{children}</TableCell>;

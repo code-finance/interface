@@ -17,6 +17,7 @@ export const HealthFactorNumber = ({
   value,
   onInfoClick,
   isHeader,
+  variant,
   ...rest
 }: HealthFactorNumberProps) => {
   const { palette } = useTheme();
@@ -57,8 +58,8 @@ export const HealthFactorNumber = ({
             })}
           >
             <FormattedNumber
-              variant="body1"
-              symbolsVariant="body1"
+              variant={variant}
+              symbolsVariant={variant}
               symbolsColor={healthFactorColor}
               color={healthFactorColor}
               percent

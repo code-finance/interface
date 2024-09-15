@@ -36,7 +36,7 @@ export default function Home() {
             sx={{
               display: { xs: 'flex', lg: 'none' },
               justifyContent: { xs: 'center', xsm: 'flex-start' },
-              mb: { xs: 3, xsm: 4 },
+              mb: 4,
             }}
           >
             <StyledToggleButtonGroup

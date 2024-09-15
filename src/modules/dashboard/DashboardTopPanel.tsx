@@ -39,7 +39,7 @@ export const DashboardTopPanel = () => {
     ? isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0
     : false;
   const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const downToSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const md = useMediaQuery(theme.breakpoints.up('md'));
   const router = useRouter();
 
@@ -92,8 +92,8 @@ export const DashboardTopPanel = () => {
           .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
           .toFixed();
 
-  const valueTypographyVariant = downToSM ? 'body1' : 'body1';
-  const noDataTypographyVariant = downToSM ? 'body1' : 'body1';
+  const valueTypographyVariant = downToSM ? 'body6' : 'body1';
+  const noDataTypographyVariant = downToSM ? 'body6' : 'body1';
 
   return (
     <>

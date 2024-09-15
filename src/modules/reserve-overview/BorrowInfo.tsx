@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
@@ -35,6 +35,7 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
   const maxAvailableToBorrow = BigNumber.max(
     valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt)),
     0
@@ -225,19 +226,27 @@ export const BorrowInfo = ({
             />
           </PanelItem>
         )} */}
-        <Box sx={{ pt: 12, pb: 5 }}>
-          <Typography variant="body6" color="text.primary" sx={{ mb: 5 }} component="div">
-            <Trans>Collector Info</Trans>
-          </Typography>
-        </Box>
+
         {currentMarketData.addresses.COLLECTOR && (
-          <ReserveFactorOverview
-            collectorContract={currentMarketData.addresses.COLLECTOR}
-            explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
-            reserveFactor={reserve.reserveFactor}
-            reserveName={reserve.name}
-            reserveAsset={reserve.underlyingAsset}
-          />
+          <>
+            <Box sx={{ pt: { xs: 10, xsm: 12 }, pb: { xs: 3, xsm: 5 } }}>
+              <Typography
+                variant={xsm ? 'body6' : 'detail2'}
+                color="text.primary"
+                sx={{ mb: 5 }}
+                component="div"
+              >
+                <Trans>Collector Info</Trans>
+              </Typography>
+            </Box>
+            <ReserveFactorOverview
+              collectorContract={currentMarketData.addresses.COLLECTOR}
+              explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
+              reserveFactor={reserve.reserveFactor}
+              reserveName={reserve.name}
+              reserveAsset={reserve.underlyingAsset}
+            />
+          </>
         )}
       </Box>
       {renderCharts && (

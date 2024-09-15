@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
@@ -8,7 +7,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
-import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
 import {
   AssetsBeingOffboarded,
   OffboardingWarning,
@@ -22,7 +20,6 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { BorrowInfo } from './BorrowInfo';
 import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
-import { ReserveEModePanel } from './ReserveEModePanel';
 import { PanelItem, PanelRow, PanelTitle } from './ReservePanels';
 import { SupplyInfo } from './SupplyInfo';
 
@@ -192,15 +189,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     </SvgIcon>
                   }
                   component={Link}
+                  sx={{ height: 'fit-content' }}
                   size="small"
-                  variant="text"
-                  sx={(theme) => ({
-                    height: '24px',
-                    color: theme.palette.text.secondary,
-                    ...theme.typography.detail2,
-                    textTransform: 'uppercase',
-                    px: 2,
-                  })}
+                  variant="transparent-link"
                 >
                   <Trans>Interest rate strategy</Trans>
                 </Button>

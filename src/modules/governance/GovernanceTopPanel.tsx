@@ -54,7 +54,7 @@ export const GovernanceTopPanel = () => {
       titleComponent={
         <Box mb={4}>
           <ChainAvailabilityText title="Governance" wrapperSx={{ mb: 3 }} />
-          <Typography color="text.secondary" variant={xsm ? 'body3' : 'detail2'}>
+          <Typography color="text.secondary" variant={xsm ? 'body3' : 'detail3'}>
             <Trans>
               CODE is a fully decentralized, community governed protocol by the CODE token-holders.
               CODE token-holders collectively discuss, propose, and vote on upgrades to the

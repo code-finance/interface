@@ -25,7 +25,7 @@ export const ListValueRow = ({
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
           <FormattedNumber
             value={value}
-            variant="secondary14"
+            variant="detail1"
             color={disabled ? 'text.disabled' : 'text.primary'}
           />
           {capsComponent}
@@ -34,7 +34,8 @@ export const ListValueRow = ({
         {!disabled && (
           <FormattedNumber
             value={subValue}
-            variant="secondary12"
+            variant="detail3"
+            symbolsVariant="detail3"
             symbolsColor="text.secondary"
             color="text.secondary"
             symbol="USD"

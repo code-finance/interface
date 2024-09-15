@@ -273,20 +273,19 @@ const BorrowedPositionsListItemMobile = ({
           </Button>
         )} */}
         <Button
-          size="small"
           disabled={disableBorrow}
           variant="contained"
           onClick={onOpenBorrow}
-          sx={{ px: '46.5px', py: '12px', height: '45px' }}
+          sx={{ flex: 1 }}
           fullWidth
         >
           <Trans>Borrow</Trans>
         </Button>
         <Button
           disabled={disableRepay}
-          variant="outlined"
+          variant="text"
           onClick={onOpenRepay}
-          sx={{ ml: 1.5 }}
+          sx={{ ml: 1.5, flex: 1 }}
           fullWidth
         >
           <Trans>Repay</Trans>

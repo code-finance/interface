@@ -42,7 +42,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             textAlign: 'center',
           }}
         >
-          <FormattedNumber compact value={reserve.totalLiquidity} variant="body6" />
+          <FormattedNumber compact value={reserve.totalLiquidity} variant="detail1" />
           <ReserveSubheader value={reserve.totalLiquidityUSD} rightAlign={true} variant="detail3" />
         </Box>
       </Row>
@@ -71,7 +71,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         >
           {Number(reserve.totalDebt) > 0 ? (
             <>
-              <FormattedNumber compact value={reserve.totalDebt} variant="body6" />
+              <FormattedNumber compact value={reserve.totalDebt} variant="detail1" />
               <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} variant="detail3" />
             </>
           ) : (

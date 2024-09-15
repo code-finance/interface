@@ -31,8 +31,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const valueTypographyVariant = downToSM ? 'body1' : 'body1';
-  const symbolsTypographyVariant = downToSM ? 'body1' : 'body1';
+  const valueTypographyVariant = downToSM ? 'body6' : 'body1';
+  const symbolsTypographyVariant = downToSM ? 'body6' : 'body1';
 
   return (
     <>

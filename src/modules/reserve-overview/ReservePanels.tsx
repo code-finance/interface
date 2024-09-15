@@ -6,24 +6,27 @@ export const PanelRow: React.FC<BoxProps> = (props) => (
     {...props}
     sx={{
       position: 'relative',
-      display: { xs: 'block', md: 'flex' },
+      display: { xs: 'block', xsm: 'flex' },
       margin: '0 auto',
-      py: 5,
+      py: { xs: 0, xsm: 5 },
       ...props.sx,
     }}
   />
 );
-export const PanelTitle: React.FC<TypographyProps> = (props) => (
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  <Typography
-    variant="body6"
-    color="text.primary"
-    sx={{ minWidth: '120px', mr: 3, mb: { xs: 6, md: 0 }, ...props.sx }}
-    component="div"
-    {...props}
-  />
-);
+export const PanelTitle: React.FC<TypographyProps> = (props) => {
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
+  return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <Typography
+      variant={xsm ? 'body6' : 'detail2'}
+      color="text.primary"
+      sx={{ minWidth: '120px', mr: 3, mb: { xs: 6, md: 0 }, ...props.sx }}
+      component="div"
+      {...props}
+    />
+  );
+};
 
 interface PanelItemProps {
   title: ReactNode;

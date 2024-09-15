@@ -36,14 +36,6 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const isDesktop = useMediaQuery(breakpoints.up('lg'));
 
-  const downToLg = useMediaQuery(breakpoints.down('lg'));
-
-  const upFromSm = useMediaQuery(breakpoints.up('xsm'));
-
-  const handleUpdateEthMarket = (market: CustomMarket) => {
-    setCurrentMarket(market);
-  };
-
   return (
     <Box>
       {currentMarketData.chainId === ChainId.polygon && !currentMarketData.v3}

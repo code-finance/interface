@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { AlertTitle, Box, Chip, Typography } from '@mui/material';
+import { AlertTitle, Box, Chip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { IncentivesButton } from 'src/components/incentives/IncentivesButton';
@@ -38,6 +38,7 @@ export const SupplyInfo = ({
   supplyCap,
   debtCeiling,
 }: SupplyInfoProps) => {
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
   return (
     <Box
       sx={{
@@ -200,11 +201,20 @@ export const SupplyInfo = ({
         <div>
           {reserve.isIsolated ? (
             <Box sx={{ pt: 12, pb: 5 }}>
-              <Typography variant="body6" color="text.primary" sx={{ mb: 5 }} component="div">
+              <Typography
+                variant={xsm ? 'body6' : 'detail2'}
+                color="text.primary"
+                sx={{ mb: 5 }}
+                component="div"
+              >
                 <Trans>Collateral usage</Trans>
               </Typography>
               <Warning severity="error">
-                <Typography variant="body6" color="text.secondary" component="div">
+                <Typography
+                  variant={xsm ? 'body6' : 'detail2'}
+                  color="text.secondary"
+                  component="div"
+                >
                   <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
                 </Typography>
                 <Typography variant="detail4" color="text.secondary">
@@ -219,14 +229,19 @@ export const SupplyInfo = ({
             </Box>
           ) : reserve.reserveLiquidationThreshold !== '0' ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center', pt: 12, pb: 5, gap: '10px' }}>
-              <Typography variant="body6" color="text.primary">
+              <Typography variant={xsm ? 'body6' : 'detail2'} color="text.primary">
                 <Trans>Collateral usage</Trans>
               </Typography>
               <Chip label={<Trans>Can be collateral</Trans>} color="success" variant="outlined" />
             </Box>
           ) : (
             <Box sx={{ pt: 12, pb: 5 }}>
-              <Typography variant="body6" color="text.primary" sx={{ mb: 5 }} component="div">
+              <Typography
+                variant={xsm ? 'body6' : 'detail2'}
+                color="text.primary"
+                sx={{ mb: 5 }}
+                component="div"
+              >
                 <Trans>Collateral usage</Trans>
               </Typography>
               <Warning severity="error" sx={{ mb: 0 }}>
@@ -241,9 +256,11 @@ export const SupplyInfo = ({
               display: 'flex',
               flexWrap: 'wrap',
               justifyContent: 'space-between',
+              gap: 2,
             }}
           >
             <ReserveOverviewBox
+              sx={{ height: 'unset' }}
               title={
                 <MaxLTVTooltip
                   iconSize={18}
@@ -270,6 +287,7 @@ export const SupplyInfo = ({
             </ReserveOverviewBox>
 
             <ReserveOverviewBox
+              sx={{ height: 'unset' }}
               title={
                 <LiquidationThresholdTooltip
                   iconSize={18}
@@ -295,6 +313,7 @@ export const SupplyInfo = ({
             </ReserveOverviewBox>
 
             <ReserveOverviewBox
+              sx={{ height: 'unset' }}
               title={
                 <LiquidationPenaltyTooltip
                   iconSize={18}

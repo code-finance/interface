@@ -79,6 +79,7 @@ export default function AnalyticsBanner() {
           height: '45px',
           cursor: 'pointer',
           outline: 0,
+          border: 0,
         }}
         declineButtonStyle={{
           background: theme.palette.background.primary,

@@ -161,24 +161,30 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           />
         </Box>
       )}
-      <Box sx={{ display: 'flex', gap: '8px 2px', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <WalletBalance
           balance={balance.amount}
           symbol={selectedAsset}
           marketTitle={market.marketTitle}
         />
         {!reserve.isFrozen && !reserve.isPaused && (
-          <>
-            {!isGho && (
-              <SupplyAction
-                reserve={reserve}
-                value={maxAmountToSupply.toString()}
-                usdValue={maxAmountToSupplyUsd}
-                symbol={selectedAsset}
-                disable={disableSupplyButton}
-                onActionClicked={onSupplyClicked}
-              />
-            )}
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 2,
+              flexWrap: 'wrap',
+              width: { xs: '100%', md: 'unset' },
+              justifyContent: 'space-between',
+            }}
+          >
+            <SupplyAction
+              reserve={reserve}
+              value={maxAmountToSupply.toString()}
+              usdValue={maxAmountToSupplyUsd}
+              symbol={selectedAsset}
+              disable={disableSupplyButton}
+              onActionClicked={onSupplyClicked}
+            />
             {reserve.borrowingEnabled && (
               <BorrowAction
                 reserve={reserve}
@@ -191,7 +197,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 }}
               />
             )}
-          </>
+          </Box>
         )}
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 5, gap: 2 }}>
@@ -318,7 +324,16 @@ const SupplyAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 1,
+        alignItems: 'center',
+        flexShrink: 0,
+        width: { xs: 'unset', md: '300px' },
+        flex: { xs: 1, md: 'unset' },
+      }}
+    >
       <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
         <AvailableTooltip
           variant="detail2"
@@ -367,7 +382,16 @@ const BorrowAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 1,
+        alignItems: 'center',
+        flexShrink: 0,
+        width: { xs: 'unset', md: '300px' },
+        flex: { xs: 1, md: 'unset' },
+      }}
+    >
       <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
         <AvailableTooltip
           variant="detail2"

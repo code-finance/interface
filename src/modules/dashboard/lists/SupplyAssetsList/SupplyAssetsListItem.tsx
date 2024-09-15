@@ -298,7 +298,7 @@ export const SupplyAssetsListItemMobile = ({
         <Row
           caption={<Trans>Supply balance</Trans>}
           align="flex-start"
-          captionVariant="description"
+          captionVariant="detail3"
           mb={2}
         >
           <ContentWithTooltip
@@ -332,7 +332,7 @@ export const SupplyAssetsListItemMobile = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
+                  variant="detail3"
                   color="text.secondary"
                 />
               </Stack>
@@ -366,7 +366,7 @@ export const SupplyAssetsListItemMobile = ({
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
           symbol={symbol}
-          variant="secondary14"
+          variant="detail3"
         />
       </Row>
 
@@ -395,14 +395,14 @@ export const SupplyAssetsListItemMobile = ({
           disabled={disableSupply}
           variant="contained"
           onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
-          sx={{ flex: 1, px: { xs: 2, xsm: '46.5px' } }}
+          sx={{ flex: 1 }}
           fullWidth
         >
           <Trans>Supply</Trans>
         </Button>
         <Button
-          sx={{ flex: 1, px: { xs: 2, xsm: '46.5px' } }}
-          variant="outlined"
+          sx={{ flex: 1 }}
+          variant="text"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth

@@ -136,7 +136,14 @@ export function AppFooter() {
             </StyledLink>
           ))}
         </Box>
-        <Box sx={{ display: 'flex', gap: { xs: 5, md: 3 }, alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: { xs: 5, md: 3 },
+            alignItems: 'center',
+            paddingInline: { xs: 3, md: 0 },
+          }}
+        >
           {FOOTER_ICONS.map((icon) => (
             <StyledLink href={icon.href} key={icon.title} sx={{ p: { md: '5px' } }}>
               <SvgIcon

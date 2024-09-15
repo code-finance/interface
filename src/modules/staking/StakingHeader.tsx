@@ -11,6 +11,8 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import { NetAPYTooltip } from '../../components/infoTooltips/NetAPYTooltip';
+import * as React from 'react';
 
 interface StakingHeaderProps {
   tvl: {
@@ -47,6 +49,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
     );
   };
 
+  const symbolsVariant = downToSM ? 'body6' : 'body1';
   return (
     <TopInfoPanel
       titleComponent={
@@ -61,7 +64,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
               CODE holders (Ethereum, Kaia network only) can stake their assets in the Safety Module
               to add more security to the protocol and earn Safety Incentives. In the case of a
               shortfall event, your stake can be slashed to cover the deficit, providing an
-              additional layer of protection for the protocol. Learn more about risks involved
+              additional layer of protection for the protocol. Learn more about risks involved
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
@@ -82,46 +85,28 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
       <TopInfoPanelItem
         hideIcon
         title={
-          <Stack
-            sx={{ maxWidth: downToXSM ? '160px' : '300px' }}
-            direction="row"
-            alignItems="center"
-          >
-            <Typography variant={downToXSM ? 'caption' : 'body3'} color={'text.secondary'}>
-              <Trans>Funds in the Safety Module</Trans>
-            </Typography>
+          <span style={{ display: 'flex' }}>
+            <Trans>Funds in the Safety Module</Trans>
             <TotalFundsTooltip />
-          </Stack>
+          </span>
         }
         loading={loading}
       >
         <FormattedNumber
           value={total}
           symbol="USD"
-          variant={downToXSM ? 'main16' : 'body1'}
+          variant={symbolsVariant}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}
         />
       </TopInfoPanelItem>
 
-      <TopInfoPanelItem
-        hideIcon
-        title={
-          <Typography
-            sx={{ maxWidth: downToXSM ? '160px' : '' }}
-            variant={downToXSM ? 'caption' : 'body3'}
-            color={'text.secondary'}
-          >
-            <Trans>Total emission per day</Trans>
-          </Typography>
-        }
-        loading={loading}
-      >
+      <TopInfoPanelItem hideIcon title={<Trans>Total emission per day</Trans>} loading={loading}>
         <FormattedNumber
           value={stkEmission || 0}
           symbol="USD"
-          variant={downToXSM ? 'main16' : 'body1'}
+          variant={symbolsVariant}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}

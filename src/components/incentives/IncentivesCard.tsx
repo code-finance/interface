@@ -45,8 +45,8 @@ export const IncentivesCard = ({
             percent
             variant={variant}
             symbolsVariant={symbolsVariant}
-            color={color}
-            symbolsColor={color}
+            color={color || 'text.secondary'}
+            symbolsColor={color || 'text.secondary'}
           />
           {tooltip}
         </Box>
