@@ -19,10 +19,6 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
-import {
-  MeritIncentivesButton,
-  UserMeritIncentivesButton,
-} from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -206,18 +202,17 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           <Stack direction="row" alignItems="center" gap={0} mb={4}>
             <Box sx={{ mr: 2 }}>
               <Typography variant="body4" color={'text.primary'}>
-                <Trans>Stake {stakeTitle} on </Trans>
+                Stake {stakeTitle} on
               </Typography>
             </Box>
             <img
-              width="24px"
-              height="24px"
+              alt={''}
+              width={xsm ? '24px' : '20px'}
+              height={xsm ? '24px' : '20px'}
               src={networkIcon ? networkIcon : networkConfig?.networkLogoPath}
             />
-            <Typography variant="h2">
-              <Box sx={{ fontSize: '24px', ml: 1.5 }}>
-                {networkName ? networkName : networkConfig?.name} mainnet
-              </Box>
+            <Typography variant={xsm ? 'h2' : 'body6'} sx={{ ml: 1.5 }}>
+              {networkName ? networkName : networkConfig?.name} mainnet
             </Typography>
             {TokenContractTooltip}
           </Stack>

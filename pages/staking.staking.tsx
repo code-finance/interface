@@ -1,28 +1,22 @@
 import { Stake } from '@aave/contract-helpers';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
-import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { GetABPToken } from 'src/modules/staking/GetABPToken';
-import { GhoDiscountProgram } from 'src/modules/staking/GhoDiscountProgram';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -143,17 +137,13 @@ export default function Staking() {
                   if (!value) return;
                   setMode(value);
                 }}
-                sx={{ width: { xs: '100%', xsm: '359px' } }}
+                sx={{ width: { xs: '100%', sm: 'unset' } }}
               >
                 <StyledToggleButton value="aave">
-                  <Typography variant="subheader1">
-                    <Trans>Stake on Ethereum</Trans>
-                  </Typography>
+                  <Trans>Stake on Ethereum</Trans>
                 </StyledToggleButton>
                 <StyledToggleButton value="gho">
-                  <Typography variant="subheader1">
-                    <Trans>Stake on Kaia</Trans>
-                  </Typography>
+                  <Trans>Stake on Kaia</Trans>
                 </StyledToggleButton>
                 {/* <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
