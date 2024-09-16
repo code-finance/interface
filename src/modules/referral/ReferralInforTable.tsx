@@ -8,6 +8,7 @@ import {
   MenuItem,
   TextField,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -22,6 +23,7 @@ import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
 
 export const ReferralInforTable = () => {
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   const [network, setNetwork] = React.useState('Ethereum');
   const [coins, setCoins] = React.useState('USDT');
   const [value, setValue] = React.useState('');
@@ -41,7 +43,13 @@ export const ReferralInforTable = () => {
     <Box sx={{ display: 'flex', gap: '20px', alignItems: 'stretch', flexWrap: 'wrap' }}>
       <BoxWrapper title={'Your info'}>
         <Box sx={{ px: 2 }}>
-          <Box sx={{ display: 'flex', mb: '60px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              mb: xsm ? '60px' : '20px',
+              flexDirection: xsm ? 'row' : 'column',
+            }}
+          >
             <Box
               sx={{
                 display: 'flex',
@@ -50,12 +58,13 @@ export const ReferralInforTable = () => {
                 justifyContent: 'flex-start',
                 flex: 1,
                 overflow: 'hidden',
+                mb: xsm ? 0 : '20px',
               }}
             >
               <WrapTypography
-                variant="body3"
+                variant={xsm ? 'body3' : 'body7'}
                 color="text.secondary"
-                mb={2}
+                mb={xsm ? 2 : 1}
                 sx={{ display: 'flex', alignItems: 'center', lineHeight: '20px' }}
               >
                 <Trans>Your referral code</Trans>
@@ -66,13 +75,13 @@ export const ReferralInforTable = () => {
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <CompactableTypography
                   color="text.primary"
-                  variant="body1"
+                  variant={xsm ? 'body1' : 'body2'}
                   compactMode={CompactMode.SM}
                   compact
                 >
                   73WakrfVbNJBaAmhQtEeDv
                 </CompactableTypography>
-                <ReferralCodeToolTip iconSize={20} iconColor="text.primary" />
+                <ReferralCodeToolTip iconSize={xsm ? 20 : 16} iconColor="text.primary" />
               </Box>
             </Box>
             <Box
@@ -86,36 +95,40 @@ export const ReferralInforTable = () => {
               }}
             >
               <WrapTypography
-                variant="body3"
+                variant={xsm ? 'body3' : 'body7'}
                 color="text.secondary"
-                mb={2}
+                mb={xsm ? 2 : 1}
                 sx={{ lineHeight: '20px' }}
               >
                 <Trans>Recipients of your referral code</Trans>
               </WrapTypography>
-              <Typography variant="body1" color="text.primary">
+              <Typography variant={xsm ? 'body1' : 'body2'} color="text.primary">
                 <Trans>19 People</Trans>
               </Typography>
             </Box>
           </Box>
-          <Box mb="60px">
+          <Box mb={xsm ? '60px' : '20px'}>
             <Typography
-              variant="body1"
-              sx={{ display: 'flex', alignItems: 'center', color: 'text.primary' }}
-              mb={2}
+              variant={xsm ? 'body1' : 'body3'}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                color: 'text.primary',
+              }}
+              mb={xsm ? 2 : 1}
             >
               <VerifiedIcon
                 sx={{
                   width: '24px',
                   height: '24px',
-                  mr: '12px',
+                  mr: xsm ? '12px' : '4px',
                   color: theme.palette.point.primary,
                 }}
               />
               <Trans>Friend&apos;s referral code applied</Trans>
             </Typography>
             <Typography
-              variant="body3"
+              variant={xsm ? 'body3' : 'detail3'}
               color="text.secondary"
               sx={{ display: 'flex', alignItems: 'center' }}
             >
@@ -124,12 +137,17 @@ export const ReferralInforTable = () => {
             </Typography>
           </Box>
           <Box>
-            <Typography variant="body3" color="text.secondary" mb={2} component="div">
+            <Typography
+              variant={xsm ? 'body3' : 'body7'}
+              color="text.secondary"
+              mb={xsm ? 2 : 1}
+              component="div"
+            >
               <Trans>Friend&apos;s referral code</Trans>
             </Typography>
             <Typography
               sx={{ display: 'flex', alignItems: 'center' }}
-              variant="body1"
+              variant={xsm ? 'body1' : 'body2'}
               color="text.primary"
             >
               <Trans>mhvXdrZT4jP5T8vBxuvm75</Trans>
@@ -193,7 +211,7 @@ export const ReferralInforTable = () => {
           sx={{
             bgcolor: theme.palette.background.primary,
             borderRadius: '8px',
-            padding: '16px',
+            padding: xsm ? '16px' : '8px',
           }}
         >
           <Box
@@ -290,7 +308,7 @@ export const ReferralInforTable = () => {
                 <MenuItem sx={{ p: '12px' }} key={value} value={value}>
                   <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} />{' '}
                   <Typography
-                    variant={value === coins ? 'body5' : 'body7'}
+                    variant={value === coins ? (xsm ? 'body5' : 'body3') : 'body7'}
                     color="text.primary"
                     ml={1}
                   >
@@ -335,7 +353,7 @@ export const ReferralInforTable = () => {
           />
         </Box>
         <Box mb="20px">
-          <Typography variant="h2" color="text.primary" mb="20px">
+          <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary" mb="20px">
             <Trans>Estimated referral reward</Trans>
           </Typography>
         </Box>
@@ -358,18 +376,20 @@ type BoxWrapper = {
   title: string;
 };
 const BoxWrapper = ({ children, title }: PropsWithChildren<BoxWrapper>) => {
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Box
       sx={(theme) => ({
         flex: 1,
-        py: 7,
-        px: 6,
+        py: xsm ? '28px' : '24px',
+        px: xsm ? '24px' : '16px',
+        width: '100%',
         borderRadius: 4,
         backgroundColor: theme.palette.background.top,
-        minWidth: '430px',
       })}
     >
-      <Typography variant="h2" color="text.primary" mb={10}>
+      <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary" mb={xsm ? 10 : 5}>
         <Trans>{title}</Trans>
       </Typography>
       {children}
@@ -382,6 +402,7 @@ type EstimateRewardType = {
 };
 const EstimateReward = ({ title }: EstimateRewardType) => {
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Box
       sx={{
@@ -396,7 +417,7 @@ const EstimateReward = ({ title }: EstimateRewardType) => {
       }}
     >
       <Typography
-        variant="body6"
+        variant={xsm ? 'body6' : 'body7'}
         color="text.mainTitle"
         component="div"
         sx={{
@@ -419,7 +440,7 @@ const EstimateReward = ({ title }: EstimateRewardType) => {
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <img width="18px" height="18px" src={'/icons/networks/ethereum.svg'} />{' '}
-          <Typography variant="detail2" color="text.mainTitle" ml="2px">
+          <Typography variant={xsm ? 'detail2' : 'caption'} color="text.mainTitle" ml="2px">
             <Trans>CODE</Trans>
           </Typography>
         </Box>

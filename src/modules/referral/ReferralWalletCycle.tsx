@@ -10,8 +10,16 @@ import {
   timelineItemClasses,
   TimelineSeparator,
 } from '@mui/lab';
-import { Avatar, Box, IconButton, Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 interface ReferralWalletCycleHistoryItem {
@@ -136,7 +144,7 @@ interface ReferralStepProps {
 const ReferralStep = ({ data }: ReferralStepProps) => {
   const theme = useTheme();
   const [subtimelineOpen, setSubtimelineOpen] = useState(false);
-
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   const toggleSubtimeline = () => {
     setSubtimelineOpen((open) => !open);
   };
@@ -160,13 +168,18 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
       <TimelineItem
         sx={{
           display: 'flex',
-          mt: '12px',
-          px: '16px',
-          py: '8px',
+          mt: xsm ? '12px' : 0,
+          px: xsm ? '16px' : 0,
+          py: xsm ? '8px' : 0,
           alignItems: 'flex-start',
         }}
       >
-        <TimelineContent>
+        <Divider sx={{ my: 3, borderColor: theme.palette.border.divider }} />
+        <TimelineContent
+          sx={{
+            py: xsm ? '6px' : 0,
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
@@ -201,19 +214,301 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                 </Typography>
               </Box>
             </Box>
+            {xsm && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  gap: '8px',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '126px',
+                  }}
+                >
+                  <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                    <Trans>Market</Trans>
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      mt: '4px',
+                    }}
+                  >
+                    <Avatar
+                      sx={{ width: 24, height: 24, mr: '6px', color: 'text.primary' }}
+                      src={'/icons/networks/ethereum.svg'}
+                    />
+                    <Typography variant="body6" color="text.primary">
+                      <Trans>Ethereum</Trans>
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: '126px' }}>
+                  <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                    <Trans>Assets</Trans>
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      mt: '4px',
+                    }}
+                  >
+                    <Avatar
+                      sx={{ width: 24, height: 24, mr: '6px', color: 'text.primary' }}
+                      src={'/icons/networks/ethereum.svg'}
+                    />
+                    <Typography variant="body6" color="text.primary">
+                      <Trans>USDT</Trans>
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+                  <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                    <Trans>Debt</Trans>
+                  </Typography>
+                  <Typography variant="body6" color="text.primary">
+                    <Trans>800.00</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    variant="detail2"
+                    symbolsVariant="detail2"
+                    symbolsColor="text.mainTitle"
+                    symbol="USD"
+                    value={799.91}
+                    sx={{ color: 'text.mainTitle' }}
+                    visibleDecimals={2}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '126px',
+                  }}
+                >
+                  <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
+                    <Trans>APY</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    variant="body6"
+                    symbolsVariant="body6"
+                    symbolsColor="text.primary"
+                    percent
+                    value={0.3862}
+                    sx={{ color: 'text.primary' }}
+                    visibleDecimals={2}
+                  />
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: '126px' }}>
+                  <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
+                    <Trans>State</Trans>
+                  </Typography>
+                  <Typography variant="body6" color="text.primary">
+                    <Trans>Completed</Trans>
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+                  <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                    <Trans>Remaining debt</Trans>
+                  </Typography>
+                  <Typography variant="body6" color="text.primary">
+                    <Trans>0.00</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    variant="detail2"
+                    symbolsVariant="detail2"
+                    symbolsColor="text.mainTitle"
+                    symbol="USD"
+                    value={0.0}
+                    sx={{ color: 'text.mainTitle' }}
+                    visibleDecimals={2}
+                  />
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+                  <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                    <Trans>Referral reward</Trans>
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      mt: '4px',
+                    }}
+                  >
+                    <Typography variant="body6" color="text.primary">
+                      <Trans>1.23</Trans>
+                    </Typography>
+                    <Avatar
+                      sx={{ width: 24, height: 24, mx: '6px', color: 'text.primary' }}
+                      src={'/icons/networks/ethereum.svg'}
+                    />
+                    <Typography variant="body6" color="text.primary">
+                      <Trans>CODE</Trans>
+                    </Typography>
+                  </Box>
+                  <FormattedNumber
+                    variant="detail2"
+                    symbolsVariant="detail2"
+                    symbolsColor="text.mainTitle"
+                    symbol="USD"
+                    value={9.91}
+                    sx={{ color: 'text.mainTitle' }}
+                    visibleDecimals={2}
+                  />
+                </Box>
+              </Box>
+            )}
+            {data.history?.length && (
+              <IconButton sx={{ p: 0, ml: xsm ? 'auto' : '90px' }} onClick={toggleSubtimeline}>
+                {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+              </IconButton>
+            )}
+          </Box>
+          {data.history?.length && subtimelineOpen && (
             <Box
               sx={{
                 display: 'flex',
+                overflowX: 'auto',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <Timeline
+                sx={{
+                  px: xsm ? '80px' : '28px',
+                  pt: '8px',
+                }}
+              >
+                {data.history.map((elem, index) => (
+                  <TimelineItem
+                    key={index}
+                    sx={{
+                      display: 'flex',
+                      width: '200px',
+                      whiteSpace: 'nowrap', // Prevents wrapping of child elements
+                    }}
+                  >
+                    <TimelineSeparator sx={{ position: 'sticky', zIndex: 1, left: '28px' }}>
+                      <TimelineDot
+                        sx={{
+                          my: 1,
+                          background: theme.palette.text.subTitle,
+                          width: '16px',
+                          height: '16px',
+                        }}
+                      />
+                      {data?.history && index < data.history.length - 1 && (
+                        <TimelineConnector
+                          sx={{
+                            background: theme.palette.text.subTitle,
+                            width: '1px',
+                          }}
+                        />
+                      )}
+                    </TimelineSeparator>
+                    <TimelineContent sx={{ py: 0 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          pt: 0,
+                          gap: '8px',
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            gap: xsm ? '60px' : '20px',
+                            alignItems: 'flex-start',
+                            height: xsm ? '84px' : '46px',
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              width: '148px',
+                              height: xsm ? '84px' : '46px',
+                              position: 'sticky',
+                              zIndex: 1,
+                              bgcolor: 'white',
+                              left: '60px',
+                              // boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.12)',
+                            }}
+                          >
+                            <Typography variant="body6" color="text.primary" mb={1}>
+                              <Trans>{elem.method}</Trans>
+                            </Typography>
+                            <Typography variant="detail2" color="text.mainTitle">
+                              <Trans>{elem.date}</Trans>
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              height: xsm ? '84px' : '46px',
+                              zIndex: 0.5,
+                            }}
+                          >
+                            <Typography variant="detail2" color="text.mainTitle" mb={1}>
+                              <Trans>Amount</Trans>
+                            </Typography>
+                            <Typography variant="body6" color="text.primary">
+                              <Trans>{elem.amount}</Trans>
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              height: xsm ? '84px' : '46px',
+                              zIndex: 0.5,
+                            }}
+                          >
+                            <Typography variant="detail2" color="text.mainTitle" mb={1}>
+                              <Trans>Remaining debt</Trans>
+                            </Typography>
+                            <Typography variant="body6" color="text.primary">
+                              <Trans>{elem.remainingDebt}</Trans>
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </Box>
+          )}
+          {!xsm && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start',
-                gap: '8px',
+                gap: '12px',
+                ml: '24px',
+                width: '300px',
+                mb: '60px',
               }}
             >
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  width: '126px',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
                 }}
               >
                 <Typography variant="detail2" color={theme.palette.text.mainTitle}>
@@ -225,6 +520,7 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     mt: '4px',
+                    width: '170px',
                   }}
                 >
                   <Avatar
@@ -236,7 +532,14 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column', width: '126px' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
                 <Typography variant="detail2" color={theme.palette.text.mainTitle}>
                   <Trans>Assets</Trans>
                 </Typography>
@@ -246,6 +549,7 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     mt: '4px',
+                    width: '170px',
                   }}
                 >
                   <Avatar
@@ -257,28 +561,47 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
                 <Typography variant="detail2" color={theme.palette.text.mainTitle}>
                   <Trans>Debt</Trans>
                 </Typography>
-                <Typography variant="body6" color="text.primary">
-                  <Trans>800.00</Trans>
-                </Typography>
-                <FormattedNumber
-                  variant="detail2"
-                  symbolsVariant="detail2"
-                  symbolsColor="text.mainTitle"
-                  symbol="USD"
-                  value={799.91}
-                  sx={{ color: 'text.mainTitle' }}
-                  visibleDecimals={2}
-                />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    gap: '4px',
+                    width: '170px',
+                  }}
+                >
+                  <Typography variant="body6" color="text.primary">
+                    <Trans>800.00</Trans>
+                  </Typography>
+                  <FormattedNumber
+                    variant="detail2"
+                    symbolsVariant="detail2"
+                    symbolsColor="text.mainTitle"
+                    symbol="USD"
+                    value={799.91}
+                    sx={{ color: 'text.mainTitle' }}
+                    visibleDecimals={2}
+                  />
+                </Box>
               </Box>
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  width: '126px',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
                 }}
               >
                 <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
@@ -290,137 +613,104 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                   symbolsColor="text.primary"
                   percent
                   value={0.3862}
-                  sx={{ color: 'text.primary' }}
+                  sx={{ color: 'text.primary', width: '170px' }}
                   visibleDecimals={2}
                 />
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column', width: '126px' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
                 <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
                   <Trans>State</Trans>
                 </Typography>
-                <Typography variant="body6" color="text.primary">
+                <Typography variant="body6" color="text.primary" sx={{ width: '170px' }}>
                   <Trans>Completed</Trans>
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
                 <Typography variant="detail2" color={theme.palette.text.mainTitle}>
                   <Trans>Remaining debt</Trans>
-                </Typography>
-                <Typography variant="body6" color="text.primary">
-                  <Trans>0.00</Trans>
-                </Typography>
-                <FormattedNumber
-                  variant="detail2"
-                  symbolsVariant="detail2"
-                  symbolsColor="text.mainTitle"
-                  symbol="USD"
-                  value={0.0}
-                  sx={{ color: 'text.mainTitle' }}
-                  visibleDecimals={2}
-                />
-              </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
-                <Typography variant="detail2" color={theme.palette.text.mainTitle}>
-                  <Trans>Referral reward</Trans>
                 </Typography>
                 <Box
                   sx={{
                     display: 'flex',
-                    alignItems: 'center',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
                     justifyContent: 'flex-start',
-                    mt: '4px',
+                    gap: '4px',
+                    width: '170px',
                   }}
                 >
                   <Typography variant="body6" color="text.primary">
-                    <Trans>1.23</Trans>
+                    <Trans>0.00</Trans>
                   </Typography>
-                  <Avatar
-                    sx={{ width: 24, height: 24, mx: '6px', color: 'text.primary' }}
-                    src={'/icons/networks/ethereum.svg'}
+                  <FormattedNumber
+                    variant="detail2"
+                    symbolsVariant="detail2"
+                    symbolsColor="text.mainTitle"
+                    symbol="USD"
+                    value={0.0}
+                    sx={{ color: 'text.mainTitle' }}
+                    visibleDecimals={2}
                   />
-                  <Typography variant="body6" color="text.primary">
-                    <Trans>CODE</Trans>
-                  </Typography>
                 </Box>
-                <FormattedNumber
-                  variant="detail2"
-                  symbolsVariant="detail2"
-                  symbolsColor="text.mainTitle"
-                  symbol="USD"
-                  value={9.91}
-                  sx={{ color: 'text.mainTitle' }}
-                  visibleDecimals={2}
-                />
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
+                <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                  <Trans>Referral reward</Trans>
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      justifyContent: 'flex-start',
+                      mt: '4px',
+                      width: '170px',
+                    }}
+                  >
+                    <Typography variant="body6" color="text.primary">
+                      <Trans>1.23</Trans>
+                    </Typography>
+                    <Avatar
+                      sx={{ width: 24, height: 24, mx: '6px', color: 'text.primary' }}
+                      src={'/icons/networks/ethereum.svg'}
+                    />
+                    <Typography variant="body6" color="text.primary">
+                      <Trans>CODE</Trans>
+                    </Typography>
+                  </Box>
+                  <FormattedNumber
+                    variant="detail2"
+                    symbolsVariant="detail2"
+                    symbolsColor="text.mainTitle"
+                    symbol="USD"
+                    value={9.91}
+                    sx={{ color: 'text.mainTitle' }}
+                    visibleDecimals={2}
+                  />
+                </Box>
               </Box>
             </Box>
-            {data.history?.length && (
-              <IconButton sx={{ p: 0, ml: 'auto' }} onClick={toggleSubtimeline}>
-                {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-              </IconButton>
-            )}
-          </Box>
-          {data.history?.length && subtimelineOpen && (
-            <Timeline sx={{ px: '80px', pt: '8px' }}>
-              {data.history.map((elem, index) => (
-                <TimelineItem key={index}>
-                  <TimelineSeparator>
-                    <TimelineDot
-                      sx={{
-                        my: 1,
-                        background: theme.palette.text.subTitle,
-                        width: '16px',
-                        height: '16px',
-                      }}
-                    />
-                    {data?.history && index < data.history.length - 1 && (
-                      <TimelineConnector
-                        sx={{
-                          background: theme.palette.text.subTitle,
-                          width: '1px',
-                        }}
-                      />
-                    )}
-                  </TimelineSeparator>
-                  <TimelineContent sx={{ py: 0 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', pt: 0, gap: '8px' }}>
-                      <Box sx={{ display: 'flex', gap: '60px', alignItems: 'flex-start' }}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '148px',
-                            height: '84px',
-                          }}
-                        >
-                          <Typography variant="body6" color="text.primary" mb={1}>
-                            <Trans>{elem.method}</Trans>
-                          </Typography>
-                          <Typography variant="detail2" color="text.mainTitle">
-                            <Trans>{elem.date}</Trans>
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', height: '84px' }}>
-                          <Typography variant="detail2" color="text.mainTitle" mb={1}>
-                            <Trans>Amount</Trans>
-                          </Typography>
-                          <Typography variant="body6" color="text.primary">
-                            <Trans>{elem.amount}</Trans>
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', height: '84px' }}>
-                          <Typography variant="detail2" color="text.mainTitle" mb={1}>
-                            <Trans>Remaining debt</Trans>
-                          </Typography>
-                          <Typography variant="body6" color="text.primary">
-                            <Trans>{elem.remainingDebt}</Trans>
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                  </TimelineContent>
-                </TimelineItem>
-              ))}
-            </Timeline>
           )}
         </TimelineContent>
       </TimelineItem>
