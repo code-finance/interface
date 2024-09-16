@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
 import { useRootStore } from 'src/store/root';
@@ -13,7 +12,7 @@ import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 
 function ActionTitle({ action }: { action: string }) {
   return (
-    <Typography variant="body8" color="text.primary">
+    <Typography variant="h3" color="text.primary">
       <ActionTextMap action={action} />
     </Typography>
   );
@@ -45,6 +44,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
 
   const explorerLink = currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
+  const xsm = useMediaQuery(theme.breakpoints.only('xsm'));
   return (
     <Box>
       <ListItem
@@ -79,21 +79,14 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
             </Box>
 
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
-              <Typography variant="body5" color="text.mainTitle">
+              <Typography variant="detail2" color="text.mainTitle">
                 {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
               </Typography>
             </Box>
           </Box>
           <Button
-            sx={(theme) => ({
-              height: '34px',
-              width: '137px',
-              ...theme.typography.body4,
-              textTransform: 'unset',
-              mt: 1.5,
-              alignSelf: 'flex-end',
-            })}
-            variant="transparent"
+            sx={{ width: 'fit-content', mt: 2, ml: 'auto' }}
+            variant="transparent-link"
             href={explorerLink}
             target="_blank"
             onClick={() =>
@@ -101,10 +94,10 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
             }
           >
             <Trans>Explorer</Trans>
-            <CallMadeOutlinedIcon fontSize={'small'} sx={{ ml: 1 }} />
+            <CallMadeOutlinedIcon fontSize={'inherit'} sx={{ ml: 1 }} />
           </Button>
-          <Box sx={{ pt: 4, pb: '14px' }}>
-            <ActionDetails transaction={transaction} iconSize="24px" />
+          <Box sx={{ py: { xs: 3, xsm: 4 } }}>
+            <ActionDetails transaction={transaction} iconSize={xsm ? '24px' : '18px'} />
           </Box>
         </Box>
       </ListItem>

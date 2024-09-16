@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
@@ -22,6 +22,7 @@ export const HistoryWrapper = () => {
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
 
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -93,7 +94,7 @@ export const HistoryWrapper = () => {
     [fetchNextPage, isLoading]
   );
   const theme = useTheme();
-  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
+  const downToMD = useMediaQuery(theme.breakpoints.down('xsm'));
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
   const flatTxns = useMemo(
@@ -138,7 +139,7 @@ export const HistoryWrapper = () => {
     //     assetPriceUSD: '1',
     //     borrowRateModeFrom: 'stable',
     //     borrowRateModeTo: 'variable',
-    //     stableBorrowRate: 18
+    //     stableBorrowRate: 18,
     //   },
     //   {
     //     id: '3',
@@ -227,7 +228,7 @@ export const HistoryWrapper = () => {
     //     borrowRateModeFrom: 'stable',
     //     borrowRateModeTo: 'variable',
     //     stableBorrowRate: 18,
-    //     variableBorrowRate: 20
+    //     variableBorrowRate: 20,
     //   },
     //   {
     //     id: '8',
@@ -260,7 +261,7 @@ export const HistoryWrapper = () => {
     //     borrowRateModeFrom: 'Variable',
     //     borrowRateModeTo: 'variable',
     //     stableBorrowRate: 18,
-    //     variableBorrowRate: 20
+    //     variableBorrowRate: 20,
     //   },
     //   {
     //     id: '9',
@@ -293,21 +294,9 @@ export const HistoryWrapper = () => {
 
   if (!subgraphUrl) {
     return (
-      <Paper
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          p: 4,
-          flex: 1,
-        }}
-      >
-        <Typography variant={downToMD ? 'h4' : 'h3'}>
-          <Trans>Transaction history is not currently available for this market</Trans>
-        </Typography>
-      </Paper>
+      <EmptySection>
+        <Trans>Transaction history is not currently available for this market</Trans>
+      </EmptySection>
     );
   }
 
@@ -331,7 +320,7 @@ export const HistoryWrapper = () => {
     <ListWrapper
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.primary })}
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+        <Typography component="div" variant={xsm ? 'h2' : 'h3'} sx={{ mr: 4 }}>
           <Trans>Transactions</Trans>
         </Typography>
       }
@@ -346,46 +335,6 @@ export const HistoryWrapper = () => {
             key={searchResetKey}
           />
         </Box>
-        {/*<Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>*/}
-        {/*  {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}*/}
-        {/*  <Box*/}
-        {/*    sx={{*/}
-        {/*      cursor: 'pointer',*/}
-        {/*      color: 'primary',*/}
-        {/*      height: 'auto',*/}
-        {/*      width: 'auto',*/}
-        {/*      display: 'flex',*/}
-        {/*      alignItems: 'center',*/}
-        {/*      mr: 6,*/}
-        {/*    }}*/}
-        {/*    onClick={handleCsvDownload}*/}
-        {/*  >*/}
-        {/*    <SvgIcon>*/}
-        {/*      <DocumentDownloadIcon width={22} height={22} />*/}
-        {/*    </SvgIcon>*/}
-        {/*    <Typography variant="buttonM" color="text.primary">*/}
-        {/*      <Trans>.CSV</Trans>*/}
-        {/*    </Typography>*/}
-        {/*  </Box>*/}
-        {/*  <Box*/}
-        {/*    sx={{*/}
-        {/*      cursor: 'pointer',*/}
-        {/*      color: 'primary',*/}
-        {/*      height: 'auto',*/}
-        {/*      width: 'auto',*/}
-        {/*      display: 'flex',*/}
-        {/*      alignItems: 'center',*/}
-        {/*    }}*/}
-        {/*    onClick={handleJsonDownload}*/}
-        {/*  >*/}
-        {/*    <SvgIcon>*/}
-        {/*      <DocumentDownloadIcon width={22} height={22} />*/}
-        {/*    </SvgIcon>*/}
-        {/*    <Typography variant="buttonM" color="text.primary">*/}
-        {/*      <Trans>.JSON</Trans>*/}
-        {/*    </Typography>*/}
-        {/*  </Box>*/}
-        {/*</Box>*/}
       </Box>
 
       {isLoading ? (
@@ -410,56 +359,13 @@ export const HistoryWrapper = () => {
           </div>
         ))
       ) : filterActive ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            p: 4,
-            flex: 1,
-            maxWidth: '468px',
-            margin: '0 auto',
-            my: 24,
-          }}
-        >
-          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary })}>
-            <Trans>No Transaction yet.</Trans>
-          </Typography>
-          {/*<Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">*/}
-          {/*  <Trans>*/}
-          {/*    We couldn&apos;t find any transactions related to your search. Try again with a*/}
-          {/*    different asset name, or reset filters.*/}
-          {/*  </Trans>*/}
-          {/*</Typography>*/}
-          {/*<Button*/}
-          {/*  variant="outlined"*/}
-          {/*  onClick={() => {*/}
-          {/*    setSearchQuery('');*/}
-          {/*    setFilterQuery([]);*/}
-          {/*    setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  Reset Filters*/}
-          {/*</Button>*/}
-        </Box>
+        <EmptySection>
+          <Trans>No Transaction yet.</Trans>
+        </EmptySection>
       ) : !isFetchingNextPage ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            p: 4,
-            flex: 1,
-          }}
-        >
-          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary, my: 24 })}>
-            <Trans>No Transaction yet.</Trans>
-          </Typography>
-        </Box>
+        <EmptySection>
+          <Trans>No Transaction yet.</Trans>
+        </EmptySection>
       ) : (
         <></>
       )}
@@ -485,4 +391,28 @@ export const HistoryWrapper = () => {
   );
 };
 
+const EmptySection = ({ children }: PropsWithChildren<{ text?: string }>) => {
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
+  const emptyVariant = xsm ? 'h6' : 'h3';
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        p: 4,
+        flex: 1,
+      }}
+    >
+      <Typography
+        variant={emptyVariant}
+        sx={(theme) => ({ color: theme.palette.text.primary, my: 24 })}
+      >
+        {children}
+      </Typography>
+    </Box>
+  );
+};
 export default HistoryWrapper;

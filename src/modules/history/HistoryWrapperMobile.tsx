@@ -344,7 +344,7 @@ export const HistoryWrapperMobile = () => {
           }}
         >
           {!showSearchBar && (
-            <Typography component="div" variant="h2" sx={{ mr: 4, height: '36px' }}>
+            <Typography component="div" variant="h3" sx={{ mr: 4, height: '36px' }}>
               <Trans>Transactions</Trans>
             </Typography>
           )}
@@ -430,7 +430,12 @@ export const HistoryWrapperMobile = () => {
       ) : !isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <React.Fragment key={groupIndex}>
-            <Typography variant="body6" color="text.subTitle" sx={{ mt: 6, mb: 2 }} component="div">
+            <Typography
+              variant="detail2"
+              color="text.subTitle"
+              sx={{ mt: 6, mb: 2 }}
+              component="div"
+            >
               {date}
             </Typography>
             {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
