@@ -625,7 +625,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                   disabled
                   data-cy={`awaitCoolDownBtn_${stakedToken}`}
                   sx={{
-                    p: 3,
+                    p: xsm ? 3 : 2,
                     bgcolor: theme.palette.text.disabledBg,
                     color: theme.palette.text.disabledText,
                   }}
@@ -669,7 +669,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             {!isCooldownActive && (
               <Button
                 sx={{
-                  p: 3,
+                  p: xsm ? 3 : 2,
                   ...(+stakeUserData?.userIncentivesToClaim === 0 && {
                     bgcolor: theme.palette.text.disabledBg,
                     color: theme.palette.text.disabledText,
@@ -721,7 +721,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               data-cy={`claimBtn_${stakedToken}`}
               sx={{
                 flex: 1,
-                p: 3,
+                p: xsm ? 3 : 2,
                 ...(+stakeUserData?.userIncentivesToClaim === 0 && {
                   bgcolor: theme.palette.text.disabledBg,
                   color: theme.palette.text.disabledText,
@@ -742,7 +742,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 data-cy={`restakeBtn_${stakedToken}`}
                 sx={{
                   flex: 1,
-                  p: 3,
+                  p: xsm ? 3 : 2,
                   ...(+stakeUserData?.userIncentivesToClaim === 0 && {
                     bgcolor: theme.palette.text.disabledBg,
                     color: theme.palette.text.disabledText,

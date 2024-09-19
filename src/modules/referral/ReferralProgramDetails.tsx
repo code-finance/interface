@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { ReferralWalletCycle } from './ReferralWalletCycle';
@@ -15,6 +15,7 @@ export const ReferralProgramDetails = ({
   setSearchTerm: (searchTerm: string) => void;
 }) => {
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Box
       sx={{
@@ -31,14 +32,15 @@ export const ReferralProgramDetails = ({
     >
       <Box>
         <Box>
-          <Typography variant="h2" color="text.secondary" mb="28px">
+          <Typography variant={xsm ? 'h2' : 'h3'} color="text.secondary" mb="28px">
             <Trans>Referral program details</Trans>
           </Typography>
         </Box>
         <Box
           sx={{
             display: 'flex',
-            gap: '40px',
+            flexDirection: xsm ? 'row' : 'column',
+            gap: xsm ? '40px' : '30px',
             px: '40px',
             py: '20px',
             borderRadius: '12px',
@@ -48,7 +50,7 @@ export const ReferralProgramDetails = ({
           }}
         >
           <Box flex={1}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: xsm ? '12px' : '4px' }}>
               <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} />{' '}
               <Typography variant="body2">
                 <Trans>CODE</Trans>
@@ -58,6 +60,7 @@ export const ReferralProgramDetails = ({
           <Box
             sx={{
               display: 'flex',
+              flexDirection: xsm ? 'row' : 'column',
               justifyContent: 'center',
               alignItems: 'center',
               gap: '20px',
@@ -70,18 +73,21 @@ export const ReferralProgramDetails = ({
                 alignItems: 'center',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '10px',
+                gap: xsm ? '10px' : '4px',
               }}
             >
-              <Typography variant="body7" color={theme.palette.text.mainTitle}>
+              <Typography
+                variant={xsm ? 'body7' : 'description'}
+                color={theme.palette.text.mainTitle}
+              >
                 <Trans>Estimated referral reward</Trans>
               </Typography>
-              <Typography variant="h2" color="text.primary">
+              <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary">
                 <Trans>1.23</Trans>
               </Typography>
               <FormattedNumber
-                variant="body7"
-                symbolsVariant="body7"
+                variant={xsm ? 'body7' : 'detail3'}
+                symbolsVariant={xsm ? 'body7' : 'detail3'}
                 symbolsColor={theme.palette.text.mainTitle}
                 symbol="USD"
                 value={9.91}
@@ -95,18 +101,18 @@ export const ReferralProgramDetails = ({
                 alignItems: 'center',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '10px',
+                gap: xsm ? '10px' : '4px',
               }}
             >
               <Typography variant="body7" color={theme.palette.text.mainTitle}>
                 <Trans>Claimable referral reward</Trans>
               </Typography>
-              <Typography variant="h2" color="text.primary">
+              <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary">
                 <Trans>2.40</Trans>
               </Typography>
               <FormattedNumber
-                variant="body7"
-                symbolsVariant="body7"
+                variant={xsm ? 'body7' : 'detail3'}
+                symbolsVariant={xsm ? 'body7' : 'detail3'}
                 symbolsColor={theme.palette.text.mainTitle}
                 symbol="USD"
                 value={19.68}
@@ -128,7 +134,7 @@ export const ReferralProgramDetails = ({
             <Button
               variant="contained"
               sx={{
-                p: '12px',
+                p: xsm ? '12px' : '8px',
                 height: '45px',
                 width: '100%',
                 // ...(+availableToClaim === 0 && {
@@ -154,7 +160,7 @@ export const ReferralProgramDetails = ({
             <Button
               variant="contained"
               sx={{
-                p: '12px',
+                p: xsm ? '12px' : '8px',
                 height: '45px',
                 width: '100%',
                 // ...(+availableToClaim === 0 && {
@@ -180,7 +186,7 @@ export const ReferralProgramDetails = ({
             <Button
               variant="contained"
               sx={{
-                p: '12px',
+                p: xsm ? '12px' : '8px',
                 height: '45px',
                 width: '100%',
                 // ...(+availableToClaim === 0 && {
