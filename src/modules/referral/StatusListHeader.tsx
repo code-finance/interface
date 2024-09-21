@@ -21,19 +21,14 @@ export const StatusListHeaderDesktop: React.FC<StatusListHeaderElementProps> = (
   const theme = useTheme();
   return (
     <>
-      <Select id="filter" value={statusFilter} onChange={handleChange}>
-        <MenuItem
-          value="all"
-          sx={{
-            borderRadius: '8px',
-            border: `1px solid`,
-            borderColor: theme.palette.border.contents,
-            px: '12px',
-          }}
-        >
-          <Typography variant="body6" color="text.secondary">
-            <Trans>All</Trans>
-          </Typography>
+      <Select
+        id="filter"
+        value={statusFilter}
+        onChange={handleChange}
+        sx={{ minWidth: { xs: '90px', xsm: '120px' } }}
+      >
+        <MenuItem value="all">
+          <Trans>All</Trans>
         </MenuItem>
 
         {allStatus.map((key) => (
@@ -44,11 +39,6 @@ export const StatusListHeaderDesktop: React.FC<StatusListHeaderElementProps> = (
       </Select>
       <SearchInput
         wrapperSx={{
-          borderRadius: '8px',
-          border: `1px solid`,
-          borderColor: theme.palette.border.contents,
-          px: '8px',
-          maxHeight: '100%',
           width: '393px',
         }}
         placeholder="search assets"
@@ -66,7 +56,7 @@ export const StatusListHeader: React.FC<StatusListHeaderProps> = ({
     handleStatusFilterChange(event.target.value as string);
   };
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <StatusListHeaderDesktop
         statusFilter={statusFilter}
         handleChange={handleChange}

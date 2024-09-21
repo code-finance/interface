@@ -141,6 +141,7 @@ const referralWalletHistory: ReferralWalletCycleItem[] = [
 interface ReferralStepProps {
   data: ReferralWalletCycleItem;
 }
+
 const ReferralStep = ({ data }: ReferralStepProps) => {
   const theme = useTheme();
   const [subtimelineOpen, setSubtimelineOpen] = useState(false);
@@ -156,7 +157,7 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          p: '4px 8px 4px 4px',
+          p: 1,
         }}
       >
         <Avatar sx={{ width: 36, height: 36, mr: 2 }} src={'/icons/Avatar.svg'} />
@@ -178,6 +179,7 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
         <TimelineContent
           sx={{
             py: xsm ? '6px' : 0,
+            px: xsm ? undefined : 0,
           }}
         >
           <Box
@@ -198,12 +200,13 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                 }}
               />
             </TimelineSeparator>
-            <Box sx={{ display: 'flex', ml: '8px' }}>
+            <Box sx={{ display: 'flex', ml: '8px', height: '84px', alignItems: 'center' }}>
               <Box
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
                   width: '148px',
+                  height: '50px',
                 }}
               >
                 <Typography variant="body6" color={'text.primary'}>
@@ -228,6 +231,9 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     display: 'flex',
                     flexDirection: 'column',
                     width: '126px',
+                    height: '84px',
+                    pt: '8px',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <Typography variant="detail2" color={theme.palette.text.mainTitle}>
@@ -250,7 +256,16 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', width: '126px' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '126px',
+                    height: '84px',
+                    py: '5px',
+                    boxSizing: 'border-box',
+                  }}
+                >
                   <Typography variant="detail2" color={theme.palette.text.mainTitle}>
                     <Trans>Assets</Trans>
                   </Typography>
@@ -271,7 +286,17 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px',
+                    width: '126px',
+                    height: '84px',
+                    py: '5px',
+                    boxSizing: 'border-box',
+                  }}
+                >
                   <Typography variant="detail2" color={theme.palette.text.mainTitle}>
                     <Trans>Debt</Trans>
                   </Typography>
@@ -293,6 +318,9 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     display: 'flex',
                     flexDirection: 'column',
                     width: '126px',
+                    height: '84px',
+                    py: '5px',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
@@ -308,7 +336,16 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     visibleDecimals={2}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', width: '126px' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '126px',
+                    height: '84px',
+                    py: '5px',
+                    boxSizing: 'border-box',
+                  }}
+                >
                   <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
                     <Trans>State</Trans>
                   </Typography>
@@ -316,7 +353,17 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     <Trans>Completed</Trans>
                   </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px',
+                    width: '126px',
+                    height: '84px',
+                    py: '5px',
+                    boxSizing: 'border-box',
+                  }}
+                >
                   <Typography variant="detail2" color={theme.palette.text.mainTitle}>
                     <Trans>Remaining debt</Trans>
                   </Typography>
@@ -333,7 +380,17 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     visibleDecimals={2}
                   />
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '126px' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px',
+                    width: '126px',
+                    height: '84px',
+                    py: '5px',
+                    boxSizing: 'border-box',
+                  }}
+                >
                   <Typography variant="detail2" color={theme.palette.text.mainTitle}>
                     <Trans>Referral reward</Trans>
                   </Typography>
@@ -369,7 +426,7 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               </Box>
             )}
             {data.history?.length && (
-              <IconButton sx={{ p: 0, ml: xsm ? 'auto' : '90px' }} onClick={toggleSubtimeline}>
+              <IconButton sx={{ p: 0, ml: xsm ? '90px' : '10px' }} onClick={toggleSubtimeline}>
                 {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
               </IconButton>
             )}
@@ -397,7 +454,9 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                       whiteSpace: 'nowrap', // Prevents wrapping of child elements
                     }}
                   >
-                    <TimelineSeparator sx={{ position: 'sticky', zIndex: 1, left: '28px' }}>
+                    <TimelineSeparator
+                      sx={{ position: 'sticky', zIndex: 1, left: '28px', height: '84px' }}
+                    >
                       <TimelineDot
                         sx={{
                           my: 1,
@@ -498,20 +557,23 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start',
                 gap: '12px',
-                ml: '24px',
-                width: '300px',
-                mb: '60px',
+                pl: '24px',
+                width: { xs: '100%', xsm: '300px' },
+                mb: { xs: '40px', xsm: '60px' },
               }}
             >
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                <Typography
+                  variant="detail2"
+                  color={theme.palette.text.mainTitle}
+                  sx={{ minWidth: '130px' }}
+                >
                   <Trans>Market</Trans>
                 </Typography>
                 <Box
@@ -520,7 +582,6 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     mt: '4px',
-                    width: '170px',
                   }}
                 >
                   <Avatar
@@ -535,12 +596,15 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                <Typography
+                  variant="detail2"
+                  color={theme.palette.text.mainTitle}
+                  sx={{ minWidth: '130px' }}
+                >
                   <Trans>Assets</Trans>
                 </Typography>
                 <Box
@@ -549,7 +613,6 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     mt: '4px',
-                    width: '170px',
                   }}
                 >
                   <Avatar
@@ -564,12 +627,15 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                <Typography
+                  variant="detail2"
+                  color={theme.palette.text.mainTitle}
+                  sx={{ minWidth: '130px' }}
+                >
                   <Trans>Debt</Trans>
                 </Typography>
                 <Box
@@ -579,7 +645,6 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     alignItems: 'flex-start',
                     justifyContent: 'flex-start',
                     gap: '4px',
-                    width: '170px',
                   }}
                 >
                   <Typography variant="body6" color="text.primary">
@@ -599,12 +664,16 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
+                <Typography
+                  variant="detail2"
+                  color={theme.palette.text.mainTitle}
+                  mb="8.5px"
+                  sx={{ minWidth: '130px' }}
+                >
                   <Trans>APY</Trans>
                 </Typography>
                 <FormattedNumber
@@ -620,12 +689,16 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                <Typography variant="detail2" color={theme.palette.text.mainTitle} mb="8.5px">
+                <Typography
+                  variant="detail2"
+                  color={theme.palette.text.mainTitle}
+                  mb="8.5px"
+                  sx={{ minWidth: '130px' }}
+                >
                   <Trans>State</Trans>
                 </Typography>
                 <Typography variant="body6" color="text.primary" sx={{ width: '170px' }}>
@@ -635,12 +708,15 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                <Typography
+                  variant="detail2"
+                  color={theme.palette.text.mainTitle}
+                  sx={{ width: '130px' }}
+                >
                   <Trans>Remaining debt</Trans>
                 </Typography>
                 <Box
@@ -650,7 +726,6 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                     alignItems: 'flex-start',
                     justifyContent: 'flex-start',
                     gap: '4px',
-                    width: '170px',
                   }}
                 >
                   <Typography variant="body6" color="text.primary">
@@ -670,12 +745,15 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               <Box
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
                 }}
               >
-                <Typography variant="detail2" color={theme.palette.text.mainTitle}>
+                <Typography
+                  variant="detail2"
+                  color={theme.palette.text.mainTitle}
+                  sx={{ minWidth: '130px' }}
+                >
                   <Trans>Referral reward</Trans>
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -685,7 +763,6 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
                       alignItems: 'flex-start',
                       justifyContent: 'flex-start',
                       mt: '4px',
-                      width: '170px',
                     }}
                   >
                     <Typography variant="body6" color="text.primary">

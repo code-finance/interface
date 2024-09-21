@@ -306,7 +306,7 @@ export const ReferralInforTable = () => {
             >
               {menuCoins.map(({ value, label }) => (
                 <MenuItem sx={{ p: '12px' }} key={value} value={value}>
-                  <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} />{' '}
+                  <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} alt={''} />{' '}
                   <Typography
                     variant={value === coins ? (xsm ? 'body5' : 'body3') : 'body7'}
                     color="text.primary"
@@ -361,6 +361,7 @@ export const ReferralInforTable = () => {
           sx={{
             display: 'flex',
             gap: 2,
+            flexWrap: 'wrap',
           }}
         >
           <EstimateReward title={'Monthly'} />
@@ -382,7 +383,7 @@ const BoxWrapper = ({ children, title }: PropsWithChildren<BoxWrapper>) => {
     <Box
       sx={(theme) => ({
         flex: 1,
-        py: xsm ? '28px' : '24px',
+        py: xsm ? '28px' : '16px',
         px: xsm ? '24px' : '16px',
         width: '100%',
         borderRadius: 4,

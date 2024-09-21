@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 import { ReferralWalletCycle } from './ReferralWalletCycle';
@@ -17,17 +17,17 @@ export const ReferralProgramDetails = ({
   const theme = useTheme();
   const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
-    <Box
+    <Paper
       sx={{
         mt: '20px',
-        px: '20px',
-        py: '36px',
+        px: xsm ? '36px' : '16px',
+        py: xsm ? '20px' : '16px',
         borderRadius: '16px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '40px',
+        gap: { xs: '20px', xsm: '40px' },
         bgcolor: theme.palette.background.primary,
-        boxShadow: '4px 4px 20px 0px rgba(0, 0, 0, 0.05)',
+        overflow: 'auto',
       }}
     >
       <Box>
@@ -64,7 +64,7 @@ export const ReferralProgramDetails = ({
               justifyContent: 'center',
               alignItems: 'center',
               gap: '20px',
-              width: '600px',
+              width: { xs: 'unset', xsm: '600px' },
             }}
           >
             <Box
@@ -203,7 +203,7 @@ export const ReferralProgramDetails = ({
                 <Trans>Claim on</Trans>
               </Typography>
               <Box sx={{ px: '4px', display: 'inline-flex' }}>
-                <img width="24px" height="24px" src={'/icons/networks/ton.svg'} />{' '}
+                <img width="24px" height="24px" src={'/icons/networks/ton.svg'} alt={''} />{' '}
               </Box>
               <Typography variant="body6" color="text.button">
                 <Trans>TON</Trans>
@@ -224,6 +224,6 @@ export const ReferralProgramDetails = ({
       <Box>
         <ReferralWalletCycle />
       </Box>
-    </Box>
+    </Paper>
   );
 };
