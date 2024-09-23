@@ -66,7 +66,7 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = lg ? 88 : 54;
+  const headerHeight = lg ? 88 : 50;
 
   const toggleWalletWigit = (state: boolean) => {
     if (lgDown) setMobileDrawerOpen(state);

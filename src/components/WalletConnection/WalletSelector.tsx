@@ -23,14 +23,16 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
   const { connectWallet, loading } = useWeb3Context();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
+  const iconSize = xsm ? 24 : 36;
   const getWalletIcon = (walletType: WalletType) => {
     switch (walletType) {
       case WalletType.INJECTED:
         return (
           <img
             src={`/icons/wallets/browserWallet.svg`}
-            width="24px"
-            height="24px"
+            width={iconSize}
+            height={iconSize}
             alt={`browser wallet icon`}
           />
         );
@@ -38,8 +40,8 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
         return (
           <img
             src={`/icons/wallets/walletConnect.svg`}
-            width="24px"
-            height="24px"
+            width={iconSize}
+            height={iconSize}
             alt={`browser wallet icon`}
           />
         );
@@ -47,8 +49,8 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
         return (
           <img
             src={`/icons/wallets/coinbase.svg`}
-            width="24px"
-            height="24px"
+            width={iconSize}
+            height={iconSize}
             alt={`browser wallet icon`}
           />
         );
@@ -56,8 +58,8 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
         return (
           <img
             src={`/icons/wallets/torus.svg`}
-            width="24px"
-            height="24px"
+            width={iconSize}
+            height={iconSize}
             alt={`browser wallet icon`}
           />
         );
@@ -90,7 +92,7 @@ const WalletRow = ({ walletName, walletType }: WalletRowProps) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        height: 64,
+        height: { xs: 52, xsm: 64 },
         px: 4,
         mb: 2,
         borderRadius: 2,
@@ -176,7 +178,7 @@ export const WalletSelector = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      <TxModalTitle title="Connect a wallet" sx={{ mb: 8 }} />
+      <TxModalTitle title="Connect a wallet" sx={{ mb: { xs: 5, xsm: 8 } }} />
       {error && <Warning severity="warning">{handleBlocking()}</Warning>}
       <WalletRow
         key="browser_wallet"

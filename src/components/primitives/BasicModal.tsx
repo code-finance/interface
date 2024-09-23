@@ -45,19 +45,24 @@ export const BasicModal = ({
       <Paper
         sx={{
           position: 'relative',
-          margin: 2,
+          mx: 4,
           overflowY: 'auto',
-          width: '100%',
           maxWidth: { xs: 630, md: contentMaxWidth },
           maxHeight: 'calc(100vh - 20px)',
-          px: 5,
-          py: 8.5,
+          px: { xsm: 5, xs: 4 },
+          py: { xs: 7, xsm: 8.5 },
         }}
       >
         {children}
 
         {withCloseButton && (
-          <Box sx={{ position: 'absolute', top: '34px', right: '18px' }}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: { xs: 28, xsm: '34px' },
+              right: { xs: 16, xsm: '18px' },
+            }}
+          >
             <SvgIcon
               sx={{ fontSize: '24px', color: 'text.primary', cursor: 'pointer' }}
               onClick={handleClose}

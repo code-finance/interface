@@ -376,7 +376,7 @@ export const getDesignTokens = (mode: 'light' | 'dark', desktop?: boolean) => {
       body8: {
         fontFamily: FONT,
         fontWeight: desktop ? 600 : 500,
-        fontSize: pxToRem(20),
+        fontSize: pxToRem(desktop ? 20 : 16),
         lineHeight: '130%',
       },
       body9: {

@@ -37,10 +37,21 @@ export const ConnectWalletPaperStaking = ({
         ) : (
           <>
             <Box mb={'40px'}>
-              <Typography variant="h2" sx={{ mb: 8 }} color={'text.primary'}>
-                <Trans>Please, connect your wallet</Trans>
+              <Typography
+                variant="h6"
+                sx={{ mb: { xs: 5, xsm: 8 }, maxWidth: 296 }}
+                color={'text.primary'}
+              >
+                <Trans>Please,</Trans>
+                <br />
+                <Trans>connect your wallet</Trans>
               </Typography>
-              <Typography sx={{ mb: 10, fontSize: '20px', fontWeight: 500 }} color="text.secondary">
+              <Typography
+                sx={{ mb: { xs: 5, xsm: 10, maxWidth: 280 } }}
+                color="text.secondary"
+                variant="body8"
+                component="div"
+              >
                 {description || (
                   <Trans>
                     Please connect your wallet to see your supplies, borrowings, and open positions.
@@ -50,14 +61,13 @@ export const ConnectWalletPaperStaking = ({
               <ConnectWalletButton funnel={'Staking page'} />
             </Box>
             <Box
-              pt={'28px'}
               sx={{
                 width: '100%',
                 textAlign: 'right',
                 justifyContent: 'space-between',
-                flexDirection: 'row',
+                flexDirection: { xs: 'column', xsm: 'row' },
                 display: 'flex',
-                gap: 3,
+                gap: { xs: 2, xsm: 3 },
               }}
             >
               {/* <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} /> */}

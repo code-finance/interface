@@ -43,7 +43,12 @@ export const ConnectWalletPaper = ({ loading, description, ...rest }: ConnectWal
                 mb: 8,
               })}
             />
-            <Typography sx={{ mb: 10, fontSize: 20, fontWeight: 500 }} color="text.secondary">
+            <Typography
+              sx={{ mb: { xs: 5, xsm: 10, maxWidth: 280 } }}
+              color="text.secondary"
+              variant="body8"
+              component="div"
+            >
               {description || (
                 <Trans>
                   Please connect your wallet to see your supplies, borrowings, and open positions.

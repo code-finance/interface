@@ -49,6 +49,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
               height: '100%',
               width: { xs: '100%', lg: 'fit-content' },
               mr: { xs: 0, lg: 2 },
+              px: { xs: 0, xsm: undefined },
             }}
             data-cy={item.dataCy}
             disablePadding
