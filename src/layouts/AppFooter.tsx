@@ -60,6 +60,7 @@ export function AppFooter() {
   ]);
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
+  const mdUp = useMediaQuery(breakpoints.up('md'));
 
   const FOOTER_LINKS = [
     {
@@ -130,9 +131,20 @@ export function AppFooter() {
               onClick={link.onClick}
               key={link.key}
               href={link.href}
-              sx={{ py: { xs: '10px', md: 3 } }}
+              sx={{
+                py: {
+                  xs: '10px',
+                  md: 3,
+                },
+                '&:hover': {
+                  opacity: 0.8,
+                },
+                userSelect: 'none',
+              }}
             >
-              <Typography variant={md ? 'h4' : 'body7'}>{link.label}</Typography>
+              <Typography variant={mdUp ? 'h4' : 'detail2'} color="text.mainTitle">
+                {link.label}
+              </Typography>
             </StyledLink>
           ))}
         </Box>

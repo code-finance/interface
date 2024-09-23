@@ -66,6 +66,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   const xsm = useMediaQuery(breakpoints.down('xsm'));
   const lgDown = useMediaQuery(breakpoints.down('lg'));
   const lg = useMediaQuery(breakpoints.up('lg'));
+  const md = useMediaQuery(breakpoints.up('md'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -360,7 +361,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Box
           sx={{
             bgcolor: theme.palette.background.modulePopup,
-            borderRadius: 3,
+            borderRadius: 2,
             height: lg ? '48px' : '44px',
           }}
         >
@@ -370,7 +371,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Box
           sx={{
             bgcolor: theme.palette.background.modulePopup,
-            borderRadius: 3,
+            borderRadius: 2,
             height: lg ? '48px' : '44px',
           }}
         >
@@ -405,17 +406,17 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           >
             {connected ? (
               <UserDisplay
-                avatarProps={{ size: 24 }}
+                avatarProps={{ size: lg ? 24 : 16 }}
                 oneLiner={true}
                 titleProps={{
-                  variant: 'body5',
+                  variant: lg ? 'body5' : 'detail5',
                   color: 'text.primary',
                   lineHeight: 0,
                   addressCompactMode: CompactMode.MD,
                 }}
               />
             ) : (
-              <Typography variant="body5">
+              <Typography variant={lg ? 'body5' : 'detail5'}>
                 <Trans>Connect wallet</Trans>
               </Typography>
             )}
