@@ -44,7 +44,11 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
           justifyContent: 'center',
         }}
       >
-        <StateBadge state={proposal.badgeState} loading={false} />
+        <StateBadge
+          state={proposal.badgeState}
+          loading={false}
+          wrapperSx={{ py: xsm ? '10px' : '6px' }}
+        />
         <Typography
           variant={'h5'}
           sx={{

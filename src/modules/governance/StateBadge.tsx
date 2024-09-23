@@ -1,4 +1,4 @@
-import { BoxProps, experimental_sx, Skeleton, styled, useTheme } from '@mui/material';
+import { BoxProps, experimental_sx, Skeleton, styled, Typography, useTheme } from '@mui/material';
 import invariant from 'tiny-invariant';
 
 import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal';
@@ -74,8 +74,8 @@ export function StateBadge({ state, loading, wrapperSx }: StateBadgeProps) {
   const theme = useTheme();
   if (loading || !state) return <Skeleton width={70} />;
   return (
-    <Badge sx={{ padding: '10px 12px', ...theme.typography.body4, ...wrapperSx }} state={state}>
-      {state}
+    <Badge sx={{ padding: '10px 12px', ...wrapperSx }} state={state}>
+      <Typography variant="body4">{state}</Typography>
     </Badge>
   );
 }
