@@ -46,7 +46,7 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
       >
         <StateBadge state={proposal.badgeState} loading={false} />
         <Typography
-          variant={xsm ? 'h5' : 'h3'}
+          variant={'h5'}
           sx={{
             overflow: 'hidden',
             display: '-webkit-box',

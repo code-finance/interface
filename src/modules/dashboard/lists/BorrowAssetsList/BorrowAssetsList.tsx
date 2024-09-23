@@ -207,7 +207,7 @@ export const BorrowAssetsList = () => {
     <ListWrapper
       paperSx={{ mt: 5 }}
       titleComponent={
-        <Typography component="div" variant={downToXSM ? 'h3' : 'h2'} sx={{ mr: 4 }}>
+        <Typography component="div" variant={'h2'} sx={{ mr: 4 }}>
           <Trans>Assets to borrow</Trans>
         </Typography>
       }

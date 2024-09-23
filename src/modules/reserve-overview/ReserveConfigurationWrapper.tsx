@@ -35,7 +35,7 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
               : '28px',
         }}
       >
-        <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary">
+        <Typography variant={'h2'} color="text.primary">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
       </Box>

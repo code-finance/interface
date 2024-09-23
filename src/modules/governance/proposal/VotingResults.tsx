@@ -28,11 +28,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
         height: '100%',
       }}
     >
-      <Typography
-        variant={xsm ? 'h2' : 'h3'}
-        color={'text.primary'}
-        sx={{ mb: { xs: 4, xsm: '55px' } }}
-      >
+      <Typography variant={'h2'} color={'text.primary'} sx={{ mb: { xs: 4, xsm: '55px' } }}>
         <Trans>Voting results</Trans>
       </Typography>
       {proposal ? (

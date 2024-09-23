@@ -147,7 +147,7 @@ export const SuppliedPositionsList = () => {
         <Typography
           component="div"
           color="text.buttonText"
-          variant={downToXSM ? 'h3' : 'h2'}
+          variant={'h2'}
           sx={{ mb: { xs: 2, xsm: 4 } }}
         >
           Your supplies

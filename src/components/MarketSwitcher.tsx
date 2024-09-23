@@ -193,7 +193,7 @@ export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
                 }}
               >
                 <Typography
-                  variant={upToLG ? 'h1' : 'h2'}
+                  variant={'h1'}
                   component="h1"
                   sx={(theme) => ({
                     color: theme.palette.text.primary,

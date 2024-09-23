@@ -59,7 +59,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
         sx={{ mb: '24px' }}
         caption={
           <>
-            <Typography variant={xsm ? 'h2' : 'h3'} color={'text.primary'} sx={{ mb: '16px' }}>
+            <Typography variant={'h2'} color={'text.primary'} sx={{ mb: '16px' }}>
               <Trans>Your info</Trans>
             </Typography>
             {network && (

@@ -219,7 +219,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
 
   return (
     <Box sx={{ height: '100%' }}>
-      <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary" mb="32px">
+      <Typography variant={'h2'} color="text.primary" mb="32px">
         <Trans>Proposal details</Trans>
       </Typography>
       <Timeline

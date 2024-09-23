@@ -85,7 +85,7 @@ export const StakeActionBox = ({
             sx={{ my: xsm ? '10px' : 0 }}
             value={value}
             visibleDecimals={2}
-            variant={xsm ? 'h2' : 'h3'}
+            variant={'h2'}
             color={+value === 0 ? theme.palette.text.disabledText : 'text.primary'}
             data-cy={`amountNative`}
           />

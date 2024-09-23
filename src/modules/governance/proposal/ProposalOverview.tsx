@@ -64,11 +64,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
       }}
       data-cy="vote-info-body"
     >
-      <Typography
-        variant={xsm ? 'h2' : 'h3'}
-        color="text.secondary"
-        sx={{ mb: { xs: 4, xsm: 10 } }}
-      >
+      <Typography variant={'h2'} color="text.secondary" sx={{ mb: { xs: 4, xsm: 10 } }}>
         <Trans> Proposal overview</Trans>
       </Typography>
       <Divider />

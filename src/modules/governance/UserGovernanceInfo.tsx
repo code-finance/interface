@@ -16,11 +16,7 @@ export const UserGovernanceInfo = () => {
       noData={!!account}
       collapsedSx={(theme) => ({ color: theme.palette.text.buttonText })}
       titleComponent={
-        <Typography
-          variant={xsm ? 'h2' : 'h3'}
-          color="text.buttonText"
-          sx={{ mb: { xs: 0, xsm: 4 } }}
-        >
+        <Typography variant={'h2'} color="text.buttonText" sx={{ mb: { xs: 0, xsm: 4 } }}>
           <Trans>Your supplies</Trans>
         </Typography>
       }

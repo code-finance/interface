@@ -197,7 +197,7 @@ declare module '@mui/material/Button' {
   }
 }
 
-export const getDesignTokens = (mode: 'light' | 'dark') => {
+export const getDesignTokens = (mode: 'light' | 'dark', desktop?: boolean) => {
   const getColor = (lightColor: string, darkColor: string) =>
     mode === 'dark' ? darkColor : lightColor;
 
@@ -299,19 +299,19 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '130%',
-        fontSize: pxToRem(36),
+        fontSize: pxToRem(desktop ? 36 : 25),
       },
       h2: {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '130%',
-        fontSize: pxToRem(24),
+        fontSize: pxToRem(desktop ? 24 : 19),
       },
       h3: {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '130%',
-        fontSize: pxToRem(18),
+        fontSize: pxToRem(desktop ? 18 : 17),
       },
       h4: {
         fontFamily: FONT_HEADING,
@@ -323,13 +323,13 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '150%',
-        fontSize: pxToRem(22),
+        fontSize: pxToRem(desktop ? 22 : 18),
       },
       h6: {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '150%',
-        fontSize: '30px',
+        fontSize: pxToRem(desktop ? 30 : 24),
       },
       body1: {
         fontFamily: FONT,
@@ -340,7 +340,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       body2: {
         fontFamily: FONT,
         fontWeight: 500,
-        fontSize: pxToRem(18),
+        fontSize: pxToRem(desktop ? 18 : 15),
         lineHeight: '130%',
       },
       body3: {
@@ -351,8 +351,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       body4: {
         fontFamily: FONT,
-        fontWeight: 600,
-        fontSize: pxToRem(17),
+        fontWeight: desktop ? 600 : 500,
+        fontSize: pxToRem(desktop ? 17 : 15),
         lineHeight: '130%',
       },
       body5: {
@@ -375,7 +375,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       body8: {
         fontFamily: FONT,
-        fontWeight: 600,
+        fontWeight: desktop ? 600 : 500,
         fontSize: pxToRem(20),
         lineHeight: '130%',
       },

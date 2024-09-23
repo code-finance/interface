@@ -32,7 +32,7 @@ export const ReferralProgramDetails = ({
     >
       <Box>
         <Box>
-          <Typography variant={xsm ? 'h2' : 'h3'} color="text.secondary" mb="28px">
+          <Typography variant={'h2'} color="text.secondary" mb="28px">
             <Trans>Referral program details</Trans>
           </Typography>
         </Box>
@@ -82,7 +82,7 @@ export const ReferralProgramDetails = ({
               >
                 <Trans>Estimated referral reward</Trans>
               </Typography>
-              <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary">
+              <Typography variant={'h2'} color="text.primary">
                 <Trans>1.23</Trans>
               </Typography>
               <FormattedNumber
@@ -107,7 +107,7 @@ export const ReferralProgramDetails = ({
               <Typography variant="body7" color={theme.palette.text.mainTitle}>
                 <Trans>Claimable referral reward</Trans>
               </Typography>
-              <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary">
+              <Typography variant={'h2'} color="text.primary">
                 <Trans>2.40</Trans>
               </Typography>
               <FormattedNumber

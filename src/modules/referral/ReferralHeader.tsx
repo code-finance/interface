@@ -11,7 +11,7 @@ export const ReferralHeader = () => {
         <Box>
           <Box sx={{ display: 'flex', mb: 3, alignItems: 'center' }}>
             <img width="48px" height="48px" src={'/icons/networks/ethereum.svg'} />
-            <Typography variant={xsm ? 'h1' : 'h2'} sx={{ ml: 2, color: 'text.primary' }}>
+            <Typography variant={'h1'} sx={{ ml: 2, color: 'text.primary' }}>
               <Trans>Referral Program</Trans>
             </Typography>
           </Box>

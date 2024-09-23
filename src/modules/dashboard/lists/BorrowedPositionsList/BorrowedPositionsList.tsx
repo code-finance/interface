@@ -185,7 +185,7 @@ export const BorrowedPositionsList = () => {
       titleComponent={
         <Typography
           component="div"
-          variant={downToXSM ? 'h3' : 'h2'}
+          variant={'h2'}
           sx={{ mb: { xs: 2, xsm: 4 } }}
           color="text.buttonText"
         >

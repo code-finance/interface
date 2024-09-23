@@ -353,7 +353,7 @@ export const ReferralInforTable = () => {
           />
         </Box>
         <Box mb="20px">
-          <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary" mb="20px">
+          <Typography variant={'h2'} color="text.primary" mb="20px">
             <Trans>Estimated referral reward</Trans>
           </Typography>
         </Box>
@@ -390,7 +390,7 @@ const BoxWrapper = ({ children, title }: PropsWithChildren<BoxWrapper>) => {
         backgroundColor: theme.palette.background.top,
       })}
     >
-      <Typography variant={xsm ? 'h2' : 'h3'} color="text.primary" mb={xsm ? 10 : 5}>
+      <Typography variant={'h2'} color="text.primary" mb={xsm ? 10 : 5}>
         <Trans>{title}</Trans>
       </Typography>
       {children}

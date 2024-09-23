@@ -19,7 +19,7 @@ export const ChainAvailabilityText = ({ wrapperSx, title }: ChainAvailabilityTex
         src={'/icons/networks/ethereum.svg'}
         alt="demo"
       />
-      <Typography variant={md ? 'h1' : 'h2'} sx={{ ml: 2, color: 'text.primary' }} component="h1">
+      <Typography variant={'h1'} sx={{ ml: 2, color: 'text.primary' }} component="h1">
         CODE {title}
       </Typography>
     </Box>

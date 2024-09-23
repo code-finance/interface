@@ -320,7 +320,7 @@ export const HistoryWrapper = () => {
     <ListWrapper
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.primary })}
       titleComponent={
-        <Typography component="div" variant={xsm ? 'h2' : 'h3'} sx={{ mr: 4 }}>
+        <Typography component="div" variant={'h2'} sx={{ mr: 4 }}>
           <Trans>Transactions</Trans>
         </Typography>
       }
@@ -392,8 +392,7 @@ export const HistoryWrapper = () => {
 };
 
 const EmptySection = ({ children }: PropsWithChildren<{ text?: string }>) => {
-  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
-  const emptyVariant = xsm ? 'h6' : 'h3';
+  const emptyVariant = 'h6';
   return (
     <Box
       sx={{
