@@ -1,4 +1,4 @@
-import { Box, BoxProps, Container, ContainerProps } from '@mui/material';
+import { Box, BoxProps, Container, ContainerProps, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { PageTitle, PageTitleProps } from './PageTitle';
@@ -28,8 +28,8 @@ export const TopInfoPanel = ({
     <Box
       sx={{
         bgcolor: isGovernanceDetails ? 'transparent' : 'background.top',
-        pt: { xs: 10, md: 15 },
-        pb: { xs: 18, md: 15 },
+        pt: { xs: isGovernanceDetails ? 5 : 10, md: 15 },
+        pb: { xs: isGovernanceDetails ? 0 : 18, md: 15 },
         ...wrapperSx,
       }}
     >

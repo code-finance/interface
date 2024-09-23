@@ -56,10 +56,10 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
       }}
     >
       <Row
-        sx={{ mb: '24px' }}
+        sx={{ mb: xsm ? '24px' : '20px' }}
         caption={
           <>
-            <Typography variant={'h2'} color={'text.primary'} sx={{ mb: '16px' }}>
+            <Typography variant={'h2'} color={'text.primary'} sx={{ mb: xsm ? '16px' : '8px' }}>
               <Trans>Your info</Trans>
             </Typography>
             {network && (
@@ -69,12 +69,12 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                   alignItems: 'center',
                 }}
               >
-                <Typography variant={xsm ? 'body2' : 'detail2'} color={'text.primary'}>
+                <Typography variant={'body2'} color={'text.primary'}>
                   <Trans>Voting is on</Trans>
                 </Typography>
                 <Box
                   sx={{
-                    height: xsm ? '24px' : '18px',
+                    height: '24px',
                     aspectRatio: '1/1',
                     mx: '6px',
                   }}
@@ -85,7 +85,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                     style={{ height: '100%', width: '100%' }}
                   />
                 </Box>
-                <Typography variant={xsm ? 'body2' : 'detail2'} color={'text.primary'}>
+                <Typography variant={'body2'} color={'text.primary'}>
                   {network?.displayName}
                 </Typography>
               </Box>
@@ -97,9 +97,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 3,
+          gap: xsm ? 3 : 5,
           mt: { xs: 3, xsm: 7 },
-          mb: { xs: 4, xsm: 10 },
+          mb: { xs: 0, xsm: 10 },
         }}
       >
         {user ? (
@@ -170,7 +170,9 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
             )}
             {showCannotVoteMsg && (
               <Warning severity="warning" sx={{ mb: 0 }}>
-                <Trans>Not enough voting power to participate in this proposal</Trans>
+                <Typography variant="body7">
+                  <Trans>Not enough voting power to participate in this proposal</Trans>
+                </Typography>
               </Warning>
             )}
             {showCanVoteMsg && (
@@ -193,12 +195,12 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 </Button>
               </>
             )}
-            <Box sx={{ mt: { xs: 4, xsm: 10 } }}>
+            <Box sx={{ mt: { xs: 3, xsm: 10 } }}>
               <ProposalLifecycle proposal={proposal} />
             </Box>
           </>
         ) : (
-          <ConnectWalletButton />
+          <ConnectWalletButton wrapperSx={{ width: xsm ? '234px' : '100%' }} />
         )}
       </Box>
     </Paper>

@@ -219,7 +219,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
 
   return (
     <Box sx={{ height: '100%' }}>
-      <Typography variant={'h2'} color="text.primary" mb="32px">
+      <Typography variant={'h2'} color="text.primary" mb={xsm ? '32px' : '20px'}>
         <Trans>Proposal details</Trans>
       </Typography>
       <Timeline
@@ -240,7 +240,7 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
       {discussionUrl && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <ExternalLink
-            text={<span style={{ textTransform: 'unset' }}>Forum discussion</span>}
+            text={<span style={{ textTransform: 'none' }}>Forum discussion</span>}
             href={discussionUrl[0]}
             onClick={() =>
               trackEvent(GENERAL.EXTERNAL_LINK, {
@@ -292,8 +292,8 @@ const ProposalStep = ({
       <TimelineSeparator>
         <TimelineDot
           sx={{
-            width: '20px',
-            height: '20px',
+            width: xsm ? '20px' : '16px',
+            height: xsm ? '20px' : '16px',
             background: completed
               ? theme.palette.point.primary
               : active
@@ -314,17 +314,17 @@ const ProposalStep = ({
           />
         )}
       </TimelineSeparator>
-      <TimelineContent sx={{ p: '0px 0px 0px 20px' }}>
+      <TimelineContent sx={{ p: xsm ? '0px 0px 0px 20px' : '0px 0px 0px 12px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', pt: 0 }}>
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: '6px' }}>
               {networkLogo && <Avatar sx={{ width: 24, height: 24, mr: 2 }} src={networkLogo} />}
-              <Typography variant={xsm ? 'body2' : 'detail1'}>
+              <Typography variant={'body2'}>
                 <Trans>{stepName}</Trans>
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pb: '28px' }}>
-              <Typography variant={xsm ? 'detail2' : 'detail4'} color="text.mainTitle">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pb: xsm ? '28px' : '16px' }}>
+              <Typography variant={'detail2'} color="text.mainTitle">
                 {formatTime(timestamp)}
               </Typography>
               {transactionHash && (
