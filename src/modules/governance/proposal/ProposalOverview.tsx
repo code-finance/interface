@@ -58,13 +58,13 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
   return (
     <Paper
       sx={{
-        py: { xs: 4, sxm: 9 },
+        py: { xs: 5, xsm: 9 },
         px: 4,
-        mt: 5,
+        mt: xsm ? 5 : 4,
       }}
       data-cy="vote-info-body"
     >
-      <Typography variant={'h2'} color="text.secondary" sx={{ mb: { xs: 4, xsm: 10 } }}>
+      <Typography variant={'h2'} color="text.secondary" sx={{ mb: { xs: 6, xsm: 10 } }}>
         <Trans> Proposal overview</Trans>
       </Typography>
       <Divider />
@@ -78,8 +78,8 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
         <Box sx={{ wordBreak: 'break-word' }}>
           {proposal ? (
             <Box>
-              <Box sx={{ my: { xs: 6, xsm: 10 } }}>
-                <Typography variant="h5" sx={{ mb: '20px', color: 'text.primary' }}>
+              <Box sx={{ my: { xs: 7, xsm: 10 } }}>
+                <Typography variant="h5" sx={{ mb: xsm ? '20px' : '12px', color: 'text.primary' }}>
                   {proposal.subgraphProposal.proposalMetadata.title || <Skeleton />}
                 </Typography>
                 <Box
@@ -275,23 +275,21 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     return (
                       <Typography
                         component="div"
-                        variant={xsm ? 'h3' : 'detail1'}
+                        variant={'h3'}
                         mt={xsm ? 10 : 6}
-                        mb={xsm ? 4 : 1}
+                        mb={xsm ? 4 : 3}
                         gutterBottom
                         {...rest}
                       />
                     );
                   },
                   p({ node, ...rest }) {
-                    return (
-                      <Typography variant={xsm ? 'body2' : 'detail2'} {...rest} component="div" />
-                    );
+                    return <Typography variant={'body2'} {...rest} component="div" />;
                   },
                   li({ node, ...rest }) {
                     return (
                       <li>
-                        <Typography variant={xsm ? 'body2' : 'detail2'} px={0} {...rest} />
+                        <Typography variant={'body2'} px={0} {...rest} />
                       </li>
                     );
                   },

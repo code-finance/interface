@@ -28,7 +28,7 @@ export function ExternalLink({ text, href, onClick }: ExternalLinkProps) {
     <Button
       variant={xsm ? 'transparent' : 'transparent-link'}
       size="small"
-      sx={xsm ? { px: 6, py: '9px' } : {}}
+      sx={xsm ? { px: 6, py: '9px' } : { p: '8px 12px 8px 16px' }}
       component={Link}
       href={href}
       target="_blank"
@@ -36,7 +36,7 @@ export function ExternalLink({ text, href, onClick }: ExternalLinkProps) {
       onClick={onClick ? onClick : () => trackEvent(GENERAL.EXTERNAL_LINK, { Link: String(text) })}
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {text}
+        <Typography variant="body4">{text}</Typography>
         <SvgIcon sx={{ ml: 1, fontSize: 17 }}>
           <CallMadeOutlinedIcon />
         </SvgIcon>

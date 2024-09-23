@@ -50,7 +50,7 @@ export default function ProposalPage() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'stretch',
-            gap: '20px',
+            gap: xsm ? '20px' : '16px',
             flexDirection: xsm ? 'row' : 'column',
           }}
         >
