@@ -371,7 +371,8 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Box
           sx={{
             bgcolor: theme.palette.background.modulePopup,
-            borderRadius: 2,
+            borderRadius: '10px',
+            overflow: 'hidden',
             height: lg ? '48px' : '44px',
           }}
         >

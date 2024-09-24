@@ -104,7 +104,7 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
           backgroundColor: isGovernanceDetails
-            ? 'transparent'
+            ? theme.palette.background.primary
             : theme.palette.mode === 'light'
             ? '#e6e4f4'
             : '#28216d',
@@ -114,6 +114,14 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
           },
           display: 'flex',
           alignItems: 'center',
+          '& #wallet-button': isGovernanceDetails
+            ? {
+                backgroundColor: theme.palette.background.secondary,
+                '&:hover': {
+                  backgroundColor: theme.palette.background.tertiary,
+                },
+              }
+            : {},
         })}
       >
         <Box

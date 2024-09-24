@@ -62,11 +62,11 @@ const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
     border: '1px solid',
     borderColor: color,
     px: 3,
+    py: { xs: '6px', xsm: '10px' },
     borderRadius: '6px',
     display: 'inline-flex',
     alignItems: 'center',
     width: 'fit-content',
-    height: '42px',
   });
 });
 
