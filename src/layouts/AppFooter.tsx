@@ -110,17 +110,17 @@ export function AppFooter() {
           flex: 0,
           display: 'flex',
           width: '100%',
-          paddingBlock: { xs: '40px 80px', md: '20px 60px' },
+          paddingBlock: { xs: '28px 60px', md: '20px 60px' },
           justifyContent: 'space-between',
           alignItems: { xs: 'flex-start', md: 'center' },
-          gap: 8,
+          gap: 7,
           flexDirection: { xs: 'column', md: 'row' },
         }}
       >
         <Box
           sx={{
             display: 'flex',
-            gap: { xs: 7, md: 6 },
+            columnGap: { xs: 7, md: 6 },
             alignItems: 'center',
             flexWrap: 'wrap',
             paddingInline: { xs: 3, md: 0 },
