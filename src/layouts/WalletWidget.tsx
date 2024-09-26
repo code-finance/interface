@@ -41,6 +41,7 @@ import { Link } from '../components/primitives/Link';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
+import router from 'next/router';
 
 interface WalletWidgetProps {
   open: boolean;
@@ -110,7 +111,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const handleCopyReferralCode = async () => {
-    navigator.clipboard.writeText('E24C0234B9');
+    navigator.clipboard.writeText('73WakrfVbNJBaAmhQtEeDv');
+    handleClose();
+  };
+
+  const handleOpenReferral = (): void => {
+    router.push('/referral');
     handleClose();
   };
 
@@ -213,8 +219,8 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
       <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
       <Box
         component={'li'}
-        sx={{ display: 'flex', mt: 1, px: 1.5, py: 3, alignItems: 'center' }}
-        onClick={handleCopyReferralCode}
+        sx={{ display: 'flex', mt: 1, px: 1.5, py: 3, alignItems: 'center', cursor: 'pointer' }}
+        onClick={handleOpenReferral}
       >
         <ListItemText>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

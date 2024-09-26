@@ -282,8 +282,20 @@ export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
               logo={network.networkLogoPath}
               testChainName={marketNaming.testChainName}
             />
-            {marketNaming.name + ' Market'} {market.isFork ? 'Fork' : ''}
-            <ListItemText>{marketNaming.testChainName}</ListItemText>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            >
+              {marketNaming.name + ' Market '} {market.isFork ? 'Fork' : ''}
+              <br />
+              <ListItemText>
+                <Typography variant="body7"> {' ' + marketNaming.testChainName}</Typography>
+              </ListItemText>
+            </Box>
           </MenuItem>
         );
       })}

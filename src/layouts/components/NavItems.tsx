@@ -75,7 +75,10 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                     ? 'active'
                     : ''
                 }
-                onClick={() => handleClick(item.title, true)}
+                onClick={() => {
+                  handleClick(item.title, true);
+                  setOpen && setOpen(false);
+                }}
               >
                 {i18n._(item.title)}
               </Typography>

@@ -87,7 +87,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
         {!isLanguagesListOpen ? (
           <>
             <MenuItemsWrapper title={<Trans>Menu</Trans>}>
-              <NavItems />
+              <NavItems setOpen={setOpen} />
             </MenuItemsWrapper>
             <MenuItemsWrapper title={<Trans>Global settings</Trans>} mb={7}>
               <List sx={{ p: { xs: '8px 16px', lg: 0 } }}>
