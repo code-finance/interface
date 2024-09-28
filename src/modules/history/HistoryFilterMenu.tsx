@@ -208,13 +208,13 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         </MenuItem>
         <Box
           sx={{
-            overflowY: 'scroll',
-            maxHeight: 200,
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            '::-webkit-scrollbar': {
-              display: 'none',
-            },
+            overflowY: 'auto',
+            maxHeight: 220,
+            // scrollbarWidth: 'none',
+            // msOverflowStyle: 'none',
+            // '::-webkit-scrollbar': {
+            //   display: 'none',
+            // },
           }}
         >
           {Object.keys(FilterOptions)

@@ -103,13 +103,21 @@ export const TxActionsWrapper = ({
     )
       return null;
     if (approvalTxState?.loading)
-      return { loading: true, disabled: true, content: <Trans>Approving {symbol}...</Trans> };
+      return {
+        loading: true,
+        disabled: true,
+        content: (
+          <>
+            <Trans>Approving</Trans> {symbol}...{' '}
+          </>
+        ),
+      };
     if (approvalTxState?.success)
       return {
         disabled: true,
         content: (
           <>
-            <Trans>Approving {symbol}</Trans>
+            <Trans>Approving</Trans> {symbol}
             <SvgIcon sx={{ fontSize: 24, ml: 2 }}>
               <CheckIcon />
             </SvgIcon>
