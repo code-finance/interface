@@ -9,6 +9,8 @@ export const PanelRow: React.FC<BoxProps> = (props) => (
       display: { xs: 'block', xsm: 'flex' },
       margin: '0 auto',
       py: { xs: 0, xsm: 5 },
+      width: '100%',
+      overflow: 'hidden',
       ...props.sx,
     }}
   />

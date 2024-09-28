@@ -34,17 +34,18 @@ export const ConnectWalletPaper = ({ loading, description, ...rest }: ConnectWal
           <CircularProgress />
         ) : (
           <>
-            <Box
-              sx={(theme) => ({
+            <img
+              alt="illustration"
+              src="/Illustration.svg"
+              style={{
                 width: '100%',
                 maxWidth: 600,
                 aspectRatio: '1/1',
-                backgroundColor: theme.palette.background.secondary,
-                mb: 8,
-              })}
+                marginBottom: 32,
+              }}
             />
             <Typography
-              sx={{ mb: { xs: 5, xsm: 10, maxWidth: 280 } }}
+              sx={{ mb: { xs: 5, xsm: 10 } }}
               color="text.secondary"
               variant="body8"
               component="div"
