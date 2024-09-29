@@ -426,7 +426,7 @@ const ReferralStep = ({ data }: ReferralStepProps) => {
               </Box>
             )}
             {data.history?.length && (
-              <IconButton sx={{ p: 0, ml: xsm ? '90px' : '10px' }} onClick={toggleSubtimeline}>
+              <IconButton sx={{ p: 0, ml: xsm ? '0px' : '10px' }} onClick={toggleSubtimeline}>
                 {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
               </IconButton>
             )}

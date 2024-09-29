@@ -39,6 +39,10 @@ export const ReferralInforTable = () => {
     { value: 'USDe', label: 'USDe' },
     { value: 'WBTC', label: 'WBTC' },
   ];
+
+  const handleCopyReferralCode = async () => {
+    navigator.clipboard.writeText('73WakrfVbNJBaAmhQtEeDv');
+  };
   return (
     <Box sx={{ display: 'flex', gap: '20px', alignItems: 'stretch', flexWrap: 'wrap' }}>
       <BoxWrapper title={'Your info'}>
@@ -68,9 +72,9 @@ export const ReferralInforTable = () => {
                 sx={{ display: 'flex', alignItems: 'center', lineHeight: '20px' }}
               >
                 <Trans>Your referral code</Trans>
-                <ContentCopyIcon
-                  sx={{ width: '20px', height: '20px', ml: '4px', color: 'inherit' }}
-                />
+                <Box sx={{ ml: '4px', cursor: 'pointer' }} onClick={handleCopyReferralCode}>
+                  <ContentCopyIcon sx={{ width: '20px', height: '20px', color: 'inherit' }} />
+                </Box>
               </WrapTypography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <CompactableTypography

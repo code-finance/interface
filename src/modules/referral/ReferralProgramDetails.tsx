@@ -20,8 +20,8 @@ export const ReferralProgramDetails = ({
     <Paper
       sx={{
         mt: '20px',
-        px: xsm ? '36px' : '16px',
-        py: xsm ? '20px' : '16px',
+        px: xsm ? '20px' : '16px',
+        py: xsm ? '36px' : '16px',
         borderRadius: '16px',
         display: 'flex',
         flexDirection: 'column',

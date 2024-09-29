@@ -1,5 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Grid, Paper, PaperProps, Typography } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Paper,
+  PaperProps,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { ReactNode } from 'react';
 import { StakingPanelNoWallet } from 'src/modules/staking/StakingPanelNoWallet';
 
@@ -16,6 +25,8 @@ export const ConnectWalletPaperStaking = ({
   sx,
   ...rest
 }: ConnectWalletPaperStakingProps) => {
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Paper
       {...rest}
@@ -39,15 +50,14 @@ export const ConnectWalletPaperStaking = ({
             <Box mb={'40px'}>
               <Typography
                 variant="h6"
-                sx={{ mb: { xs: 5, xsm: 8 }, maxWidth: 296 }}
+                sx={{ mb: { xs: 5, xsm: 8 }, maxWidth: xsm ? 'unset' : 296 }}
                 color={'text.primary'}
               >
-                <Trans>Please,</Trans>
-                <br />
-                <Trans>connect your wallet</Trans>
+                <Trans>Please, </Trans>
+                {!xsm && <br />} <Trans>connect your wallet</Trans>
               </Typography>
               <Typography
-                sx={{ mb: { xs: 5, xsm: 10, maxWidth: 280 } }}
+                sx={{ mb: { xs: 5, xsm: 10, maxWidth: xsm ? 'unset' : 280 } }}
                 color="text.secondary"
                 variant="body8"
                 component="div"
