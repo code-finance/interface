@@ -214,6 +214,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           skip: pageParam,
           pool: selectedPool,
         });
+        console.log('Call transactions: ', response);
         return response;
       } else {
         const response = await fetchTransactionHistory({

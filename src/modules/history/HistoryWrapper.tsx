@@ -75,8 +75,10 @@ export const HistoryWrapper = () => {
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
   const { currentAccount, loading: web3Loading } = useWeb3Context();
 
+  console.log('Default transactions: ', transactions);
+
   const flatTxns = useMemo(() => {
-    console.log('Transactions updated: ', transactions);
+    console.log('Memo Transactions updated: ', transactions);
     return transactions?.pages?.flatMap((page) => page) || [];
   }, [transactions]);
 
