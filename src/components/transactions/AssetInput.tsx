@@ -141,7 +141,13 @@ export const AssetInput = <T extends Asset = Asset>({
           flexDirection: 'column',
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: value !== '' && !disableInput ? 2 : 10,
+          }}
+        >
           {loading ? (
             <Box sx={{ flex: 1 }}>
               <CircularProgress color="inherit" size="16px" />

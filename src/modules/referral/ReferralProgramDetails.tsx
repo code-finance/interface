@@ -177,7 +177,7 @@ export const ReferralProgramDetails = ({
                 <Trans>Claim on</Trans>
               </Typography>
               <Box sx={{ px: '4px', display: 'inline-flex' }}>
-                <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} />{' '}
+                <img width="24px" height="24px" src={'/icons/networks/kaia.svg'} />{' '}
               </Box>
               <Typography variant="body6" color="text.button">
                 <Trans>Kaia</Trans>
