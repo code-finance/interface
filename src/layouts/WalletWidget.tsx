@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { ReferralCodeToolTip } from 'src/components/infoTooltips/ReferralCodeToolTip';
@@ -42,6 +42,10 @@ import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsA
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
 import router from 'next/router';
+import { useWeb3React } from '@web3-react/core';
+import { getWeb3Token } from '../utils/getWeb3Token';
+import { getReferralCode, registerReferral } from '../utils/referral';
+import { providers } from 'ethers';
 
 interface WalletWidgetProps {
   open: boolean;
@@ -60,6 +64,7 @@ const useStyles = makeStyles(() => ({
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
+  const { library } = useWeb3React<providers.Web3Provider>();
   const classes = useStyles();
   const { setWalletModalOpen } = useWalletModalContext();
   const theme = useTheme();
@@ -81,6 +86,21 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   } else {
     networkColor = '#65c970';
   }
+
+  const handleWeb3Token = async (account: string, provider: providers.Web3Provider) => {
+    await getWeb3Token(account, provider);
+
+    // Call Referral API
+    // const referral = await getReferralCode(currentAccount);
+    // if (!referral) {
+    //   await registerReferral(currentAccount)
+    // }
+  };
+  useEffect(() => {
+    if (currentAccount && library) {
+      handleWeb3Token(currentAccount, library);
+    }
+  }, [currentAccount]);
 
   const handleClose = () => {
     setOpen(false);

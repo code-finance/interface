@@ -2,8 +2,9 @@ import { useWeb3React } from '@web3-react/core';
 import { getWithExpiry, setWithExpiry } from './expiracy';
 import Web3Token from 'talken-web3-token';
 import { setReferralApiToken } from './referral';
+import { providers } from 'ethers';
 
-export const getWeb3Token = async (account: string, provider: any) => {
+export const getWeb3Token = async (account: string, provider: providers.Web3Provider) => {
   if (account) {
     const tokenSigner = provider.getSigner(account);
     let token = getWithExpiry('w3token', account);
