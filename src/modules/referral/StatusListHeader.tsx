@@ -17,8 +17,7 @@ export const StatusListHeaderDesktop: React.FC<StatusListHeaderElementProps> = (
   handleSearchQueryChange,
   handleChange,
 }) => {
-  const allStatus = ['Inprogress', 'Completed'];
-  const theme = useTheme();
+  const allStatus = ['In Progress', 'Completed'];
   return (
     <>
       <Select
