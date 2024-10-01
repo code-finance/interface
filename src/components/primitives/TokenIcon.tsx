@@ -86,6 +86,8 @@ export function Base64Token({
 }
 
 export const ATokenIcon = forwardRef<SVGSVGElement, ATokenIconProps>(({ symbol }, ref) => {
+  const [tokenSymbol, setTokenSymbol] = useState(symbol?.toLowerCase());
+
   return (
     <svg
       style={{
@@ -125,9 +127,10 @@ export const ATokenIcon = forwardRef<SVGSVGElement, ATokenIconProps>(({ symbol }
           <image
             x="25"
             y="25"
-            href={`/icons/tokens/${symbol.toLowerCase()}.svg`}
+            href={`/icons/tokens/${tokenSymbol}.svg`}
             width="206"
             height="206"
+            onError={() => setTokenSymbol('default')}
           />
         )}
       </g>
@@ -149,6 +152,7 @@ interface TokenIconProps extends IconProps {
  */
 function SingleTokenIcon({ symbol, aToken, ...rest }: TokenIconProps) {
   const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
+  console.log('🚀 ~ SingleTokenIcon ~ tokenSymbol:', tokenSymbol);
 
   useEffect(() => {
     setTokenSymbol(symbol.toLowerCase());
