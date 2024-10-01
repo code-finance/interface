@@ -26,6 +26,8 @@ export const ReferralInforTable = () => {
   const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   const [network, setNetwork] = React.useState('Ethereum');
   const [coins, setCoins] = React.useState('USDT');
+  const [apy, setApy] = React.useState(0.0461);
+  const [usd, setUsd] = React.useState(1.0);
   const [value, setValue] = React.useState('');
   const menuItems = [
     { value: 'Ethereum', label: 'Ethereum' },
@@ -34,10 +36,10 @@ export const ReferralInforTable = () => {
     { value: 'Solana', label: 'Solana' },
   ];
   const menuCoins = [
-    { value: 'USDT', label: 'USDT' },
-    { value: 'sDAI', label: 'sDAI' },
-    { value: 'USDe', label: 'USDe' },
-    { value: 'WBTC', label: 'WBTC' },
+    { value: 'USDT', label: 'USDT', apy: 0.0461, usd: 1.0 },
+    { value: 'sDAI', label: 'sDAI', apy: 0.0561, usd: 1.11 },
+    { value: 'USDe', label: 'USDe', apy: 0.0361, usd: 0.9994 },
+    { value: 'WBTC', label: 'WBTC', apy: 0.0661, usd: 65125.7 },
   ];
 
   const handleCopyReferralCode = async () => {
@@ -268,7 +270,11 @@ export const ReferralInforTable = () => {
             <TextField
               select
               value={coins}
-              onChange={(e) => setCoins(e.target.value as string)}
+              onChange={(e) => {
+                setCoins(e.target.value as string);
+                setApy(menuCoins.find((item) => item.value === e.target.value)?.apy || 0);
+                setUsd(menuCoins.find((item) => item.value === e.target.value)?.usd || 0);
+              }}
               size="small"
               sx={{
                 '& .MuiOutlinedInput-notchedOutline': {
@@ -328,7 +334,7 @@ export const ReferralInforTable = () => {
               symbolsVariant="body7"
               symbolsColor="text.mainTitle"
               symbol="USD"
-              value={0}
+              value={(Number(value) * usd).toFixed(4)}
               sx={{ color: 'text.mainTitle' }}
               visibleDecimals={2}
             />
@@ -368,9 +374,27 @@ export const ReferralInforTable = () => {
             flexWrap: 'wrap',
           }}
         >
-          <EstimateReward title={'Monthly'} />
-          <EstimateReward title={'Quarterly'} />
-          <EstimateReward title={'Annually'} />
+          <EstimateReward
+            coins={coins}
+            apy={apy}
+            value={Number(value)}
+            usd={usd}
+            title={'Monthly'}
+          />
+          <EstimateReward
+            coins={coins}
+            apy={apy}
+            value={Number(value)}
+            usd={usd}
+            title={'Quarterly'}
+          />
+          <EstimateReward
+            coins={coins}
+            apy={apy}
+            value={Number(value)}
+            usd={usd}
+            title={'Annually'}
+          />
         </Box>
       </BoxWrapper>
     </Box>
@@ -404,10 +428,20 @@ const BoxWrapper = ({ children, title }: PropsWithChildren<BoxWrapper>) => {
 
 type EstimateRewardType = {
   title: string;
+  coins: string;
+  apy: number;
+  value: number;
+  usd: number;
 };
-const EstimateReward = ({ title }: EstimateRewardType) => {
+const EstimateReward = ({ title, coins, apy, value, usd }: EstimateRewardType) => {
   const theme = useTheme();
   const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
+  const total =
+    title === 'Monthly'
+      ? (((value * apy) / 365) * 30 * 0.2).toFixed(4)
+      : title === 'Quarterly'
+      ? (((value * apy) / 365) * 90 * 0.2).toFixed(4)
+      : (value * apy * 0.2).toFixed(4);
   return (
     <Box
       sx={{
@@ -440,13 +474,18 @@ const EstimateReward = ({ title }: EstimateRewardType) => {
           mb: 2,
         }}
       >
-        <Typography variant="detail2" color="text.mainTitle">
-          <Trans>0</Trans>
-        </Typography>
+        <FormattedNumber
+          variant="detail2"
+          symbolsVariant="detail2"
+          symbolsColor="text.mainTitle"
+          color="text.mainTitle"
+          value={total}
+          visibleDecimals={4}
+        />
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <img width="18px" height="18px" src={'/icons/networks/ethereum.svg'} />{' '}
           <Typography variant={xsm ? 'detail2' : 'caption'} color="text.mainTitle" ml="2px">
-            <Trans>CODE</Trans>
+            <Trans>{coins}</Trans>
           </Typography>
         </Box>
       </Box>
@@ -456,8 +495,8 @@ const EstimateReward = ({ title }: EstimateRewardType) => {
         symbolsColor="text.mainTitle"
         color="text.mainTitle"
         symbol="USD"
-        value={0}
-        visibleDecimals={2}
+        value={Number(total) * usd}
+        visibleDecimals={4}
       />
     </Box>
   );
