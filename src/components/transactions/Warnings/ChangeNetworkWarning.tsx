@@ -41,7 +41,10 @@ export const ChangeNetworkWarning = ({
       ) : (
         <Typography variant="description">
           <Trans>Please switch to {networkName}.</Trans>{' '}
-          <span style={{ marginLeft: '2px', verticalAlign: 'top' }} onClick={handleSwitchNetwork}>
+          <span
+            style={{ marginLeft: '2px', verticalAlign: 'top', textDecoration: 'underline' }}
+            onClick={handleSwitchNetwork}
+          >
             <Trans>Switch Network</Trans>
           </span>
         </Typography>
