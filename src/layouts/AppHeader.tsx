@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
-import LogoLarge from '/public/codelabs-logo-large.svg';
-import LogoSmall from '/public/codelabs-logo-small.svg';
+import LogoLight from '/public/logo-light.svg';
+import LogoDark from '/public/logo-dark.svg';
 
 import { Link } from '../components/primitives/Link';
 import { useProtocolDataContext } from '../hooks/useProtocolDataContext';
@@ -136,19 +136,17 @@ export function AppHeader({ isGovernanceDetails }: { isGovernanceDetails?: boole
           }}
           onClick={() => setMobileMenuOpen(false)}
         >
-          {lg ? (
-            <LogoLarge
+          {theme.palette.mode === 'light' ? (
+            <LogoLight
               style={{
-                color: theme.palette.text.primary,
-                height: '30px',
+                height: '38px',
                 width: 'auto',
               }}
             />
           ) : (
-            <LogoSmall
+            <LogoDark
               style={{
-                color: theme.palette.text.primary,
-                height: '30px',
+                height: '38px',
                 width: 'auto',
               }}
             />
