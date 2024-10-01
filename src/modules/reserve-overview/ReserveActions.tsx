@@ -531,7 +531,7 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
           Wallet balance
         </Typography>
         <ValueWithSymbol value={balance} symbol={symbol}>
-          <Box sx={{ ml: 2 }}>
+          <Box sx={{ ml: 2, flex: 1, maxWidth: 'max-content' }}>
             <BuyWithFiat cryptoSymbol={symbol} networkMarketName={marketTitle} />
           </Box>
         </ValueWithSymbol>
