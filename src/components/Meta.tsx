@@ -11,7 +11,7 @@ type MetaProps = {
 export function Meta({ title, description, imageUrl, timestamp }: MetaProps) {
   return (
     <Head>
-      <title>TallSwap - {title}</title>
+      <title>TallSwap | {title}</title>
       <meta name="description" content={description} key="description" />
       <meta property="og:title" content={`TallSwap - ${title}`} key="title" />
       <meta property="og:description" content={description} key="ogdescription" />
