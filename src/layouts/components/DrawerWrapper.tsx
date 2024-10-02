@@ -25,9 +25,9 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
           borderRadius: 'unset',
           width: '100%',
           top: `${headerHeight}px`,
+          bottom: 0,
           pt: 6,
           pb: 15,
-          minHeight: '100vh',
         }),
       }}
     >
