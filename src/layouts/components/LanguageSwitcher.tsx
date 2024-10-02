@@ -26,13 +26,13 @@ interface LanguageListItemProps {
   onClick: () => void;
 }
 
-export const LanguageListItem = ({ component = ListItem, onClick }: LanguageListItemProps) => {
+export const LanguageListItem = ({ component = ListItem }: LanguageListItemProps) => {
   const { i18n } = useLingui();
 
   return (
     <Box
       component={component}
-      onClick={onClick}
+      // onClick={onClick}
       sx={{ px: { xs: 0, lg: 1.5 }, py: '9px', display: 'flex', alignItems: 'center' }}
     >
       <ListItemText>
@@ -40,8 +40,8 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
           <Trans>Language</Trans>
         </Typography>
       </ListItemText>
-      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-        <Typography variant="body5" color="text.primary" sx={{ lineHeight: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'unset', color: 'text.disabled' }}>
+        <Typography variant="body5" color="text.disabled" sx={{ lineHeight: 1 }}>
           {i18n._(langMap[i18n.locale as keyof typeof langMap])}{' '}
         </Typography>
         <SvgIcon sx={{ color: 'inherit', ml: 1, fontSize: '24px !important' }}>

@@ -12,14 +12,14 @@ import {
   GhoIncentivesCard,
   GhoIncentivesCardProps,
 } from 'src/components/incentives/GhoIncentivesCard';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
-import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
-import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+// import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
+// import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+// import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -51,57 +51,57 @@ export enum ErrorType {
   NOT_ENOUGH_BORROWED,
 }
 
-interface BorrowModeSwitchProps {
-  interestRateMode: InterestRate;
-  setInterestRateMode: (value: InterestRate) => void;
-  variableRate: string;
-  stableRate: string;
-}
+// interface BorrowModeSwitchProps {
+//   interestRateMode: InterestRate;
+//   setInterestRateMode: (value: InterestRate) => void;
+//   variableRate: string;
+//   stableRate: string;
+// }
 
-const BorrowModeSwitch = ({
-  setInterestRateMode,
-  interestRateMode,
-  variableRate,
-  stableRate,
-}: BorrowModeSwitchProps) => {
-  return (
-    <Row
-      caption={
-        <APYTypeTooltip
-          text={<Trans>Borrow APY rate</Trans>}
-          key="APY type_modal"
-          variant="description"
-        />
-      }
-      captionVariant="description"
-      mb={5}
-      flexDirection="column"
-      align="flex-start"
-      captionColor="text.secondary"
-    >
-      <StyledTxModalToggleGroup
-        color="primary"
-        value={interestRateMode}
-        exclusive
-        onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ mt: 0.5 }}
-      >
-        <StyledTxModalToggleButton value={InterestRate.Variable}>
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Variable</Trans>
-          </Typography>
-          <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-        <StyledTxModalToggleButton value={InterestRate.Stable}>
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Stable</Trans>
-          </Typography>
-          <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-      </StyledTxModalToggleGroup>
-    </Row>
-  );
-};
+// const BorrowModeSwitch = ({
+//   setInterestRateMode,
+//   interestRateMode,
+//   variableRate,
+//   stableRate,
+// }: BorrowModeSwitchProps) => {
+//   return (
+//     <Row
+//       caption={
+//         <APYTypeTooltip
+//           text={<Trans>Borrow APY rate</Trans>}
+//           key="APY type_modal"
+//           variant="description"
+//         />
+//       }
+//       captionVariant="description"
+//       mb={5}
+//       flexDirection="column"
+//       align="flex-start"
+//       captionColor="text.secondary"
+//     >
+//       <StyledTxModalToggleGroup
+//         color="primary"
+//         value={interestRateMode}
+//         exclusive
+//         onChange={(_, value) => setInterestRateMode(value)}
+//         sx={{ mt: 0.5 }}
+//       >
+//         <StyledTxModalToggleButton value={InterestRate.Variable}>
+//           <Typography variant="buttonM" sx={{ mr: 1 }}>
+//             <Trans>Variable</Trans>
+//           </Typography>
+//           <FormattedNumber value={variableRate} percent variant="secondary14" />
+//         </StyledTxModalToggleButton>
+//         <StyledTxModalToggleButton value={InterestRate.Stable}>
+//           <Typography variant="buttonM" sx={{ mr: 1 }}>
+//             <Trans>Stable</Trans>
+//           </Typography>
+//           <FormattedNumber value={stableRate} percent variant="secondary14" />
+//         </StyledTxModalToggleButton>
+//       </StyledTxModalToggleGroup>
+//     </Row>
+//   );
+// };
 
 export const GhoBorrowModalContent = ({
   underlyingAsset,
@@ -239,14 +239,14 @@ export const GhoBorrowModalContent = ({
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
 
-      {poolReserve.stableBorrowRateEnabled && (
+      {/* {poolReserve.stableBorrowRateEnabled && (
         <BorrowModeSwitch
           interestRateMode={interestRateMode}
           setInterestRateMode={setInterestRateMode}
           variableRate={poolReserve.variableBorrowAPY}
           stableRate={poolReserve.stableBorrowAPY}
         />
-      )}
+      )} */}
 
       <AssetInput
         value={amount}
