@@ -17,6 +17,7 @@ import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { URL_PUBLIC } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { TonConnectContextProvider } from 'src/libs/ton-connect-provider/TonConnectProvider';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
@@ -140,7 +141,7 @@ export default function MyApp(props: MyAppProps) {
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
           <TonConnectUIProvider
-            manifestUrl={`https://aave-stesting.sotatek.works/tonconnect-manifest.json`} // file manifestUrl in the public folder
+            manifestUrl={`${URL_PUBLIC}/tonconnect-manifest.json`} // file manifestUrl in the public folder
             // manifestUrl={`https://ton-connect.github.io/demo-dapp-with-react-ui/tonconnect-manifest.json`} // file manifestUrl in the public folder
             uiPreferences={{ theme: THEME.DARK }}
             walletsListConfiguration={{
