@@ -157,7 +157,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         }
       } catch (error) {
         console.log('error supply', error);
-        return { success: false, message: error?.message, blocking: false };
+        return { success: false, message: `Transaction failed`, blocking: false };
       }
     },
     [
@@ -240,7 +240,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           throw new Error('Transaction failed');
         }
       } catch (error) {
-        return { success: false, message: error?.message, blocking: false };
+        return { success: false, message: 'Transaction failed', blocking: false };
       }
     },
     [
@@ -288,7 +288,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             blocking: false,
           };
         } else {
-          return { success: false, message: error?.message, blocking: false };
+          return { success: false, message: 'Transaction failed', blocking: false };
         }
       }
     },
@@ -347,7 +347,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
             blocking: false,
           };
         } else {
-          return { success: false, message: error.message, blocking: false };
+          return { success: false, message: 'Transaction failed', blocking: false };
         }
       }
     },
@@ -521,7 +521,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         }
       } catch (error) {
         console.log('error supply', error);
-        return { success: false, message: error?.message, blocking: false };
+        return { success: false, message: 'Transaction failed', blocking: false };
       }
     },
     [
