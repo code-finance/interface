@@ -1,11 +1,16 @@
 import { Trans } from '@lingui/macro';
 
 import { TextWithTooltip, TextWithTooltipProps } from '../TextWithTooltip';
+import { FC } from 'react';
 
-export const ReferralCodeToolTip = ({ ...rest }: TextWithTooltipProps) => {
+interface Props extends TextWithTooltipProps {
+  code: string;
+}
+
+export const ReferralCodeToolTip: FC<Props> = ({ code, ...rest }) => {
   return (
     <TextWithTooltip {...rest}>
-      <Trans>73WakrfVbNJBaAmhQtEeDv</Trans>
+      <Trans>{code}</Trans>
     </TextWithTooltip>
   );
 };
