@@ -89,7 +89,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQAHeXjjuPZ4XO8OD1uxOdjOaSj98dGJcMZZNB-RKefD64ml';
+export const address_pools = 'EQBL-q8yW6CcLtkbxy8imosss5uHHajrF26IR_0x-S3C6Xd3';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -97,9 +97,9 @@ export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
 export const API_TON_V3 = 'https://testnet.toncenter.com/api/v3';
 export const API_TON_SCAN_V2 = 'https://testnet.tonapi.io/v2';
 export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
-export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
+export const URL_API_BE = 'https://aton-api-stg.sotatek.works';
 export const SCAN_PRICE_TON = 'https://www.coingecko.com';
-export const URL_PUBLIC = 'https://aave-stesting.sotatek.works';
+export const URL_PUBLIC = 'http://ton-uat.codelabs.fi';
 
 export const OP_CODE_SUPPLY = '0x1530f236';
 export const OP_CODE_BORROW = '0xdf316703';
@@ -238,7 +238,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
           // const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
           const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
-          const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
+          // const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
+          const stableBorrowRateEnabled = false;
 
           const supplyAPYCalculate = calculateCompoundedRate({
             rate: liquidityRate,
