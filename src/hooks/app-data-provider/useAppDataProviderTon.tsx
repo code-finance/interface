@@ -89,7 +89,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQDKpw4iTQADUmx2CnZXB2z_2T_9Xg2xRKbYbMmk0fH0OMlh';
+export const address_pools = 'EQBL-q8yW6CcLtkbxy8imosss5uHHajrF26IR_0x-S3C6Xd3';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -99,6 +99,7 @@ export const API_TON_SCAN_V2 = 'https://testnet.tonapi.io/v2';
 export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
 export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
 export const SCAN_PRICE_TON = 'https://www.coingecko.com';
+export const URL_PUBLIC = 'https://colligence-uat.sotatek.works';
 
 export const OP_CODE_SUPPLY = '0x1530f236';
 export const OP_CODE_BORROW = '0xdf316703';
