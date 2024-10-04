@@ -19,6 +19,7 @@ import { hexToAscii } from 'src/utils/utils';
 import { Web3Context } from '../hooks/useWeb3Context';
 import { WalletConnectConnector } from './WalletConnectConnector';
 import { getWallet, ReadOnlyModeConnector, WalletType } from './WalletOptions';
+import { registerReferral } from 'src/utils/referral';
 
 export type ERC20TokenType = {
   address: string;
@@ -432,7 +433,11 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   // inject account into zustand as long as aave itnerface is using old web3 providers
   useEffect(() => {
     setAccount(account?.toLowerCase());
-  }, [account]);
+
+    if (account) {
+      registerReferral(account);
+    }
+  }, [account, setAccount]);
 
   useEffect(() => {
     setAccountLoading(loading);

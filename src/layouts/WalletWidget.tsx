@@ -46,6 +46,7 @@ import { useWeb3React } from '@web3-react/core';
 import { getWeb3Token } from '../utils/getWeb3Token';
 import { getReferralCode, registerReferral } from '../utils/referral';
 import { providers } from 'ethers';
+import { useReferral } from '../libs/hooks/useReferral';
 
 interface WalletWidgetProps {
   open: boolean;
@@ -86,7 +87,7 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   } else {
     networkColor = '#65c970';
   }
-
+  const { referralData } = useReferral();
   const handleWeb3Token = async (account: string, provider: providers.Web3Provider) => {
     await getWeb3Token(account, provider);
 
@@ -253,7 +254,11 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
             >
               73WakrfVbNJBaAmhQtEeDv
             </CompactableTypography>
-            <ReferralCodeToolTip iconSize={20} iconColor="text.secondary" />
+            <ReferralCodeToolTip
+              iconSize={20}
+              iconColor="text.secondary"
+              code={referralData.myCode || ''}
+            />
           </Box>
         </ListItemText>
         <ListItemIcon sx={{ mr: 0 }}>

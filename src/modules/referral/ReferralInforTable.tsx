@@ -20,10 +20,24 @@ import { CompactableTypography, CompactMode } from 'src/components/CompactableTy
 import { ReferralCodeToolTip } from 'src/components/infoTooltips/ReferralCodeToolTip';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { NumberFormatCustom } from 'src/components/transactions/AssetInput';
+import { useQuery } from '@tanstack/react-query';
+import { getReferralList } from 'src/utils/referral';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useReferral } from 'src/libs/hooks/useReferral';
 
 export const ReferralInforTable = () => {
   const theme = useTheme();
   const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
+  const { currentAccount } = useWeb3Context();
+
+  const { data: referralListRes } = useQuery({
+    queryKey: [`/api/referral/list/${currentAccount}`],
+    queryFn: () => getReferralList(currentAccount),
+  });
+
+  const { referralData } = useReferral();
+  const referralListData = referralListRes?.data?.data || [];
+
   const [network, setNetwork] = React.useState('Ethereum');
   const [coins, setCoins] = React.useState('USDT');
   const [apy, setApy] = React.useState(0.0461);
@@ -43,8 +57,9 @@ export const ReferralInforTable = () => {
   ];
 
   const handleCopyReferralCode = async () => {
-    navigator.clipboard.writeText('73WakrfVbNJBaAmhQtEeDv');
+    navigator.clipboard.writeText(referralData.myCode || '');
   };
+
   return (
     <Box sx={{ display: 'flex', gap: '20px', alignItems: 'stretch', flexWrap: 'wrap' }}>
       <BoxWrapper title={'Your info'}>
@@ -85,9 +100,14 @@ export const ReferralInforTable = () => {
                   compactMode={CompactMode.SM}
                   compact
                 >
-                  73WakrfVbNJBaAmhQtEeDv
+                  {referralData.myCode || ''}
                 </CompactableTypography>
-                <ReferralCodeToolTip iconSize={xsm ? 20 : 16} iconColor="text.primary" />
+                <ReferralCodeToolTip
+                  iconSize={xsm ? 18 : 16}
+                  iconColor="text.primary"
+                  iconMargin={4}
+                  code={referralData.myCode || ''}
+                />
               </Box>
             </Box>
             <Box
@@ -109,7 +129,7 @@ export const ReferralInforTable = () => {
                 <Trans>Recipients of your referral code</Trans>
               </WrapTypography>
               <Typography variant={xsm ? 'body1' : 'body2'} color="text.primary">
-                <Trans>19 People</Trans>
+                <Trans>{referralListData.length} People</Trans>
               </Typography>
             </Box>
           </Box>
@@ -142,26 +162,29 @@ export const ReferralInforTable = () => {
               {/* <ContentCopyIcon sx={{ width: '20px', height: '20px', ml: 1, color: 'inherit' }} /> */}
             </Typography>
           </Box>
-          <Box>
-            <Typography
-              variant={xsm ? 'body3' : 'body7'}
-              color="text.secondary"
-              mb={xsm ? 2 : 1}
-              component="div"
-            >
-              <Trans>Friend&apos;s referral code</Trans>
-            </Typography>
-            <Typography
-              sx={{ display: 'flex', alignItems: 'center' }}
-              variant={xsm ? 'body1' : 'body2'}
-              color="text.primary"
-            >
-              <Trans>mhvXdrZT4jP5T8vBxuvm75</Trans>
-              <TextWithTooltip iconSize={18} iconColor="text.primary">
-                <Trans>mhvXdrZT4jP5T8vBxuvm75</Trans>
-              </TextWithTooltip>
-            </Typography>
-          </Box>
+
+          {referralData.myReferral ? (
+            <Box>
+              <Typography
+                variant={xsm ? 'body3' : 'body7'}
+                color="text.secondary"
+                mb={xsm ? 2 : 1}
+                component="div"
+              >
+                <Trans>Friend&apos;s referral code</Trans>
+              </Typography>
+              <Typography
+                sx={{ display: 'flex', alignItems: 'center' }}
+                variant={xsm ? 'body1' : 'body2'}
+                color="text.primary"
+              >
+                <Trans>{referralData.myReferral}</Trans>
+                <TextWithTooltip iconSize={18} iconColor="text.primary" iconMargin={4}>
+                  <Trans>{referralData.myReferral}</Trans>
+                </TextWithTooltip>
+              </Typography>
+            </Box>
+          ) : null}
         </Box>
       </BoxWrapper>
       <BoxWrapper title={'Referral reward calculator'}>

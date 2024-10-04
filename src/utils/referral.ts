@@ -32,6 +32,10 @@ export const getReferralCode = (walletAddress: string) => {
   return referralApi.get(`/api/referral/${walletAddress}`);
 };
 
+export const getReferralList = (walletAddress: string) => {
+  return referralApi.get(`/api/referral/list/${walletAddress}`);
+};
+
 export const submitReferralCode = (walletAddress: string, referralCode: string) => {
   return referralApi.put(`/api/referral/${walletAddress}/setReferral`, {
     myReferral: referralCode,
