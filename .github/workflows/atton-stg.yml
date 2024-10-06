@@ -9,7 +9,7 @@ env:
 jobs:
   Copy-source-code:
     name: Copy Source Code
-    runs-on: stg-runner
+    runs-on: uat-runner
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v3
@@ -19,7 +19,7 @@ jobs:
 
   Build-and-start-application:
     name: Build And Start Application
-    runs-on: stg-runner
+    runs-on: uat-runner
     needs: Copy-source-code
     steps:
       - name: Build and start application
