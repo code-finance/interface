@@ -38,6 +38,7 @@ export interface RepayParamsSend {
   isMaxSelected?: boolean | undefined;
   isJetton?: boolean;
   balance?: string;
+  debtType?: InterestRate;
 }
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
@@ -462,7 +463,15 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const onSendRepayTon = useCallback(
-    async ({ amount, decimals, isMaxSelected, isAToken, isJetton, balance }: RepayParamsSend) => {
+    async ({
+      amount,
+      decimals,
+      isMaxSelected,
+      isAToken,
+      isJetton,
+      balance,
+      debtType,
+    }: RepayParamsSend) => {
       if (!decimals || !balance) return { success: false, message: 'error', blocking: false };
       try {
         const isBuffer =
@@ -487,7 +496,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
                 decimals
               ).toString();
 
-        const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
+        const interestRateMode = debtType === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
 
         const params = {
           amount: parseAmount,

@@ -163,6 +163,7 @@ export const RepayActions = ({
             isAToken: repayWithATokens,
             isJetton: poolReserve.isJetton,
             balance,
+            debtType,
           };
 
           const res = await onSendRepayTon(params);
