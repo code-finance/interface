@@ -48,3 +48,9 @@ package-lock.json
 .idea
 .vscode
 .env.development
+
+
+# husky checking
+.husky/commit-msg
+.husky/pre-commit
+public/icons/tokens/fxs.svg
