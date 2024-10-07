@@ -99,7 +99,7 @@ export const API_TON_SCAN_V2 = 'https://testnet.tonapi.io/v2';
 export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
 export const URL_API_BE = 'https://aton-api-stg.sotatek.works';
 export const SCAN_PRICE_TON = 'https://www.coingecko.com';
-export const URL_PUBLIC = 'http://ton-uat.codelabs.fi';
+export const URL_PUBLIC = 'https://ton-uat.codelabs.fi';
 
 export const OP_CODE_SUPPLY = '0x1530f236';
 export const OP_CODE_BORROW = '0xdf316703';
