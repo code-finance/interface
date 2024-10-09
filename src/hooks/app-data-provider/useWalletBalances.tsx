@@ -98,69 +98,6 @@ export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
   };
 };
 
-export const useTonBalance = (yourWalletTon: string, isConnectedTonWallet: boolean) => {
-  // const wallet = useTonWallet();
-  const [balance, setBalance] = useState<string>('0');
-  const [loading, setLoading] = useState<boolean>(true);
-  // const client = useTonClient();
-
-  const refetchBalanceTokenTon = useCallback(
-    async (pauseReload?: boolean) => {
-      let attempts = 0;
-      const maxAttempts = 50;
-      setLoading(pauseReload ? false : true);
-
-      if (!isConnectedTonWallet || !yourWalletTon) {
-        setBalance('0');
-        setLoading(false);
-      }
-
-      const fetchData = async (): Promise<string | undefined> => {
-        try {
-          if (!yourWalletTon) return;
-
-          const params = {
-            address: yourWalletTon,
-          };
-
-          const res = await axios.get(`${API_TON_V2}/getAddressInformation`, { params });
-
-          const balance = res.data.result.balance;
-
-          const balanceFormatted = fromNano(balance).toString();
-          setBalance(balanceFormatted);
-          setLoading(false);
-          return balanceFormatted;
-        } catch (error) {
-          attempts += 1;
-          setBalance('0');
-          console.error(`Error fetchBalance data (Attempt ${attempts}/${maxAttempts}):`, error);
-          if (attempts < maxAttempts) {
-            await sleep(3000);
-            console.log('Retrying...');
-            return fetchData();
-          } else {
-            setLoading(false);
-            throw new Error('Max retry attempts reached.');
-          }
-        }
-      };
-
-      try {
-        await fetchData();
-      } catch (error) {
-        console.error('Final error after all attempts:', error);
-      }
-    },
-    [isConnectedTonWallet, yourWalletTon]
-  );
-
-  useEffect(() => {
-    refetchBalanceTokenTon();
-  }, [refetchBalanceTokenTon, isConnectedTonWallet, yourWalletTon]);
-
-  return { balance, loading, refetchBalanceTokenTon };
-};
 export interface WalletBalances {
   walletBalances: WalletBalancesMap;
   hasEmptyWallet: boolean;

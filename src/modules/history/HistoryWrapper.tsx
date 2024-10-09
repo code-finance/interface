@@ -58,7 +58,7 @@ export const HistoryWrapper = () => {
   } = useTransactionHistory({ isFilterActive });
 
   const { data: transactionsTonNetwork, isLoading: isLoadingTonNetwork } =
-    useTransactionHistoryTonNetwork({});
+    useTransactionHistoryTonNetwork();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const transactions: any = isConnectNetWorkTon ? transactionsTonNetwork : transactionsMain;
@@ -134,9 +134,6 @@ export const HistoryWrapper = () => {
       }
       let assetPriceUSD = '1';
       if (reservesTon && reservesTon.length) {
-        if (item.symbol === 'TON') {
-          console.log('item.symbol: ', item.symbol);
-        }
         assetPriceUSD =
           reservesTon.find((subItem) => subItem.symbol === item.symbol)?.priceInUSD.toString() ??
           '1';
