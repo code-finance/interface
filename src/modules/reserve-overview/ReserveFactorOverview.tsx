@@ -77,34 +77,37 @@ export const ReserveFactorOverview = ({
         />
       </ReserveOverviewBox>
 
-      <ReserveOverviewBox title={<Trans>Collector Contract</Trans>}>
-        <Link
-          onClick={() => {
-            trackEvent(GENERAL.EXTERNAL_LINK, {
-              Link: 'Collector Contract ' + reserveName,
-              asset: reserveAsset,
-              assetName: reserveName,
-            });
-          }}
-          href={explorerLink}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="body6" color="text.primary">
-              <Trans>View contract</Trans>
-            </Typography>
-            <SvgIcon
-              sx={(theme) => ({
-                ml: 1,
-                fontSize: 18,
-                color: theme.palette.text.primary,
-                '&:hover': { color: theme.palette.text.primary },
-              })}
-            >
-              <CallMadeOutlinedIcon />
-            </SvgIcon>
-          </Box>
-        </Link>
-      </ReserveOverviewBox>
+      {!isTonNetwork && (
+        <ReserveOverviewBox title={<Trans>Collector Contract</Trans>}>
+          <Link
+            onClick={() => {
+              trackEvent(GENERAL.EXTERNAL_LINK, {
+                Link: 'Collector Contract ' + reserveName,
+                asset: reserveAsset,
+                assetName: reserveName,
+              });
+            }}
+            href={explorerLink}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="body6" color="text.primary">
+                <Trans>View contract</Trans>
+              </Typography>
+              <SvgIcon
+                sx={(theme) => ({
+                  ml: 1,
+                  fontSize: 18,
+                  color: theme.palette.text.primary,
+                  '&:hover': { color: theme.palette.text.primary },
+                })}
+              >
+                <CallMadeOutlinedIcon />
+              </SvgIcon>
+            </Box>
+          </Link>
+        </ReserveOverviewBox>
+      )}
+
       {/* TO-DO: Refactor grid layout, currently uses flex: space-around which breaks with 2 elements */}
       <Box
         sx={{
