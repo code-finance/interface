@@ -171,192 +171,53 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [onSendWithdrawTonNetwork, handleTransaction]
   );
 
-  const onSendRepayTokenTon = useCallback(
-    async ({ amount, isAToken, interestRateMode, isJetton }: RepayParamsSend) => {
-      if (!providerJettonMinter || !client || !interestRateMode || !providerPool)
-        return { success: false, message: 'error', blocking: false };
-
+  const onSendRepayTonNetwork = useCallback(
+    async (
+      decimals: number | undefined,
+      amount: string,
+      interestRateMode: number,
+      useAToken: boolean,
+      isBuffer: boolean | undefined
+    ) => {
+      if (!AppTON || !sender || !decimals) return { success: false, message: 'Invalid parameters' };
       try {
-        if (isJetton) {
-          const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-            Address.parse(yourAddressWallet)
-          );
+        const isMaxRepay = Number(amount) === -1;
+        const parseAmount = isMaxRepay
+          ? '1'
+          : parseUnits(
+              valueToBigNumber(amount)
+                .multipliedBy(isBuffer ? 1.001 : 1)
+                .toFixed(decimals),
+              decimals
+            ).toString();
 
-          const contractJettonWallet = new JettonWallet(
-            walletAddressJettonMinter // z-ton-wallet
-          );
-
-          const providerJettonWallet = client.open(
-            contractJettonWallet
-          ) as OpenedContract<JettonWallet>;
-
-          await providerJettonWallet.sendTransfer(
-            sender, //via: Sender,
-            toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
-            BigInt(amount), // User input amount
-            Address.parse(address_pools), //Address poll
-            Address.parse(yourAddressWallet), // User address wallet
-            Cell.EMPTY, //
-            toNano('0.1'), // forward_ton_amount: bigint,
-            beginCell()
-              .storeUint(Op.repay, 32)
-              .storeBit(interestRateMode)
-              .storeBit(isAToken)
-              .storeBit(Number(amount) === -1 ? true : false)
-              .endCell()
-          );
-        } else {
-          const dataMultiSig = await getMultiSig({
-            isMock: false,
-          });
-          const repayParams: RepayParams = {
-            queryId: Date.now(),
-            amount: BigInt(amount),
-            useAToken: isAToken,
-            isMax: false,
-            priceData: dataMultiSig,
-            interestRateMode: interestRateMode,
-          };
-          await providerPool.sendRepayTON(sender, repayParams);
-        }
-
-        return { success: true, message: 'success' };
-      } catch (error) {
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [client, providerJettonMinter, providerPool, sender, yourAddressWallet]
-  );
-
-  const onSendRepayATokenTon = useCallback(
-    async ({ amount, isAToken, interestRateMode, isJetton }: RepayParamsSend) => {
-      if (!providerJettonMinter || !client || !providerPool || !interestRateMode)
-        return { success: false, message: 'error', blocking: false };
-
-      try {
-        const dataMultiSig = await getMultiSig({
-          isMock: false,
-        });
-
-        if (isJetton) {
-          const paramsRepay: RepayParams = {
-            queryId: Date.now(),
-            amount: BigInt(amount), // amount borrow
-            poolJWRepay: await providerJettonMinter.getWalletAddress(Address.parse(address_pools)),
-            poolJWCollateral: await providerJettonMinter.getWalletAddress(
-              Address.parse(address_pools)
-            ),
-            interestRateMode: interestRateMode,
-            useAToken: isAToken,
-            isMax: false,
-            priceData: dataMultiSig,
-          };
-
-          await providerPool.sendRepayUseAToken(
-            sender, //via: Sender
-            paramsRepay //via: Sender,
-          );
-        } else {
-          const repayParams: RepayParams = {
-            queryId: Date.now(),
-            amount: BigInt(amount),
-            useAToken: isAToken,
-            isMax: false,
-            priceData: dataMultiSig,
-            interestRateMode: interestRateMode,
-          };
-          await providerPool.sendRepayTON(sender, repayParams);
-        }
-
-        return { success: true, message: 'success' };
-      } catch (error) {
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [client, providerJettonMinter, providerPool, sender]
-  );
-
-  const onSendRepayTon = useCallback(
-    async ({
-      amount,
-      decimals,
-      isMaxSelected,
-      isAToken,
-      isJetton,
-      balance,
-      debtType,
-    }: RepayParamsSend) => {
-      if (!decimals || !balance) return { success: false, message: 'error', blocking: false };
-      try {
-        const isBuffer =
-          isMaxSelected &&
-          valueToBigNumber(amount).multipliedBy(1.001).isLessThan(valueToBigNumber(balance));
-
-        let res:
-          | boolean
-          | {
-              success: boolean;
-              message: string;
-            }
-          | undefined;
-
-        const parseAmount =
-          Number(amount) === -1
-            ? 1
-            : parseUnits(
-                valueToBigNumber(amount)
-                  .multipliedBy(isBuffer ? 1.001 : 1)
-                  .toFixed(decimals),
-                decimals
-              ).toString();
-
-        const interestRateMode = debtType === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
-
-        const params = {
-          amount: parseAmount,
-          isAToken,
+        await AppTON.sendRepay(sender, Address.parse(underlyingAssetTon), BigInt(parseAmount), {
           interestRateMode,
-          isJetton,
-        };
-
-        if (isAToken) res = await onSendRepayATokenTon(params);
-        else res = await onSendRepayTokenTon(params);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash && !!res?.success) {
-          const status = await getTransactionStatus(txHash);
-          return {
-            success: status,
-            txHash: txHash,
-            blocking: !status,
-            message: txHash,
-          };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
-        }
+          isMaxRepay,
+          useAToken,
+        });
+        return { success: true, message: 'success' };
       } catch (error) {
-        console.log('error supply', error);
-        return { success: false, message: 'Transaction failed', blocking: false };
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendRepayATokenTon,
-      onSendRepayTokenTon,
-      yourAddressWallet,
-    ]
+    [AppTON, sender, underlyingAssetTon]
+  );
+
+  const actionSendRepayTonNetwork = useCallback(
+    async ({ amount, decimals, isMaxSelected, isAToken, balance, debtType }: RepayParamsSend) => {
+      if (!balance) return { success: false, message: 'Invalid parameters', blocking: false };
+
+      const isBuffer =
+        isMaxSelected &&
+        valueToBigNumber(amount).multipliedBy(1.001).isLessThan(valueToBigNumber(balance));
+      const interestRateMode = debtType === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
+
+      return handleTransaction(() =>
+        onSendRepayTonNetwork(decimals, amount.toString(), interestRateMode, isAToken, isBuffer)
+      );
+    },
+    [handleTransaction, onSendRepayTonNetwork]
   );
 
   return {
@@ -365,6 +226,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     actionSendBorrowTonNetwork,
     actionToggleCollateralTonNetwork,
     actionSendWithdrawTonNetwork,
-    onSendRepayTon,
+    actionSendRepayTonNetwork,
   };
 };

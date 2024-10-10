@@ -89,6 +89,15 @@ export class Pool implements Contract {
     });
   }
 
+  async sendRepay(provider: ContractProvider, via: Sender, params: RepayParams) {
+    const body = RepayParamsToCell(params);
+    await provider.internal(via, {
+      value: toNano('0.2'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body,
+    });
+  }
+
   async sendSetUseReserveAsCollateral(
     provider: ContractProvider,
     via: Sender,
