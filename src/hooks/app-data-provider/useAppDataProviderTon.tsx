@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pool } from 'src/contracts/Pool';
-import { useContractUnNotAuth } from 'src/hooks/useContract';
+import { useContractUnNotAuth, useTonApp } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { calculateReserveDebt } from 'src/utils/calculate-reserve-debt';
@@ -73,13 +73,12 @@ export interface PoolContractReservesDataType {
   name?: string | undefined;
   poolJWAddress: Address;
   reserveFactor: bigint | string | 0 | number;
-  reserveID: bigint | string;
   supplyCap: bigint | string | 0 | number;
   symbol?: string | undefined;
   totalStableDebt: bigint | string | 0 | number;
   totalSupply: bigint | string | 0 | number;
   totalVariableDebt: bigint | string | 0 | number;
-  underlyingAddress: Address;
+  underlyingAddress: Address; // USDT_MINTER === address minter
   variableBorrowIndex: bigint | 0;
   walletBalance?: string;
   stableRateBorrowingEnabled?: boolean;
@@ -89,7 +88,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQBC6BnUn0dkN_hCNr5u5-HEJqWr1fULzhc7_mGT6GE0Zxlq';
+export const address_pools = 'EQC6s6T8Oj40eoolplgGO39qqyUiqmmXatGX0EieFeSOUGtU';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -141,6 +140,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const poolContractNotAuth = useContractUnNotAuth<Pool>(address_pools, Pool);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const { onGetBalancesTokenInWalletTon } = useGetBalanceTon();
+  const TonApp = useTonApp();
 
   useMemo(() => {
     if (isConnectedTonWallet) {
@@ -153,7 +153,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
       // Check if the pool contract is available
-      if (!poolContractNotAuth) return;
+      if (!poolContractNotAuth || !TonApp) return;
 
       try {
         setLoading(pauseReload ? false : true);
@@ -162,7 +162,8 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         await retry(
           async () => {
             // Fetch reserves data from the pool contract
-            const reserves = await poolContractNotAuth.getReservesData();
+            // const reserves = await poolContractNotAuth.getReservesData();
+            const reserves = await TonApp.getReservesData();
 
             if (!reserves) {
               throw new Error('Failed to fetch reserves');
@@ -208,6 +209,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       }
     },
     [
+      TonApp,
       isConnectedTonWallet,
       onGetBalancesTokenInWalletTon,
       poolContractNotAuth,
@@ -595,7 +597,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             stableBorrowAPY,
             variableBorrowAPY,
             borrowRateMode: 'Variable',
-            reserveID: item.reserveID.toString(),
             totalSupply: item.totalSupply.toString(),
             liquidity: formatUnits(item.liquidity || '0', decimals),
           };

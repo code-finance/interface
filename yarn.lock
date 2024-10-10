@@ -3690,6 +3690,11 @@
     jssha "3.2.0"
     tweetnacl "1.0.3"
 
+"@ton/sandbox@^0.22.0":
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/@ton/sandbox/-/sandbox-0.22.0.tgz#76a3b724f40be18512df748deee6c5d5ff0a96fb"
+  integrity sha512-ilvKtyAGxJyEbIwITlx1y78oDmJyvT+pkLfVm4952NjxZpANdG2nZ8/mBGJlWph9FZtxxXCjCf/79hNihC6P6A==
+
 "@ton/ton@^14.0.0":
   version "14.0.0"
   resolved "https://registry.npmjs.org/@ton/ton/-/ton-14.0.0.tgz#a66fbbfb159200892557442039a0341cda71fc2d"
