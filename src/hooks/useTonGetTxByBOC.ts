@@ -103,11 +103,11 @@ export function useTonGetTxByBOC() {
       let attempts = 0;
       const maxAttempts = 50;
 
-      const fetchStatusTransaction = async (): Promise<boolean | null> => {
+      const fetchStatusTransaction = async (): Promise<boolean> => {
         while (attempts < maxAttempts) {
           try {
             attempts++;
-            if (!txHash) return null;
+            if (!txHash) return false;
 
             const { data } = await axios.get(`${API_TON_SCAN_V2}/traces/${txHash}`);
             const children = data.children;
@@ -141,7 +141,7 @@ export function useTonGetTxByBOC() {
             await sleep(4000); // Retry after sleep if error occurs
           }
         }
-        return null; // Return null if max attempts reached without success
+        return false; // Return null if max attempts reached without success
       };
 
       return await fetchStatusTransaction();

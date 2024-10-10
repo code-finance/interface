@@ -100,7 +100,7 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
   const { walletAddressTonWallet } = useTonConnectContext();
-  const { actionToggleCollateralTonNetwork, onSendWithdrawTon } = useTonTransactions(
+  const { actionToggleCollateralTonNetwork, actionSendWithdrawTonNetwork } = useTonTransactions(
     walletAddressTonWallet,
     String(underlyingAssetTon)
   );
@@ -298,11 +298,7 @@ export const useTransactionHandler = ({
       setMainTxState({ ...mainTxState, loading: true });
       if (typeAction === 'isWithdraw') {
         try {
-          const res = await onSendWithdrawTon(
-            String(poolJettonWalletAddress),
-            decimals,
-            `${eventTxInfo?.amount}`
-          );
+          const res = await actionSendWithdrawTonNetwork(decimals, `${eventTxInfo?.amount}`);
 
           await Promise.all([
             retry(async () => getPoolContractGetReservesData(true), {
