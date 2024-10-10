@@ -179,4 +179,12 @@ export class App {
   async getReservesData() {
     return this.pool.getReservesData();
   }
+
+  async getUserData(ownerAddress: Address) {
+    return this.pool.getUserData(ownerAddress);
+  }
+
+  async getUserAddress(ownerAddress: Address) {
+    return this.pool.getUserAddress(ownerAddress);
+  }
 }

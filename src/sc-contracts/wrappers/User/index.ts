@@ -60,7 +60,6 @@ export class User implements Contract {
       }
       return result;
     } catch (error) {
-      console.log('getUserData error', error);
       return [];
     }
   }

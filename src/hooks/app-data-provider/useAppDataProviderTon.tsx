@@ -13,8 +13,7 @@ import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Pool } from 'src/contracts/Pool';
-import { useContractUnNotAuth, useTonApp } from 'src/hooks/useContract';
+import { useAppTON } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { calculateReserveDebt } from 'src/utils/calculate-reserve-debt';
@@ -88,7 +87,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQC6s6T8Oj40eoolplgGO39qqyUiqmmXatGX0EieFeSOUGtU';
+export const address_pools = 'EQClj612aXTa203fv6YP7ahLt1GUxjlYIzTRvrq2IeMfHIGG';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -137,10 +136,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const [poolContractReservesData, setPoolContractReservesData] = useState<
     PoolContractReservesDataType[]
   >([]);
-  const poolContractNotAuth = useContractUnNotAuth<Pool>(address_pools, Pool);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
   const { onGetBalancesTokenInWalletTon } = useGetBalanceTon();
-  const TonApp = useTonApp();
+  const AppTON = useAppTON();
 
   useMemo(() => {
     if (isConnectedTonWallet) {
@@ -153,7 +151,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
       // Check if the pool contract is available
-      if (!poolContractNotAuth || !TonApp) return;
+      if (!AppTON) return;
 
       try {
         setLoading(pauseReload ? false : true);
@@ -162,8 +160,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         await retry(
           async () => {
             // Fetch reserves data from the pool contract
-            // const reserves = await poolContractNotAuth.getReservesData();
-            const reserves = await TonApp.getReservesData();
+            const reserves = await AppTON.getReservesData();
 
             if (!reserves) {
               throw new Error('Failed to fetch reserves');
@@ -208,13 +205,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         setPoolContractReservesData([]); // Set empty data if failure occurs after retries
       }
     },
-    [
-      TonApp,
-      isConnectedTonWallet,
-      onGetBalancesTokenInWalletTon,
-      poolContractNotAuth,
-      walletAddressTonWallet,
-    ]
+    [AppTON, onGetBalancesTokenInWalletTon, walletAddressTonWallet, isConnectedTonWallet]
   );
 
   useEffect(() => {

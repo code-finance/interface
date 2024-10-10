@@ -33,7 +33,7 @@ export function useContractUnNotAuth<T extends Contract>(
   }, [client]);
 }
 
-export function useTonApp(): App | undefined {
+export function useAppTON(): App | undefined {
   const client = useTonClient();
 
   return useAsyncInitialize(async () => {

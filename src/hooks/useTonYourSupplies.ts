@@ -11,15 +11,14 @@ import { Address } from '@ton/core';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { Pool } from 'src/contracts/Pool';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { sleep } from 'src/utils/rotationProvider';
 import { retry } from 'ts-retry-promise';
 
-import { address_pools, MAX_ATTEMPTS_50 } from './app-data-provider/useAppDataProviderTon';
+import { MAX_ATTEMPTS_50 } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
-import { useTonClient } from './useTonClient';
+import { useAppTON } from './useContract';
 
 export interface UseTransactionHandlerTonProps {
   yourAddressWallet: string;
@@ -30,7 +29,7 @@ export interface UserSuppliesType {
   underlyingAddress: string;
   liquidityIndex: string;
   totalSupply: number | bigint;
-  isCollateral: boolean;
+  isCollateral: boolean | undefined;
   variableBorrowBalance: number | bigint;
   variableBorrowIndex: bigint;
   stableBorrowBalance: number | bigint;
@@ -40,11 +39,11 @@ export interface UserSuppliesType {
 
 export const useTonYourSupplies = (yourAddressWallet: string, reserves: DashboardReserve[]) => {
   const { isConnectedTonWallet } = useTonConnectContext();
-  const client = useTonClient();
   const [loading, setLoading] = useState<boolean>(false);
   const [yourSuppliesTon, setYourSuppliesTon] = useState<FormattedUserReserves[]>([]);
   const [userSupplies, setUserSupplies] = useState<UserSuppliesType[]>([]);
   const [contractUserTon, setContractUserTon] = useState<string>('');
+  const AppTON = useAppTON();
 
   const getAssetCollateralTypeTon = (
     underlyingBalance: string,
@@ -72,20 +71,14 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
     try {
       await retry(
         async () => {
-          if (!client || !address_pools || !yourAddressWallet) return;
-
-          // Open the pool contract using the address
-          const poolContract = client.open(Pool.createFromAddress(Address.parse(address_pools)));
-
+          if (!yourAddressWallet || !AppTON) return;
           // Fetch user data from the pool contract
-          const res = await poolContract.getUserData(Address.parse(yourAddressWallet));
-          const contractUserTon = await poolContract.getUserAddress(
-            Address.parse(yourAddressWallet)
-          );
+          const res = await AppTON.getUserData(Address.parse(yourAddressWallet));
+          const contractUserTon = await AppTON.getUserAddress(Address.parse(yourAddressWallet));
+
           setContractUserTon(contractUserTon.toString());
 
           // Map the response to the format you need
-
           const data = res.map((item) => ({
             ...item,
             supplyBalance: item.totalSupply.toString(),
@@ -105,7 +98,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
       console.error('Failed to fetch supplies after retries:', error);
       setUserSupplies([]); // Set empty data in case of failure
     }
-  }, [client, isConnectedTonWallet, yourAddressWallet]);
+  }, [AppTON, isConnectedTonWallet, yourAddressWallet]);
 
   useEffect(() => {
     setLoading(true);
