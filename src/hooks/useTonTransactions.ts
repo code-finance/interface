@@ -13,7 +13,7 @@ import { getMultiSig } from 'src/contracts/utils';
 // import { KeyPair, sign } from 'ton-crypto';
 import { address_pools, GAS_FEE_TON } from './app-data-provider/useAppDataProviderTon';
 import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
-import { useContract } from './useContract';
+import { useAppTON, useContract } from './useContract';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
@@ -44,6 +44,7 @@ export interface RepayParamsSend {
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
   const client = useTonClient();
+  const AppTON = useAppTON();
   const { sender, getLatestBoc } = useTonConnect();
 
   const providerJettonMinter = useContract<JettonMinter>(underlyingAssetTon, JettonMinter);
@@ -57,36 +58,14 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     amount: '-1',
   };
 
-  const onSendJettonToken = useCallback(
+  const onSendSupplyTonNetwork = useCallback(
     async (amount: string) => {
-      if (!client || !yourAddressWallet || !amount || !providerJettonMinter) return;
-
-      const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-        Address.parse(yourAddressWallet)
-      );
-
-      const contractJettonWallet = new JettonWallet(
-        walletAddressJettonMinter // z-ton-wallet
-      );
-
-      const providerJettonWallet = client.open(
-        contractJettonWallet
-      ) as OpenedContract<JettonWallet>;
-
+      if (!AppTON || !amount || !sender) return;
       try {
-        await providerJettonWallet.sendTransfer(
+        await AppTON.sendSupply(
           sender, //via: Sender,
-          toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
-          BigInt(amount), // User input amount
-          Address.parse(address_pools), //Address poll
-          Address.parse(yourAddressWallet), // User address wallet
-          Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
-          toNano('0.1'), // forward_ton_amount: bigint,
-          beginCell()
-            .storeUint(Op.supply, 32)
-            .storeAddress(Address.parse(underlyingAssetTon)) // = address asset
-            .storeUint(1, 1)
-            .endCell() //tokenAddress: Address
+          Address.parse(underlyingAssetTon),
+          BigInt(amount) // User input amount
         );
 
         return { success: true, message: 'success' };
@@ -96,45 +75,13 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
-    [client, providerJettonMinter, sender, underlyingAssetTon, yourAddressWallet]
+    [AppTON, sender, underlyingAssetTon]
   );
 
-  const onSendNativeToken = useCallback(
+  const actionSendSupplyTon = useCallback(
     async (amount: string) => {
-      if (!client || !yourAddressWallet || !amount || !providerPoolAssetTon) return;
       try {
-        const params = {
-          queryId: Date.now(),
-          amount: BigInt(amount),
-        };
-        await providerPoolAssetTon.sendDeposit(
-          sender, //via: Sender
-          params //via: Sender
-        );
-
-        return { success: true, message: 'success' };
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        // [ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.insufficientbalance something wrong
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [client, providerPoolAssetTon, sender, yourAddressWallet]
-  );
-
-  const onSendSupplyTon = useCallback(
-    async (amount: string, isJetton: boolean | undefined) => {
-      try {
-        let res:
-          | boolean
-          | {
-              success: boolean;
-              message: string;
-            }
-          | undefined;
-        if (isJetton) res = await onSendJettonToken(amount);
-        else res = await onSendNativeToken(amount);
+        const res = await onSendSupplyTonNetwork(amount);
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
@@ -161,14 +108,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, message: `Transaction failed`, blocking: false };
       }
     },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendJettonToken,
-      onSendNativeToken,
-      yourAddressWallet,
-    ]
+    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, onSendSupplyTonNetwork, yourAddressWallet]
   );
 
   const onSendBorrowJettonToken = useCallback(
@@ -545,7 +485,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
   return {
     approvedAmountTonAssume,
-    onSendSupplyTon,
+    actionSendSupplyTon,
     onSendBorrowTon,
     onToggleCollateralTon,
     onSendWithdrawTon,

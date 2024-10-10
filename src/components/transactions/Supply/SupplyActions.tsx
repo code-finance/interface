@@ -54,7 +54,7 @@ export const SupplyActions = React.memo(
     const { walletAddressTonWallet } = useTonConnectContext();
     const { getPoolContractGetReservesData, getYourSupplies, isConnectNetWorkTon } =
       useAppDataContext();
-    const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(
+    const { actionSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(
       walletAddressTonWallet,
       `${underlyingAssetTon}`
     );
@@ -156,9 +156,8 @@ export const SupplyActions = React.memo(
         if (isConnectNetWorkTon) {
           setMainTxState({ ...mainTxState, loading: true });
           try {
-            const resSupplyTon = await onSendSupplyTon(
-              parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
-              isJetton
+            const resSupplyTon = await actionSendSupplyTon(
+              parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString()
             );
 
             await Promise.all([
