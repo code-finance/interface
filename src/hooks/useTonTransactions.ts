@@ -77,7 +77,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [AppTON, sender, underlyingAssetTon]
   );
 
-  const actionSendSupplyTon = useCallback(
+  const actionSendSupplyTonNetwork = useCallback(
     async (amount: string) => {
       try {
         const res = await onSendSupplyTonNetwork(amount);
@@ -130,7 +130,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [AppTON, sender, underlyingAssetTon]
   );
 
-  const actionSendBorrowTon = useCallback(
+  const actionSendBorrowTonNetwork = useCallback(
     async (amount: string, interestRateMode: InterestRate) => {
       try {
         const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
@@ -158,52 +158,54 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, onSendBorrowTonNetwork, yourAddressWallet]
   );
 
-  const onToggleCollateralTon = useCallback(
-    async (poolJWAddress: string, status: boolean) => {
-      if (!client || !providerPool || !poolJWAddress) return;
+  const onToggleCollateralTonNetwork = useCallback(
+    async (status: boolean) => {
+      if (!AppTON || !sender) return;
       try {
-        const dataMultiSig = await getMultiSig({
-          isMock: false,
-        });
+        await AppTON.sendSetUseReserveAsCollateral(
+          sender, //via: Sender
+          Address.parse(underlyingAssetTon),
+          status
+        );
+        return { success: true, message: 'success' };
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [AppTON, sender, underlyingAssetTon]
+  );
 
-        const params = {
-          poolJWAddress: Address.parse(poolJWAddress),
-          useAsCollateral: status,
-          priceData: dataMultiSig,
-        };
-
-        await providerPool.sendSetUseReserveAsCollateral(sender, params);
+  const actionToggleCollateralTonNetwork = useCallback(
+    async (status: boolean) => {
+      try {
+        const res = await onToggleCollateralTonNetwork(status);
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        if (txHash) {
+        if (txHash && !!res?.success) {
           const status = await getTransactionStatus(txHash);
           return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else {
-          return { success: false, error: 'No txHash received', blocking: false };
-        }
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
-        if (_.includes(ErrorCancelledTon, errorToCheck)) {
+        } else if (_.includes(ErrorCancelledTon, res?.message)) {
           return {
             success: false,
             message: ErrorCancelledTon[0],
             blocking: false,
           };
         } else {
-          return { success: false, message: 'Transaction failed', blocking: false };
+          throw new Error('Transaction failed');
         }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
     [
-      client,
       getLatestBoc,
       getTransactionStatus,
       onGetGetTxByBOC,
-      providerPool,
-      sender,
+      onToggleCollateralTonNetwork,
       yourAddressWallet,
     ]
   );
@@ -449,9 +451,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
   return {
     approvedAmountTonAssume,
-    actionSendSupplyTon,
-    actionSendBorrowTon,
-    onToggleCollateralTon,
+    actionSendSupplyTonNetwork,
+    actionSendBorrowTonNetwork,
+    actionToggleCollateralTonNetwork,
     onSendWithdrawTon,
     onSendRepayTon,
   };

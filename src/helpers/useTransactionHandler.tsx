@@ -100,7 +100,7 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
   const { walletAddressTonWallet } = useTonConnectContext();
-  const { onToggleCollateralTon, onSendWithdrawTon } = useTonTransactions(
+  const { actionToggleCollateralTonNetwork, onSendWithdrawTon } = useTonTransactions(
     walletAddressTonWallet,
     String(underlyingAssetTon)
   );
@@ -339,10 +339,7 @@ export const useTransactionHandler = ({
           console.log('error Withdraw--------------', error);
         }
       } else if ((typeAction = 'isCollateral')) {
-        const resToggle = await onToggleCollateralTon(
-          String(poolJettonWalletAddress),
-          Boolean(usageAsCollateral)
-        );
+        const resToggle = await actionToggleCollateralTonNetwork(Boolean(usageAsCollateral));
 
         await Promise.all([
           retry(async () => getPoolContractGetReservesData(true), {
