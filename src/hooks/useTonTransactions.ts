@@ -10,7 +10,6 @@ import { JettonWallet } from 'src/contracts/JettonWallet';
 import { Pool, RepayParams } from 'src/contracts/Pool';
 import { getMultiSig } from 'src/contracts/utils';
 
-// import { KeyPair, sign } from 'ton-crypto';
 import { address_pools, GAS_FEE_TON } from './app-data-provider/useAppDataProviderTon';
 import { useAppTON, useContract } from './useContract';
 import { useTonClient } from './useTonClient';
@@ -47,7 +46,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   const { sender, getLatestBoc } = useTonConnect();
 
   const providerJettonMinter = useContract<JettonMinter>(underlyingAssetTon, JettonMinter);
-  const providerPoolAssetTon = useContract<Pool>(underlyingAssetTon, Pool);
   const providerPool = useContract<Pool>(address_pools, Pool);
 
   const approvedAmountTonAssume = {
@@ -57,20 +55,36 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     amount: '-1',
   };
 
-  const onSendSupplyTonNetwork = useCallback(
-    async (amount: string) => {
-      if (!AppTON || !amount || !sender) return;
+  const handleTransaction = useCallback(
+    async (transactionFunc: () => Promise<{ success: boolean; message: string }>) => {
       try {
-        await AppTON.sendSupply(
-          sender, //via: Sender,
-          Address.parse(underlyingAssetTon),
-          BigInt(amount) // User input amount
-        );
+        const res = await transactionFunc();
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        return { success: true, message: 'success' };
+        if (txHash && res.success) {
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash, blocking: !status, message: txHash };
+        } else if (_.includes(ErrorCancelledTon, res.message)) {
+          return { success: false, message: ErrorCancelledTon[0], blocking: false };
+        } else {
+          throw new Error('Transaction failed');
+        }
       } catch (error) {
         console.error('Transaction failed:', error);
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
+        return { success: false, message: 'Transaction failed', blocking: false };
+      }
+    },
+    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, yourAddressWallet]
+  );
+
+  const onSendSupplyTonNetwork = useCallback(
+    async (amount: string) => {
+      if (!AppTON || !amount || !sender) return { success: false, message: 'Invalid parameters' };
+      try {
+        await AppTON.sendSupply(sender, Address.parse(underlyingAssetTon), BigInt(amount));
+        return { success: true, message: 'success' };
+      } catch (error) {
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -78,52 +92,22 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const actionSendSupplyTonNetwork = useCallback(
-    async (amount: string) => {
-      try {
-        const res = await onSendSupplyTonNetwork(amount);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash && !!res?.success) {
-          const status = await getTransactionStatus(txHash);
-          return {
-            success: status,
-            txHash: txHash,
-            blocking: !status,
-            message: txHash,
-          };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
-        }
-      } catch (error) {
-        console.log('error supply', error);
-        return { success: false, message: `Transaction failed`, blocking: false };
-      }
-    },
-    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, onSendSupplyTonNetwork, yourAddressWallet]
+    (amount: string) => handleTransaction(() => onSendSupplyTonNetwork(amount)),
+    [onSendSupplyTonNetwork, handleTransaction]
   );
 
   const onSendBorrowTonNetwork = useCallback(
     async (amount: string, interestRateMode: number) => {
-      if (!AppTON || !amount || !sender) return;
+      if (!AppTON || !amount || !sender) return { success: false, message: 'Invalid parameters' };
       try {
         await AppTON.sendBorrow(
-          sender, //via: Sender
+          sender,
           Address.parse(underlyingAssetTon),
           BigInt(amount),
           interestRateMode
         );
-
         return { success: true, message: 'success' };
       } catch (error) {
-        console.error('Transaction failed:', error);
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -131,45 +115,24 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const actionSendBorrowTonNetwork = useCallback(
-    async (amount: string, interestRateMode: InterestRate) => {
-      try {
-        const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
-        const res = await onSendBorrowTonNetwork(amount, rateMode);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash && !!res?.success) {
-          const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
-        }
-      } catch (error) {
-        return { success: false, message: 'Transaction failed', blocking: false };
-      }
+    (amount: string, interestRateMode: InterestRate) => {
+      const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1;
+      return handleTransaction(() => onSendBorrowTonNetwork(amount, rateMode));
     },
-    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, onSendBorrowTonNetwork, yourAddressWallet]
+    [onSendBorrowTonNetwork, handleTransaction]
   );
 
   const onToggleCollateralTonNetwork = useCallback(
     async (status: boolean) => {
-      if (!AppTON || !sender) return;
+      if (!AppTON || !sender) return { success: false, message: 'Invalid parameters' };
       try {
         await AppTON.sendSetUseReserveAsCollateral(
-          sender, //via: Sender
+          sender,
           Address.parse(underlyingAssetTon),
           status
         );
         return { success: true, message: 'success' };
       } catch (error) {
-        console.error('Transaction failed:', error);
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -177,58 +140,25 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const actionToggleCollateralTonNetwork = useCallback(
-    async (status: boolean) => {
-      try {
-        const res = await onToggleCollateralTonNetwork(status);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash && !!res?.success) {
-          const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
-        }
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onToggleCollateralTonNetwork,
-      yourAddressWallet,
-    ]
+    (status: boolean) => handleTransaction(() => onToggleCollateralTonNetwork(status)),
+    [onToggleCollateralTonNetwork, handleTransaction]
   );
 
   const onSendWithdrawTonNetwork = useCallback(
     async (decimals: number | undefined, amount: string) => {
-      if (!AppTON || !sender || !decimals) return;
+      if (!AppTON || !sender || !decimals) return { success: false, message: 'Invalid parameters' };
       try {
         const isMax = Number(amount) === -1;
         const parseAmount = isMax
-          ? 1
+          ? '1'
           : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
 
-        const params = {
+        await AppTON.sendWithdraw(sender, Address.parse(underlyingAssetTon), {
           amount: BigInt(parseAmount),
           isMaxWithdraw: isMax,
-        };
-
-        await AppTON.sendWithdraw(sender, Address.parse(underlyingAssetTon), params);
-
+        });
         return { success: true, message: 'success' };
       } catch (error) {
-        console.error('Transaction failed:', error);
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
@@ -236,37 +166,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const actionSendWithdrawTonNetwork = useCallback(
-    async (decimals: number | undefined, amount: string) => {
-      try {
-        const res = await onSendWithdrawTonNetwork(decimals, amount);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash && !!res?.success) {
-          const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
-        }
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendWithdrawTonNetwork,
-      yourAddressWallet,
-    ]
+    (decimals: number | undefined, amount: string) =>
+      handleTransaction(() => onSendWithdrawTonNetwork(decimals, amount)),
+    [onSendWithdrawTonNetwork, handleTransaction]
   );
 
   const onSendRepayTokenTon = useCallback(
