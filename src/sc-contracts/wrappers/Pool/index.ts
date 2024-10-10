@@ -16,11 +16,21 @@ import {
   BorrowParamsToCell,
   InitReserveParamsToCell,
   PoolConfigToCell,
+  RepayParamsToCell,
+  SetUseReserveAsCollateralParamsToCell,
   SupplyParamsToCell,
   WithdrawParamsToCell,
 } from './builder';
 import { parseRateStrategy, parseReserveConfig, parseReserveState } from './parser';
-import { BorrowParams, InitReserveParams, PoolConfig, SupplyParams, WithdrawParams } from './types';
+import {
+  BorrowParams,
+  InitReserveParams,
+  PoolConfig,
+  RepayParams,
+  SetUseReserveAsCollateralParams,
+  SupplyParams,
+  WithdrawParams,
+} from './types';
 
 export class Pool implements Contract {
   constructor(readonly address: Address, readonly init?: { code: Cell; data: Cell }) {}
@@ -76,6 +86,27 @@ export class Pool implements Contract {
       value: toNano('0.2'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
+    });
+  }
+
+  async sendSetUseReserveAsCollateral(
+    provider: ContractProvider,
+    via: Sender,
+    params: SetUseReserveAsCollateralParams
+  ) {
+    const body = SetUseReserveAsCollateralParamsToCell(params);
+    await provider.internal(via, {
+      value: toNano('0.05'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body,
+    });
+  }
+
+  async sendRepayCollateral(provider: ContractProvider, via: Sender, params: RepayParams) {
+    await provider.internal(via, {
+      value: toNano('0.2'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: RepayParamsToCell(params),
     });
   }
 

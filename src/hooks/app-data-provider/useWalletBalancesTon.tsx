@@ -1,14 +1,12 @@
-import { Address, fromNano, OpenedContract } from '@ton/core';
+import { Address, fromNano } from '@ton/core';
 import axios from 'axios';
 import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import { JettonMinter } from 'src/contracts/JettonMinter';
-import { JettonWallet } from 'src/contracts/JettonWallet';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { retry } from 'ts-retry-promise';
 
-import { useTonClient } from '../useTonClient';
+import { useAppTON } from '../useContract';
 import { API_TON_V2, MAX_ATTEMPTS_50, PoolContractReservesDataType } from './useAppDataProviderTon';
 import { WalletBalancesMap } from './useWalletBalances';
 
@@ -23,12 +21,12 @@ export interface TypeBalanceTokensInWalletTon {
 }
 
 export const useGetBalanceTon = () => {
-  const client = useTonClient();
+  const AppTON = useAppTON();
 
   const onGetBalanceTonNetwork = useCallback(
     async (tokenAddress: string, yourAddress: string, decimals: string | number) => {
-      if (!client) {
-        console.error('Client is not available.');
+      if (!AppTON) {
+        console.error('AppTON is not available.');
         return '0';
       }
 
@@ -49,29 +47,11 @@ export const useGetBalanceTon = () => {
             const parsedTokenAddress = Address.parse(tokenAddress);
             const parsedWalletAddress = Address.parse(yourAddress);
 
-            // Open the Jetton Minter contract
-            const jettonMinterContract = new JettonMinter(parsedTokenAddress);
-            const jettonMinterProvider = client.open(
-              jettonMinterContract
-            ) as OpenedContract<JettonMinter>;
-
             // Retrieve the Jetton Wallet address for the user
-            const jettonWalletAddress = await jettonMinterProvider.getWalletAddress(
-              parsedWalletAddress
+            const fetchedBalance = await AppTON.getJettonBalance(
+              parsedWalletAddress,
+              parsedTokenAddress
             );
-            if (!jettonWalletAddress) {
-              console.error('Jetton wallet address not found.');
-              return '0';
-            }
-
-            // Open the Jetton Wallet contract using the obtained address
-            const jettonWalletContract = new JettonWallet(jettonWalletAddress);
-            const jettonWalletProvider = client.open(
-              jettonWalletContract
-            ) as OpenedContract<JettonWallet>;
-
-            // Fetch the Jetton balance for the user's wallet
-            const fetchedBalance = await jettonWalletProvider.getJettonBalance();
 
             // Format and return the balance using the provided decimals
             return formatUnits(fetchedBalance || '0', decimals);
@@ -88,7 +68,7 @@ export const useGetBalanceTon = () => {
         return '0'; // Return '0' after max attempts
       }
     },
-    [client]
+    [AppTON]
   );
 
   const getBalanceTokenTon = useCallback(async (youAddress?: string) => {

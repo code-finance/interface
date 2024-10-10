@@ -80,3 +80,21 @@ export type WithdrawParams = {
   isMaxWithdraw?: boolean;
   priceData: Dictionary<bigint, Cell>;
 };
+
+export type SetUseReserveAsCollateralParams = {
+  poolJWAddress: Address;
+  useAsCollateral: boolean;
+  priceData: Dictionary<bigint, Cell>;
+};
+
+export type RepayParams = {
+  poolJWRepay?: Address;
+  poolJWCollateral?: Address;
+  amount: bigint;
+  amountCollateral: bigint;
+  interestRateMode: number;
+  isMax: boolean;
+  priceData: Dictionary<bigint, Cell>;
+  vaultAddress?: Address;
+  swapPoolAddress?: Address;
+};

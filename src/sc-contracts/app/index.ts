@@ -8,34 +8,29 @@ import {
   Pool,
   RateStrategy,
   ReserveConfig,
+  User,
   WithdrawParams,
 } from '../wrappers';
-import { InterestRateMode } from './constants';
+import { InterestRateMode, TON_METADATA } from './constants';
 import { DeployedContract, IRateStrategy, IReserveConfig, Jettons, Provider } from './types';
 import { getPriceData, openContract } from './utils';
 import { buildJettonOnChainMetadata, readJettonMetadata } from './utils/metadata';
-
-const TON_METADATA = {
-  name: 'TON',
-  symbol: 'TON',
-  decimals: '9',
-  image: 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=032',
-  description: 'TON',
-};
 
 export class App {
   provider: Provider;
   pool: DeployedContract<Pool>;
   minter: (_minter: Address) => DeployedContract<JettonMinter>;
   wallet: (_wallet: Address) => DeployedContract<JettonWallet>;
+  user: (_user: Address) => DeployedContract<User>;
 
   constructor(provider: Provider, address: Address) {
     this.provider = provider;
     this.pool = openContract<Pool>(provider, Pool.createFromAddress(address));
-    this.minter = (address: Address) =>
-      openContract<JettonMinter>(provider, JettonMinter.createFromAddress(address));
+    this.minter = (_minter: Address) =>
+      openContract<JettonMinter>(provider, JettonMinter.createFromAddress(_minter));
     this.wallet = (_wallet: Address) =>
       openContract<JettonWallet>(provider, JettonWallet.createFromAddress(_wallet));
+    this.user = (_user: Address) => openContract<User>(provider, User.createFromAddress(_user));
   }
 
   async sendInitReserve(
@@ -166,6 +161,30 @@ export class App {
     return this.pool.sendWithdraw(via, withdrawParams);
   }
 
+  async sendSetUseReserveAsCollateral(
+    via: Sender,
+    underlyingAddress: Address,
+    useAsCollateral: boolean,
+    jettons?: Jettons
+  ) {
+    let poolJWAddress: Address;
+
+    if (underlyingAddress.equals(this.pool.address)) {
+      poolJWAddress = this.pool.address;
+    } else {
+      const minter = this.minter(underlyingAddress);
+      poolJWAddress = await minter.getWalletAddress(this.pool.address);
+    }
+
+    const priceData = await getPriceData(this.provider, jettons);
+
+    return this.pool.sendSetUseReserveAsCollateral(via, {
+      useAsCollateral,
+      poolJWAddress,
+      priceData,
+    });
+  }
+
   async getReserveData(underlyingAddress: Address) {
     const minter = this.minter(underlyingAddress);
     const poolJWAddress = await minter.getWalletAddress(this.pool.address);
@@ -181,10 +200,17 @@ export class App {
   }
 
   async getUserData(ownerAddress: Address) {
-    return this.pool.getUserData(ownerAddress);
+    const userAddress = await this.pool.getUserAddress(ownerAddress);
+    return this.user(userAddress).getUserData();
   }
 
   async getUserAddress(ownerAddress: Address) {
     return this.pool.getUserAddress(ownerAddress);
+  }
+
+  async getJettonBalance(ownerAddress: Address, underlyingAddress: Address) {
+    const minter = this.minter(underlyingAddress);
+    const wallet = this.wallet(await minter.getWalletAddress(ownerAddress));
+    return wallet.getJettonBalance();
   }
 }

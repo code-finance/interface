@@ -14,9 +14,11 @@ export abstract class Op {
 
   static SUPPLY = 0x1530f236;
   static REPAY = 0x95cded06;
+  static REPAY_COLLATERAL = 0x5dfd815f;
   static BORROW = 0xdf316703;
   static WITHDRAW = 0x2572afa4;
   static INIT_RESERVE = 0x36e5ebcb;
+  static SET_USE_RESERVE_AS_COLLATERAL = 0xab476844;
 }
 
 export abstract class Errors {
