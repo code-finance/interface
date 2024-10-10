@@ -58,7 +58,6 @@ export const useTransactionHandler = ({
   eventTxInfo,
   underlyingAssetTon,
   usageAsCollateral,
-  poolJettonWalletAddress,
   typeAction,
   decimals,
 }: UseTransactionHandlerProps) => {
