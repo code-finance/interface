@@ -83,7 +83,7 @@ export const BorrowActions = React.memo(
     const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
     const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
 
-    const { onSendBorrowTon } = useTonTransactions(
+    const { actionSendBorrowTon } = useTonTransactions(
       walletAddressTonWallet,
       `${poolReserve.underlyingAssetTon}`
     );
@@ -125,9 +125,11 @@ export const BorrowActions = React.memo(
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
           try {
-            const resBorrowTop = await onSendBorrowTon(
-              amountToBorrow,
-              poolReserve,
+            const resBorrowTop = await actionSendBorrowTon(
+              parseUnits(
+                valueToBigNumber(amountToBorrow).toFixed(poolReserve.decimals),
+                poolReserve.decimals
+              ).toString(),
               interestRateMode
             );
 

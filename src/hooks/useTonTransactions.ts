@@ -12,7 +12,6 @@ import { getMultiSig } from 'src/contracts/utils';
 
 // import { KeyPair, sign } from 'ton-crypto';
 import { address_pools, GAS_FEE_TON } from './app-data-provider/useAppDataProviderTon';
-import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
 import { useAppTON, useContract } from './useContract';
 import { useTonClient } from './useTonClient';
 import { useTonConnect } from './useTonConnect';
@@ -111,35 +110,15 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, onSendSupplyTonNetwork, yourAddressWallet]
   );
 
-  const onSendBorrowJettonToken = useCallback(
-    async (
-      amount: string,
-      poolReserve: FormattedReservesAndIncentives,
-      interestRateMode: number
-    ) => {
-      if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
+  const onSendBorrowTonNetwork = useCallback(
+    async (amount: string, interestRateMode: number) => {
+      if (!AppTON || !amount || !sender) return;
       try {
-        const decimal = poolReserve.decimals; // poolReserve.decimals
-        const parseAmount = parseUnits(
-          valueToBigNumber(amount).toFixed(decimal),
-          decimal
-        ).toString();
-
-        const dataMultiSig = await getMultiSig({
-          isMock: false,
-        });
-
-        const params = {
-          queryId: Date.now(),
-          poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
-          amount: BigInt(parseAmount),
-          interestRateMode: interestRateMode,
-          priceData: dataMultiSig,
-        };
-
-        await providerPool.sendBorrow(
+        await AppTON.sendBorrow(
           sender, //via: Sender
-          params //via: Sender,
+          Address.parse(underlyingAssetTon),
+          BigInt(amount),
+          interestRateMode
         );
 
         return { success: true, message: 'success' };
@@ -148,22 +127,14 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
-    [providerPool, sender]
+    [AppTON, sender, underlyingAssetTon]
   );
 
-  const onSendBorrowTon = useCallback(
-    async (
-      amount: string,
-      poolReserve: FormattedReservesAndIncentives,
-      interestRateMode: InterestRate
-    ) => {
-      const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
-
-      if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress)
-        return { success: false, message: 'error', blocking: false };
-
+  const actionSendBorrowTon = useCallback(
+    async (amount: string, interestRateMode: InterestRate) => {
       try {
-        const res = await onSendBorrowJettonToken(amount, poolReserve, rateMode);
+        const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
+        const res = await onSendBorrowTonNetwork(amount, rateMode);
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
@@ -184,14 +155,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         return { success: false, message: 'Transaction failed', blocking: false };
       }
     },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendBorrowJettonToken,
-      providerPool,
-      yourAddressWallet,
-    ]
+    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, onSendBorrowTonNetwork, yourAddressWallet]
   );
 
   const onToggleCollateralTon = useCallback(
@@ -486,7 +450,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   return {
     approvedAmountTonAssume,
     actionSendSupplyTon,
-    onSendBorrowTon,
+    actionSendBorrowTon,
     onToggleCollateralTon,
     onSendWithdrawTon,
     onSendRepayTon,
