@@ -6,6 +6,7 @@ import {
   InitReserveParams,
   PoolConfig,
   RateStrategy,
+  RepayCollateralParams,
   RepayParams,
   ReserveConfig,
   SetUseReserveAsCollateralParams,
@@ -137,7 +138,7 @@ export function SetUseReserveAsCollateralParamsToCell(config: SetUseReserveAsCol
     .endCell();
 }
 
-export function RepayParamsToCell(params: RepayParams): Cell {
+export function RepayCollateralParamsToCell(params: RepayCollateralParams): Cell {
   const {
     poolJWRepay,
     poolJWCollateral,
@@ -162,5 +163,19 @@ export function RepayParamsToCell(params: RepayParams): Cell {
     .storeBit(isMax)
     .storeDict(priceData)
     .storeRef(dedustInfo)
+    .endCell();
+}
+
+export function RepayParamsToCell(params: RepayParams): Cell {
+  const { poolJWAddress, amount, interestRateMode, isMaxRepay, useAToken } = params;
+
+  return beginCell()
+    .storeUint(Op.REPAY, 32)
+    .storeUint(Math.floor(Date.now() / 1000), 64)
+    .storeAddress(poolJWAddress)
+    .storeCoins(amount)
+    .storeUint(interestRateMode, 1)
+    .storeBit(useAToken)
+    .storeBit(isMaxRepay)
     .endCell();
 }

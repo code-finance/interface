@@ -175,8 +175,14 @@ export class App {
     if (!via.address) throw new Error('Sender address is required');
 
     if (underlyingAddress.equals(this.pool.address)) {
-      return;
-      // return this.pool.sendRepay(via, { amount, poolJWAddress: this.pool.address });
+      const poolJWAddress = this.pool.address;
+      return this.pool.sendRepay(via, {
+        poolJWAddress,
+        amount,
+        interestRateMode,
+        isMaxRepay,
+        useAToken,
+      });
     }
 
     const minter = this.minter(underlyingAddress);
@@ -256,5 +262,10 @@ export class App {
     const minter = this.minter(underlyingAddress);
     const wallet = this.wallet(await minter.getWalletAddress(ownerAddress));
     return wallet.getJettonBalance();
+  }
+
+  async getJettonWallet(ownerAddress: Address, underlyingAddress: Address) {
+    const minter = this.minter(underlyingAddress);
+    return minter.getWalletAddress(ownerAddress);
   }
 }

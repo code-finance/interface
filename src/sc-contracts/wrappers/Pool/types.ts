@@ -1,5 +1,7 @@
 import { Address, Cell, Dictionary } from '@ton/core';
 
+import { InterestRateMode } from '../../app/constants';
+
 export type PoolConfig = {
   admin: Address;
   userCode: Cell;
@@ -87,7 +89,7 @@ export type SetUseReserveAsCollateralParams = {
   priceData: Dictionary<bigint, Cell>;
 };
 
-export type RepayParams = {
+export type RepayCollateralParams = {
   poolJWRepay?: Address;
   poolJWCollateral?: Address;
   amount: bigint;
@@ -97,4 +99,12 @@ export type RepayParams = {
   priceData: Dictionary<bigint, Cell>;
   vaultAddress?: Address;
   swapPoolAddress?: Address;
+};
+
+export type RepayParams = {
+  poolJWAddress: Address;
+  amount: bigint;
+  interestRateMode: InterestRateMode;
+  isMaxRepay: boolean;
+  useAToken: boolean;
 };
