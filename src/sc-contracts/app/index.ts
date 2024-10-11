@@ -81,6 +81,7 @@ export class App {
     if (!via.address) throw new Error('Sender address is required');
 
     if (underlyingAddress.equals(this.pool.address)) {
+      console.log('here');
       return this.pool.sendSupply(via, { amount, poolJWAddress: this.pool.address });
     }
 
@@ -161,6 +162,55 @@ export class App {
     return this.pool.sendWithdraw(via, withdrawParams);
   }
 
+  async sendRepay(
+    via: Sender,
+    underlyingAddress: Address,
+    amount: bigint,
+    {
+      interestRateMode,
+      isMaxRepay,
+      useAToken,
+    }: { interestRateMode: InterestRateMode; isMaxRepay: boolean; useAToken: boolean }
+  ) {
+    if (!via.address) throw new Error('Sender address is required');
+
+    if (underlyingAddress.equals(this.pool.address)) {
+      const poolJWAddress = this.pool.address;
+      return this.pool.sendRepay(via, {
+        poolJWAddress,
+        amount,
+        interestRateMode,
+        isMaxRepay,
+        useAToken,
+      });
+    }
+
+    const minter = this.minter(underlyingAddress);
+    const wallet = this.wallet(await minter.getWalletAddress(via.address));
+
+    // TODO: Move the following constants to external files
+    const REPAY_MESSAGE_VALUE = toNano(0.2);
+    const REPAY_MESSAGE_OP = 0x95cded06;
+    const FORWARD_TON_AMOUNT = toNano(0.1);
+    const FORWARD_PAYLOAD = beginCell()
+      .storeUint(REPAY_MESSAGE_OP, 32)
+      .storeBit(interestRateMode)
+      .storeBit(useAToken)
+      .storeBit(isMaxRepay)
+      .endCell();
+
+    return wallet.sendTransfer(
+      via,
+      REPAY_MESSAGE_VALUE,
+      amount,
+      this.pool.address,
+      via.address,
+      Cell.EMPTY,
+      FORWARD_TON_AMOUNT,
+      FORWARD_PAYLOAD
+    );
+  }
+
   async sendSetUseReserveAsCollateral(
     via: Sender,
     underlyingAddress: Address,
@@ -212,5 +262,10 @@ export class App {
     const minter = this.minter(underlyingAddress);
     const wallet = this.wallet(await minter.getWalletAddress(ownerAddress));
     return wallet.getJettonBalance();
+  }
+
+  async getJettonWallet(ownerAddress: Address, underlyingAddress: Address) {
+    const minter = this.minter(underlyingAddress);
+    return minter.getWalletAddress(ownerAddress);
   }
 }

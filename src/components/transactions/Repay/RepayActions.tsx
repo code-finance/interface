@@ -60,7 +60,7 @@ export const RepayActions = ({
   const { walletAddressTonWallet } = useTonConnectContext();
   const { getPoolContractGetReservesData, getYourSupplies, isConnectNetWorkTon } =
     useAppDataContext();
-  const { onSendRepayTon, approvedAmountTonAssume } = useTonTransactions(
+  const { actionSendRepayTonNetwork, approvedAmountTonAssume } = useTonTransactions(
     walletAddressTonWallet,
     `${underlyingAssetTon}`
   );
@@ -161,12 +161,11 @@ export const RepayActions = ({
             decimals: poolReserve.decimals,
             isMaxSelected,
             isAToken: repayWithATokens,
-            isJetton: poolReserve.isJetton,
             balance,
             debtType,
           };
 
-          const res = await onSendRepayTon(params);
+          const res = await actionSendRepayTonNetwork(params);
 
           await Promise.all([
             retry(async () => getPoolContractGetReservesData(true), {

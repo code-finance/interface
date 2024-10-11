@@ -16,6 +16,7 @@ import {
   BorrowParamsToCell,
   InitReserveParamsToCell,
   PoolConfigToCell,
+  RepayCollateralParamsToCell,
   RepayParamsToCell,
   SetUseReserveAsCollateralParamsToCell,
   SupplyParamsToCell,
@@ -26,6 +27,7 @@ import {
   BorrowParams,
   InitReserveParams,
   PoolConfig,
+  RepayCollateralParams,
   RepayParams,
   SetUseReserveAsCollateralParams,
   SupplyParams,
@@ -74,7 +76,7 @@ export class Pool implements Contract {
   async sendBorrow(provider: ContractProvider, via: Sender, params: BorrowParams) {
     const body = BorrowParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.1'),
+      value: toNano('0.15'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -83,7 +85,16 @@ export class Pool implements Contract {
   async sendWithdraw(provider: ContractProvider, via: Sender, params: WithdrawParams) {
     const body = WithdrawParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.2'),
+      value: toNano('0.15'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body,
+    });
+  }
+
+  async sendRepay(provider: ContractProvider, via: Sender, params: RepayParams) {
+    const body = RepayParamsToCell(params);
+    await provider.internal(via, {
+      value: toNano('0.15'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -102,11 +113,15 @@ export class Pool implements Contract {
     });
   }
 
-  async sendRepayCollateral(provider: ContractProvider, via: Sender, params: RepayParams) {
+  async sendRepayCollateral(
+    provider: ContractProvider,
+    via: Sender,
+    params: RepayCollateralParams
+  ) {
     await provider.internal(via, {
       value: toNano('0.2'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
-      body: RepayParamsToCell(params),
+      body: RepayCollateralParamsToCell(params),
     });
   }
 
