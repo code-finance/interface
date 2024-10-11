@@ -1,18 +1,11 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
-import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
+import { Address } from '@ton/core';
 import { parseUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { useCallback } from 'react';
-import { Op } from 'src/contracts/JettonConstants';
-import { JettonMinter } from 'src/contracts/JettonMinter';
-import { JettonWallet } from 'src/contracts/JettonWallet';
-import { Pool, RepayParams } from 'src/contracts/Pool';
-import { getMultiSig } from 'src/contracts/utils';
 
-import { address_pools, GAS_FEE_TON } from './app-data-provider/useAppDataProviderTon';
-import { useAppTON, useContract } from './useContract';
-import { useTonClient } from './useTonClient';
+import { useAppTON } from './useContract';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
@@ -41,12 +34,8 @@ export interface RepayParamsSend {
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
-  const client = useTonClient();
   const AppTON = useAppTON();
   const { sender, getLatestBoc } = useTonConnect();
-
-  const providerJettonMinter = useContract<JettonMinter>(underlyingAssetTon, JettonMinter);
-  const providerPool = useContract<Pool>(address_pools, Pool);
 
   const approvedAmountTonAssume = {
     user: '0x6385fb98e0ae7bd76b55a044e1635244e46b07ef',

@@ -1,37 +1,24 @@
 import { Address, beginCell, Cell, storeMessage } from '@ton/core';
 import axios from 'axios';
-import _, { reject } from 'lodash';
+import { reject } from 'lodash';
 import { useCallback } from 'react';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
-import { sleep } from 'src/utils/rotationProvider';
 import { retry } from 'ts-retry-promise';
 
 import { API_TON_SCAN_V2 } from './app-data-provider/useAppDataProviderTon';
 import { useTonClientV2 } from './useTonClient';
 
-type DataType = {
-  [key: string]: {
-    user_friendly: string;
-  };
+type EventData = {
+  event_id: string;
+  timestamp: number;
+  actions: Action[];
+  is_scam: boolean;
+  lt: number;
+  in_progress: boolean;
 };
-
-type KnownAddressesType = string[];
-
-function getRemainingFriendlyAddresses(
-  data: DataType,
-  knownAddresses: KnownAddressesType
-): string | null {
-  const remaining: string[] = [];
-
-  for (const key in data) {
-    const userFriendly = data[key].user_friendly;
-
-    if (!knownAddresses.includes(userFriendly)) {
-      remaining.push(userFriendly);
-    }
-  }
-
-  return remaining.length > 0 ? remaining[0] : null;
+export interface Action {
+  type: string;
+  status: string;
 }
 
 export default function convertHexToBase64(hexString: string) {
@@ -84,70 +71,40 @@ export function useTonGetTxByBOC() {
           }
           throw new Error('Transaction not found');
         },
-        { retries: 30, delay: 1000 }
+        { retries: 50, delay: 1000 }
       );
     },
     [client, walletAddressTonWallet]
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const flattenData = useCallback((data: any[]): any[] => {
-    return _.flatMap(data, (item) => {
-      const { children, ...rest } = item;
-      return [rest, ...(children ? flattenData(children) : [])];
-    });
-  }, []);
+  const getTransactionStatus = useCallback(async (txHash: string) => {
+    try {
+      return await retry(
+        async () => {
+          const { data } = await axios.get<EventData>(`${API_TON_SCAN_V2}/events/${txHash}`);
 
-  const getTransactionStatus = useCallback(
-    async (txHash: string) => {
-      let attempts = 0;
-      const maxAttempts = 50;
-
-      const fetchStatusTransaction = async (): Promise<boolean> => {
-        while (attempts < maxAttempts) {
-          try {
-            attempts++;
-            if (!txHash) return false;
-
-            const { data } = await axios.get(`${API_TON_SCAN_V2}/traces/${txHash}`);
-            const children = data.children;
-
-            if (children) {
-              const dataFlatten = flattenData(children);
-              const pending = dataFlatten.some(
-                (item) =>
-                  Array.isArray(item?.transaction?.out_msgs) && item.transaction.out_msgs.length > 0
-              );
-              console.log('Transaction-----pending:', pending, dataFlatten);
-
-              if (pending) {
-                console.log('Transaction-----pending');
-                await sleep(4000); // Retry after sleep if pending
-              } else if (dataFlatten.some((item) => item.transaction.aborted === true)) {
-                console.log('Transaction-----false');
-                return false;
-              } else {
-                console.log('Transaction-----true');
-                return true;
-              }
-            } else {
-              await sleep(4000); // Retry if no children data
-            }
-          } catch (error) {
-            console.error(`Error fetching data (Attempt ${attempts}/${maxAttempts}):`, error);
-            if (attempts >= maxAttempts) {
-              throw new Error('Max retry attempts reached.');
-            }
-            await sleep(4000); // Retry after sleep if error occurs
+          // Check if the transaction is still in progress
+          if (data.in_progress) {
+            console.log('Transaction in progress, retrying...');
+            throw new Error('Transaction in progress, retrying...');
           }
-        }
-        return false; // Return null if max attempts reached without success
-      };
 
-      return await fetchStatusTransaction();
-    },
-    [flattenData]
-  );
+          console.log(
+            'Transaction-----',
+            data.actions.every((item: Action) => item.status === 'ok')
+          );
+          // Verify if all actions have a status of 'ok'
+          return data.actions.every((item: Action) => item.status === 'ok');
+        },
+        {
+          retries: 100, // Maximum number of retries
+          delay: 3000, // Delay between retries (3 seconds)
+        }
+      );
+    } catch (error) {
+      return false;
+    }
+  }, []);
 
   return {
     onGetGetTxByBOC,
