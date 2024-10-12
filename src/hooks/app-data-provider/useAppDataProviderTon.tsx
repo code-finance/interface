@@ -99,8 +99,9 @@ export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
 export const SCAN_PRICE_TON = 'https://www.coingecko.com';
 export const URL_PUBLIC = 'https://aave-stesting.sotatek.works';
 
-export const OP_CODE_SUPPLY_TON = '0x1530f236';
-export const OP_CODE_SUPPLY_JETTON = '0x7362d09c';
+// export const OP_CODE_SUPPLY_TON = '0x1530f236';
+// export const OP_CODE_SUPPLY_JETTON = '0x7362d09c';
+export const OP_CODE_SUPPLY = '0x1530f236';
 export const OP_CODE_BORROW = '0xdf316703';
 export const OP_CODE_REPAY = '0x95cded06';
 export const OP_CODE_WITHDRAW = '0x2572afa4';

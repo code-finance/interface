@@ -3,8 +3,9 @@ import {
   OP_CODE_BORROW,
   OP_CODE_COLLATERAL_UPDATE,
   OP_CODE_REPAY,
-  OP_CODE_SUPPLY_JETTON,
-  OP_CODE_SUPPLY_TON,
+  // OP_CODE_SUPPLY_JETTON,
+  // OP_CODE_SUPPLY_TON,
+  OP_CODE_SUPPLY,
   OP_CODE_WITHDRAW,
 } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 
@@ -192,8 +193,9 @@ export const actionFilterMap = (action: string): number => {
 };
 
 export const ACTION_HISTORY: { [key: string]: string } = {
-  [OP_CODE_SUPPLY_TON]: 'Supply',
-  [OP_CODE_SUPPLY_JETTON]: 'Supply',
+  // [OP_CODE_SUPPLY_TON]: 'Supply',
+  // [OP_CODE_SUPPLY_JETTON]: 'Supply',
+  [OP_CODE_SUPPLY]: 'Supply',
   [OP_CODE_BORROW]: 'Borrow',
   [OP_CODE_REPAY]: 'Repay',
   [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
