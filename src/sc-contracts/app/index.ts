@@ -268,6 +268,66 @@ export class App {
     }
   }
 
+  // async sendRepayCollateral(
+  //     via: Sender,
+  //     underlyingAddressRepay: Address,
+  //     underlyingAddressCollateral: Address,
+  //     amountCollateral: bigint,
+  //     interestRateMode: number,
+  //     isMax: boolean,
+  //     jettons?: Jettons,
+  // ) {
+
+  //     let poolJWAddress: Address;
+  //     if (underlyingAddressRepay.equals(this.pool.address)) {
+  //         poolJWAddress = this.pool.address;
+  //     } else {
+  //         const minter = this.minter(underlyingAddressRepay);
+  //         poolJWAddress = await minter.getWalletAddress(this.pool.address);
+  //     }
+
+  //     let poolJWCollateral: Address;
+  //     if (underlyingAddressCollateral.equals(this.pool.address)) {
+  //         poolJWCollateral = this.pool.address;
+  //     } else {
+  //         const minter = this.minter(underlyingAddressCollateral);
+  //         poolJWCollateral = await minter.getWalletAddress(this.pool.address);
+  //     }
+
+  //     const tonClient = new TonClient4({ endpoint: process.env.API_ENDPOINT_TESTNET ?? ""  });
+  //     const factory = tonClient.open(
+  //         Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST_TESTNET ?? "")),
+  //     );
+
+  //     const assetRepay = Asset.jetton(underlyingAddressRepay);
+  //     const assetCollateral = Asset.jetton(underlyingAddressCollateral);
+  //     const poolSwap = tonClient.open(await factory.getPool(PoolType.VOLATILE, [assetCollateral, assetRepay]));
+
+  //     if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
+  //         console.log('dedust pool ready');
+
+  //         const priceData = await getPriceData(this.provider, jettons);
+
+  //         const vaultAddress = (await factory.getJettonVault(underlyingAddressCollateral)).address;
+  //         const swapPoolAddress = poolSwap.address;
+
+  //         const repayParams: RepayCollateralParams = {
+  //             poolJWAddress,
+  //             poolJWCollateral,
+  //             amountCollateral,
+  //             interestRateMode,
+  //             isMax,
+  //             priceData,
+  //             vaultAddress,
+  //             swapPoolAddress,
+  //         };
+  //         console.log("repayParams", repayParams);
+
+  //         return this.pool.sendRepayCollateral(via, repayParams);
+  //     }
+  //     return;
+  // }
+
   async sendSetUseReserveAsCollateral(
     via: Sender,
     underlyingAddress: Address,

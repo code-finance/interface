@@ -46,7 +46,7 @@ export function CollateralRepayModalContent({
   isWrongNetwork,
   user,
 }: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) {
-  const { reserves, userReserves } = useAppDataContext();
+  const { reserves, userReserves, isConnectNetWorkTon } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
@@ -133,6 +133,7 @@ export function CollateralRepayModalContent({
     max: repayAllDebt,
     skip: mainTxState.loading || false,
     maxSlippage: Number(maxSlippage),
+    isConnectNetWorkTon,
   });
 
   const loadingSkeleton = routeLoading && inputAmountUSD === '0';
@@ -389,6 +390,9 @@ export function CollateralRepayModalContent({
         blocked={blockingError !== undefined || error !== ''}
         loading={routeLoading}
         buildTxFn={buildTxFn}
+        underlyingAssetTon={userReserve.underlyingAssetTon}
+        swapIn={swapIn}
+        isMaxSelected={isMaxSelected}
       />
     </>
   );

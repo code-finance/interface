@@ -9,9 +9,14 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useParaSwapTransactionHandler } from 'src/helpers/useParaSwapTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { calculateSignedAmount, SwapTransactionParams } from 'src/hooks/paraswap/common';
+import {
+  calculateSignedAmount,
+  SwapReserveData,
+  SwapTransactionParams,
+} from 'src/hooks/paraswap/common';
 import { useRootStore } from 'src/store/root';
 
+import { Asset } from '../AssetInput';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 interface CollateralRepayBaseProps extends BoxProps {
@@ -30,6 +35,9 @@ interface CollateralRepayBaseProps extends BoxProps {
   signature?: SignatureLike;
   signedAmount?: string;
   deadline?: string;
+  underlyingAssetTon?: string;
+  swapIn?: SwapReserveData;
+  isMaxSelected?: boolean;
 }
 
 // Used in poolSlice
@@ -52,6 +60,9 @@ export const CollateralRepayActions = ({
   loading,
   repayWithAmount,
   buildTxFn,
+  underlyingAssetTon,
+  swapIn,
+  isMaxSelected,
   ...props
 }: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const [paraswapRepayWithCollateral, currentMarketData] = useRootStore((state) => [
@@ -61,6 +72,10 @@ export const CollateralRepayActions = ({
 
   const { approval, action, loadingTxns, approvalTxState, mainTxState, requiresApproval } =
     useParaSwapTransactionHandler({
+      isMaxSelected,
+      swapIn,
+      repayWithAmount,
+      underlyingAssetTon,
       protocolAction: ProtocolAction.repayCollateral,
       handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();

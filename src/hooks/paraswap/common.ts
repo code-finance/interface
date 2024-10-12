@@ -16,6 +16,13 @@ import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/r
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
+type ExtendedChainId = ChainId | -1 | -239;
+
+const tonChainIds = {
+  ton_mainnet: -1,
+  ton_testnet: -239,
+} as const;
+
 export type UseSwapProps = {
   chainId: ChainId;
   max: boolean;
@@ -60,7 +67,7 @@ const ParaSwap = (chainId: number) => {
 };
 
 type ParaswapChainMap = {
-  [key in ChainId]?: BuildTxFunctions & GetRateFunctions;
+  [key in ExtendedChainId]?: BuildTxFunctions & GetRateFunctions;
 };
 
 const paraswapNetworks: ParaswapChainMap = {
@@ -72,6 +79,8 @@ const paraswapNetworks: ParaswapChainMap = {
   [ChainId.optimism]: ParaSwap(ChainId.optimism),
   [ChainId.base]: ParaSwap(ChainId.base),
   [ChainId.bnb]: ParaSwap(ChainId.bnb),
+  [-1]: ParaSwap(tonChainIds.ton_mainnet), // ton_mainnet
+  [-239]: ParaSwap(tonChainIds.ton_testnet), // ton_testnet
 };
 
 export const getParaswap = (chainId: ChainId) => {

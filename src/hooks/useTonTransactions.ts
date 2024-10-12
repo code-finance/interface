@@ -30,6 +30,7 @@ export interface RepayParamsSend {
   isJetton?: boolean;
   balance?: string;
   debtType?: InterestRate;
+  underlyingAddressCollateral?: string;
 }
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
@@ -166,7 +167,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       amount: string,
       interestRateMode: number,
       useAToken: boolean,
-      isBuffer: boolean | undefined
+      isBuffer: boolean | undefined,
+      _underlyingAddressCollateral?: string | undefined
     ) => {
       if (!AppTON || !sender || !decimals) return { success: false, message: 'Invalid parameters' };
       try {
@@ -180,11 +182,25 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
               decimals
             ).toString();
 
-        await AppTON.sendRepay(sender, Address.parse(underlyingAssetTon), BigInt(parseAmount), {
+        const repayParams = {
           interestRateMode,
           isMaxRepay,
           useAToken,
-        });
+        };
+
+        const collateralAddress = _underlyingAddressCollateral
+          ? Address.parse(_underlyingAddressCollateral)
+          : undefined;
+
+        console.log(collateralAddress?.toString(), underlyingAssetTon.toString());
+
+        await AppTON.sendRepay(
+          sender,
+          Address.parse(underlyingAssetTon),
+          BigInt(parseAmount),
+          repayParams,
+          collateralAddress
+        );
         return { success: true, message: 'success' };
       } catch (error) {
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
@@ -194,7 +210,15 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
   );
 
   const actionSendRepayTonNetwork = useCallback(
-    async ({ amount, decimals, isMaxSelected, isAToken, balance, debtType }: RepayParamsSend) => {
+    async ({
+      amount,
+      decimals,
+      isMaxSelected,
+      isAToken,
+      balance,
+      debtType,
+      underlyingAddressCollateral,
+    }: RepayParamsSend) => {
       if (!balance) return { success: false, message: 'Invalid parameters', blocking: false };
 
       const isBuffer =
@@ -203,7 +227,14 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       const interestRateMode = debtType === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
 
       return handleTransaction(() =>
-        onSendRepayTonNetwork(decimals, amount.toString(), interestRateMode, isAToken, isBuffer)
+        onSendRepayTonNetwork(
+          decimals,
+          amount.toString(),
+          interestRateMode,
+          isAToken,
+          isBuffer,
+          underlyingAddressCollateral
+        )
       );
     },
     [handleTransaction, onSendRepayTonNetwork]

@@ -19,7 +19,7 @@ export const RepayModal = () => {
     currentRateMode: InterestRate;
     isFrozen: boolean;
   }>;
-  const { userReserves } = useAppDataContext();
+  const { userReserves, isConnectNetWorkTon } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
   const [repayType, setRepayType] = useState(RepayType.BALANCE);
 
@@ -48,9 +48,10 @@ export const RepayModal = () => {
             <UserAuthenticated>
               {(user) => (
                 <>
-                  {collateralRepayPossible && !mainTxState.txHash && (
-                    <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
-                  )}
+                  {(collateralRepayPossible && !mainTxState.txHash) ||
+                    (isConnectNetWorkTon && (
+                      <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+                    ))}
                   {repayType === RepayType.BALANCE && (
                     <RepayModalContent {...params} debtType={args.currentRateMode} user={user} />
                   )}
