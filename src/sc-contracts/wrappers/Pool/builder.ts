@@ -140,9 +140,8 @@ export function SetUseReserveAsCollateralParamsToCell(config: SetUseReserveAsCol
 
 export function RepayCollateralParamsToCell(params: RepayCollateralParams): Cell {
   const {
-    poolJWRepay,
+    poolJWAddress,
     poolJWCollateral,
-    amount,
     amountCollateral,
     interestRateMode,
     isMax,
@@ -155,10 +154,9 @@ export function RepayCollateralParamsToCell(params: RepayCollateralParams): Cell
   return beginCell()
     .storeUint(Op.REPAY_COLLATERAL, 32)
     .storeUint(Math.floor(Date.now() / 1000), 64)
-    .storeCoins(amount)
     .storeCoins(amountCollateral)
     .storeUint(interestRateMode, 1)
-    .storeAddress(poolJWRepay)
+    .storeAddress(poolJWAddress)
     .storeAddress(poolJWCollateral)
     .storeBit(isMax)
     .storeDict(priceData)
