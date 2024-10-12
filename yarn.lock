@@ -1547,6 +1547,11 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
+"@dedust/sdk@^0.8.7":
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/@dedust/sdk/-/sdk-0.8.7.tgz#77ed0dc09f68da7184b3b9a38e9f8e0431f7b95b"
+  integrity sha512-xW7bcdIUD09t9h5iUA+jCR0qLOnjvloYXNgEJbajPmIdXrCal8R+UoLE26a/5as0h6B2DmuC4peSYMoiHDFSlg==
+
 "@emotion/babel-plugin@^11.10.0":
   version "11.10.2"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin/-/babel-plugin-11.10.2.tgz#879db80ba622b3f6076917a1e6f648b1c7d008c7"

@@ -90,9 +90,8 @@ export type SetUseReserveAsCollateralParams = {
 };
 
 export type RepayCollateralParams = {
-  poolJWRepay?: Address;
+  poolJWAddress: Address;
   poolJWCollateral?: Address;
-  amount: bigint;
   amountCollateral: bigint;
   interestRateMode: number;
   isMax: boolean;

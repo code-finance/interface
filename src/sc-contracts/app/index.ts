@@ -1,4 +1,6 @@
+import { Asset, Factory, PoolType, ReadinessStatus } from '@dedust/sdk';
 import { Address, beginCell, Cell, Sender, toNano } from '@ton/core';
+import { TonClient4 } from '@ton/ton';
 
 import {
   BorrowParams,
@@ -7,6 +9,7 @@ import {
   JettonWallet,
   Pool,
   RateStrategy,
+  RepayCollateralParams,
   ReserveConfig,
   User,
   WithdrawParams,
@@ -170,45 +173,99 @@ export class App {
       interestRateMode,
       isMaxRepay,
       useAToken,
-    }: { interestRateMode: InterestRateMode; isMaxRepay: boolean; useAToken: boolean }
+    }: { interestRateMode: InterestRateMode; isMaxRepay: boolean; useAToken: boolean },
+    underlyingAddressCollateral?: Address, //For repay collateral -> Required
+    jettons?: Jettons //For repay collateral -> Required
   ) {
     if (!via.address) throw new Error('Sender address is required');
 
-    if (underlyingAddress.equals(this.pool.address)) {
-      const poolJWAddress = this.pool.address;
-      return this.pool.sendRepay(via, {
-        poolJWAddress,
+    if (!underlyingAddressCollateral) {
+      if (underlyingAddress.equals(this.pool.address)) {
+        const poolJWAddress = this.pool.address;
+        return this.pool.sendRepay(via, {
+          poolJWAddress,
+          amount,
+          interestRateMode,
+          isMaxRepay,
+          useAToken,
+        });
+      }
+
+      const minter = this.minter(underlyingAddress);
+      const wallet = this.wallet(await minter.getWalletAddress(via.address));
+
+      // TODO: Move the following constants to external files
+      const REPAY_MESSAGE_VALUE = toNano(0.2);
+      const REPAY_MESSAGE_OP = 0x95cded06;
+      const FORWARD_TON_AMOUNT = toNano(0.1);
+      const FORWARD_PAYLOAD = beginCell()
+        .storeUint(REPAY_MESSAGE_OP, 32)
+        .storeBit(interestRateMode)
+        .storeBit(useAToken)
+        .storeBit(isMaxRepay)
+        .endCell();
+
+      return wallet.sendTransfer(
+        via,
+        REPAY_MESSAGE_VALUE,
         amount,
-        interestRateMode,
-        isMaxRepay,
-        useAToken,
-      });
+        this.pool.address,
+        via.address,
+        Cell.EMPTY,
+        FORWARD_TON_AMOUNT,
+        FORWARD_PAYLOAD
+      );
+    } else {
+      let poolJWAddress: Address;
+      if (underlyingAddress.equals(this.pool.address)) {
+        poolJWAddress = this.pool.address;
+      } else {
+        const minter = this.minter(underlyingAddress);
+        poolJWAddress = await minter.getWalletAddress(this.pool.address);
+      }
+
+      let poolJWCollateral: Address;
+      if (underlyingAddressCollateral.equals(this.pool.address)) {
+        poolJWCollateral = this.pool.address;
+      } else {
+        const minter = this.minter(underlyingAddressCollateral);
+        poolJWCollateral = await minter.getWalletAddress(this.pool.address);
+      }
+
+      const tonClient = new TonClient4({ endpoint: process.env.API_ENDPOINT_TESTNET ?? '' });
+      const factory = tonClient.open(
+        Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST_TESTNET ?? ''))
+      );
+
+      const assetRepay = Asset.jetton(underlyingAddress);
+      const assetCollateral = Asset.jetton(underlyingAddressCollateral);
+      const poolSwap = tonClient.open(
+        await factory.getPool(PoolType.VOLATILE, [assetCollateral, assetRepay])
+      );
+
+      if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
+        console.log('dedust pool ready');
+
+        const priceData = await getPriceData(this.provider, jettons);
+
+        const vaultAddress = (await factory.getJettonVault(underlyingAddressCollateral)).address;
+        const swapPoolAddress = poolSwap.address;
+
+        const repayParams: RepayCollateralParams = {
+          poolJWAddress,
+          poolJWCollateral,
+          amountCollateral: amount,
+          interestRateMode,
+          isMax: isMaxRepay,
+          priceData,
+          vaultAddress,
+          swapPoolAddress,
+        };
+        console.log('repayParams', repayParams);
+
+        return this.pool.sendRepayCollateral(via, repayParams);
+      }
     }
-
-    const minter = this.minter(underlyingAddress);
-    const wallet = this.wallet(await minter.getWalletAddress(via.address));
-
-    // TODO: Move the following constants to external files
-    const REPAY_MESSAGE_VALUE = toNano(0.2);
-    const REPAY_MESSAGE_OP = 0x95cded06;
-    const FORWARD_TON_AMOUNT = toNano(0.1);
-    const FORWARD_PAYLOAD = beginCell()
-      .storeUint(REPAY_MESSAGE_OP, 32)
-      .storeBit(interestRateMode)
-      .storeBit(useAToken)
-      .storeBit(isMaxRepay)
-      .endCell();
-
-    return wallet.sendTransfer(
-      via,
-      REPAY_MESSAGE_VALUE,
-      amount,
-      this.pool.address,
-      via.address,
-      Cell.EMPTY,
-      FORWARD_TON_AMOUNT,
-      FORWARD_PAYLOAD
-    );
   }
 
   async sendSetUseReserveAsCollateral(

@@ -81,10 +81,11 @@ export function useTonGetTxByBOC() {
     try {
       return await retry(
         async () => {
-          const { data } = await axios.get<EventData>(`${API_TON_SCAN_V2}/events/${txHash}`);
+          const response = await axios.get<EventData>(`${API_TON_SCAN_V2}/events/${txHash}`);
+          const { data } = response;
 
           // Check if the transaction is still in progress
-          if (data.in_progress) {
+          if (data.in_progress || !data) {
             console.log('Transaction in progress, retrying...');
             throw new Error('Transaction in progress, retrying...');
           }
@@ -98,10 +99,11 @@ export function useTonGetTxByBOC() {
         },
         {
           retries: 100, // Maximum number of retries
-          delay: 4000, // Delay between retries (4 seconds)
+          delay: 3000, // Default delay of 3 seconds
         }
       );
     } catch (error) {
+      console.error('Failed to get transaction status:', error);
       return false;
     }
   }, []);
