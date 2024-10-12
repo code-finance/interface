@@ -98,7 +98,7 @@ export function useTonGetTxByBOC() {
         },
         {
           retries: 100, // Maximum number of retries
-          delay: 3000, // Delay between retries (3 seconds)
+          delay: 4000, // Delay between retries (4 seconds)
         }
       );
     } catch (error) {

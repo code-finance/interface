@@ -175,7 +175,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             );
 
             // Process reserves data with wallet balances
-            const data = reserves.map((item) => {
+            const data = reserves.map((item: { underlyingAddress: { toString: () => string } }) => {
               // Find the corresponding wallet balance
               const result = balances.find(
                 (balance) =>
