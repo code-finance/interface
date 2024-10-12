@@ -192,8 +192,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           ? Address.parse(_underlyingAddressCollateral)
           : undefined;
 
-        console.log(collateralAddress?.toString(), underlyingAssetTon.toString());
-
         await AppTON.sendRepay(
           sender,
           Address.parse(underlyingAssetTon),

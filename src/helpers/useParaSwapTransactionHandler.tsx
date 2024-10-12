@@ -279,7 +279,7 @@ export const useParaSwapTransactionHandler = ({
         });
       } else {
         setMainTxState({
-          txHash: res.txHash,
+          txHash: res?.txHash,
           loading: false,
           success: true,
           amount: repayWithAmount,
