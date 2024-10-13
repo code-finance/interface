@@ -43,11 +43,9 @@ export const RepayModal = () => {
   const isShowCollateralTON =
     isConnectNetWorkTon &&
     !mainTxState.txHash &&
-    user?.userReservesData.some(
-      (userReserve) =>
-        userReserve.scaledATokenBalance !== '0' &&
-        userReserve.underlyingAsset !== args.underlyingAsset
-    );
+    user &&
+    user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0').length >
+      1;
 
   return (
     <BasicModal open={type === ModalType.Repay} setOpen={handleClose}>
