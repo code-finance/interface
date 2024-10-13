@@ -1,5 +1,4 @@
 import { Address, beginCell, Cell, storeMessage } from '@ton/core';
-import axios from 'axios';
 import { reject } from 'lodash';
 import { useCallback } from 'react';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -77,33 +76,104 @@ export function useTonGetTxByBOC() {
     [client, walletAddressTonWallet]
   );
 
+  // const getTransactionStatus = useCallback(async (txHash: string) => {
+  //   try {
+  //     return await retry(
+  //       async () => {
+  //         try {
+  //           const response = await axiosInstance.get<EventData>(
+  //             `${API_TON_SCAN_V2}/events/${txHash}`
+  //           );
+  //           const { data } = response;
+
+  //           // Check if the transaction is still in progress
+  //           if (data.in_progress || !data) {
+  //             console.log('Transaction in progress, retrying...');
+  //             throw new Error('Transaction in progress, retrying...');
+  //           }
+
+  //           console.log(
+  //             'Transaction-----',
+  //             data.actions.every((item: Action) => item.status === 'ok', data)
+  //           );
+
+  //           // Verify if all actions have a status of 'ok'
+  //           return data.actions.every((item: Action) => item.status === 'ok');
+  //         } catch (apiError) {
+  //           // Kiểm tra nếu lỗi là timeout thì ném ra và retry
+  //           if (axios.isAxiosError(apiError) && apiError.code === 'ECONNABORTED') {
+  //             console.log('Request timeout, retrying...', apiError.message);
+  //             throw new Error('Timeout error, retrying...');
+  //           }
+  //           console.log('Error from API, retrying...', apiError);
+  //           throw apiError; // Các lỗi khác cũng sẽ được retry
+  //         }
+  //       },
+  //       {
+  //         retries: 110, // Maximum number of retries
+  //         delay: 5000, // Default delay of 5 seconds
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.log('Failed to get transaction status:', error);
+  //     return false;
+  //   }
+  // }, []);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const retryWithDelay = async (fn: () => Promise<any>, retries: number, delay: number) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        return await fn();
+      } catch (error) {
+        if (i === retries - 1) throw error; // Ném lỗi nếu đã retry tối đa
+        console.log(`Retrying... (${i + 1}/${retries})`);
+        await new Promise((res) => setTimeout(res, delay)); // Delay trước khi retry
+      }
+    }
+  };
+
   const getTransactionStatus = useCallback(async (txHash: string) => {
     try {
-      return await retry(
+      return await retryWithDelay(
         async () => {
-          const response = await axios.get<EventData>(`${API_TON_SCAN_V2}/events/${txHash}`);
-          const { data } = response;
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 600000); // 10 phút
 
-          // Check if the transaction is still in progress
-          if (data.in_progress || !data) {
-            console.log('Transaction in progress, retrying...');
-            throw new Error('Transaction in progress, retrying...');
+          try {
+            console.log(`Starting request at: ${new Date().toISOString()}`);
+            const response = await fetch(`${API_TON_SCAN_V2}/events/${txHash}`, {
+              signal: controller.signal,
+            });
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data: EventData = await response.json();
+
+            if (data.in_progress || !data) {
+              console.log('Transaction in progress, retrying...');
+              throw new Error('Transaction in progress, retrying...');
+            }
+
+            return data.actions.every((item: Action) => item.status === 'ok');
+          } catch (apiError) {
+            if (apiError.name === 'AbortError') {
+              console.log('Request timeout, retrying...', apiError.message);
+              throw new Error('Timeout error, retrying...');
+            }
+            console.log('Error from API, retrying...', apiError);
+            throw apiError;
+          } finally {
+            clearTimeout(timeoutId); // Clear timeout
           }
-
-          console.log(
-            'Transaction-----',
-            data.actions.every((item: Action) => item.status === 'ok')
-          );
-          // Verify if all actions have a status of 'ok'
-          return data.actions.every((item: Action) => item.status === 'ok');
         },
-        {
-          retries: 100, // Maximum number of retries
-          delay: 3000, // Default delay of 3 seconds
-        }
+        110, // Maximum number of retries
+        5000 // Delay of 5 seconds
       );
     } catch (error) {
-      console.error('Failed to get transaction status:', error);
+      console.log('Failed to get transaction status:', error);
       return false;
     }
   }, []);

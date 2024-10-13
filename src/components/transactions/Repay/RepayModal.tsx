@@ -49,7 +49,7 @@ export const RepayModal = () => {
               {(user) => (
                 <>
                   {(collateralRepayPossible && !mainTxState.txHash) ||
-                    (isConnectNetWorkTon && (
+                    (isConnectNetWorkTon && !mainTxState.txHash && (
                       <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
                     ))}
                   {repayType === RepayType.BALANCE && (

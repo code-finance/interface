@@ -1,4 +1,12 @@
-import { Asset, Factory, PoolType, ReadinessStatus } from '@dedust/sdk';
+import {
+  Asset,
+  Factory,
+  JettonRoot,
+  MAINNET_FACTORY_ADDR,
+  PoolType,
+  ReadinessStatus,
+  VaultJetton,
+} from '@dedust/sdk';
 import { Address, beginCell, Cell, Sender, toNano } from '@ton/core';
 import { TonClient4 } from '@ton/ton';
 
@@ -180,6 +188,7 @@ export class App {
     if (!via.address) throw new Error('Sender address is required');
 
     if (!underlyingAddressCollateral) {
+      console.log('repay wallet balance');
       if (underlyingAddress.equals(this.pool.address)) {
         const poolJWAddress = this.pool.address;
         return this.pool.sendRepay(via, {
@@ -216,6 +225,7 @@ export class App {
         FORWARD_PAYLOAD
       );
     } else {
+      console.log('repay by collateral');
       let poolJWAddress: Address;
       if (underlyingAddress.equals(this.pool.address)) {
         poolJWAddress = this.pool.address;
@@ -232,23 +242,49 @@ export class App {
         poolJWCollateral = await minter.getWalletAddress(this.pool.address);
       }
 
-      const tonClient = new TonClient4({ endpoint: process.env.API_ENDPOINT_TESTNET ?? '' });
+      const tonClient = new TonClient4({
+        endpoint: process.env.API_ENDPOINT_TESTNET ?? 'https://sandbox-v4.tonhubapi.com',
+      });
       const factory = tonClient.open(
-        Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST_TESTNET ?? ''))
+        Factory.createFromAddress(
+          Address.parse(
+            process.env.FACTORY_DEDUST_TESTNET ?? 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y'
+          )
+        )
       );
 
-      const assetRepay = Asset.jetton(underlyingAddress);
-      const assetCollateral = Asset.jetton(underlyingAddressCollateral);
+      let assetRepay = Asset.jetton(underlyingAddress);
+      let assetCollateral = Asset.jetton(underlyingAddressCollateral);
+
+      if (underlyingAddress.equals(this.pool.address)) {
+        console.log('check 1');
+        assetRepay = Asset.native();
+      } else {
+        console.log('check 2');
+        assetRepay = Asset.jetton(underlyingAddress);
+      }
+      if (underlyingAddressCollateral.equals(this.pool.address)) {
+        console.log('check 3');
+        assetCollateral = Asset.native();
+      } else {
+        console.log('check 4');
+        assetCollateral = Asset.jetton(underlyingAddressCollateral);
+      }
+
       const poolSwap = tonClient.open(
         await factory.getPool(PoolType.VOLATILE, [assetCollateral, assetRepay])
       );
+      console.log('await poolSwap.getReadinessStatus()', await poolSwap.getReadinessStatus());
 
       if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
         console.log('dedust pool ready');
 
         const priceData = await getPriceData(this.provider, jettons);
 
-        const vaultAddress = (await factory.getJettonVault(underlyingAddressCollateral)).address;
+        let vaultAddress = (await factory.getJettonVault(underlyingAddressCollateral)).address;
+        if (underlyingAddressCollateral.equals(this.pool.address)) {
+          vaultAddress = tonClient.open(await factory.getNativeVault()).address;
+        }
         const swapPoolAddress = poolSwap.address;
 
         const repayParams: RepayCollateralParams = {
@@ -261,72 +297,11 @@ export class App {
           vaultAddress,
           swapPoolAddress,
         };
-        console.log('repayParams', repayParams);
 
         return this.pool.sendRepayCollateral(via, repayParams);
       }
     }
   }
-
-  // async sendRepayCollateral(
-  //     via: Sender,
-  //     underlyingAddressRepay: Address,
-  //     underlyingAddressCollateral: Address,
-  //     amountCollateral: bigint,
-  //     interestRateMode: number,
-  //     isMax: boolean,
-  //     jettons?: Jettons,
-  // ) {
-
-  //     let poolJWAddress: Address;
-  //     if (underlyingAddressRepay.equals(this.pool.address)) {
-  //         poolJWAddress = this.pool.address;
-  //     } else {
-  //         const minter = this.minter(underlyingAddressRepay);
-  //         poolJWAddress = await minter.getWalletAddress(this.pool.address);
-  //     }
-
-  //     let poolJWCollateral: Address;
-  //     if (underlyingAddressCollateral.equals(this.pool.address)) {
-  //         poolJWCollateral = this.pool.address;
-  //     } else {
-  //         const minter = this.minter(underlyingAddressCollateral);
-  //         poolJWCollateral = await minter.getWalletAddress(this.pool.address);
-  //     }
-
-  //     const tonClient = new TonClient4({ endpoint: process.env.API_ENDPOINT_TESTNET ?? ""  });
-  //     const factory = tonClient.open(
-  //         Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST_TESTNET ?? "")),
-  //     );
-
-  //     const assetRepay = Asset.jetton(underlyingAddressRepay);
-  //     const assetCollateral = Asset.jetton(underlyingAddressCollateral);
-  //     const poolSwap = tonClient.open(await factory.getPool(PoolType.VOLATILE, [assetCollateral, assetRepay]));
-
-  //     if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
-  //         console.log('dedust pool ready');
-
-  //         const priceData = await getPriceData(this.provider, jettons);
-
-  //         const vaultAddress = (await factory.getJettonVault(underlyingAddressCollateral)).address;
-  //         const swapPoolAddress = poolSwap.address;
-
-  //         const repayParams: RepayCollateralParams = {
-  //             poolJWAddress,
-  //             poolJWCollateral,
-  //             amountCollateral,
-  //             interestRateMode,
-  //             isMax,
-  //             priceData,
-  //             vaultAddress,
-  //             swapPoolAddress,
-  //         };
-  //         console.log("repayParams", repayParams);
-
-  //         return this.pool.sendRepayCollateral(via, repayParams);
-  //     }
-  //     return;
-  // }
 
   async sendSetUseReserveAsCollateral(
     via: Sender,

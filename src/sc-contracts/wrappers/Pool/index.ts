@@ -119,7 +119,7 @@ export class Pool implements Contract {
     params: RepayCollateralParams
   ) {
     await provider.internal(via, {
-      value: toNano('0.2'),
+      value: toNano('0.5'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: RepayCollateralParamsToCell(params),
     });
