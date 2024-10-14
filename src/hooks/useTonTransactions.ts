@@ -56,12 +56,13 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           const status = await getTransactionStatus(txHash);
           return { success: status, txHash, blocking: !status, message: txHash };
         } else if (_.includes(ErrorCancelledTon, res.message)) {
+          console.log(res.message);
           return { success: false, message: ErrorCancelledTon[0], blocking: false };
         } else {
           throw new Error('Transaction failed');
         }
       } catch (error) {
-        console.error('Transaction failed:', error);
+        console.log('Transaction failed:', error.replace(/\s+/g).toLowerCase());
         return { success: false, message: 'Transaction failed', blocking: false };
       }
     },
