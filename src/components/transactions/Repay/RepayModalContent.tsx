@@ -236,7 +236,7 @@ export const RepayModalContent = ({
     return (
       <TxSuccessView
         action={<Trans>repaid</Trans>}
-        amount={amountRef.current || repayTxState.amount}
+        amount={repayTxState.amount || amountRef.current}
         symbol={repayWithATokens ? poolReserve.symbol : tokenToRepayWith.symbol}
       />
     );
