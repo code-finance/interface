@@ -54,28 +54,36 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       try {
         const res = await transactionFunc();
 
-        if (res.success) {
-          const boc = await getLatestBoc();
-          const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-          if (txHash) {
-            const status = await getTransactionStatus(txHash);
-            return { success: status, txHash, blocking: !status, message: txHash };
-          } else {
-            return { success: false, message: 'Transaction failed', blocking: false };
+        if (!res.success) {
+          if (_.includes(ErrorCancelledTon, res.message)) {
+            console.log(res.message);
+            return { success: false, message: ErrorCancelledTon[0], blocking: false };
           }
-        } else if (_.includes(ErrorCancelledTon, res.message)) {
-          console.log(res.message);
-          return { success: false, message: ErrorCancelledTon[0], blocking: false };
-        } else {
           throw new Error('Transaction failed');
         }
-      } catch (error) {
-        console.log('Transaction failed:', error.replace(/\s+/g).toLowerCase());
+
+        const boc = await getLatestBoc();
+        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
+
+        if (txHash) {
+          const status = await getTransactionStatus(txHash);
+          return { success: status, txHash, blocking: !status, message: txHash };
+        }
+
         return { success: false, message: 'Transaction failed', blocking: false };
+      } catch (error) {
+        console.log('Transaction failed:', error);
+
+        const message =
+          error instanceof Error
+            ? error.message.replace(/\s+/g, '').toLowerCase()
+            : 'Unknown error';
+        return { success: false, message, blocking: false };
       }
     },
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, yourAddressWallet]
   );
+
   const onSendSupplyTonNetwork = useCallback(
     async (amount: string) => {
       if (!AppTON || !amount || !sender) return { success: false, message: 'Invalid parameters' };
