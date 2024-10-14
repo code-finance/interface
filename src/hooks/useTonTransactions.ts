@@ -55,6 +55,11 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const res = await transactionFunc();
 
         if (!res.success) {
+          console.log(
+            'res.message-----',
+            res.message.replace(/\s+/g, '').toLowerCase(),
+            res.message
+          );
           if (_.includes(ErrorCancelledTon, res.message)) {
             console.log(res.message);
             return { success: false, message: ErrorCancelledTon[0], blocking: false };
