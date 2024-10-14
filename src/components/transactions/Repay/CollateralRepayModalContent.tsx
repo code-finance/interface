@@ -13,6 +13,7 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { address_pools } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import {
   maxInputAmountWithSlippage,
   minimumReceivedAfterSlippage,
@@ -203,7 +204,12 @@ export function CollateralRepayModalContent({
     !assetsBlockingWithdraw.includes(tokenToRepayWith.symbol)
   ) {
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
-  } else if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
+  } else if (
+    valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount) ||
+    (valueToBigNumber(inputAmount).lt(0.7) &&
+      valueToBigNumber(outputAmount).gt(0) &&
+      swapIn.underlyingAssetTon === address_pools)
+  ) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (shouldUseFlashloan && !collateralReserveData.flashLoanEnabled) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
