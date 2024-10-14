@@ -45,16 +45,24 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     amount: '-1',
   };
 
+  const convertInterestRateMode = (interestRate: InterestRate | undefined): number => {
+    return interestRate === InterestRate.Stable ? 0 : 1;
+  };
+
   const handleTransaction = useCallback(
     async (transactionFunc: () => Promise<{ success: boolean; message: string }>) => {
       try {
         const res = await transactionFunc();
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        if (txHash && res.success) {
-          const status = await getTransactionStatus(txHash);
-          return { success: status, txHash, blocking: !status, message: txHash };
+        if (res.success) {
+          const boc = await getLatestBoc();
+          const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
+          if (txHash) {
+            const status = await getTransactionStatus(txHash);
+            return { success: status, txHash, blocking: !status, message: txHash };
+          } else {
+            return { success: false, message: 'Transaction failed', blocking: false };
+          }
         } else if (_.includes(ErrorCancelledTon, res.message)) {
           console.log(res.message);
           return { success: false, message: ErrorCancelledTon[0], blocking: false };
@@ -68,7 +76,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     },
     [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, yourAddressWallet]
   );
-
   const onSendSupplyTonNetwork = useCallback(
     async (amount: string) => {
       if (!AppTON || !amount || !sender) return { success: false, message: 'Invalid parameters' };
@@ -107,7 +114,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
 
   const actionSendBorrowTonNetwork = useCallback(
     (amount: string, interestRateMode: InterestRate) => {
-      const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1;
+      const rateMode = convertInterestRateMode(interestRateMode);
       return handleTransaction(() => onSendBorrowTonNetwork(amount, rateMode));
     },
     [onSendBorrowTonNetwork, handleTransaction]
@@ -223,7 +230,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       const isBuffer =
         isMaxSelected &&
         valueToBigNumber(amount).multipliedBy(1.001).isLessThan(valueToBigNumber(balance));
-      const interestRateMode = debtType === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
+
+      const interestRateMode = convertInterestRateMode(debtType);
 
       return handleTransaction(() =>
         onSendRepayTonNetwork(
