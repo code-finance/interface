@@ -19,6 +19,8 @@ export const ErrorCancelledTon = [
   '[ton_connect_sdk_error]e:userrejectstheactioninthewallet.walletdeclinedtherequest',
   '[ton_connect_sdk_error]rrejectrequest',
   '[ton_connect_sdk_error]unknownerrorrejectrequest',
+  '[ton_connect_sdk_error]u:userrejectstheactioninthewallet.canceledbytheuser',
+  '[ton_connect_sdk_error]yrejectrequest',
 ];
 
 export interface RepayParamsSend {
