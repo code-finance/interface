@@ -47,8 +47,7 @@ export const RepayModal = () => {
     user?.userReservesData.some(
       (userReserve) =>
         userReserve.scaledATokenBalance !== '0' &&
-        userReserve.underlyingAsset !== args.underlyingAsset &&
-        userReserve.usageAsCollateralEnabledOnUser
+        userReserve.underlyingAsset !== args.underlyingAsset
     );
 
   useEffect(() => {
