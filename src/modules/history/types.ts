@@ -5,6 +5,7 @@ import {
   OP_CODE_REPAY,
   // OP_CODE_SUPPLY_JETTON,
   // OP_CODE_SUPPLY_TON,
+  OP_CODE_REPAY_COLLATERAL,
   OP_CODE_SUPPLY,
   OP_CODE_WITHDRAW,
 } from 'src/hooks/app-data-provider/useAppDataProviderTon';
@@ -198,6 +199,7 @@ export const ACTION_HISTORY: { [key: string]: string } = {
   [OP_CODE_SUPPLY]: 'Supply',
   [OP_CODE_BORROW]: 'Borrow',
   [OP_CODE_REPAY]: 'Repay',
+  [OP_CODE_REPAY_COLLATERAL]: 'Repay',
   [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
   [OP_CODE_COLLATERAL_UPDATE]: 'UsageAsCollateral',
 };

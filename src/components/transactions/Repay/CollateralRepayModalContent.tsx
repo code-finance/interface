@@ -249,7 +249,9 @@ export function CollateralRepayModalContent({
     return (
       <TxSuccessView
         action={<Trans>Repaid</Trans>}
-        amount={swapVariant === 'exactOut' ? outputAmount : outputAmountWithSlippage}
+        amount={
+          mainTxState.amount || swapVariant === 'exactOut' ? outputAmount : outputAmountWithSlippage
+        }
         symbol={poolReserve.symbol}
       />
     );

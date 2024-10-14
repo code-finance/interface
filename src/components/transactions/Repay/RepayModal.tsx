@@ -1,6 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
@@ -47,8 +47,15 @@ export const RepayModal = () => {
     user?.userReservesData.some(
       (userReserve) =>
         userReserve.scaledATokenBalance !== '0' &&
-        userReserve.underlyingAsset !== args.underlyingAsset
+        userReserve.underlyingAsset !== args.underlyingAsset &&
+        userReserve.usageAsCollateralEnabledOnUser
     );
+
+  useEffect(() => {
+    if (repayType === RepayType.COLLATERAL && !isShowCollateralTON && user) {
+      setRepayType(RepayType.BALANCE);
+    }
+  }, [mainTxState.txHash, repayType, isShowCollateralTON, user]);
 
   return (
     <BasicModal open={type === ModalType.Repay} setOpen={handleClose}>
@@ -65,7 +72,7 @@ export const RepayModal = () => {
                   {repayType === RepayType.BALANCE && (
                     <RepayModalContent {...params} debtType={args.currentRateMode} user={user} />
                   )}
-                  {repayType === RepayType.COLLATERAL && (
+                  {repayType === RepayType.COLLATERAL && isShowCollateralTON && (
                     <CollateralRepayModalContent
                       {...params}
                       debtType={args.currentRateMode}
