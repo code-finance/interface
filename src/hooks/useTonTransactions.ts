@@ -197,7 +197,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       try {
         const isMaxRepay = Number(amount) === -1;
         const parseAmount = isMaxRepay
-          ? '1'
+          ? _underlyingAddressCollateral
+            ? parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString()
+            : '1'
           : parseUnits(
               valueToBigNumber(amount)
                 .multipliedBy(isBuffer ? 1.001 : 1)
