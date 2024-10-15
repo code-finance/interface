@@ -4,7 +4,7 @@ import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 import BigNumber from 'bignumber.js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { address_pools } from '../app-data-provider/useAppDataProviderTon';
+import { address_pools, URL_API_BE } from '../app-data-provider/useAppDataProviderTon';
 import {
   convertParaswapErrorMessage,
   fetchExactInRate,
@@ -31,7 +31,17 @@ interface UseRepayWithCollateralResponse {
   error: string;
   buildTxFn: () => Promise<SwapTransactionParams>;
 }
-
+interface DataSwapOut {
+  data: {
+    amountIn: string;
+    amountOut: string;
+    decimalsIn: number;
+    decimalsOut: number;
+    symbolIn: string;
+    symbolOut: string;
+  };
+  status: string;
+}
 export const useCollateralRepaySwap = ({
   chainId,
   max,
@@ -85,23 +95,55 @@ export const useCollateralRepaySwap = ({
     swapOut.variableBorrowAPY,
   ]);
 
+  const getRateTON = useCallback(
+    async ({
+      tokenIn,
+      tokenOut,
+      amountIn,
+    }: {
+      tokenIn: string | undefined;
+      tokenOut: string | undefined;
+      amountIn: string;
+    }) => {
+      const controller = new AbortController();
+
+      try {
+        const response = await fetch(
+          `${URL_API_BE}/crawler/swap-out?tokenIn=${tokenIn}&tokenOut=${tokenOut}&amountIn=${amountIn}`,
+          {
+            signal: controller.signal,
+          }
+        );
+
+        const data: DataSwapOut = await response.json();
+        return data.data;
+      } catch (apiError) {
+        return null;
+      }
+    },
+    []
+  );
+
   const exactInRateTON = useCallback(
-    ({ max }: { max: boolean }) => {
-      const amountRepayUSD = max
-        ? valueToBigNumber(swapIn.amount).multipliedBy(swapIn.priceInUSD)
-        : valueToBigNumber(swapOut.amount).multipliedBy(swapOut.priceInUSD);
+    async ({ max }: { max: boolean }) => {
+      const amountRepay = max
+        ? valueToBigNumber(swapOut.totalDebt)
+        : valueToBigNumber(swapOut.amount);
 
-      const amountCollateralUSD = valueToBigNumber(swapIn.amount).multipliedBy(swapIn.priceInUSD);
+      const params = {
+        tokenIn: swapOut.underlyingAssetTon,
+        tokenOut: swapIn.underlyingAssetTon,
+        amountIn: amountRepay.toString(),
+      };
 
-      const amountOutPutUSD = BigNumber.min(amountRepayUSD, amountCollateralUSD);
+      const res = await getRateTON(params);
 
-      const swapOutAmount = amountOutPutUSD.div(swapOut.priceInUSD);
+      const amountRepayUSD = amountRepay.multipliedBy(swapOut.priceInUSD);
 
-      const amountUSD = valueToBigNumber(swapOutAmount).multipliedBy(swapOut.priceInUSD);
-      const swapInAmount = amountOutPutUSD.div(swapIn.priceInUSD);
+      const srcAmountUSD = (res && normalize(res.amountOut, res.decimalsOut).toString()) || 0;
 
-      const amount = normalizeBN(swapOutAmount, swapOut.decimals * -1);
-      const srcAmount = normalizeBN(swapInAmount, swapIn.decimals * -1);
+      const amount = normalizeBN(amountRepay, swapOut.decimals * -1);
+      const srcAmount = normalizeBN(srcAmountUSD, swapIn.decimals * -1);
 
       return {
         blockNumber: 126563785,
@@ -152,22 +194,24 @@ export const useCollateralRepaySwap = ({
         tokenTransferProxy: '',
         contractMethod: 'buy',
         partnerFee: 0,
-        srcUSD: amountUSD.toString(),
-        destUSD: amountUSD.toString(),
+        srcUSD: amountRepayUSD.toString(),
+        destUSD: amountRepayUSD.toString(),
         partner: 'aave-ton',
         maxImpactReached: false,
         hmac: '',
       };
     },
     [
-      swapIn.amount,
+      getRateTON,
       swapIn.decimals,
-      swapIn.priceInUSD,
       swapIn.underlyingAsset,
+      swapIn.underlyingAssetTon,
       swapOut.amount,
       swapOut.decimals,
       swapOut.priceInUSD,
+      swapOut.totalDebt,
       swapOut.underlyingAsset,
+      swapOut.underlyingAssetTon,
     ]
   );
 
