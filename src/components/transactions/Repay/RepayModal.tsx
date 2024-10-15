@@ -40,6 +40,19 @@ export const RepayModal = () => {
     close();
   };
 
+  const checkUserReservesData = (): boolean => {
+    const filteredArray =
+      user && user?.userReservesData.filter((item) => item.underlyingBalance !== '0');
+    if (
+      filteredArray &&
+      filteredArray.length === 1 &&
+      filteredArray[0].underlyingAsset === args.underlyingAsset
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const isShowCollateralTON =
     isFeatureEnabled.collateralRepay(currentMarketData) &&
     !mainTxState.txHash &&
@@ -48,7 +61,8 @@ export const RepayModal = () => {
       (userReserve) =>
         userReserve.scaledATokenBalance !== '0' &&
         userReserve.underlyingAsset !== args.underlyingAsset
-    );
+    ) &&
+    checkUserReservesData();
 
   useEffect(() => {
     if (repayType === RepayType.COLLATERAL && !isShowCollateralTON && user) {
