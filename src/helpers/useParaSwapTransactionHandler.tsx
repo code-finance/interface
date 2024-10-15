@@ -50,6 +50,7 @@ interface UseParaSwapTransactionHandlerProps {
   protocolAction?: ProtocolAction;
   underlyingAssetTon?: string;
   repayWithAmount?: string;
+  repayAmount?: string;
   swapIn?: SwapReserveData;
   isMaxSelected?: boolean;
 }
@@ -69,6 +70,7 @@ export const useParaSwapTransactionHandler = ({
   deps = [],
   underlyingAssetTon,
   repayWithAmount,
+  repayAmount,
   swapIn,
 }: UseParaSwapTransactionHandlerProps) => {
   const { walletAddressTonWallet } = useTonConnectContext();
@@ -280,7 +282,7 @@ export const useParaSwapTransactionHandler = ({
           txHash: res?.txHash,
           loading: false,
           success: true,
-          amount: repayWithAmount,
+          amount: repayAmount,
         });
       }
     } else {

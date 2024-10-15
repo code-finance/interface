@@ -75,6 +75,7 @@ export const CollateralRepayActions = ({
       isMaxSelected,
       swapIn,
       repayWithAmount,
+      repayAmount,
       underlyingAssetTon,
       protocolAction: ProtocolAction.repayCollateral,
       handleGetTxns: async (signature, deadline) => {
