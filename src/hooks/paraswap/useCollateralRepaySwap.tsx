@@ -144,11 +144,12 @@ export const useCollateralRepaySwap = ({
       const res = await getRateTON(params);
 
       const amountRepayUSD = amountRepay.multipliedBy(swapOut.priceInUSD);
-
-      const srcAmountUSD = (res && normalize(res.amountOut, res.decimalsOut).toString()) || 0;
-
       const amount = normalizeBN(amountRepay, swapOut.decimals * -1);
-      const srcAmount = normalizeBN(srcAmountUSD, swapIn.decimals * -1);
+
+      const formatSrcAmount = normalize(res?.amountOut || 0, swapIn.decimals);
+      const srcAmount = normalizeBN(formatSrcAmount, swapIn.decimals * -1);
+
+      const srcAmountUSD = valueToBigNumber(formatSrcAmount).multipliedBy(swapIn.priceInUSD);
 
       return {
         blockNumber: 126563785,
@@ -210,6 +211,7 @@ export const useCollateralRepaySwap = ({
       debt,
       getRateTON,
       swapIn.decimals,
+      swapIn.priceInUSD,
       swapIn.underlyingAsset,
       swapIn.underlyingAssetTon,
       swapOut.amount,
