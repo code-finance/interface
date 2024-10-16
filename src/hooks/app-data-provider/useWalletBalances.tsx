@@ -1,17 +1,12 @@
 import { API_ETH_MOCK_ADDRESS, ReservesDataHumanized } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
-import { fromNano } from '@ton/core';
-import axios from 'axios';
 import { BigNumber } from 'bignumber.js';
-import { useCallback, useEffect, useState } from 'react';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
-import { sleep } from 'src/utils/rotationProvider';
 
 import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
 import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
-import { API_TON_V2 } from './useAppDataProviderTon';
 
 export interface WalletBalance {
   amount: string;

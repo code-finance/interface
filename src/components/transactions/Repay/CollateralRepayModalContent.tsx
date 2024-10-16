@@ -208,7 +208,8 @@ export function CollateralRepayModalContent({
     valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount) ||
     (valueToBigNumber(inputAmount).lt(0.7) &&
       valueToBigNumber(outputAmount).gt(0) &&
-      swapIn.underlyingAssetTon === address_pools)
+      swapIn.underlyingAssetTon === address_pools) ||
+    valueToBigNumber(swapIn.formattedAvailableLiquidity).lt(inputAmount)
   ) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (shouldUseFlashloan && !collateralReserveData.flashLoanEnabled) {

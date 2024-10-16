@@ -76,8 +76,8 @@ export const useUserSummaryAndIncentivesTon = (
 
   useEffect(() => {
     console.log('User Summary Ton---------', userSummaryTon);
-    console.log('Total-supply-------------', userSummaryTon?.collateralInUSDAsset);
-    console.log('Total-borrow-------------', userSummaryTon?.totalBorrowsMarketReferenceCurrency);
+    // console.log('Total-supply-------------', userSummaryTon?.collateralInUSDAsset);
+    // console.log('Total-borrow-------------', userSummaryTon?.totalBorrowsMarketReferenceCurrency);
   }, [userSummaryTon]);
 
   useEffect(() => {

@@ -39,6 +39,8 @@ export interface RepayActionProps extends BoxProps {
   underlyingAssetTon?: string;
   isMaxSelected?: boolean;
   balance?: string;
+  walletAddressTonWallet: string;
+  isConnectNetWorkTon: boolean;
 }
 
 export const RepayActions = ({
@@ -55,11 +57,11 @@ export const RepayActions = ({
   underlyingAssetTon,
   isMaxSelected,
   balance,
+  walletAddressTonWallet,
+  isConnectNetWorkTon,
   ...props
 }: RepayActionProps) => {
-  const { walletAddressTonWallet } = useTonConnectContext();
-  const { getPoolContractGetReservesData, getYourSupplies, isConnectNetWorkTon } =
-    useAppDataContext();
+  const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
   const { actionSendRepayTonNetwork, approvedAmountTonAssume } = useTonTransactions(
     walletAddressTonWallet,
     `${underlyingAssetTon}`

@@ -26,17 +26,17 @@ export const useGetBalanceTon = () => {
   const onGetBalanceTonNetwork = useCallback(
     async (tokenAddress: string, yourAddress: string, decimals: string | number) => {
       if (!AppTON) {
-        console.error('AppTON is not available.');
+        console.warn('AppTON is not available.');
         return '0';
       }
 
       if (!yourAddress) {
-        console.error('Wallet address is not available.');
+        console.warn('Wallet address is not available.');
         return '0';
       }
 
       if (!tokenAddress) {
-        console.error('Token address is not provided.');
+        console.warn('Token address is not provided.');
         return '0';
       }
 

@@ -19,6 +19,7 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -52,6 +53,7 @@ export const RepayModalContent = ({
   const { gasLimit, mainTxState: repayTxState, txError } = useModalContext();
   const { marketReferencePriceInUsd, isConnectNetWorkTon } = useAppDataContext();
   const { currentChainId, currentMarketData, currentMarket } = useProtocolDataContext();
+  const { walletAddressTonWallet } = useTonConnectContext();
 
   const [minRemainingBaseTokenBalance] = useRootStore((store) => [
     store.poolComputed.minRemainingBaseTokenBalance,
@@ -301,6 +303,8 @@ export const RepayModalContent = ({
         repayWithATokens={repayWithATokens}
         underlyingAssetTon={poolReserve?.underlyingAssetTon}
         balance={balance}
+        walletAddressTonWallet={walletAddressTonWallet}
+        isConnectNetWorkTon={isConnectNetWorkTon}
       />
     </>
   );

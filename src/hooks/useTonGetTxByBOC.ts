@@ -153,17 +153,17 @@ export function useTonGetTxByBOC() {
             const data: EventData = await response.json();
 
             if (data.in_progress || !data) {
-              console.log('Transaction in progress, retrying...');
+              // console.log('Transaction in progress, retrying...');
               throw new Error('Transaction in progress, retrying...');
             }
 
             return data.actions.every((item: Action) => item.status === 'ok');
           } catch (apiError) {
             if (apiError.name === 'AbortError') {
-              console.log('Request timeout, retrying...', apiError.message);
+              // console.log('Request timeout, retrying...', apiError.message);
               throw new Error('Timeout error, retrying...');
             }
-            console.log('Error from API, retrying...', apiError);
+            // console.log('Error from API, retrying...', apiError);
             throw apiError;
           } finally {
             clearTimeout(timeoutId); // Clear timeout
