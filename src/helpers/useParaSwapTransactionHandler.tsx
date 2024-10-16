@@ -248,46 +248,49 @@ export const useParaSwapTransactionHandler = ({
   const action = async () => {
     if (underlyingAssetTon) {
       setMainTxState({ ...mainTxState, loading: true });
-
-      const params = {
-        amount: repayWithAmount || '0',
-        decimals: swapIn?.decimals,
-        isMaxSelected: false,
-        isAToken: false,
-        balance: repayWithAmount || '0',
-        debtType: InterestRate.Variable,
-        underlyingAddressCollateral: swapIn?.underlyingAssetTon,
-      };
-
-      const res = await actionSendRepayTonNetwork(params);
-
-      await Promise.all([
-        retryPromiseFunction(
-          async () => await getPoolContractGetReservesData(true),
-          MAX_ATTEMPTS,
-          1000
-        ),
-        retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
-      ]);
-
-      if (!res?.success) {
-        const error = {
-          name: 'repay',
-          message: `${res?.message}`,
+      try {
+        const params = {
+          amount: repayWithAmount || '0',
+          decimals: swapIn?.decimals,
+          isMaxSelected: false,
+          isAToken: false,
+          balance: repayWithAmount || '0',
+          debtType: InterestRate.Variable,
+          underlyingAddressCollateral: swapIn?.underlyingAssetTon,
         };
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, res?.blocking);
-        setTxError(parsedError);
-        setMainTxState({
-          txHash: undefined,
-          loading: false,
-        });
-      } else {
-        setMainTxState({
-          txHash: res?.txHash,
-          loading: false,
-          success: true,
-          amount: repayAmount,
-        });
+
+        const res = await actionSendRepayTonNetwork(params);
+
+        await Promise.all([
+          retryPromiseFunction(
+            async () => await getPoolContractGetReservesData(true),
+            MAX_ATTEMPTS,
+            1000
+          ),
+          retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
+        ]);
+
+        if (!res?.success) {
+          const error = {
+            name: 'repay',
+            message: `${res?.message}`,
+          };
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, res?.blocking);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        } else {
+          setMainTxState({
+            txHash: res?.txHash,
+            loading: false,
+            success: true,
+            amount: repayAmount,
+          });
+        }
+      } catch (error) {
+        console.log('error repay--------------', error);
       }
     } else {
       setMainTxState({ ...mainTxState, loading: true });
