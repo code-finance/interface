@@ -1,8 +1,6 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import { ContractMethod, OptimalRate, SwapSide } from '@paraswap/sdk';
-import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
+import { OptimalRate, SwapSide } from '@paraswap/sdk';
 import axios from 'axios';
-import BigNumber from 'bignumber.js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { retry } from 'ts-retry-promise';
 
@@ -209,6 +207,7 @@ export const useCollateralRepaySwap = ({
       };
     },
     [
+      debt,
       getRateTON,
       swapIn.decimals,
       swapIn.underlyingAsset,
@@ -216,7 +215,6 @@ export const useCollateralRepaySwap = ({
       swapOut.amount,
       swapOut.decimals,
       swapOut.priceInUSD,
-      swapOut.totalDebt,
       swapOut.underlyingAsset,
       swapOut.underlyingAssetTon,
     ]
