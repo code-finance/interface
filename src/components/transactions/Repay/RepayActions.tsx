@@ -10,6 +10,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { retryPromiseFunction } from 'src/hooks/paraswap/common';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -20,7 +21,6 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { retry } from 'ts-retry-promise';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -168,11 +168,12 @@ export const RepayActions = ({
           const res = await actionSendRepayTonNetwork(params);
 
           await Promise.all([
-            retry(async () => getPoolContractGetReservesData(true), {
-              retries: MAX_ATTEMPTS,
-              delay: 1000,
-            }),
-            retry(async () => getYourSupplies(), { retries: MAX_ATTEMPTS, delay: 1000 }),
+            retryPromiseFunction(
+              async () => await getPoolContractGetReservesData(true),
+              MAX_ATTEMPTS,
+              1000
+            ),
+            retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
           ]);
 
           if (!res?.success) {

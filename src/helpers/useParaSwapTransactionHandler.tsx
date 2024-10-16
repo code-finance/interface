@@ -9,7 +9,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
-import { SIGNATURE_AMOUNT_MARGIN, SwapReserveData } from 'src/hooks/paraswap/common';
+import {
+  retryPromiseFunction,
+  SIGNATURE_AMOUNT_MARGIN,
+  SwapReserveData,
+} from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonTransactions } from 'src/hooks/useTonTransactions';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -18,7 +22,6 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { retry } from 'ts-retry-promise';
 
 import { MOCK_SIGNED_HASH } from './useTransactionHandler';
 
@@ -259,11 +262,12 @@ export const useParaSwapTransactionHandler = ({
       const res = await actionSendRepayTonNetwork(params);
 
       await Promise.all([
-        retry(async () => getPoolContractGetReservesData(true), {
-          retries: MAX_ATTEMPTS,
-          delay: 1000,
-        }),
-        retry(async () => getYourSupplies(), { retries: MAX_ATTEMPTS, delay: 1000 }),
+        retryPromiseFunction(
+          async () => await getPoolContractGetReservesData(true),
+          MAX_ATTEMPTS,
+          1000
+        ),
+        retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
       ]);
 
       if (!res?.success) {

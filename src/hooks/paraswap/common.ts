@@ -465,3 +465,23 @@ export const minimumReceivedAfterSlippage = (
     .multipliedBy(1 - Number(slippage) / 100)
     .toFixed(decimals);
 };
+
+export async function retryPromiseFunction(
+  fn: () => Promise<void>,
+  retries: number,
+  delay: number
+) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      await fn();
+      return;
+    } catch (error) {
+      console.log(`Retry attempt ${i + 1} due to error: ${error}`);
+      if (i < retries - 1) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      } else {
+        throw error;
+      }
+    }
+  }
+}

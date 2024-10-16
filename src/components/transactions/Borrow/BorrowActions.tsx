@@ -17,6 +17,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { retryPromiseFunction } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonTransactions } from 'src/hooks/useTonTransactions';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -24,7 +25,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { retry } from 'ts-retry-promise';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -134,11 +134,12 @@ export const BorrowActions = React.memo(
             );
 
             await Promise.all([
-              retry(async () => getPoolContractGetReservesData(true), {
-                retries: MAX_ATTEMPTS,
-                delay: 1000,
-              }),
-              retry(async () => getYourSupplies(), { retries: MAX_ATTEMPTS, delay: 1000 }),
+              retryPromiseFunction(
+                async () => await getPoolContractGetReservesData(true),
+                MAX_ATTEMPTS,
+                1000
+              ),
+              retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
             ]);
 
             if (!resBorrowTop?.success) {
