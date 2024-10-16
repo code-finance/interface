@@ -135,6 +135,7 @@ export function CollateralRepayModalContent({
     skip: mainTxState.loading || false,
     maxSlippage: Number(maxSlippage),
     isConnectNetWorkTon,
+    debt,
   });
 
   const loadingSkeleton = routeLoading && inputAmountUSD === '0';

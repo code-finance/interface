@@ -22,6 +22,7 @@ import {
 type UseRepayWithCollateralProps = UseSwapProps & {
   swapVariant: SwapVariant;
   isConnectNetWorkTon: boolean;
+  debt: string;
 };
 
 interface UseRepayWithCollateralResponse {
@@ -54,6 +55,7 @@ export const useCollateralRepaySwap = ({
   userAddress,
   swapVariant,
   isConnectNetWorkTon,
+  debt,
 }: UseRepayWithCollateralProps): UseRepayWithCollateralResponse => {
   const [inputAmount, setInputAmount] = useState<string>('0');
   const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
@@ -133,9 +135,7 @@ export const useCollateralRepaySwap = ({
 
   const exactInRateTON = useCallback(
     async ({ max }: { max: boolean }) => {
-      const amountRepay = max
-        ? valueToBigNumber(swapOut.totalDebt)
-        : valueToBigNumber(swapOut.amount);
+      const amountRepay = max ? valueToBigNumber(debt) : valueToBigNumber(swapOut.amount);
 
       const params = {
         tokenIn: swapOut.underlyingAssetTon,
