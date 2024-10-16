@@ -201,7 +201,7 @@ export const useCollateralRepaySwap = ({
         tokenTransferProxy: '',
         contractMethod: 'buy',
         partnerFee: 0,
-        srcUSD: amountRepayUSD.toString(),
+        srcUSD: srcAmountUSD.toString(),
         destUSD: amountRepayUSD.toString(),
         partner: 'aave-ton',
         maxImpactReached: false,
