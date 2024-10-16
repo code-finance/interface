@@ -1,8 +1,10 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { ContractMethod, OptimalRate, SwapSide } from '@paraswap/sdk';
 import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
+import axios from 'axios';
 import BigNumber from 'bignumber.js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { retry } from 'ts-retry-promise';
 
 import { address_pools, URL_API_BE } from '../app-data-provider/useAppDataProviderTon';
 import {
@@ -108,14 +110,19 @@ export const useCollateralRepaySwap = ({
       const controller = new AbortController();
 
       try {
-        const response = await fetch(
-          `${URL_API_BE}/crawler/swap-out?tokenIn=${tokenIn}&tokenOut=${tokenOut}&amountIn=${amountIn}`,
+        const response = await retry(
+          () =>
+            axios.get(`${URL_API_BE}/crawler/swap-out`, {
+              params: { tokenIn, tokenOut, amountIn },
+              signal: controller.signal,
+            }),
           {
-            signal: controller.signal,
+            retries: 3, // number of retry attempts
+            delay: 1000, // delay between retries in ms
           }
         );
 
-        const data: DataSwapOut = await response.json();
+        const data: DataSwapOut = response.data;
         return data.data;
       } catch (apiError) {
         return null;
