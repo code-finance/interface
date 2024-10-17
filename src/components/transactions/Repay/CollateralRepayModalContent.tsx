@@ -253,11 +253,6 @@ export function CollateralRepayModalContent({
     poolReserve.decimals
   );
 
-  useEffect(() => {
-    console.log('outputAmountUSD--------:', outputAmountUSD);
-    console.log('inputAmountUSD---------:', inputAmountUSD);
-  }, [inputAmountUSD, outputAmountUSD]);
-
   if (mainTxState.success)
     return (
       <TxSuccessView
