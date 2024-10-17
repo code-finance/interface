@@ -296,7 +296,8 @@ export function CollateralRepayModalContent({
         />
       </Box>
       <AssetInput
-        value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
+        // value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
+        value={inputAmount}
         usdValue={inputAmountUSD}
         symbol={tokenToRepayWith.symbol}
         assets={repayTokens}
