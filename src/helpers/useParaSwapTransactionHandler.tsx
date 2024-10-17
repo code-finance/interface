@@ -354,6 +354,9 @@ export const useParaSwapTransactionHandler = ({
 
   // Populates the approval transaction and sets the default gas estimation.
   useEffect(() => {
+    if (isConnectNetWorkTon && Number(repayWithAmount) !== 0) {
+      setLoadingTxns(false);
+    }
     if (!skip && !isConnectNetWorkTon) {
       setLoadingTxns(true);
       handleGetApprovalTxns()
