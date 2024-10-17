@@ -205,6 +205,8 @@ export const RepayActions = ({
           console.log('error repay--------------', error);
         }
       } else {
+        setMainTxState({ ...mainTxState, loading: true });
+        setTxError(undefined);
         let response: TransactionResponse;
         let action = ProtocolAction.default;
 

@@ -38,6 +38,7 @@ interface CollateralRepayBaseProps extends BoxProps {
   underlyingAssetTon?: string;
   swapIn?: SwapReserveData;
   isMaxSelected?: boolean;
+  isConnectNetWorkTon?: boolean;
 }
 
 // Used in poolSlice
@@ -63,6 +64,7 @@ export const CollateralRepayActions = ({
   underlyingAssetTon,
   swapIn,
   isMaxSelected,
+  isConnectNetWorkTon,
   ...props
 }: CollateralRepayBaseProps & { buildTxFn: () => Promise<SwapTransactionParams> }) => {
   const [paraswapRepayWithCollateral, currentMarketData] = useRootStore((state) => [
@@ -72,6 +74,7 @@ export const CollateralRepayActions = ({
 
   const { approval, action, loadingTxns, approvalTxState, mainTxState, requiresApproval } =
     useParaSwapTransactionHandler({
+      isConnectNetWorkTon,
       isMaxSelected,
       swapIn,
       repayWithAmount,

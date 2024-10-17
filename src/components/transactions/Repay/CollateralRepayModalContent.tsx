@@ -404,6 +404,7 @@ export function CollateralRepayModalContent({
         underlyingAssetTon={userReserve.underlyingAssetTon}
         swapIn={swapIn}
         isMaxSelected={isMaxSelected}
+        isConnectNetWorkTon={isConnectNetWorkTon}
       />
     </>
   );
