@@ -62,6 +62,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
   const getYourSupplies = useCallback(async () => {
     if (!isConnectedTonWallet) {
+      console.log('---------getYourSupplies--------[]');
       setUserSupplies([]);
       setContractUserTon('');
       setLoading(false);
@@ -78,6 +79,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
           setContractUserTon(contractUserTon.toString());
 
+          console.log('---------getYourSupplies--------try');
           // Map the response to the format you need
           const data = res.map((item) => ({
             ...item,
@@ -95,7 +97,7 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
         }
       );
     } catch (error) {
-      console.error('Failed to fetch supplies after retries:', error);
+      console.log('---------getYourSupplies--------Failed to fetch supplies after retries:', error);
       setUserSupplies([]); // Set empty data in case of failure
     }
   }, [AppTON, isConnectedTonWallet, yourAddressWallet]);

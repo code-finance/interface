@@ -19,6 +19,7 @@ export abstract class Op {
   static WITHDRAW = 0x2572afa4;
   static INIT_RESERVE = 0x36e5ebcb;
   static SET_USE_RESERVE_AS_COLLATERAL = 0xab476844;
+  static SWAP = 0x9f404c0a;
 }
 
 export abstract class Errors {

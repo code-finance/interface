@@ -20,6 +20,7 @@ import {
   RepayParamsToCell,
   SetUseReserveAsCollateralParamsToCell,
   SupplyParamsToCell,
+  SwapParamsToCell,
   WithdrawParamsToCell,
 } from './builder';
 import { parseRateStrategy, parseReserveConfig, parseReserveState } from './parser';
@@ -31,6 +32,7 @@ import {
   RepayParams,
   SetUseReserveAsCollateralParams,
   SupplyParams,
+  SwapParams,
   WithdrawParams,
 } from './types';
 
@@ -122,6 +124,14 @@ export class Pool implements Contract {
       value: toNano('0.5'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: RepayCollateralParamsToCell(params),
+    });
+  }
+
+  async sendSwap(provider: ContractProvider, via: Sender, params: SwapParams) {
+    await provider.internal(via, {
+      value: toNano('0.2'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: SwapParamsToCell(params),
     });
   }
 
@@ -253,6 +263,33 @@ export class Pool implements Contract {
       console.log('Error Log: ', err);
       return [];
     }
+  }
+
+  async getNormalizedIncome(provider: ContractProvider, poolJWAddress: Address) {
+    const { stack } = await provider.get('get_normalized_income', [
+      {
+        type: 'slice',
+        cell: beginCell().storeAddress(poolJWAddress).endCell(),
+      },
+    ]);
+
+    return stack.readBigNumber();
+  }
+
+  async getNormalizedDebt(provider: ContractProvider, poolJWAddress: Address) {
+    const { stack } = await provider.get('get_normalized_debt', [
+      {
+        type: 'slice',
+        cell: beginCell().storeAddress(poolJWAddress).endCell(),
+      },
+    ]);
+
+    return stack.readBigNumber();
+  }
+
+  async getPoolBalance(provoider: ContractProvider) {
+    const { stack } = await provoider.get('get_pool_balance', []);
+    return stack.readBigNumber();
   }
 }
 

@@ -86,7 +86,7 @@ export interface PoolContractReservesDataType {
   // image_data?: string | undefined;
   // stableBorrowIndex: bigint | string | 0 | number;
 }
-
+export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
 export const address_pools = 'EQBiFRoNH0CkfcOe_dE2saPN3LDRN67CqgIOP1F_o6ROJISV';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
@@ -153,6 +153,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
+      console.log('---------getPoolContractGetReservesData--------');
       // Check if the pool contract is available
       if (!AppTON) return;
 
@@ -185,6 +186,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                   item.underlyingAddress.toString().toLocaleLowerCase()
               );
 
+              console.log('---------getPoolContractGetReservesData--------try');
               // If balance is found, use it; otherwise, set to '0'
               const walletBalance = result ? result.walletBalance : '0';
 
@@ -204,7 +206,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           }
         );
       } catch (error) {
-        console.error('Error fetching getPoolContractGetReservesData:', error);
+        console.log(
+          '---------getPoolContractGetReservesData--------Failed to fetch ReservesData:',
+          error
+        );
         setPoolContractReservesData([]); // Set empty data if failure occurs after retries
       }
     },

@@ -85,8 +85,8 @@ export const useGetBalanceTon = () => {
           return fromNano(balance).toString();
         },
         {
-          retries: MAX_ATTEMPTS_50, // Maximum number of retries
-          delay: 1000, // Delay between retries (1 second)
+          retries: 100, // Maximum number of retries
+          delay: 2000, // Delay between retries (2 second)
         }
       );
 

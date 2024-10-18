@@ -1,17 +1,16 @@
 import {
   Asset,
   Factory,
-  JettonRoot,
   MAINNET_FACTORY_ADDR,
+  Pool as PoolDD,
   PoolType,
   ReadinessStatus,
-  VaultJetton,
 } from '@dedust/sdk';
 import { Address, beginCell, Cell, Sender, toNano } from '@ton/core';
-import { TonClient4 } from '@ton/ton';
 
 import {
   BorrowParams,
+  CustomFactory,
   InitReserveParams,
   JettonMinter,
   JettonWallet,
@@ -27,16 +26,32 @@ import { DeployedContract, IRateStrategy, IReserveConfig, Jettons, Provider } fr
 import { getPriceData, openContract } from './utils';
 import { buildJettonOnChainMetadata, readJettonMetadata } from './utils/metadata';
 
+type ISwapParams = {
+  underlyingAddress: Address;
+  collateralAddress?: Address;
+  swapPoolAddress: Address;
+  collateralVaultAddress: Address;
+  interestRateMode: InterestRateMode;
+  amount?: bigint;
+  isMaxRepay?: boolean;
+  jettons?: Jettons;
+};
+
 export class App {
   provider: Provider;
   pool: DeployedContract<Pool>;
+  factory: DeployedContract<Factory>;
   minter: (_minter: Address) => DeployedContract<JettonMinter>;
   wallet: (_wallet: Address) => DeployedContract<JettonWallet>;
   user: (_user: Address) => DeployedContract<User>;
 
-  constructor(provider: Provider, address: Address) {
+  constructor(provider: Provider, address: Address, addressFactory?: Address) {
     this.provider = provider;
     this.pool = openContract<Pool>(provider, Pool.createFromAddress(address));
+
+    addressFactory = addressFactory ?? MAINNET_FACTORY_ADDR;
+    this.factory = openContract<Factory>(provider, CustomFactory.createFromAddress(addressFactory));
+
     this.minter = (_minter: Address) =>
       openContract<JettonMinter>(provider, JettonMinter.createFromAddress(_minter));
     this.wallet = (_wallet: Address) =>
@@ -173,6 +188,52 @@ export class App {
     return this.pool.sendWithdraw(via, withdrawParams);
   }
 
+  async estimateAmountInSwap(
+    amountOut: bigint,
+    underlyingAddressIn: Address,
+    underlyingAddressOut: Address
+  ) {
+    let assetIn = Asset.jetton(underlyingAddressIn);
+    let assetOut = Asset.jetton(underlyingAddressOut);
+
+    if (underlyingAddressIn.equals(this.pool.address)) {
+      // console.log('check 1');
+      assetIn = Asset.native();
+    } else {
+      // console.log('check 2');
+      assetIn = Asset.jetton(underlyingAddressIn);
+    }
+    if (underlyingAddressOut.equals(this.pool.address)) {
+      // console.log('check 3');
+      assetOut = Asset.native();
+    } else {
+      // console.log('check 4');
+      assetOut = Asset.jetton(underlyingAddressOut);
+    }
+
+    const poolSwap = openContract<PoolDD>(
+      this.provider,
+      await this.factory.getPool(PoolType.VOLATILE, [assetIn, assetOut])
+    );
+
+    const amountInTemp = (
+      await poolSwap.getEstimatedSwapOut({ assetIn: assetOut, amountIn: amountOut })
+    ).amountOut;
+    // console.log('amountInTemp = ', amountInTemp);
+    const amountOutTemp = (
+      await poolSwap.getEstimatedSwapOut({ assetIn: assetIn, amountIn: amountInTemp })
+    ).amountOut;
+    // console.log('amountOutTemp = ', amountOutTemp);
+
+    let rateInOutExpect = (amountInTemp * BigInt(10000)) / amountOutTemp;
+    rateInOutExpect = rateInOutExpect + BigInt(2) * (rateInOutExpect - BigInt(10000));
+    // console.log('rateSwap = ', rateInOutExpect);
+
+    const AmountInEstimate = (amountInTemp * rateInOutExpect) / BigInt(10000);
+
+    return AmountInEstimate;
+  }
+
   async sendRepay(
     via: Sender,
     underlyingAddress: Address,
@@ -181,9 +242,17 @@ export class App {
       interestRateMode,
       isMaxRepay,
       useAToken,
-    }: { interestRateMode: InterestRateMode; isMaxRepay: boolean; useAToken: boolean },
-    underlyingAddressCollateral?: Address, //For repay collateral -> Required
-    jettons?: Jettons //For repay collateral -> Required
+      amountCollateral,
+      underlyingAddressCollateral,
+      jettons,
+    }: {
+      interestRateMode: InterestRateMode;
+      isMaxRepay: boolean;
+      useAToken: boolean;
+      amountCollateral?: bigint;
+      underlyingAddressCollateral?: Address;
+      jettons?: Jettons;
+    }
   ) {
     if (!via.address) throw new Error('Sender address is required');
 
@@ -212,6 +281,7 @@ export class App {
         .storeBit(interestRateMode)
         .storeBit(useAToken)
         .storeBit(isMaxRepay)
+        .storeCoins(amount)
         .endCell();
 
       return wallet.sendTransfer(
@@ -242,16 +312,10 @@ export class App {
         poolJWCollateral = await minter.getWalletAddress(this.pool.address);
       }
 
-      const tonClient = new TonClient4({
-        endpoint: process.env.API_ENDPOINT_TESTNET ?? 'https://sandbox-v4.tonhubapi.com',
-      });
-      const factory = tonClient.open(
-        Factory.createFromAddress(
-          Address.parse(
-            process.env.FACTORY_DEDUST_TESTNET ?? 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y'
-          )
-        )
-      );
+      // const tonClient = new TonClient4({ endpoint: process.env.API_ENDPOINT_TESTNET ?? '' });
+      // const factory = tonClient.open(
+      //     Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST_TESTNET ?? '')),
+      // );
 
       let assetRepay = Asset.jetton(underlyingAddress);
       let assetCollateral = Asset.jetton(underlyingAddressCollateral);
@@ -271,32 +335,48 @@ export class App {
         assetCollateral = Asset.jetton(underlyingAddressCollateral);
       }
 
-      const poolSwap = tonClient.open(
-        await factory.getPool(PoolType.VOLATILE, [assetCollateral, assetRepay])
+      // const poolSwap = tonClient.open(await this.factory.getPool(PoolType.VOLATILE, [assetCollateral, assetRepay]));
+      // console.log('await poolSwap.getReadinessStatus()', await poolSwap.getReadinessStatus());
+
+      const poolSwap = openContract<PoolDD>(
+        this.provider,
+        await this.factory.getPool(PoolType.VOLATILE, [assetRepay, assetCollateral])
       );
-      console.log('await poolSwap.getReadinessStatus()', await poolSwap.getReadinessStatus());
 
       if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
         console.log('dedust pool ready');
 
         const priceData = await getPriceData(this.provider, jettons);
 
-        let vaultAddress = (await factory.getJettonVault(underlyingAddressCollateral)).address;
+        let vaultAddress = (await this.factory.getJettonVault(underlyingAddressCollateral)).address;
         if (underlyingAddressCollateral.equals(this.pool.address)) {
-          vaultAddress = tonClient.open(await factory.getNativeVault()).address;
+          vaultAddress = (await this.factory.getNativeVault()).address;
         }
         const swapPoolAddress = poolSwap.address;
+
+        console.log('poolSwap.address', poolSwap.address);
+        console.log('vaultAddress', vaultAddress);
+        // console.log(
+        //   'estimate out=== ',
+        //   await poolSwap.getEstimatedSwapOut({
+        //     assetIn: assetCollateral,
+        //     amountIn: amountCollateral ?? BigInt(0),
+        //   })
+        // );
 
         const repayParams: RepayCollateralParams = {
           poolJWAddress,
           poolJWCollateral,
-          amountCollateral: amount,
+          amountRepay: amount,
+          amountCollateral: amountCollateral ?? BigInt(0),
           interestRateMode,
           isMax: isMaxRepay,
           priceData,
           vaultAddress,
           swapPoolAddress,
         };
+
+        console.log('repayParams', repayParams);
 
         return this.pool.sendRepayCollateral(via, repayParams);
       }
@@ -324,6 +404,29 @@ export class App {
       useAsCollateral,
       poolJWAddress,
       priceData,
+    });
+  }
+
+  async sendSwap(via: Sender, params: ISwapParams) {
+    const {
+      underlyingAddress,
+      collateralAddress,
+      swapPoolAddress,
+      collateralVaultAddress,
+      interestRateMode,
+      isMaxRepay,
+      amount,
+      jettons,
+    } = params;
+
+    return this.pool.sendSwap(via, {
+      poolJWAddress: await this.minter(underlyingAddress).getWalletAddress(this.pool.address),
+      amount,
+      interestRateMode,
+      isMaxRepay,
+      swapPoolAddress,
+      collateralVaultAddress,
+      priceData: await getPriceData(this.provider, jettons),
     });
   }
 
@@ -359,5 +462,31 @@ export class App {
   async getJettonWallet(ownerAddress: Address, underlyingAddress: Address) {
     const minter = this.minter(underlyingAddress);
     return minter.getWalletAddress(ownerAddress);
+  }
+
+  async getNormalizedIncome(underlyingAddress: Address) {
+    const minter = this.minter(underlyingAddress);
+    const poolJWAddress = await minter.getWalletAddress(this.pool.address);
+    return this.pool.getNormalizedIncome(poolJWAddress);
+  }
+
+  async getNormalizedDebt(underlyingAddress: Address) {
+    const minter = this.minter(underlyingAddress);
+    const poolJWAddress = await minter.getWalletAddress(this.pool.address);
+    return this.pool.getNormalizedDebt(poolJWAddress);
+  }
+
+  async getPoolBalance() {
+    return this.pool.getPoolBalance();
+  }
+
+  async getPoolJettonBalance(underlyingAddress: Address) {
+    const minter = this.minter(underlyingAddress);
+    const wallet = this.wallet(await minter.getWalletAddress(this.pool.address));
+    return wallet.getJettonBalance();
+  }
+
+  async getAdmin() {
+    return this.pool.getAdmin();
   }
 }

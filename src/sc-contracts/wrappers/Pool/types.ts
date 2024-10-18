@@ -6,6 +6,7 @@ export type PoolConfig = {
   admin: Address;
   userCode: Cell;
   bePublicKey: Buffer;
+  maxStableRateBorrowSizePercent: number;
 };
 
 export type ReserveConfig = {
@@ -46,7 +47,6 @@ export type ReserveState = {
   totalStableDebt: bigint;
   totalVariableDebt: bigint;
   liquidityIndex: bigint;
-  stableBorrowIndex: bigint;
   variableBorrowIndex: bigint;
   currentLiquidityRate: bigint;
   currentStableBorrowRate: bigint;
@@ -92,6 +92,7 @@ export type SetUseReserveAsCollateralParams = {
 export type RepayCollateralParams = {
   poolJWAddress: Address;
   poolJWCollateral?: Address;
+  amountRepay: bigint;
   amountCollateral: bigint;
   interestRateMode: number;
   isMax: boolean;
@@ -106,4 +107,14 @@ export type RepayParams = {
   interestRateMode: InterestRateMode;
   isMaxRepay: boolean;
   useAToken: boolean;
+};
+
+export type SwapParams = {
+  poolJWAddress: Address;
+  amount?: bigint;
+  interestRateMode: InterestRateMode;
+  isMaxRepay?: boolean;
+  swapPoolAddress: Address;
+  collateralVaultAddress: Address;
+  priceData: Dictionary<bigint, Cell>;
 };

@@ -11,6 +11,7 @@ import {
   ReserveConfig,
   SetUseReserveAsCollateralParams,
   SupplyParams,
+  SwapParams,
   WithdrawParams,
 } from './types';
 
@@ -22,6 +23,7 @@ export function PoolConfigToCell(config: PoolConfig): Cell {
     .storeDict(newDict)
     .storeDict(newDict)
     .storeBuffer(config.bePublicKey)
+    .storeUint(config.maxStableRateBorrowSizePercent, 16)
     .storeRef(config.userCode)
     .endCell();
 }
@@ -142,6 +144,7 @@ export function RepayCollateralParamsToCell(params: RepayCollateralParams): Cell
   const {
     poolJWAddress,
     poolJWCollateral,
+    amountRepay,
     amountCollateral,
     interestRateMode,
     isMax,
@@ -154,6 +157,7 @@ export function RepayCollateralParamsToCell(params: RepayCollateralParams): Cell
   return beginCell()
     .storeUint(Op.REPAY_COLLATERAL, 32)
     .storeUint(Math.floor(Date.now() / 1000), 64)
+    .storeCoins(amountRepay)
     .storeCoins(amountCollateral)
     .storeUint(interestRateMode, 1)
     .storeAddress(poolJWAddress)
@@ -175,5 +179,29 @@ export function RepayParamsToCell(params: RepayParams): Cell {
     .storeUint(interestRateMode, 1)
     .storeBit(useAToken)
     .storeBit(isMaxRepay)
+    .endCell();
+}
+
+export function SwapParamsToCell(params: SwapParams): Cell {
+  const {
+    poolJWAddress,
+    amount,
+    interestRateMode,
+    isMaxRepay,
+    swapPoolAddress,
+    collateralVaultAddress,
+    priceData,
+  } = params;
+  return beginCell()
+    .storeUint(Op.SWAP, 32)
+    .storeUint(Math.floor(Date.now() / 1000), 64)
+    .storeAddress(poolJWAddress)
+    .storeCoins(amount ?? 0)
+    .storeUint(interestRateMode, 1)
+    .storeBit(isMaxRepay ?? false)
+    .storeDict(priceData)
+    .storeRef(
+      beginCell().storeAddress(swapPoolAddress).storeAddress(collateralVaultAddress).endCell()
+    )
     .endCell();
 }

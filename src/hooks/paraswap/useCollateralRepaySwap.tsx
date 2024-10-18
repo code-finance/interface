@@ -1,10 +1,10 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OptimalRate, SwapSide } from '@paraswap/sdk';
-import axios from 'axios';
+import { Address } from '@ton/core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { retry } from 'ts-retry-promise';
 
-import { address_pools, URL_API_BE } from '../app-data-provider/useAppDataProviderTon';
+import { address_pools } from '../app-data-provider/useAppDataProviderTon';
+import { useAppFactoryTON } from '../useContract';
 import {
   convertParaswapErrorMessage,
   fetchExactInRate,
@@ -97,116 +97,115 @@ export const useCollateralRepaySwap = ({
     swapOut.variableBorrowAPY,
   ]);
 
+  const AppFactoryTON = useAppFactoryTON();
+
   const getRateTON = useCallback(
     async ({
       tokenIn,
       tokenOut,
-      amountIn,
+      amountRepay,
     }: {
       tokenIn: string | undefined;
       tokenOut: string | undefined;
-      amountIn: string;
+      amountRepay: string;
     }) => {
-      const controller = new AbortController();
-
+      if (!AppFactoryTON || !tokenIn || !tokenOut) return null;
       try {
-        const response = await retry(
-          () =>
-            axios.get(`${URL_API_BE}/crawler/swap-out`, {
-              params: { tokenIn, tokenOut, amountIn },
-              signal: controller.signal,
-            }),
-          {
-            retries: 3, // number of retry attempts
-            delay: 1000, // delay between retries in ms
-          }
+        const amountOut = BigInt(Number(amountRepay).toFixed(0));
+        const underlyingAddressIn = Address.parse(tokenIn);
+        const underlyingAddressOut = Address.parse(tokenOut);
+
+        const data = await AppFactoryTON.estimateAmountInSwap(
+          amountOut,
+          underlyingAddressIn,
+          underlyingAddressOut
         );
 
-        const data: DataSwapOut = response.data;
-        return data.data;
+        return data.toString();
       } catch (apiError) {
-        return null;
+        return '0';
       }
     },
-    []
+    [AppFactoryTON]
   );
 
-  const exactInRateTON = useCallback(
-    async ({ max }: { max: boolean }) => {
-      const amountRepay = max ? valueToBigNumber(debt) : valueToBigNumber(swapOut.amount);
+  const exactInRateTON = useMemo(
+    () =>
+      async ({ max }: { max: boolean }) => {
+        const amountRepay = max ? valueToBigNumber(debt) : valueToBigNumber(swapOut.amount);
 
-      const params = {
-        tokenIn: swapOut.underlyingAssetTon,
-        tokenOut: swapIn.underlyingAssetTon,
-        amountIn: amountRepay.toString(),
-      };
+        const params = {
+          tokenOut: swapOut.underlyingAssetTon,
+          tokenIn: swapIn.underlyingAssetTon,
+          amountRepay: normalizeBN(amountRepay.toString(), swapOut.decimals * -1).toString(),
+        };
 
-      const res = await getRateTON(params);
+        const amountOut = await getRateTON(params);
 
-      const amountRepayUSD = amountRepay.multipliedBy(swapOut.priceInUSD);
-      const amount = normalizeBN(amountRepay, swapOut.decimals * -1);
+        const amountRepayUSD = amountRepay.multipliedBy(swapOut.priceInUSD);
+        const amount = normalizeBN(amountRepay, swapOut.decimals * -1);
 
-      const formatSrcAmount = normalize(res?.amountOut || 0, swapIn.decimals);
-      const srcAmount = normalizeBN(formatSrcAmount, swapIn.decimals * -1);
+        const formatSrcAmount = normalize(amountOut || 0, swapIn.decimals);
+        const srcAmount = normalizeBN(formatSrcAmount, swapIn.decimals * -1);
 
-      const srcAmountUSD = valueToBigNumber(formatSrcAmount).multipliedBy(swapIn.priceInUSD);
+        const srcAmountUSD = valueToBigNumber(formatSrcAmount).multipliedBy(swapIn.priceInUSD);
 
-      return {
-        blockNumber: 126563785,
-        network: -1,
-        srcToken: swapIn.underlyingAsset,
-        srcDecimals: swapIn.decimals,
-        srcAmount: srcAmount.toFixed(0),
-        destToken: swapOut.underlyingAsset,
-        destDecimals: swapOut.decimals,
-        destAmount: amount.toFixed(0),
-        bestRoute: [
-          {
-            percent: 100,
-            swaps: [
-              {
-                srcToken: swapIn.underlyingAsset,
-                srcDecimals: swapIn.decimals,
-                destToken: swapOut.underlyingAsset,
-                destDecimals: swapOut.decimals,
-                swapExchanges: [
-                  {
-                    exchange: 'UniswapV3',
-                    srcAmount: srcAmount.toFixed(0),
-                    destAmount: amount.toFixed(0),
-                    percent: 100,
-                    poolAddresses: [`${address_pools}`],
-                    data: {
-                      path: [
-                        {
-                          tokenIn: swapIn.underlyingAsset,
-                          tokenOut: swapOut.underlyingAsset,
-                          fee: '100',
-                          currentFee: '100',
-                        },
-                      ],
-                      gasUSD: '0.000486',
+        return {
+          blockNumber: 126563785,
+          network: -1,
+          srcToken: swapIn.underlyingAsset,
+          srcDecimals: swapIn.decimals,
+          srcAmount: srcAmount.toFixed(0),
+          destToken: swapOut.underlyingAsset,
+          destDecimals: swapOut.decimals,
+          destAmount: amount.toFixed(0),
+          bestRoute: [
+            {
+              percent: 100,
+              swaps: [
+                {
+                  srcToken: swapIn.underlyingAsset,
+                  srcDecimals: swapIn.decimals,
+                  destToken: swapOut.underlyingAsset,
+                  destDecimals: swapOut.decimals,
+                  swapExchanges: [
+                    {
+                      exchange: 'UniswapV3',
+                      srcAmount: srcAmount.toFixed(0),
+                      destAmount: amount.toFixed(0),
+                      percent: 100,
+                      poolAddresses: [`${address_pools}`],
+                      data: {
+                        path: [
+                          {
+                            tokenIn: swapIn.underlyingAsset,
+                            tokenOut: swapOut.underlyingAsset,
+                            fee: '100',
+                            currentFee: '100',
+                          },
+                        ],
+                        gasUSD: '0.000486',
+                      },
                     },
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        gasCostUSD: '0.000973',
-        gasCost: '218300',
-        side: SwapSide.BUY,
-        contractAddress: '',
-        tokenTransferProxy: '',
-        contractMethod: 'buy',
-        partnerFee: 0,
-        srcUSD: srcAmountUSD.toString(),
-        destUSD: amountRepayUSD.toString(),
-        partner: 'aave-ton',
-        maxImpactReached: false,
-        hmac: '',
-      };
-    },
+                  ],
+                },
+              ],
+            },
+          ],
+          gasCostUSD: '0.000973',
+          gasCost: '218300',
+          side: SwapSide.BUY,
+          contractAddress: '',
+          tokenTransferProxy: '',
+          contractMethod: 'buy',
+          partnerFee: 0,
+          srcUSD: srcAmountUSD.toString(),
+          destUSD: amountRepayUSD.toString(),
+          partner: 'aave-ton',
+          maxImpactReached: false,
+          hmac: '',
+        };
+      },
     [
       debt,
       getRateTON,

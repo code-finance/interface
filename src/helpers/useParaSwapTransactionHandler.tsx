@@ -55,6 +55,7 @@ interface UseParaSwapTransactionHandlerProps {
   repayWithAmount?: string;
   repayAmount?: string;
   swapIn?: SwapReserveData;
+  swapOut?: SwapReserveData;
   isMaxSelected?: boolean;
   isConnectNetWorkTon?: boolean;
 }
@@ -77,6 +78,7 @@ export const useParaSwapTransactionHandler = ({
   repayWithAmount,
   repayAmount,
   swapIn,
+  swapOut,
 }: UseParaSwapTransactionHandlerProps) => {
   const { walletAddressTonWallet } = useTonConnectContext();
   const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
@@ -253,13 +255,15 @@ export const useParaSwapTransactionHandler = ({
         setMainTxState({ ...mainTxState, loading: true });
         setTxError(undefined);
         const params = {
-          amount: repayWithAmount || '0',
+          amount: repayAmount || '0',
           decimals: swapIn?.decimals,
           isMaxSelected: false,
           isAToken: false,
-          balance: repayWithAmount || '0',
+          balance: repayAmount || '0',
           debtType: InterestRate.Variable,
           underlyingAddressCollateral: swapIn?.underlyingAssetTon,
+          amountCollateral: repayWithAmount || '0',
+          decimalsCollateral: swapOut?.decimals,
         };
 
         const res = await actionSendRepayTonNetwork(params);

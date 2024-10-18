@@ -37,6 +37,7 @@ interface CollateralRepayBaseProps extends BoxProps {
   deadline?: string;
   underlyingAssetTon?: string;
   swapIn?: SwapReserveData;
+  swapOut?: SwapReserveData;
   isMaxSelected?: boolean;
   isConnectNetWorkTon?: boolean;
 }
@@ -63,6 +64,7 @@ export const CollateralRepayActions = ({
   buildTxFn,
   underlyingAssetTon,
   swapIn,
+  swapOut,
   isMaxSelected,
   isConnectNetWorkTon,
   ...props
@@ -77,6 +79,7 @@ export const CollateralRepayActions = ({
       isConnectNetWorkTon,
       isMaxSelected,
       swapIn,
+      swapOut,
       repayWithAmount,
       repayAmount,
       underlyingAssetTon,

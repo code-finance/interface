@@ -5,7 +5,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { useCallback } from 'react';
 
-import { useAppTON } from './useContract';
+import { useAppFactoryTON, useAppTON } from './useContract';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
@@ -34,11 +34,14 @@ export interface RepayParamsSend {
   balance?: string;
   debtType?: InterestRate;
   underlyingAddressCollateral?: string;
+  amountCollateral?: string;
+  decimalsCollateral?: number;
 }
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
   const AppTON = useAppTON();
+  const AppFactoryTON = useAppFactoryTON();
   const { sender, getLatestBoc } = useTonConnect();
 
   const approvedAmountTonAssume = {
@@ -192,9 +195,12 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       interestRateMode: number,
       useAToken: boolean,
       isBuffer: boolean | undefined,
-      _underlyingAddressCollateral?: string | undefined
+      _underlyingAddressCollateral?: string | undefined,
+      _amountCollateral?: string | undefined,
+      decimalsCollateral?: number | undefined
     ) => {
-      if (!AppTON || !sender || !decimals) return { success: false, message: 'Invalid parameters' };
+      if (!AppFactoryTON || !sender || !decimals)
+        return { success: false, message: 'Invalid parameters' };
       try {
         const isMaxRepay = Number(amount) === -1;
         const parseAmount = isMaxRepay
@@ -208,29 +214,40 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
               decimals
             ).toString();
 
+        const parseAmountCollateral =
+          _amountCollateral && decimalsCollateral
+            ? BigInt(
+                parseUnits(
+                  valueToBigNumber(_amountCollateral).toFixed(decimalsCollateral),
+                  decimalsCollateral
+                ).toString()
+              )
+            : undefined;
+
+        const underlyingAddressCollateral = _underlyingAddressCollateral
+          ? Address.parse(_underlyingAddressCollateral)
+          : undefined;
+
         const repayParams = {
           interestRateMode,
           isMaxRepay,
           useAToken,
+          amountCollateral: parseAmountCollateral,
+          underlyingAddressCollateral,
         };
 
-        const collateralAddress = _underlyingAddressCollateral
-          ? Address.parse(_underlyingAddressCollateral)
-          : undefined;
-
-        await AppTON.sendRepay(
+        await AppFactoryTON.sendRepay(
           sender,
           Address.parse(underlyingAssetTon),
           BigInt(parseAmount),
-          repayParams,
-          collateralAddress
+          repayParams
         );
         return { success: true, message: 'success' };
       } catch (error) {
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
-    [AppTON, sender, underlyingAssetTon]
+    [AppFactoryTON, sender, underlyingAssetTon]
   );
 
   const actionSendRepayTonNetwork = useCallback(
@@ -242,6 +259,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       balance,
       debtType,
       underlyingAddressCollateral,
+      amountCollateral,
+      decimalsCollateral,
     }: RepayParamsSend) => {
       if (!balance) return { success: false, message: 'Invalid parameters', blocking: false };
 
@@ -258,7 +277,9 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           interestRateMode,
           isAToken,
           isBuffer,
-          underlyingAddressCollateral
+          underlyingAddressCollateral,
+          amountCollateral,
+          decimalsCollateral
         )
       );
     },
