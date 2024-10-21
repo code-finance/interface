@@ -148,7 +148,7 @@ export const useGetBalanceTon = () => {
               // Fetch balance based on token type: Jetton or standard token
               walletBalance = isJetton
                 ? await onGetBalanceTonNetwork(underlyingAddress.toString(), yourAddress, decimals)
-                : await getBalanceTokenTonOld(yourAddress);
+                : await getBalanceTokenTon(yourAddress);
             } catch (error) {
               console.error(`Error fetching balance for token ${underlyingAddress}:`, error);
               hasError = true; // Set error flag to true in case of error
@@ -174,7 +174,7 @@ export const useGetBalanceTon = () => {
 
       return balances; // Return the final list of balances
     },
-    [getBalanceTokenTonOld, onGetBalanceTonNetwork]
+    [getBalanceTokenTon, onGetBalanceTonNetwork]
   );
 
   return {

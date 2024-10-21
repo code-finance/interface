@@ -153,7 +153,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
-      console.log('---------getPoolContractGetReservesData--------');
       // Check if the pool contract is available
       if (!AppTON) return;
 
@@ -163,6 +162,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         // Use retry to attempt this block of code if it fails
         await retry(
           async () => {
+            console.log('---------getPoolContractGetReservesData--------try');
             // Fetch reserves data from the pool contract
             const reserves = await AppTON.getReservesData();
 
@@ -186,7 +186,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
                   item.underlyingAddress.toString().toLocaleLowerCase()
               );
 
-              console.log('---------getPoolContractGetReservesData--------try');
               // If balance is found, use it; otherwise, set to '0'
               const walletBalance = result ? result.walletBalance : '0';
 
@@ -202,7 +201,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           },
           {
             retries: MAX_ATTEMPTS_50, // Maximum number of retries
-            delay: 1000, // Delay between retries (1 second)
+            delay: 1500, // Delay between retries (1 second)
           }
         );
       } catch (error) {
