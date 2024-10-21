@@ -86,7 +86,7 @@ export interface PoolContractReservesDataType {
   // image_data?: string | undefined;
   // stableBorrowIndex: bigint | string | 0 | number;
 }
-export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
+export const FACTORY_DEDUST_TESTNET = 'EQBkfBKACcgVReoUNUYadc1v0306jGlt2JIAS-aZfaoDXpOU';
 export const address_pools = 'EQBiFRoNH0CkfcOe_dE2saPN3LDRN67CqgIOP1F_o6ROJISV';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
