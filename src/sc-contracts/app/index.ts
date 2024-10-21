@@ -197,17 +197,17 @@ export class App {
     let assetOut = Asset.jetton(underlyingAddressOut);
 
     if (underlyingAddressIn.equals(this.pool.address)) {
-      // console.log('check 1');
+      console.log('check 1');
       assetIn = Asset.native();
     } else {
-      // console.log('check 2');
+      console.log('check 2');
       assetIn = Asset.jetton(underlyingAddressIn);
     }
     if (underlyingAddressOut.equals(this.pool.address)) {
-      // console.log('check 3');
+      console.log('check 3');
       assetOut = Asset.native();
     } else {
-      // console.log('check 4');
+      console.log('check 4');
       assetOut = Asset.jetton(underlyingAddressOut);
     }
 
@@ -216,22 +216,32 @@ export class App {
       await this.factory.getPool(PoolType.VOLATILE, [assetIn, assetOut])
     );
 
-    const amountInTemp = (
+    let amountInTemp = (
       await poolSwap.getEstimatedSwapOut({ assetIn: assetOut, amountIn: amountOut })
     ).amountOut;
-    // console.log('amountInTemp = ', amountInTemp);
-    const amountOutTemp = (
-      await poolSwap.getEstimatedSwapOut({ assetIn: assetIn, amountIn: amountInTemp })
-    ).amountOut;
-    // console.log('amountOutTemp = ', amountOutTemp);
 
-    let rateInOutExpect = (amountInTemp * BigInt(10000)) / amountOutTemp;
-    rateInOutExpect = rateInOutExpect + BigInt(2) * (rateInOutExpect - BigInt(10000));
-    // console.log('rateSwap = ', rateInOutExpect);
+    const incrementFactor = BigInt(110); // Factor to increase by 10%
+    const divisor = BigInt(100); // Divisor for percentage calculation
+    let amountOutTemp = BigInt(0);
 
-    const AmountInEstimate = (amountInTemp * rateInOutExpect) / BigInt(10000);
+    // Loop until amountOutTemp is greater than amountOut
+    while (amountOutTemp <= amountOut) {
+      console.log('Current amountInTemp = ', amountInTemp);
 
-    return AmountInEstimate;
+      // Increase amountInTemp by 10%
+      amountInTemp = (amountInTemp * incrementFactor) / divisor;
+
+      // Get the new amountOutTemp based on updated amountInTemp
+      amountOutTemp = (
+        await poolSwap.getEstimatedSwapOut({ assetIn: assetIn, amountIn: amountInTemp })
+      ).amountOut;
+
+      console.log('Updated amountInTemp (after 10% increase) = ', amountInTemp);
+      console.log('Updated amountOutTemp = ', amountOutTemp);
+    }
+
+    // Return the final amountInTemp that caused amountOutTemp to exceed amountOut
+    return amountInTemp;
   }
 
   async sendRepay(
