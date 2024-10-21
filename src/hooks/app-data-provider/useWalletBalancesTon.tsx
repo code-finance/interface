@@ -2,11 +2,13 @@ import { Address, fromNano } from '@ton/core';
 import axios from 'axios';
 import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { retry } from 'ts-retry-promise';
 
 import { useAppTON } from '../useContract';
+import { useTonClientV2 } from '../useTonClient';
 import { API_TON_V2, MAX_ATTEMPTS_50, PoolContractReservesDataType } from './useAppDataProviderTon';
 import { WalletBalancesMap } from './useWalletBalances';
 
@@ -22,6 +24,9 @@ export interface TypeBalanceTokensInWalletTon {
 
 export const useGetBalanceTon = () => {
   const AppTON = useAppTON();
+  const client2 = useTonClientV2();
+  const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
+  const [balanceTon, setBalanceTon] = useState<string>('0');
 
   const onGetBalanceTonNetwork = useCallback(
     async (tokenAddress: string, yourAddress: string, decimals: string | number) => {
@@ -71,7 +76,7 @@ export const useGetBalanceTon = () => {
     [AppTON]
   );
 
-  const getBalanceTokenTon = useCallback(async (youAddress?: string) => {
+  const getBalanceTokenTonOld = useCallback(async (youAddress?: string) => {
     if (!youAddress) return '0';
 
     try {
@@ -97,6 +102,42 @@ export const useGetBalanceTon = () => {
     }
   }, []);
 
+  const getBalanceTokenTon = useCallback(
+    async (walletAddressTonWallet: string) => {
+      if (!client2 || !isConnectedTonWallet) {
+        setBalanceTon('0');
+        return '0';
+      }
+      try {
+        const balance = await retry(
+          async () => {
+            const walletAddress = Address.parse(walletAddressTonWallet);
+            const balanceData = await client2.getBalance(walletAddress);
+
+            // Convert balance from NanoTON and return as string
+            return fromNano(balanceData).toString();
+          },
+          {
+            retries: 100, // Maximum number of retries
+            delay: 2000, // Delay between retries (2 seconds)
+          }
+        );
+
+        setBalanceTon(balance);
+        return balance;
+      } catch (error) {
+        console.error('Error fetching balance:', error);
+        setBalanceTon('0');
+        return '0';
+      }
+    },
+    [client2, isConnectedTonWallet]
+  );
+
+  useEffect(() => {
+    getBalanceTokenTon(walletAddressTonWallet);
+  }, [getBalanceTokenTon, walletAddressTonWallet, isConnectedTonWallet]);
+
   const onGetBalancesTokenInWalletTon = useCallback(
     async (
       poolContractReservesData: PoolContractReservesDataType[],
@@ -116,7 +157,7 @@ export const useGetBalanceTon = () => {
               // Fetch balance based on token type: Jetton or standard token
               walletBalance = isJetton
                 ? await onGetBalanceTonNetwork(underlyingAddress.toString(), yourAddress, decimals)
-                : await getBalanceTokenTon(yourAddress);
+                : (await getBalanceTokenTon(yourAddress)) || balanceTon;
             } catch (error) {
               console.error(`Error fetching balance for token ${underlyingAddress}:`, error);
               hasError = true; // Set error flag to true in case of error
@@ -142,12 +183,13 @@ export const useGetBalanceTon = () => {
 
       return balances; // Return the final list of balances
     },
-    [getBalanceTokenTon, onGetBalanceTonNetwork]
+    [balanceTon, getBalanceTokenTon, onGetBalanceTonNetwork]
   );
 
   return {
     onGetBalanceTonNetwork,
     onGetBalancesTokenInWalletTon,
+    getBalanceTokenTonOld,
   };
 };
 
