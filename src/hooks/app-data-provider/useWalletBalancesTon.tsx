@@ -109,19 +109,10 @@ export const useGetBalanceTon = () => {
         return '0';
       }
       try {
-        const balance = await retry(
-          async () => {
-            const walletAddress = Address.parse(walletAddressTonWallet);
-            const balanceData = await client2.getBalance(walletAddress);
+        const walletAddress = Address.parse(walletAddressTonWallet);
+        const balanceData = await client2.getBalance(walletAddress);
 
-            // Convert balance from NanoTON and return as string
-            return fromNano(balanceData).toString();
-          },
-          {
-            retries: 100, // Maximum number of retries
-            delay: 2000, // Delay between retries (2 seconds)
-          }
-        );
+        const balance = fromNano(balanceData).toString();
 
         setBalanceTon(balance);
         return balance;
@@ -157,7 +148,7 @@ export const useGetBalanceTon = () => {
               // Fetch balance based on token type: Jetton or standard token
               walletBalance = isJetton
                 ? await onGetBalanceTonNetwork(underlyingAddress.toString(), yourAddress, decimals)
-                : (await getBalanceTokenTon(yourAddress)) || balanceTon;
+                : await getBalanceTokenTonOld(yourAddress);
             } catch (error) {
               console.error(`Error fetching balance for token ${underlyingAddress}:`, error);
               hasError = true; // Set error flag to true in case of error
@@ -183,7 +174,7 @@ export const useGetBalanceTon = () => {
 
       return balances; // Return the final list of balances
     },
-    [balanceTon, getBalanceTokenTon, onGetBalanceTonNetwork]
+    [getBalanceTokenTonOld, onGetBalanceTonNetwork]
   );
 
   return {
