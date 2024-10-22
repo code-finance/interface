@@ -683,7 +683,7 @@ export const marketsData: {
     subgraphUrl: `https://testnet.toncenter.com`,
     enabledFeatures: {
       liquiditySwap: false,
-      collateralRepay: true,
+      collateralRepay: false,
       debtSwitch: false,
       withdrawAndSwitch: false,
       switch: false,
@@ -706,7 +706,7 @@ export const marketsData: {
     subgraphUrl: `https://toncenter.com`,
     enabledFeatures: {
       liquiditySwap: false,
-      collateralRepay: true,
+      collateralRepay: false,
       debtSwitch: false,
       withdrawAndSwitch: false,
       switch: false,
