@@ -177,7 +177,6 @@ export function RepayParamsToCell(params: RepayParams): Cell {
     .storeAddress(poolJWAddress)
     .storeCoins(amount)
     .storeUint(interestRateMode, 1)
-    .storeBit(useAToken)
     .storeBit(isMaxRepay)
     .endCell();
 }
