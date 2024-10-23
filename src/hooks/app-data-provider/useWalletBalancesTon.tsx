@@ -181,6 +181,7 @@ export const useGetBalanceTon = () => {
     onGetBalanceTonNetwork,
     onGetBalancesTokenInWalletTon,
     getBalanceTokenTonOld,
+    balanceTon,
   };
 };
 

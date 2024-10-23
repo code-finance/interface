@@ -140,7 +140,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     PoolContractReservesDataType[]
   >([]);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-  const { onGetBalancesTokenInWalletTon } = useGetBalanceTon();
+  const { onGetBalancesTokenInWalletTon, balanceTon } = useGetBalanceTon();
   const AppTON = useAppTON();
 
   useMemo(() => {
@@ -150,6 +150,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       setAccount('');
     }
   }, [isConnectedTonWallet, setAccount, walletAddressTonWallet]);
+
+  useMemo(() => {
+    setBalanceTokenTONMarket(balanceTon);
+  }, [balanceTon]);
 
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
@@ -663,7 +667,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             .multipliedBy(GAS_FEE_TON || 0)
             .toString()
         );
-        setBalanceTokenTONMarket(walletBalanceUSD);
       }
 
       return {
