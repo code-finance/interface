@@ -12,6 +12,7 @@ import { Address, Cell, ContractProvider, Sender } from '@ton/core';
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
+import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppTON } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
@@ -152,8 +153,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   }, [isConnectedTonWallet, setAccount, walletAddressTonWallet]);
 
   useMemo(() => {
-    setBalanceTokenTONMarket(balanceTon);
-  }, [balanceTon]);
+    const result = _.find(ExchangeRateListUSD, { address: address_pools });
+    const balance = valueToBigNumber(result?.usd || 0).multipliedBy(balanceTon);
+    setBalanceTokenTONMarket(normalize(balance, result?.decimal || 9));
+  }, [ExchangeRateListUSD, balanceTon]);
 
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
