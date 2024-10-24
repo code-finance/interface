@@ -4,7 +4,7 @@ import { ArrowDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, SvgIcon, Typography } from '@mui/material';
 import BigNumber from 'bignumber.js';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PriceImpactTooltip } from 'src/components/infoTooltips/PriceImpactTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -13,6 +13,7 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { address_pools } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import {
   maxInputAmountWithSlippage,
   minimumReceivedAfterSlippage,
@@ -46,7 +47,7 @@ export function CollateralRepayModalContent({
   isWrongNetwork,
   user,
 }: ModalWrapperProps & { debtType: InterestRate; user: ExtendedFormattedUser }) {
-  const { reserves, userReserves } = useAppDataContext();
+  const { reserves, userReserves, isConnectNetWorkTon } = useAppDataContext();
   const { gasLimit, txError, mainTxState } = useModalContext();
   const { currentChainId, currentNetworkConfig } = useProtocolDataContext();
   const { currentAccount } = useWeb3Context();
@@ -133,6 +134,8 @@ export function CollateralRepayModalContent({
     max: repayAllDebt,
     skip: mainTxState.loading || false,
     maxSlippage: Number(maxSlippage),
+    isConnectNetWorkTon,
+    debt,
   });
 
   const loadingSkeleton = routeLoading && inputAmountUSD === '0';
@@ -202,7 +205,13 @@ export function CollateralRepayModalContent({
     !assetsBlockingWithdraw.includes(tokenToRepayWith.symbol)
   ) {
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
-  } else if (valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount)) {
+  } else if (
+    valueToBigNumber(tokenToRepayWithBalance).lt(inputAmount) ||
+    (valueToBigNumber(inputAmount).lt(0.7) &&
+      valueToBigNumber(outputAmount).gt(0) &&
+      swapIn.underlyingAssetTon === address_pools) ||
+    valueToBigNumber(swapIn.formattedAvailableLiquidity).lt(inputAmount)
+  ) {
     blockingError = ErrorType.NOT_ENOUGH_COLLATERAL_TO_REPAY_WITH;
   } else if (shouldUseFlashloan && !collateralReserveData.flashLoanEnabled) {
     blockingError = ErrorType.FLASH_LOAN_NOT_AVAILABLE;
@@ -248,7 +257,9 @@ export function CollateralRepayModalContent({
     return (
       <TxSuccessView
         action={<Trans>Repaid</Trans>}
-        amount={swapVariant === 'exactOut' ? outputAmount : outputAmountWithSlippage}
+        amount={
+          mainTxState.amount || swapVariant === 'exactOut' ? outputAmount : outputAmountWithSlippage
+        }
         symbol={poolReserve.symbol}
       />
     );
@@ -285,7 +296,8 @@ export function CollateralRepayModalContent({
         />
       </Box>
       <AssetInput
-        value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
+        // value={swapVariant === 'exactOut' ? inputAmount : tokenToRepayWithBalance}
+        value={inputAmount}
         usdValue={inputAmountUSD}
         symbol={tokenToRepayWith.symbol}
         assets={repayTokens}
@@ -389,6 +401,11 @@ export function CollateralRepayModalContent({
         blocked={blockingError !== undefined || error !== ''}
         loading={routeLoading}
         buildTxFn={buildTxFn}
+        underlyingAssetTon={userReserve.underlyingAssetTon}
+        swapIn={swapIn}
+        swapOut={swapOut}
+        isMaxSelected={isMaxSelected}
+        isConnectNetWorkTon={isConnectNetWorkTon}
       />
     </>
   );

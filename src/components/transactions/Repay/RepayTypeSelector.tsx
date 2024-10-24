@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { REPAY_MODAL } from 'src/utils/mixPanelEvents';
@@ -17,10 +18,11 @@ export function RepayTypeSelector({
   repayType: RepayType;
   setRepayType: (type: RepayType) => void;
 }) {
+  const { isConnectNetWorkTon } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  if (!currentMarketData.enabledFeatures?.collateralRepay) return null;
+  if (!currentMarketData.enabledFeatures?.collateralRepay && !isConnectNetWorkTon) return null;
   return (
     <Box sx={{ mb: 6 }}>
       <Typography mb={1} color="text.secondary">

@@ -12,9 +12,9 @@ import { Address, Cell, ContractProvider, Sender } from '@ton/core';
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { formatUnits } from 'ethers/lib/utils';
+import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Pool } from 'src/contracts/Pool';
-import { useContractUnNotAuth } from 'src/hooks/useContract';
+import { useAppTON } from 'src/hooks/useContract';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 import { calculateReserveDebt } from 'src/utils/calculate-reserve-debt';
@@ -73,13 +73,12 @@ export interface PoolContractReservesDataType {
   name?: string | undefined;
   poolJWAddress: Address;
   reserveFactor: bigint | string | 0 | number;
-  reserveID: bigint | string;
   supplyCap: bigint | string | 0 | number;
   symbol?: string | undefined;
   totalStableDebt: bigint | string | 0 | number;
   totalSupply: bigint | string | 0 | number;
   totalVariableDebt: bigint | string | 0 | number;
-  underlyingAddress: Address;
+  underlyingAddress: Address; // USDT_MINTER === address minter
   variableBorrowIndex: bigint | 0;
   walletBalance?: string;
   stableRateBorrowingEnabled?: boolean;
@@ -89,7 +88,8 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 
-export const address_pools = 'EQAfMekCE_FJAJg04wzn9qnjIfLUMnfaR7QzqhmzgJdjvSQi';
+export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
+export const address_pools = 'EQBogYHg9asKbhLIeeUvduWqMdhyFyyRLS81uGD6WfuHIsTo';
 export const MAX_ATTEMPTS = 10;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -101,9 +101,12 @@ export const URL_API_BE = 'https://aton-api-stg.sotatek.works';
 export const SCAN_PRICE_TON = 'https://www.coingecko.com';
 export const URL_PUBLIC = 'https://ton-uat.codelabs.fi';
 
+// export const OP_CODE_SUPPLY_TON = '0x1530f236';
+// export const OP_CODE_SUPPLY_JETTON = '0x7362d09c';
 export const OP_CODE_SUPPLY = '0x1530f236';
 export const OP_CODE_BORROW = '0xdf316703';
 export const OP_CODE_REPAY = '0x95cded06';
+export const OP_CODE_REPAY_COLLATERAL = '0x5dfd815f';
 export const OP_CODE_WITHDRAW = '0x2572afa4';
 export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
 
@@ -138,9 +141,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const [poolContractReservesData, setPoolContractReservesData] = useState<
     PoolContractReservesDataType[]
   >([]);
-  const poolContractNotAuth = useContractUnNotAuth<Pool>(address_pools, Pool);
   const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-  const { onGetBalancesTokenInWalletTon } = useGetBalanceTon();
+  const { onGetBalancesTokenInWalletTon, balanceTon } = useGetBalanceTon();
+  const AppTON = useAppTON();
 
   useMemo(() => {
     if (isConnectedTonWallet) {
@@ -150,10 +153,16 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     }
   }, [isConnectedTonWallet, setAccount, walletAddressTonWallet]);
 
+  useMemo(() => {
+    const result = _.find(ExchangeRateListUSD, { address: address_pools });
+    const balance = valueToBigNumber(result?.usd || 0).multipliedBy(balanceTon);
+    setBalanceTokenTONMarket(normalize(balance, result?.decimal || 9));
+  }, [ExchangeRateListUSD, balanceTon]);
+
   const getPoolContractGetReservesData = useCallback(
     async (pauseReload?: boolean) => {
       // Check if the pool contract is available
-      if (!poolContractNotAuth) return;
+      if (!AppTON) return;
 
       try {
         setLoading(pauseReload ? false : true);
@@ -161,8 +170,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         // Use retry to attempt this block of code if it fails
         await retry(
           async () => {
+            console.log('---------getPoolContractGetReservesData--------try');
             // Fetch reserves data from the pool contract
-            const reserves = await poolContractNotAuth.getReservesData();
+            const reserves = await AppTON.getReservesData();
 
             if (!reserves) {
               throw new Error('Failed to fetch reserves');
@@ -176,7 +186,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             );
 
             // Process reserves data with wallet balances
-            const data = reserves.map((item) => {
+            const data = reserves.map((item: { underlyingAddress: { toString: () => string } }) => {
               // Find the corresponding wallet balance
               const result = balances.find(
                 (balance) =>
@@ -199,20 +209,18 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           },
           {
             retries: MAX_ATTEMPTS_50, // Maximum number of retries
-            delay: 1000, // Delay between retries (1 second)
+            delay: 1500, // Delay between retries (1 second)
           }
         );
       } catch (error) {
-        console.error('Error fetching getPoolContractGetReservesData:', error);
+        console.log(
+          '---------getPoolContractGetReservesData--------Failed to fetch ReservesData:',
+          error
+        );
         setPoolContractReservesData([]); // Set empty data if failure occurs after retries
       }
     },
-    [
-      isConnectedTonWallet,
-      onGetBalancesTokenInWalletTon,
-      poolContractNotAuth,
-      walletAddressTonWallet,
-    ]
+    [AppTON, onGetBalancesTokenInWalletTon, walletAddressTonWallet, isConnectedTonWallet]
   );
 
   useEffect(() => {
@@ -596,7 +604,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             stableBorrowAPY,
             variableBorrowAPY,
             borrowRateMode: 'Variable',
-            reserveID: item.reserveID.toString(),
             totalSupply: item.totalSupply.toString(),
             liquidity: formatUnits(item.liquidity || '0', decimals),
           };
@@ -665,7 +672,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             .multipliedBy(GAS_FEE_TON || 0)
             .toString()
         );
-        setBalanceTokenTONMarket(walletBalanceUSD);
       }
 
       return {

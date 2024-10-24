@@ -1,14 +1,14 @@
-import { Address, fromNano, OpenedContract } from '@ton/core';
+import { Address, fromNano } from '@ton/core';
 import axios from 'axios';
 import { formatUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
-import { JettonMinter } from 'src/contracts/JettonMinter';
-import { JettonWallet } from 'src/contracts/JettonWallet';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { retry } from 'ts-retry-promise';
 
-import { useTonClient } from '../useTonClient';
+import { useAppTON } from '../useContract';
+import { useTonClientV2 } from '../useTonClient';
 import { API_TON_V2, MAX_ATTEMPTS_50, PoolContractReservesDataType } from './useAppDataProviderTon';
 import { WalletBalancesMap } from './useWalletBalances';
 
@@ -23,22 +23,25 @@ export interface TypeBalanceTokensInWalletTon {
 }
 
 export const useGetBalanceTon = () => {
-  const client = useTonClient();
+  const AppTON = useAppTON();
+  const client2 = useTonClientV2();
+  const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
+  const [balanceTon, setBalanceTon] = useState<string>('0');
 
   const onGetBalanceTonNetwork = useCallback(
     async (tokenAddress: string, yourAddress: string, decimals: string | number) => {
-      if (!client) {
-        console.error('Client is not available.');
+      if (!AppTON) {
+        console.warn('AppTON is not available.');
         return '0';
       }
 
       if (!yourAddress) {
-        console.error('Wallet address is not available.');
+        console.warn('Wallet address is not available.');
         return '0';
       }
 
       if (!tokenAddress) {
-        console.error('Token address is not provided.');
+        console.warn('Token address is not provided.');
         return '0';
       }
 
@@ -49,29 +52,11 @@ export const useGetBalanceTon = () => {
             const parsedTokenAddress = Address.parse(tokenAddress);
             const parsedWalletAddress = Address.parse(yourAddress);
 
-            // Open the Jetton Minter contract
-            const jettonMinterContract = new JettonMinter(parsedTokenAddress);
-            const jettonMinterProvider = client.open(
-              jettonMinterContract
-            ) as OpenedContract<JettonMinter>;
-
             // Retrieve the Jetton Wallet address for the user
-            const jettonWalletAddress = await jettonMinterProvider.getWalletAddress(
-              parsedWalletAddress
+            const fetchedBalance = await AppTON.getJettonBalance(
+              parsedWalletAddress,
+              parsedTokenAddress
             );
-            if (!jettonWalletAddress) {
-              console.error('Jetton wallet address not found.');
-              return '0';
-            }
-
-            // Open the Jetton Wallet contract using the obtained address
-            const jettonWalletContract = new JettonWallet(jettonWalletAddress);
-            const jettonWalletProvider = client.open(
-              jettonWalletContract
-            ) as OpenedContract<JettonWallet>;
-
-            // Fetch the Jetton balance for the user's wallet
-            const fetchedBalance = await jettonWalletProvider.getJettonBalance();
 
             // Format and return the balance using the provided decimals
             return formatUnits(fetchedBalance || '0', decimals);
@@ -88,10 +73,10 @@ export const useGetBalanceTon = () => {
         return '0'; // Return '0' after max attempts
       }
     },
-    [client]
+    [AppTON]
   );
 
-  const getBalanceTokenTon = useCallback(async (youAddress?: string) => {
+  const getBalanceTokenTonOld = useCallback(async (youAddress?: string) => {
     if (!youAddress) return '0';
 
     try {
@@ -105,8 +90,8 @@ export const useGetBalanceTon = () => {
           return fromNano(balance).toString();
         },
         {
-          retries: MAX_ATTEMPTS_50, // Maximum number of retries
-          delay: 1000, // Delay between retries (1 second)
+          retries: 100, // Maximum number of retries
+          delay: 2000, // Delay between retries (2 second)
         }
       );
 
@@ -116,6 +101,33 @@ export const useGetBalanceTon = () => {
       return '0'; // Return '0' if maximum attempts are reached
     }
   }, []);
+
+  const getBalanceTokenTon = useCallback(
+    async (walletAddressTonWallet: string) => {
+      if (!client2 || !isConnectedTonWallet) {
+        setBalanceTon('0');
+        return '0';
+      }
+      try {
+        const walletAddress = Address.parse(walletAddressTonWallet);
+        const balanceData = await client2.getBalance(walletAddress);
+
+        const balance = fromNano(balanceData).toString();
+
+        setBalanceTon(balance);
+        return balance;
+      } catch (error) {
+        console.error('Error fetching balance:', error);
+        setBalanceTon('0');
+        return '0';
+      }
+    },
+    [client2, isConnectedTonWallet]
+  );
+
+  useEffect(() => {
+    getBalanceTokenTon(walletAddressTonWallet);
+  }, [getBalanceTokenTon, walletAddressTonWallet, isConnectedTonWallet]);
 
   const onGetBalancesTokenInWalletTon = useCallback(
     async (
@@ -168,6 +180,8 @@ export const useGetBalanceTon = () => {
   return {
     onGetBalanceTonNetwork,
     onGetBalancesTokenInWalletTon,
+    getBalanceTokenTonOld,
+    balanceTon,
   };
 };
 

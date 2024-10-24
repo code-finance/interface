@@ -8,6 +8,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { retryPromiseFunction } from 'src/hooks/paraswap/common';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -18,7 +19,6 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { retry } from 'ts-retry-promise';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -54,7 +54,7 @@ export const SupplyActions = React.memo(
     const { walletAddressTonWallet } = useTonConnectContext();
     const { getPoolContractGetReservesData, getYourSupplies, isConnectNetWorkTon } =
       useAppDataContext();
-    const { onSendSupplyTon, approvedAmountTonAssume } = useTonTransactions(
+    const { actionSendSupplyTonNetwork, approvedAmountTonAssume } = useTonTransactions(
       walletAddressTonWallet,
       `${underlyingAssetTon}`
     );
@@ -156,17 +156,19 @@ export const SupplyActions = React.memo(
         if (isConnectNetWorkTon) {
           setMainTxState({ ...mainTxState, loading: true });
           try {
-            const resSupplyTon = await onSendSupplyTon(
-              parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString(),
-              isJetton
+            const resSupplyTon = await actionSendSupplyTonNetwork(
+              parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString()
             );
 
+            console.log('resSupplyTon---------', resSupplyTon);
+
             await Promise.all([
-              retry(async () => getPoolContractGetReservesData(true), {
-                retries: MAX_ATTEMPTS,
-                delay: 1000,
-              }),
-              retry(async () => getYourSupplies(), { retries: MAX_ATTEMPTS, delay: 1000 }),
+              retryPromiseFunction(
+                async () => await getPoolContractGetReservesData(true),
+                MAX_ATTEMPTS,
+                1000
+              ),
+              retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
             ]);
 
             if (!resSupplyTon?.success) {
@@ -193,7 +195,11 @@ export const SupplyActions = React.memo(
               });
             }
           } catch (error) {
-            console.log('error supply--------------', error);
+            console.log(
+              'error supply--------------',
+              error instanceof Error ? error.message : error
+            );
+            setMainTxState({ ...mainTxState, loading: false });
           }
         } else {
           setMainTxState({ ...mainTxState, loading: true });

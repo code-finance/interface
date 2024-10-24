@@ -131,7 +131,7 @@ export class RotationProvider extends BaseProvider {
     try {
       return await this.providers[index].send(method, params);
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
       await this.rotateUrl(index);
       return this.send(method, params);
     }
@@ -143,7 +143,7 @@ export class RotationProvider extends BaseProvider {
     try {
       return await this.providers[index].perform(method, params);
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
       this.lastError = e.message;
       this.emit('debug', {
         action: 'perform',

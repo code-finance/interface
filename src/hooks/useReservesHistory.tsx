@@ -7,6 +7,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
 import { makeCancelable } from 'src/utils/utils';
 
+import { URL_API_BE } from './app-data-provider/useAppDataProviderTon';
+
 export const reserveRateTimeRangeOptions = [
   ESupportedTimeRanges.OneMonth,
   ESupportedTimeRanges.SixMonths,
@@ -100,18 +102,14 @@ export function useReserveRatesHistory(
   const [error, setError] = useState(false);
   const [data, setData] = useState<FormattedReserveHistoryItem[]>([]);
 
-  const ratesHistoryApiUrl = 'https://aave-ton-api.sotatek.works';
-
   const refetchData = useCallback<() => () => void>(() => {
     // reset
     setLoading(true);
     setError(false);
     setData([]);
 
-    if (reserveAddress && ratesHistoryApiUrl && !BROKEN_ASSETS.includes(reserveAddress)) {
-      const cancelable = makeCancelable(
-        fetchStats(symbol.toLowerCase(), timeRange, ratesHistoryApiUrl)
-      );
+    if (reserveAddress && URL_API_BE && !BROKEN_ASSETS.includes(URL_API_BE)) {
+      const cancelable = makeCancelable(fetchStats(symbol.toLowerCase(), timeRange, URL_API_BE));
 
       cancelable.promise
         .then((data: APIResponse[]) => {
@@ -139,7 +137,7 @@ export function useReserveRatesHistory(
 
     setLoading(false);
     return () => null;
-  }, [reserveAddress, timeRange, ratesHistoryApiUrl]);
+  }, [reserveAddress, symbol, timeRange]);
 
   useEffect(() => {
     const cancel = refetchData();

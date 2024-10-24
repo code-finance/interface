@@ -2,6 +2,9 @@ import { Address, Contract, OpenedContract } from '@ton/core';
 import { useAsyncInitialize } from 'src/hooks/useAsyncInitialize';
 import { useTonClient } from 'src/hooks/useTonClient';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
+import { App } from 'src/sc-contracts/app';
+
+import { address_pools, FACTORY_DEDUST_TESTNET } from './app-data-provider/useAppDataProviderTon';
 
 export function useContract<T extends Contract>(
   contractAddress: string,
@@ -27,5 +30,23 @@ export function useContractUnNotAuth<T extends Contract>(
     if (!client) return;
     const contract = new ContractClass(Address.parse(contractAddress));
     return client.open(contract) as OpenedContract<T>;
+  }, [client]);
+}
+
+export function useAppTON(): App | undefined {
+  const client = useTonClient();
+
+  return useAsyncInitialize(async () => {
+    if (!client) return;
+    return new App(client, Address.parse(address_pools));
+  }, [client]);
+}
+
+export function useAppFactoryTON(): App | undefined {
+  const client = useTonClient();
+
+  return useAsyncInitialize(async () => {
+    if (!client) return;
+    return new App(client, Address.parse(address_pools), Address.parse(FACTORY_DEDUST_TESTNET));
   }, [client]);
 }

@@ -681,6 +681,13 @@ export const marketsData: {
     chainId: -239,
     v3: true,
     subgraphUrl: `https://testnet.toncenter.com`,
+    enabledFeatures: {
+      liquiditySwap: false,
+      collateralRepay: false,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
+    },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '',
       LENDING_POOL: '',
@@ -697,6 +704,13 @@ export const marketsData: {
     chainId: -1,
     v3: true,
     subgraphUrl: `https://toncenter.com`,
+    enabledFeatures: {
+      liquiditySwap: false,
+      collateralRepay: false,
+      debtSwitch: false,
+      withdrawAndSwitch: false,
+      switch: false,
+    },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '',
       LENDING_POOL: '',

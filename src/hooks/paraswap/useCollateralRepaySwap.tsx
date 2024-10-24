@@ -1,7 +1,10 @@
-import { normalize } from '@aave/math-utils';
-import { OptimalRate } from '@paraswap/sdk';
+import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { OptimalRate, SwapSide } from '@paraswap/sdk';
+import { Address } from '@ton/core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { address_pools } from '../app-data-provider/useAppDataProviderTon';
+import { useAppFactoryTON } from '../useContract';
 import {
   convertParaswapErrorMessage,
   fetchExactInRate,
@@ -16,6 +19,8 @@ import {
 
 type UseRepayWithCollateralProps = UseSwapProps & {
   swapVariant: SwapVariant;
+  isConnectNetWorkTon: boolean;
+  debt: string;
 };
 
 interface UseRepayWithCollateralResponse {
@@ -27,7 +32,17 @@ interface UseRepayWithCollateralResponse {
   error: string;
   buildTxFn: () => Promise<SwapTransactionParams>;
 }
-
+interface DataSwapOut {
+  data: {
+    amountIn: string;
+    amountOut: string;
+    decimalsIn: number;
+    decimalsOut: number;
+    symbolIn: string;
+    symbolOut: string;
+  };
+  status: string;
+}
 export const useCollateralRepaySwap = ({
   chainId,
   max,
@@ -37,6 +52,8 @@ export const useCollateralRepaySwap = ({
   swapOut,
   userAddress,
   swapVariant,
+  isConnectNetWorkTon,
+  debt,
 }: UseRepayWithCollateralProps): UseRepayWithCollateralResponse => {
   const [inputAmount, setInputAmount] = useState<string>('0');
   const [inputAmountUSD, setInputAmountUSD] = useState<string>('0');
@@ -80,13 +97,145 @@ export const useCollateralRepaySwap = ({
     swapOut.variableBorrowAPY,
   ]);
 
+  const AppFactoryTON = useAppFactoryTON();
+
+  const getRateTON = useCallback(
+    async ({
+      tokenIn,
+      tokenOut,
+      amountRepay,
+    }: {
+      tokenIn: string | undefined;
+      tokenOut: string | undefined;
+      amountRepay: string;
+    }) => {
+      if (!AppFactoryTON || !tokenIn || !tokenOut) return null;
+      try {
+        const amountOut = BigInt(Number(amountRepay).toFixed(0));
+        const underlyingAddressIn = Address.parse(tokenIn);
+        const underlyingAddressOut = Address.parse(tokenOut);
+
+        const data = await AppFactoryTON.estimateAmountInSwap(
+          amountOut,
+          underlyingAddressIn,
+          underlyingAddressOut
+        );
+
+        return data.toString();
+      } catch (apiError) {
+        return '0';
+      }
+    },
+    [AppFactoryTON]
+  );
+
+  const exactInRateTON = useMemo(
+    () =>
+      async ({ max }: { max: boolean }) => {
+        const amountRepay = max ? valueToBigNumber(debt) : valueToBigNumber(swapOut.amount);
+
+        const params = {
+          tokenOut: swapOut.underlyingAssetTon,
+          tokenIn: swapIn.underlyingAssetTon,
+          amountRepay: normalizeBN(amountRepay.toString(), swapOut.decimals * -1).toString(),
+        };
+
+        const amountOut = await getRateTON(params);
+
+        const amountRepayUSD = amountRepay.multipliedBy(swapOut.priceInUSD);
+        const amount = normalizeBN(amountRepay, swapOut.decimals * -1);
+
+        const formatSrcAmount = normalize(amountOut || 0, swapIn.decimals);
+        const srcAmount = normalizeBN(formatSrcAmount, swapIn.decimals * -1);
+
+        const srcAmountUSD = valueToBigNumber(formatSrcAmount).multipliedBy(swapIn.priceInUSD);
+
+        return {
+          blockNumber: 126563785,
+          network: -1,
+          srcToken: swapIn.underlyingAsset,
+          srcDecimals: swapIn.decimals,
+          srcAmount: srcAmount.toFixed(0),
+          destToken: swapOut.underlyingAsset,
+          destDecimals: swapOut.decimals,
+          destAmount: amount.toFixed(0),
+          bestRoute: [
+            {
+              percent: 100,
+              swaps: [
+                {
+                  srcToken: swapIn.underlyingAsset,
+                  srcDecimals: swapIn.decimals,
+                  destToken: swapOut.underlyingAsset,
+                  destDecimals: swapOut.decimals,
+                  swapExchanges: [
+                    {
+                      exchange: 'UniswapV3',
+                      srcAmount: srcAmount.toFixed(0),
+                      destAmount: amount.toFixed(0),
+                      percent: 100,
+                      poolAddresses: [`${address_pools}`],
+                      data: {
+                        path: [
+                          {
+                            tokenIn: swapIn.underlyingAsset,
+                            tokenOut: swapOut.underlyingAsset,
+                            fee: '100',
+                            currentFee: '100',
+                          },
+                        ],
+                        gasUSD: '0.000486',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          gasCostUSD: '0.000973',
+          gasCost: '218300',
+          side: SwapSide.BUY,
+          contractAddress: '',
+          tokenTransferProxy: '',
+          contractMethod: 'buy',
+          partnerFee: 0,
+          srcUSD: srcAmountUSD.toString(),
+          destUSD: amountRepayUSD.toString(),
+          partner: 'aave-ton',
+          maxImpactReached: false,
+          hmac: '',
+        };
+      },
+    [
+      debt,
+      getRateTON,
+      swapIn.decimals,
+      swapIn.priceInUSD,
+      swapIn.underlyingAsset,
+      swapIn.underlyingAssetTon,
+      swapOut.amount,
+      swapOut.decimals,
+      swapOut.priceInUSD,
+      swapOut.underlyingAsset,
+      swapOut.underlyingAssetTon,
+    ]
+  );
+
   const exactInRate = useCallback(() => {
-    return fetchExactInRate(swapInData, swapOutData, chainId, userAddress);
-  }, [chainId, swapInData, swapOutData, userAddress]);
+    if (isConnectNetWorkTon) {
+      return exactInRateTON({ max: true });
+    } else {
+      return fetchExactInRate(swapInData, swapOutData, chainId, userAddress);
+    }
+  }, [chainId, exactInRateTON, isConnectNetWorkTon, swapInData, swapOutData, userAddress]);
 
   const exactOutRate = useCallback(() => {
-    return fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, max);
-  }, [chainId, max, swapInData, swapOutData, userAddress]);
+    if (isConnectNetWorkTon) {
+      return exactInRateTON({ max: false });
+    } else {
+      return fetchExactOutRate(swapInData, swapOutData, chainId, userAddress, max);
+    }
+  }, [chainId, exactInRateTON, isConnectNetWorkTon, max, swapInData, swapOutData, userAddress]);
 
   useEffect(() => {
     if (skip) return;

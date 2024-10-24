@@ -1,6 +1,6 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
@@ -19,7 +19,7 @@ export const RepayModal = () => {
     currentRateMode: InterestRate;
     isFrozen: boolean;
   }>;
-  const { userReserves } = useAppDataContext();
+  const { userReserves, user } = useAppDataContext();
   const { currentMarketData } = useProtocolDataContext();
   const [repayType, setRepayType] = useState(RepayType.BALANCE);
 
@@ -40,6 +40,36 @@ export const RepayModal = () => {
     close();
   };
 
+  const checkUserReservesData = (): boolean => {
+    const filteredArray =
+      user && user?.userReservesData.filter((item) => item.underlyingBalance !== '0');
+    if (
+      filteredArray &&
+      filteredArray.length === 1 &&
+      filteredArray[0].underlyingAsset === args.underlyingAsset
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const isShowCollateralTON =
+    isFeatureEnabled.collateralRepay(currentMarketData) &&
+    !mainTxState.txHash &&
+    user &&
+    user?.userReservesData.some(
+      (userReserve) =>
+        userReserve.scaledATokenBalance !== '0' &&
+        userReserve.underlyingAsset !== args.underlyingAsset
+    ) &&
+    checkUserReservesData();
+
+  useEffect(() => {
+    if (repayType === RepayType.COLLATERAL && !isShowCollateralTON && user) {
+      setRepayType(RepayType.BALANCE);
+    }
+  }, [mainTxState.txHash, repayType, isShowCollateralTON, user]);
+
   return (
     <BasicModal open={type === ModalType.Repay} setOpen={handleClose}>
       <ModalWrapper title={<Trans>Repay</Trans>} underlyingAsset={args.underlyingAsset}>
@@ -48,13 +78,14 @@ export const RepayModal = () => {
             <UserAuthenticated>
               {(user) => (
                 <>
-                  {collateralRepayPossible && !mainTxState.txHash && (
-                    <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
-                  )}
+                  {(collateralRepayPossible && !mainTxState.txHash) ||
+                    (isShowCollateralTON && (
+                      <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+                    ))}
                   {repayType === RepayType.BALANCE && (
                     <RepayModalContent {...params} debtType={args.currentRateMode} user={user} />
                   )}
-                  {repayType === RepayType.COLLATERAL && (
+                  {repayType === RepayType.COLLATERAL && isShowCollateralTON && (
                     <CollateralRepayModalContent
                       {...params}
                       debtType={args.currentRateMode}

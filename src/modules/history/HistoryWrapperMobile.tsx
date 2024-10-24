@@ -85,10 +85,9 @@ export const HistoryWrapperMobile = () => {
   } = useTransactionHistory({ isFilterActive });
 
   const { data: transactionsTonNetwork, isLoading: isLoadingTonNetwork } =
-    useTransactionHistoryTonNetwork({});
+    useTransactionHistoryTonNetwork();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transactions: any = isConnectNetWorkTon ? transactionsTonNetwork : transactionsMain;
+  const transactions = isConnectNetWorkTon ? transactionsTonNetwork : transactionsMain;
   const isLoading = isConnectNetWorkTon ? isLoadingTonNetwork : isLoadingMain;
   const isFetchingNextPage = isConnectNetWorkTon ? false : isFetchingNextPageMain;
   console.log('🚀 ~ isLoading mobile:', isLoading);
@@ -151,12 +150,11 @@ export const HistoryWrapperMobile = () => {
   );
 
   const flatTxns = useMemo(() => {
-    console.log('Transactions mobile updated: ', transactions);
-    if (isConnectNetWorkTon) {
-      return transactions || [];
+    if (!isConnectNetWorkTon) {
+      return [];
+    } else {
+      return transactions;
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return transactions?.pages?.flatMap((page: any) => page) || [];
   }, [isConnectNetWorkTon, transactions]);
 
   const filteredTxns: TransactionHistoryItemUnion[] = useMemo(() => {

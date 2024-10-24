@@ -16,6 +16,13 @@ import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/r
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
+type ExtendedChainId = ChainId | -1 | -239;
+
+const tonChainIds = {
+  ton_mainnet: -1,
+  ton_testnet: -239,
+} as const;
+
 export type UseSwapProps = {
   chainId: ChainId;
   max: boolean;
@@ -60,7 +67,7 @@ const ParaSwap = (chainId: number) => {
 };
 
 type ParaswapChainMap = {
-  [key in ChainId]?: BuildTxFunctions & GetRateFunctions;
+  [key in ExtendedChainId]?: BuildTxFunctions & GetRateFunctions;
 };
 
 const paraswapNetworks: ParaswapChainMap = {
@@ -72,6 +79,8 @@ const paraswapNetworks: ParaswapChainMap = {
   [ChainId.optimism]: ParaSwap(ChainId.optimism),
   [ChainId.base]: ParaSwap(ChainId.base),
   [ChainId.bnb]: ParaSwap(ChainId.bnb),
+  [-1]: ParaSwap(tonChainIds.ton_mainnet), // ton_mainnet
+  [-239]: ParaSwap(tonChainIds.ton_testnet), // ton_testnet
 };
 
 export const getParaswap = (chainId: ChainId) => {
@@ -456,3 +465,23 @@ export const minimumReceivedAfterSlippage = (
     .multipliedBy(1 - Number(slippage) / 100)
     .toFixed(decimals);
 };
+
+export async function retryPromiseFunction(
+  fn: () => Promise<void>,
+  retries: number,
+  delay: number
+) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      await fn();
+      return;
+    } catch (error) {
+      console.log(`Retry attempt ${i + 1} due to error: ${error}`);
+      if (i < retries - 1) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      } else {
+        throw error;
+      }
+    }
+  }
+}

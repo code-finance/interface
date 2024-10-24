@@ -23,6 +23,7 @@ export const PriceImpactTooltip = ({
     inputAmountUSD && inputAmountUSD !== '0'
       ? priceDifference.dividedBy(inputAmountUSD).times(100).toFixed(2)
       : '0';
+
   if (priceImpact === '-0.00') {
     priceImpact = '0.00';
   }

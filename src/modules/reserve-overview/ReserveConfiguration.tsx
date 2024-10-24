@@ -12,7 +12,10 @@ import {
   AssetsBeingOffboarded,
   OffboardingWarning,
 } from 'src/components/Warnings/OffboardingWarning';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedReserveData,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
@@ -31,6 +34,7 @@ type ReserveConfigurationProps = {
 };
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
+  const { isTonNetwork } = useAppDataContext();
   const { currentNetworkConfig, currentMarketData, currentMarket } = useProtocolDataContext();
   const reserveId =
     reserve.underlyingAsset + currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER;
@@ -163,33 +167,35 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     compact
                   />
                 </PanelItem>
-                <Button
-                  onClick={() => {
-                    trackEvent(GENERAL.EXTERNAL_LINK, {
-                      asset: reserve.underlyingAsset,
-                      Link: 'Interest Rate Strategy',
-                      assetName: reserve.name,
-                    });
-                  }}
-                  href={`${SCAN_TRANSACTION_TON}/${currentAccount}`}
-                  endIcon={
-                    <SvgIcon sx={{ width: 14, height: 14 }}>
-                      <CallMadeOutlinedIcon />
-                    </SvgIcon>
-                  }
-                  component={Link}
-                  size="small"
-                  variant="text"
-                  sx={(theme) => ({
-                    height: '24px',
-                    color: theme.palette.text.secondary,
-                    ...theme.typography.detail2,
-                    textTransform: 'uppercase',
-                    px: 2,
-                  })}
-                >
-                  <Trans>Interest rate strategy</Trans>
-                </Button>
+                {!isTonNetwork && (
+                  <Button
+                    onClick={() => {
+                      trackEvent(GENERAL.EXTERNAL_LINK, {
+                        asset: reserve.underlyingAsset,
+                        Link: 'Interest Rate Strategy',
+                        assetName: reserve.name,
+                      });
+                    }}
+                    href={`${SCAN_TRANSACTION_TON}/${currentAccount}`}
+                    endIcon={
+                      <SvgIcon sx={{ width: 14, height: 14 }}>
+                        <CallMadeOutlinedIcon />
+                      </SvgIcon>
+                    }
+                    component={Link}
+                    size="small"
+                    variant="text"
+                    sx={(theme) => ({
+                      height: '24px',
+                      color: theme.palette.text.secondary,
+                      ...theme.typography.detail2,
+                      textTransform: 'uppercase',
+                      px: 2,
+                    })}
+                  >
+                    <Trans>Interest rate strategy</Trans>
+                  </Button>
+                )}
               </Box>
               <InterestRateModelGraphContainer reserve={reserve} />
             </Box>

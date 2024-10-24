@@ -23,7 +23,6 @@ export type FormattedReservesAndIncentives = ReturnType<
     isEmodeEnabled: boolean;
     isWrappedBaseAsset: boolean;
     underlyingAssetTon?: string;
-    reserveID?: string;
     poolJettonWalletAddress?: string;
     isJetton?: boolean;
     priceInUSD?: string;

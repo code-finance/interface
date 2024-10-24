@@ -1,20 +1,11 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
-import { Address, beginCell, Cell, OpenedContract, toNano } from '@ton/core';
+import { Address } from '@ton/core';
 import { parseUnits } from 'ethers/lib/utils';
 import _ from 'lodash';
 import { useCallback } from 'react';
-import { Op } from 'src/contracts/JettonConstants';
-import { JettonMinter } from 'src/contracts/JettonMinter';
-import { JettonWallet } from 'src/contracts/JettonWallet';
-import { Pool, RepayParams } from 'src/contracts/Pool';
-import { getMultiSig } from 'src/contracts/utils';
 
-// import { KeyPair, sign } from 'ton-crypto';
-import { address_pools, GAS_FEE_TON } from './app-data-provider/useAppDataProviderTon';
-import { FormattedReservesAndIncentives } from './pool/usePoolFormattedReserves';
-import { useContract } from './useContract';
-import { useTonClient } from './useTonClient';
+import { useAppFactoryTON, useAppTON } from './useContract';
 import { useTonConnect } from './useTonConnect';
 import { useTonGetTxByBOC } from './useTonGetTxByBOC';
 
@@ -28,6 +19,9 @@ export const ErrorCancelledTon = [
   '[ton_connect_sdk_error]e:userrejectstheactioninthewallet.walletdeclinedtherequest',
   '[ton_connect_sdk_error]rrejectrequest',
   '[ton_connect_sdk_error]unknownerrorrejectrequest',
+  '[ton_connect_sdk_error]u:userrejectstheactioninthewallet.canceledbytheuser',
+  '[ton_connect_sdk_error]yrejectrequest',
+  '[ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.servererror',
 ];
 
 export interface RepayParamsSend {
@@ -38,16 +32,17 @@ export interface RepayParamsSend {
   isMaxSelected?: boolean | undefined;
   isJetton?: boolean;
   balance?: string;
+  debtType?: InterestRate;
+  underlyingAddressCollateral?: string;
+  amountCollateral?: string;
+  decimalsCollateral?: number;
 }
 
 export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon: string) => {
   const { onGetGetTxByBOC, getTransactionStatus } = useTonGetTxByBOC();
-  const client = useTonClient();
+  const AppTON = useAppTON();
+  const AppFactoryTON = useAppFactoryTON();
   const { sender, getLatestBoc } = useTonConnect();
-
-  const providerJettonMinter = useContract<JettonMinter>(underlyingAssetTon, JettonMinter);
-  const providerPoolAssetTon = useContract<Pool>(underlyingAssetTon, Pool);
-  const providerPool = useContract<Pool>(address_pools, Pool);
 
   const approvedAmountTonAssume = {
     user: '0x6385fb98e0ae7bd76b55a044e1635244e46b07ef',
@@ -56,490 +51,247 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     amount: '-1',
   };
 
-  const onSendJettonToken = useCallback(
-    async (amount: string) => {
-      if (!client || !yourAddressWallet || !amount || !providerJettonMinter) return;
+  const convertInterestRateMode = (interestRate: InterestRate | undefined): number => {
+    return interestRate === InterestRate.Stable ? 0 : 1;
+  };
 
-      const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-        Address.parse(yourAddressWallet)
-      );
-
-      const contractJettonWallet = new JettonWallet(
-        walletAddressJettonMinter // z-ton-wallet
-      );
-
-      const providerJettonWallet = client.open(
-        contractJettonWallet
-      ) as OpenedContract<JettonWallet>;
-
+  const handleTransaction = useCallback(
+    async (transactionFunc: () => Promise<{ success: boolean; message: string }>) => {
       try {
-        await providerJettonWallet.sendTransfer(
-          sender, //via: Sender,
-          toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
-          BigInt(amount), // User input amount
-          Address.parse(address_pools), //Address poll
-          Address.parse(yourAddressWallet), // User address wallet
-          Cell.EMPTY, // customPayload: Cell, //Cell.EMPTY
-          toNano('0.1'), // forward_ton_amount: bigint,
-          beginCell()
-            .storeUint(Op.supply, 32)
-            .storeAddress(Address.parse(underlyingAssetTon)) // = address asset
-            .storeUint(1, 1)
-            .endCell() //tokenAddress: Address
-        );
+        const res = await transactionFunc();
 
-        return { success: true, message: 'success' };
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [client, providerJettonMinter, sender, underlyingAssetTon, yourAddressWallet]
-  );
-
-  const onSendNativeToken = useCallback(
-    async (amount: string) => {
-      if (!client || !yourAddressWallet || !amount || !providerPoolAssetTon) return;
-      try {
-        const params = {
-          queryId: Date.now(),
-          amount: BigInt(amount),
-        };
-        await providerPoolAssetTon.sendDeposit(
-          sender, //via: Sender
-          params //via: Sender
-        );
-
-        return { success: true, message: 'success' };
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        // [ton_connect_sdk_error]badrequesterror:requesttothewalletcontainserrors.insufficientbalance something wrong
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [client, providerPoolAssetTon, sender, yourAddressWallet]
-  );
-
-  const onSendSupplyTon = useCallback(
-    async (amount: string, isJetton: boolean | undefined) => {
-      try {
-        let res:
-          | boolean
-          | {
-              success: boolean;
-              message: string;
-            }
-          | undefined;
-        if (isJetton) res = await onSendJettonToken(amount);
-        else res = await onSendNativeToken(amount);
+        if (!res.success) {
+          console.log(
+            'res.message-----',
+            res.message.replace(/\s+/g, '').toLowerCase(),
+            res.message
+          );
+          if (_.includes(ErrorCancelledTon, res.message)) {
+            console.log(res.message);
+            return { success: false, message: ErrorCancelledTon[0], blocking: false };
+          }
+          throw new Error('Transaction failed');
+        }
 
         const boc = await getLatestBoc();
         const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
 
-        if (txHash && !!res?.success) {
+        if (txHash) {
           const status = await getTransactionStatus(txHash);
-          return {
-            success: status,
-            txHash: txHash,
-            blocking: !status,
-            message: txHash,
-          };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
+          return { success: status, txHash, blocking: !status, message: txHash };
         }
-      } catch (error) {
-        console.log('error supply', error);
-        return { success: false, message: `Transaction failed`, blocking: false };
-      }
-    },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendJettonToken,
-      onSendNativeToken,
-      yourAddressWallet,
-    ]
-  );
 
-  const onSendBorrowJettonToken = useCallback(
-    async (
-      amount: string,
-      poolReserve: FormattedReservesAndIncentives,
-      interestRateMode: number
-    ) => {
-      if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress) return;
-      try {
-        const decimal = poolReserve.decimals; // poolReserve.decimals
-        const parseAmount = parseUnits(
-          valueToBigNumber(amount).toFixed(decimal),
-          decimal
-        ).toString();
-
-        const dataMultiSig = await getMultiSig({
-          isMock: false,
-        });
-
-        const params = {
-          queryId: Date.now(),
-          poolJettonWalletAddress: Address.parse(poolReserve.poolJettonWalletAddress),
-          amount: BigInt(parseAmount),
-          interestRateMode: interestRateMode,
-          priceData: dataMultiSig,
-        };
-
-        await providerPool.sendBorrow(
-          sender, //via: Sender
-          params //via: Sender,
-        );
-
-        return { success: true, message: 'success' };
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [providerPool, sender]
-  );
-
-  const onSendBorrowTon = useCallback(
-    async (
-      amount: string,
-      poolReserve: FormattedReservesAndIncentives,
-      interestRateMode: InterestRate
-    ) => {
-      const rateMode = interestRateMode === InterestRate.Stable ? 0 : 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
-
-      if (!poolReserve || !providerPool || !poolReserve.poolJettonWalletAddress)
-        return { success: false, message: 'error', blocking: false };
-
-      try {
-        const res = await onSendBorrowJettonToken(amount, poolReserve, rateMode);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash && !!res?.success) {
-          const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
-        }
-      } catch (error) {
         return { success: false, message: 'Transaction failed', blocking: false };
-      }
-    },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendBorrowJettonToken,
-      providerPool,
-      yourAddressWallet,
-    ]
-  );
-
-  const onToggleCollateralTon = useCallback(
-    async (poolJWAddress: string, status: boolean) => {
-      if (!client || !providerPool || !poolJWAddress) return;
-      try {
-        const dataMultiSig = await getMultiSig({
-          isMock: false,
-        });
-
-        const params = {
-          poolJWAddress: Address.parse(poolJWAddress),
-          useAsCollateral: status,
-          priceData: dataMultiSig,
-        };
-
-        await providerPool.sendSetUseReserveAsCollateral(sender, params);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash) {
-          const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else {
-          return { success: false, error: 'No txHash received', blocking: false };
-        }
       } catch (error) {
-        console.error('Transaction failed:', error);
-        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
-        if (_.includes(ErrorCancelledTon, errorToCheck)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          return { success: false, message: 'Transaction failed', blocking: false };
-        }
+        console.log('Transaction failed:', error);
+
+        const message =
+          error instanceof Error
+            ? error.message.replace(/\s+/g, '').toLowerCase()
+            : 'Unknown error';
+        return { success: false, message, blocking: false };
       }
     },
-    [
-      client,
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      providerPool,
-      sender,
-      yourAddressWallet,
-    ]
+    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, yourAddressWallet]
   );
 
-  const onSendWithdrawTon = useCallback(
-    async (poolJettonWalletAddress: string, decimals: number | undefined, amount: string) => {
-      if (!poolJettonWalletAddress || !providerPool || !decimals)
-        return { success: false, message: 'error', blocking: false };
-
+  const onSendSupplyTonNetwork = useCallback(
+    async (amount: string) => {
+      if (!AppTON || !amount || !sender) return { success: false, message: 'Invalid parameters' };
       try {
-        const dataMultiSig = await getMultiSig({
-          isMock: false,
-        });
+        await AppTON.sendSupply(sender, Address.parse(underlyingAssetTon), BigInt(amount));
+        return { success: true, message: 'success' };
+      } catch (error) {
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [AppTON, sender, underlyingAssetTon]
+  );
 
-        const parseAmount =
-          Number(amount) === -1
-            ? 1
-            : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
+  const actionSendSupplyTonNetwork = useCallback(
+    (amount: string) => handleTransaction(() => onSendSupplyTonNetwork(amount)),
+    [onSendSupplyTonNetwork, handleTransaction]
+  );
 
-        const params = {
-          queryId: Date.now(),
-          poolJettonWalletAddress: Address.parse(poolJettonWalletAddress),
+  const onSendBorrowTonNetwork = useCallback(
+    async (amount: string, interestRateMode: number) => {
+      if (!AppTON || !amount || !sender) return { success: false, message: 'Invalid parameters' };
+      try {
+        await AppTON.sendBorrow(
+          sender,
+          Address.parse(underlyingAssetTon),
+          BigInt(amount),
+          interestRateMode
+        );
+        return { success: true, message: 'success' };
+      } catch (error) {
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [AppTON, sender, underlyingAssetTon]
+  );
+
+  const actionSendBorrowTonNetwork = useCallback(
+    (amount: string, interestRateMode: InterestRate) => {
+      const rateMode = convertInterestRateMode(interestRateMode);
+      return handleTransaction(() => onSendBorrowTonNetwork(amount, rateMode));
+    },
+    [onSendBorrowTonNetwork, handleTransaction]
+  );
+
+  const onToggleCollateralTonNetwork = useCallback(
+    async (status: boolean) => {
+      if (!AppTON || !sender) return { success: false, message: 'Invalid parameters' };
+      try {
+        await AppTON.sendSetUseReserveAsCollateral(
+          sender,
+          Address.parse(underlyingAssetTon),
+          status
+        );
+        return { success: true, message: 'success' };
+      } catch (error) {
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [AppTON, sender, underlyingAssetTon]
+  );
+
+  const actionToggleCollateralTonNetwork = useCallback(
+    (status: boolean) => handleTransaction(() => onToggleCollateralTonNetwork(status)),
+    [onToggleCollateralTonNetwork, handleTransaction]
+  );
+
+  const onSendWithdrawTonNetwork = useCallback(
+    async (decimals: number | undefined, amount: string) => {
+      if (!AppTON || !sender || !decimals) return { success: false, message: 'Invalid parameters' };
+      try {
+        const isMax = Number(amount) === -1;
+        const parseAmount = isMax
+          ? '1'
+          : parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString();
+
+        await AppTON.sendWithdraw(sender, Address.parse(underlyingAssetTon), {
           amount: BigInt(parseAmount),
-          priceData: dataMultiSig,
-          isMaxWithdraw: Number(amount) === -1 ? true : false,
-        };
-
-        await providerPool.sendWithdraw(sender, params);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash) {
-          const status = await getTransactionStatus(txHash);
-          return { success: status, txHash: txHash, blocking: !status, message: txHash };
-        } else {
-          throw new Error('Transaction failed');
-        }
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        const errorToCheck = error.message.replace(/\s+/g, '').toLowerCase();
-        if (_.includes(ErrorCancelledTon, errorToCheck)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          return { success: false, message: 'Transaction failed', blocking: false };
-        }
-      }
-    },
-    [getLatestBoc, getTransactionStatus, onGetGetTxByBOC, providerPool, sender, yourAddressWallet]
-  );
-
-  const onSendRepayTokenTon = useCallback(
-    async ({ amount, isAToken, interestRateMode, isJetton }: RepayParamsSend) => {
-      if (!providerJettonMinter || !client || !interestRateMode || !providerPool)
-        return { success: false, message: 'error', blocking: false };
-
-      try {
-        if (isJetton) {
-          const walletAddressJettonMinter = await providerJettonMinter.getWalletAddress(
-            Address.parse(yourAddressWallet)
-          );
-
-          const contractJettonWallet = new JettonWallet(
-            walletAddressJettonMinter // z-ton-wallet
-          );
-
-          const providerJettonWallet = client.open(
-            contractJettonWallet
-          ) as OpenedContract<JettonWallet>;
-
-          await providerJettonWallet.sendTransfer(
-            sender, //via: Sender,
-            toNano(`${GAS_FEE_TON}`), //value: bigint, --- gas fee default 1
-            BigInt(amount), // User input amount
-            Address.parse(address_pools), //Address poll
-            Address.parse(yourAddressWallet), // User address wallet
-            Cell.EMPTY, //
-            toNano('0.1'), // forward_ton_amount: bigint,
-            beginCell()
-              .storeUint(Op.repay, 32)
-              .storeBit(interestRateMode)
-              .storeBit(isAToken)
-              .storeBit(Number(amount) === -1 ? true : false)
-              .endCell()
-          );
-        } else {
-          const dataMultiSig = await getMultiSig({
-            isMock: false,
-          });
-          const repayParams: RepayParams = {
-            queryId: Date.now(),
-            amount: BigInt(amount),
-            useAToken: isAToken,
-            isMax: false,
-            priceData: dataMultiSig,
-            interestRateMode: interestRateMode,
-          };
-          await providerPool.sendRepayTON(sender, repayParams);
-        }
-
-        return { success: true, message: 'success' };
-      } catch (error) {
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
-        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
-      }
-    },
-    [client, providerJettonMinter, providerPool, sender, yourAddressWallet]
-  );
-
-  const onSendRepayATokenTon = useCallback(
-    async ({ amount, isAToken, interestRateMode, isJetton }: RepayParamsSend) => {
-      if (!providerJettonMinter || !client || !providerPool || !interestRateMode)
-        return { success: false, message: 'error', blocking: false };
-
-      try {
-        const dataMultiSig = await getMultiSig({
-          isMock: false,
+          isMaxWithdraw: isMax,
         });
-
-        if (isJetton) {
-          const paramsRepay: RepayParams = {
-            queryId: Date.now(),
-            amount: BigInt(amount), // amount borrow
-            poolJWRepay: await providerJettonMinter.getWalletAddress(Address.parse(address_pools)),
-            poolJWCollateral: await providerJettonMinter.getWalletAddress(
-              Address.parse(address_pools)
-            ),
-            interestRateMode: interestRateMode,
-            useAToken: isAToken,
-            isMax: false,
-            priceData: dataMultiSig,
-          };
-
-          await providerPool.sendRepayUseAToken(
-            sender, //via: Sender
-            paramsRepay //via: Sender,
-          );
-        } else {
-          const repayParams: RepayParams = {
-            queryId: Date.now(),
-            amount: BigInt(amount),
-            useAToken: isAToken,
-            isMax: false,
-            priceData: dataMultiSig,
-            interestRateMode: interestRateMode,
-          };
-          await providerPool.sendRepayTON(sender, repayParams);
-        }
-
         return { success: true, message: 'success' };
       } catch (error) {
-        console.log(error.message.replace(/\s+/g, '').toLowerCase());
         return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
-    [client, providerJettonMinter, providerPool, sender]
+    [AppTON, sender, underlyingAssetTon]
   );
 
-  const onSendRepayTon = useCallback(
-    async ({ amount, decimals, isMaxSelected, isAToken, isJetton, balance }: RepayParamsSend) => {
-      if (!decimals || !balance) return { success: false, message: 'error', blocking: false };
+  const actionSendWithdrawTonNetwork = useCallback(
+    (decimals: number | undefined, amount: string) =>
+      handleTransaction(() => onSendWithdrawTonNetwork(decimals, amount)),
+    [onSendWithdrawTonNetwork, handleTransaction]
+  );
+
+  const onSendRepayTonNetwork = useCallback(
+    async (
+      decimals: number | undefined,
+      amount: string,
+      interestRateMode: number,
+      useAToken: boolean,
+      isBuffer: boolean | undefined,
+      _underlyingAddressCollateral?: string | undefined,
+      _amountCollateral?: string | undefined,
+      decimalsCollateral?: number | undefined
+    ) => {
+      if (!AppFactoryTON || !sender || !decimals)
+        return { success: false, message: 'Invalid parameters' };
       try {
-        const isBuffer =
-          isMaxSelected &&
-          valueToBigNumber(amount).multipliedBy(1.001).isLessThan(valueToBigNumber(balance));
+        const isMaxRepay = Number(amount) === -1;
+        const parseAmount = isMaxRepay
+          ? _underlyingAddressCollateral
+            ? parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString()
+            : '1'
+          : parseUnits(
+              valueToBigNumber(amount)
+                .multipliedBy(isBuffer ? 1.001 : 1)
+                .toFixed(decimals),
+              decimals
+            ).toString();
 
-        let res:
-          | boolean
-          | {
-              success: boolean;
-              message: string;
-            }
-          | undefined;
+        const parseAmountCollateral =
+          _amountCollateral && decimalsCollateral
+            ? BigInt(
+                parseUnits(
+                  valueToBigNumber(_amountCollateral).toFixed(decimalsCollateral),
+                  decimalsCollateral
+                ).toString()
+              )
+            : undefined;
 
-        const parseAmount =
-          Number(amount) === -1
-            ? 1
-            : parseUnits(
-                valueToBigNumber(amount)
-                  .multipliedBy(isBuffer ? 1.001 : 1)
-                  .toFixed(decimals),
-                decimals
-              ).toString();
+        const underlyingAddressCollateral = _underlyingAddressCollateral
+          ? Address.parse(_underlyingAddressCollateral)
+          : undefined;
 
-        const interestRateMode = 1; // 0 - INTEREST_MODE_STABLE  // 1 - INTEREST_MODE_VARIABLE
-
-        const params = {
-          amount: parseAmount,
-          isAToken,
+        const repayParams = {
           interestRateMode,
-          isJetton,
+          isMaxRepay,
+          useAToken,
+          amountCollateral: parseAmountCollateral,
+          underlyingAddressCollateral,
         };
 
-        if (isAToken) res = await onSendRepayATokenTon(params);
-        else res = await onSendRepayTokenTon(params);
-
-        const boc = await getLatestBoc();
-        const txHash = await onGetGetTxByBOC(boc, yourAddressWallet);
-
-        if (txHash && !!res?.success) {
-          const status = await getTransactionStatus(txHash);
-          return {
-            success: status,
-            txHash: txHash,
-            blocking: !status,
-            message: txHash,
-          };
-        } else if (_.includes(ErrorCancelledTon, res?.message)) {
-          return {
-            success: false,
-            message: ErrorCancelledTon[0],
-            blocking: false,
-          };
-        } else {
-          throw new Error('Transaction failed');
-        }
+        await AppFactoryTON.sendRepay(
+          sender,
+          Address.parse(underlyingAssetTon),
+          BigInt(parseAmount),
+          repayParams
+        );
+        return { success: true, message: 'success' };
       } catch (error) {
-        console.log('error supply', error);
-        return { success: false, message: 'Transaction failed', blocking: false };
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
       }
     },
-    [
-      getLatestBoc,
-      getTransactionStatus,
-      onGetGetTxByBOC,
-      onSendRepayATokenTon,
-      onSendRepayTokenTon,
-      yourAddressWallet,
-    ]
+    [AppFactoryTON, sender, underlyingAssetTon]
+  );
+
+  const actionSendRepayTonNetwork = useCallback(
+    async ({
+      amount,
+      decimals,
+      isMaxSelected,
+      isAToken,
+      balance,
+      debtType,
+      underlyingAddressCollateral,
+      amountCollateral,
+      decimalsCollateral,
+    }: RepayParamsSend) => {
+      if (!balance) return { success: false, message: 'Invalid parameters', blocking: false };
+
+      const isBuffer =
+        isMaxSelected &&
+        valueToBigNumber(amount).multipliedBy(1.001).isLessThan(valueToBigNumber(balance));
+
+      const interestRateMode = convertInterestRateMode(debtType);
+
+      return handleTransaction(() =>
+        onSendRepayTonNetwork(
+          decimals,
+          amount.toString(),
+          interestRateMode,
+          isAToken,
+          isBuffer,
+          underlyingAddressCollateral,
+          amountCollateral,
+          decimalsCollateral
+        )
+      );
+    },
+    [handleTransaction, onSendRepayTonNetwork]
   );
 
   return {
     approvedAmountTonAssume,
-    onSendSupplyTon,
-    onSendBorrowTon,
-    onToggleCollateralTon,
-    onSendWithdrawTon,
-    onSendRepayTon,
+    actionSendSupplyTonNetwork,
+    actionSendBorrowTonNetwork,
+    actionToggleCollateralTonNetwork,
+    actionSendWithdrawTonNetwork,
+    actionSendRepayTonNetwork,
   };
 };

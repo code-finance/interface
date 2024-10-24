@@ -10,6 +10,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { retryPromiseFunction } from 'src/hooks/paraswap/common';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -20,7 +21,6 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
-import { retry } from 'ts-retry-promise';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
@@ -39,6 +39,8 @@ export interface RepayActionProps extends BoxProps {
   underlyingAssetTon?: string;
   isMaxSelected?: boolean;
   balance?: string;
+  walletAddressTonWallet: string;
+  isConnectNetWorkTon: boolean;
 }
 
 export const RepayActions = ({
@@ -55,12 +57,12 @@ export const RepayActions = ({
   underlyingAssetTon,
   isMaxSelected,
   balance,
+  walletAddressTonWallet,
+  isConnectNetWorkTon,
   ...props
 }: RepayActionProps) => {
-  const { walletAddressTonWallet } = useTonConnectContext();
-  const { getPoolContractGetReservesData, getYourSupplies, isConnectNetWorkTon } =
-    useAppDataContext();
-  const { onSendRepayTon, approvedAmountTonAssume } = useTonTransactions(
+  const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
+  const { actionSendRepayTonNetwork, approvedAmountTonAssume } = useTonTransactions(
     walletAddressTonWallet,
     `${underlyingAssetTon}`
   );
@@ -161,18 +163,19 @@ export const RepayActions = ({
             decimals: poolReserve.decimals,
             isMaxSelected,
             isAToken: repayWithATokens,
-            isJetton: poolReserve.isJetton,
             balance,
+            debtType,
           };
 
-          const res = await onSendRepayTon(params);
+          const res = await actionSendRepayTonNetwork(params);
 
           await Promise.all([
-            retry(async () => getPoolContractGetReservesData(true), {
-              retries: MAX_ATTEMPTS,
-              delay: 1000,
-            }),
-            retry(async () => getYourSupplies(), { retries: MAX_ATTEMPTS, delay: 1000 }),
+            retryPromiseFunction(
+              async () => await getPoolContractGetReservesData(true),
+              MAX_ATTEMPTS,
+              1000
+            ),
+            retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
           ]);
 
           if (!res?.success) {
@@ -202,6 +205,8 @@ export const RepayActions = ({
           console.log('error repay--------------', error);
         }
       } else {
+        setMainTxState({ ...mainTxState, loading: true });
+        setTxError(undefined);
         let response: TransactionResponse;
         let action = ProtocolAction.default;
 

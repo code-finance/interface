@@ -83,62 +83,57 @@ export const applyTxHistoryFilters = ({
   return filteredTxns;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useTransactionHistoryTonNetwork = ({}: any) => {
+export const useTransactionHistoryTonNetwork = () => {
   const [account] = useRootStore((state) => [state.account]);
 
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { isConnectNetWorkTon } = useAppDataContext();
 
-  const parseAddressWallet = account ? Address.parse(account).toRawString() : '';
+  const getTransactionsHistory = useCallback(async () => {
+    if (!isConnectNetWorkTon || !account) {
+      setTransactions([]);
+      setIsLoading(false);
+      return;
+    }
 
-  // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
-  let selectedPool: string | undefined = undefined;
-  selectedPool = Address.parse(address_pools.toString()).toRawString() ?? '';
+    try {
+      await retry(
+        async () => {
+          if (!address_pools || !account) return;
+          const encodedPool = encodeURI(Address.parse(address_pools.toString()).toRawString());
+          const encodedAccount = encodeURI(Address.parse(account).toRawString());
 
-  const URL_TRANSACTION_HISTORY = `${URL_API_BE}/crawler/transaction-history`;
+          const params = {
+            pool: encodedPool,
+            address: encodedAccount,
+            page: 0,
+            limit: 100,
+          };
 
-  const getTransactions = useCallback(
-    async (skip = 0, first = 100) => {
-      if (!isConnectNetWorkTon) {
-        setTransactions([]);
-        setIsLoading(false); // Cập nhật trạng thái về false
-        return;
-      }
+          const { data } = await axios.get(`${URL_API_BE}/crawler/transaction-history`, {
+            params,
+          });
 
-      try {
-        await retry(
-          async () => {
-            if (!address_pools || !selectedPool || !parseAddressWallet) return;
-            const encodedPool = selectedPool ? encodeURI(selectedPool) : '';
-            const encodedAccount = parseAddressWallet ? encodeURI(parseAddressWallet) : '';
-
-            // Fetch from Ton wallet
-            const url = `${URL_TRANSACTION_HISTORY}?pool=${encodedPool}&address=${encodedAccount}&page=${skip}&limit=${first}`;
-            const response = await axios.get(url);
-            const data = response?.data ?? [];
-            setTransactions(data);
-            setIsLoading(false); // Cập nhật trạng thái về false khi lấy dữ liệu thành công
-          },
-          {
-            retries: MAX_ATTEMPTS_50, // Maximum number of retries
-            delay: 1000, // Delay between retries (1 second)
-          }
-        );
-      } catch (error) {
-        console.error('Failed to fetch supplies after retries:', error);
-        setTransactions([]); // Set empty data in case of failure
-        setIsLoading(false); // Cập nhật trạng thái về false khi có lỗi xảy ra
-      }
-    },
-    [isConnectNetWorkTon, selectedPool, parseAddressWallet, URL_TRANSACTION_HISTORY]
-  );
+          setTransactions(data);
+          setIsLoading(false);
+        },
+        {
+          retries: MAX_ATTEMPTS_50, // Maximum number of retries
+          delay: 1000, // Delay between retries (1 second)
+        }
+      );
+    } catch (error) {
+      console.error('Failed to fetch supplies after retries:', error);
+      setTransactions([]);
+      setIsLoading(false);
+    }
+  }, [isConnectNetWorkTon, account]);
 
   useEffect(() => {
     setIsLoading(true);
-    getTransactions();
-  }, [getTransactions, isConnectNetWorkTon, parseAddressWallet]);
+    getTransactionsHistory();
+  }, [getTransactionsHistory, isConnectNetWorkTon, account]);
 
   return {
     data: transactions,

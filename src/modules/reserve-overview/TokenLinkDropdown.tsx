@@ -1,8 +1,9 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
+import { Address } from '@ton/core';
 import * as React from 'react';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import {
@@ -10,7 +11,9 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { useAppTON } from 'src/hooks/useContract';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useRootStore } from 'src/store/root';
 
 import { RESERVE_DETAILS } from '../../utils/mixPanelEvents';
@@ -27,7 +30,10 @@ export const TokenLinkDropdown = ({
   hideAToken: hideATokenMain,
 }: TokenLinkDropdownProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [jettonAddress, setJettonAddress] = useState<string>('');
   const { isTonNetwork, isConnectNetWorkTon } = useAppDataContext();
+  const { walletAddressTonWallet } = useTonConnectContext();
+  const AppTON = useAppTON();
 
   const { currentNetworkConfig, currentMarket } = useProtocolDataContext();
   const open = Boolean(anchorEl);
@@ -47,6 +53,29 @@ export const TokenLinkDropdown = ({
     setAnchorEl(null);
   };
 
+  const onGetJettonWallet = useCallback(async () => {
+    if (!isConnectNetWorkTon && isTonNetwork) {
+      setJettonAddress(poolReserve.underlyingAssetTon || '');
+    } else {
+      if (!AppTON || !walletAddressTonWallet)
+        return setJettonAddress(poolReserve.underlyingAssetTon || '');
+      const parsedTokenAddress = Address.parse(poolReserve.underlyingAssetTon || '');
+      const parsedWalletAddress = Address.parse(walletAddressTonWallet);
+      const address = await AppTON.getJettonWallet(parsedWalletAddress, parsedTokenAddress);
+      setJettonAddress(address.toString());
+    }
+  }, [
+    AppTON,
+    isConnectNetWorkTon,
+    isTonNetwork,
+    poolReserve.underlyingAssetTon,
+    walletAddressTonWallet,
+  ]);
+
+  useEffect(() => {
+    onGetJettonWallet();
+  }, [onGetJettonWallet, isConnectNetWorkTon, isTonNetwork]);
+
   if (!poolReserve) {
     return null;
   }
@@ -64,7 +93,7 @@ export const TokenLinkDropdown = ({
   const hideAToken = isConnectNetWorkTon ? true : hideATokenMain;
 
   const explorerLink = isTonNetwork
-    ? `${SCAN_TRANSACTION_TON}/${poolReserve.underlyingAssetTon}`
+    ? `${SCAN_TRANSACTION_TON}/${jettonAddress}`
     : currentNetworkConfig.explorerLinkBuilder({
         address: poolReserve?.stableDebtTokenAddress,
       });

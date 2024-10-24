@@ -44,7 +44,7 @@ export const compactNumber = ({
       Math.trunc(Number(formattedValue) * 10 ** visibleDecimals) / 10 ** visibleDecimals;
   }
   const prefix = new Intl.NumberFormat('en-US', {
-    maximumFractionDigits: visibleDecimals,
+    maximumFractionDigits: isConnectedTonWallet ? 1 : visibleDecimals,
     minimumFractionDigits: isConnectedTonWallet ? 1 : visibleDecimals,
   }).format(formattedValue);
 

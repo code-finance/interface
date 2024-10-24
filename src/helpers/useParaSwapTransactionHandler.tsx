@@ -1,10 +1,22 @@
-import { EthereumTransactionTypeExtended, ProtocolAction } from '@aave/contract-helpers';
+import {
+  EthereumTransactionTypeExtended,
+  InterestRate,
+  ProtocolAction,
+} from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
-import { SIGNATURE_AMOUNT_MARGIN } from 'src/hooks/paraswap/common';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import {
+  retryPromiseFunction,
+  SIGNATURE_AMOUNT_MARGIN,
+  SwapReserveData,
+} from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
+import { useTonTransactions } from 'src/hooks/useTonTransactions';
+import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
@@ -39,6 +51,13 @@ interface UseParaSwapTransactionHandlerProps {
   spender: string;
   deps?: DependencyList;
   protocolAction?: ProtocolAction;
+  underlyingAssetTon?: string;
+  repayWithAmount?: string;
+  repayAmount?: string;
+  swapIn?: SwapReserveData;
+  swapOut?: SwapReserveData;
+  isMaxSelected?: boolean;
+  isConnectNetWorkTon?: boolean;
 }
 
 interface ApprovalProps {
@@ -54,7 +73,19 @@ export const useParaSwapTransactionHandler = ({
   spender,
   protocolAction,
   deps = [],
+  underlyingAssetTon,
+  isConnectNetWorkTon,
+  repayWithAmount,
+  repayAmount,
+  swapIn,
+  swapOut,
 }: UseParaSwapTransactionHandlerProps) => {
+  const { walletAddressTonWallet } = useTonConnectContext();
+  const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
+  const { actionSendRepayTonNetwork } = useTonTransactions(
+    walletAddressTonWallet,
+    `${underlyingAssetTon}`
+  );
   const {
     approvalTxState,
     setApprovalTxState,
@@ -219,59 +250,118 @@ export const useParaSwapTransactionHandler = ({
   };
 
   const action = async () => {
-    setMainTxState({ ...mainTxState, loading: true });
-    setTxError(undefined);
-    await handleGetTxns(signature, signatureDeadline)
-      .then(async (data) => {
-        // Find actionTx (repay with collateral or swap)
-        const actionTx = data.find((tx) => ['DLP_ACTION'].includes(tx.txType));
-        if (actionTx) {
-          try {
-            const params = await actionTx.tx();
-            delete params.gasPrice;
-            return processTx({
-              tx: () => sendTx(params),
-              successCallback: (txnResponse: TransactionResponse) => {
-                setMainTxState({
-                  txHash: txnResponse.hash,
-                  loading: false,
-                  success: true,
+    try {
+      if (isConnectNetWorkTon) {
+        setMainTxState({ ...mainTxState, loading: true });
+        setTxError(undefined);
+        const params = {
+          amount: repayAmount || '0',
+          decimals: swapIn?.decimals,
+          isMaxSelected: false,
+          isAToken: false,
+          balance: repayAmount || '0',
+          debtType: InterestRate.Variable,
+          underlyingAddressCollateral: swapIn?.underlyingAssetTon,
+          amountCollateral: repayWithAmount || '0',
+          decimalsCollateral: swapOut?.decimals,
+        };
+
+        const res = await actionSendRepayTonNetwork(params);
+
+        await Promise.all([
+          retryPromiseFunction(
+            async () => await getPoolContractGetReservesData(true),
+            MAX_ATTEMPTS,
+            1000
+          ),
+          retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
+        ]);
+
+        if (!res?.success) {
+          const error = {
+            name: 'repay',
+            message: `${res?.message}`,
+          };
+          const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, res?.blocking);
+          setTxError(parsedError);
+          setMainTxState({
+            txHash: undefined,
+            loading: false,
+          });
+        } else {
+          setMainTxState({
+            txHash: res?.txHash,
+            loading: false,
+            success: true,
+            amount: repayAmount,
+          });
+        }
+      } else {
+        setMainTxState({ ...mainTxState, loading: true });
+        setTxError(undefined);
+        await handleGetTxns(signature, signatureDeadline)
+          .then(async (data) => {
+            // Find actionTx (repay with collateral or swap)
+            const actionTx = data.find((tx) => ['DLP_ACTION'].includes(tx.txType));
+            if (actionTx) {
+              try {
+                const params = await actionTx.tx();
+                delete params.gasPrice;
+                return processTx({
+                  tx: () => sendTx(params),
+                  successCallback: (txnResponse: TransactionResponse) => {
+                    setMainTxState({
+                      txHash: txnResponse.hash,
+                      loading: false,
+                      success: true,
+                    });
+                    setTxError(undefined);
+                  },
+                  errorCallback: (error, hash) => {
+                    const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
+                    setTxError(parsedError);
+                    setMainTxState({
+                      txHash: hash,
+                      loading: false,
+                    });
+                  },
+                  action: TxAction.MAIN_ACTION,
                 });
-                setTxError(undefined);
-              },
-              errorCallback: (error, hash) => {
-                const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
+              } catch (error) {
+                const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
                 setTxError(parsedError);
                 setMainTxState({
-                  txHash: hash,
+                  ...mainTxState,
                   loading: false,
                 });
-              },
-              action: TxAction.MAIN_ACTION,
-            });
-          } catch (error) {
+              }
+            }
+          })
+          .catch((error) => {
             const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
             setTxError(parsedError);
             setMainTxState({
               ...mainTxState,
               loading: false,
             });
-          }
-        }
-      })
-      .catch((error) => {
-        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        setTxError(parsedError);
-        setMainTxState({
-          ...mainTxState,
-          loading: false,
-        });
+          });
+      }
+    } catch (error) {
+      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+      setTxError(parsedError);
+      setMainTxState({
+        txHash: undefined,
+        loading: false,
       });
+    }
   };
 
   // Populates the approval transaction and sets the default gas estimation.
   useEffect(() => {
-    if (!skip) {
+    if (isConnectNetWorkTon && Number(repayWithAmount) !== 0) {
+      setLoadingTxns(false);
+    }
+    if (!skip && !isConnectNetWorkTon) {
       setLoadingTxns(true);
       handleGetApprovalTxns()
         .then(async (data) => {
@@ -314,7 +404,7 @@ export const useParaSwapTransactionHandler = ({
       setApprovalTx(undefined);
       setActionTx(undefined);
     }
-  }, [skip, ...deps, walletApprovalMethodPreference]);
+  }, [skip, ...deps, walletApprovalMethodPreference, isConnectNetWorkTon]);
 
   return {
     approval,

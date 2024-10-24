@@ -112,7 +112,7 @@ export const WithdrawModalContent = ({
     return (
       <TxSuccessView
         action={<Trans>withdrew</Trans>}
-        amount={amountRef.current || withdrawTxState.amount}
+        amount={withdrawTxState.amount || amountRef.current}
         image={poolReserve.image}
         symbol={
           withdrawUnWrapped && poolReserve.isWrappedBaseAsset
