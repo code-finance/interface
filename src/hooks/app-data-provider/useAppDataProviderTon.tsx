@@ -99,6 +99,8 @@ export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
 export const URL_API_BE = 'https://aave-ton-api.sotatek.works';
 export const SCAN_PRICE_TON = 'https://www.coingecko.com';
 export const URL_PUBLIC = 'https://aave-stesting.sotatek.works';
+// export const SANDBOX_V4_API_ENDPOINT = 'https://sandbox-v4.tonhubapi.com'; // testnet
+// export const MAINNET_V4_API_ENDPOINT = 'https://mainnet-v4.tonhubapi.com'; // mainnet
 
 // export const OP_CODE_SUPPLY_TON = '0x1530f236';
 // export const OP_CODE_SUPPLY_JETTON = '0x7362d09c';
