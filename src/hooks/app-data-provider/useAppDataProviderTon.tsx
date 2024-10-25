@@ -239,7 +239,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           // const isIsolated = item.debtCeiling.toString() !== '0'; // todo
           const isIsolated = false;
 
-          const stableBorrows = 0;
+          const stableBorrows = formatUnits(item.totalStableDebt || '0', decimals);
           const unbacked = 0;
           const poolJettonWalletAddress = item.poolJWAddress.toString();
           const borrowCap = formatUnits(item.borrowCap || '0', decimals);
@@ -289,11 +289,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             {
               totalScaledVariableDebt: item.totalVariableDebt.toString(),
               variableBorrowIndex: variableBorrowIndex,
-              totalPrincipalStableDebt: '0',
+              totalPrincipalStableDebt: item.totalVariableDebt.toString(),
               availableLiquidity: liquidity,
               variableBorrowRate: variableBorrowRate,
               lastUpdateTimestamp,
-              averageStableRate: '0',
+              averageStableRate: item.averageStableBorrowRate.toString(),
               stableDebtLastUpdateTimestamp: 0,
               virtualUnderlyingBalance: '0',
             },
@@ -666,6 +666,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.totalStableDebt || 0)
         .toString();
 
+      const stableBorrowsUSD = valueToBigNumber(formattedPriceInUSD)
+        .multipliedBy(reserve.stableBorrows || 0)
+        .toString();
+
       if (dataById?.address === address_pools) {
         setGasFeeTonMarketReferenceCurrencyTON(
           valueToBigNumber(formattedPriceInUSD)
@@ -687,6 +691,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         totalVariableDebtUSD,
         totalDebtUSD: totalVariableDebtUSD,
         totalStableDebtUSD,
+        stableBorrowsUSD,
         reserve: {
           ...reserve.reserve,
           walletBalanceUSD,
@@ -700,6 +705,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           totalVariableDebtUSD,
           totalDebtUSD: totalVariableDebtUSD,
           totalStableDebtUSD,
+          stableBorrowsUSD,
         },
       };
     });
