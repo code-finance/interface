@@ -52,6 +52,7 @@ export type ReserveState = {
   currentStableBorrowRate: bigint;
   currentVariableBorrowRate: bigint;
   averageStableBorrowRate: bigint;
+  stableBorrowLastUpdateTimestamp: bigint;
   lastUpdateTimestamp: bigint;
   accruedToTreasury?: bigint;
 };

@@ -82,6 +82,7 @@ export interface PoolContractReservesDataType {
   variableBorrowIndex: bigint | 0;
   walletBalance?: string;
   stableRateBorrowingEnabled?: boolean;
+  stableBorrowLastUpdateTimestamp: bigint | string | 0 | number;
 
   // accruedToTreasury: bigint | 0;
   // image_data?: string | undefined;
@@ -278,6 +279,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
           const lastUpdateTimestamp = Number(item.lastUpdateTimestamp.toString());
 
+          const stableBorrowLastUpdateTimestamp = Number(
+            item.stableBorrowLastUpdateTimestamp.toString()
+          );
+
           const variableBorrowIndex = item.variableBorrowIndex.toString();
 
           const {
@@ -289,12 +294,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             {
               totalScaledVariableDebt: item.totalVariableDebt.toString(),
               variableBorrowIndex: variableBorrowIndex,
-              totalPrincipalStableDebt: item.totalVariableDebt.toString(),
+              totalPrincipalStableDebt: item.totalStableDebt.toString(),
               availableLiquidity: liquidity,
               variableBorrowRate: variableBorrowRate,
               lastUpdateTimestamp,
               averageStableRate: item.averageStableBorrowRate.toString(),
-              stableDebtLastUpdateTimestamp: 0,
+              stableDebtLastUpdateTimestamp: stableBorrowLastUpdateTimestamp,
               virtualUnderlyingBalance: '0',
             },
             dayjs().unix()
@@ -670,6 +675,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.stableBorrows || 0)
         .toString();
 
+      const totalDebtUSD = valueToBigNumber(formattedPriceInUSD)
+        .multipliedBy(reserve.totalDebt || 0)
+        .toString();
+
       if (dataById?.address === address_pools) {
         setGasFeeTonMarketReferenceCurrencyTON(
           valueToBigNumber(formattedPriceInUSD)
@@ -689,7 +698,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         borrowCapUSD,
         supplyCapUSD,
         totalVariableDebtUSD,
-        totalDebtUSD: totalVariableDebtUSD,
+        totalDebtUSD,
         totalStableDebtUSD,
         stableBorrowsUSD,
         reserve: {
@@ -703,7 +712,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           borrowCapUSD,
           supplyCapUSD,
           totalVariableDebtUSD,
-          totalDebtUSD: totalVariableDebtUSD,
+          totalDebtUSD,
           totalStableDebtUSD,
           stableBorrowsUSD,
         },
