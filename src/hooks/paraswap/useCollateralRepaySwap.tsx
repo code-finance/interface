@@ -117,7 +117,7 @@ export const useCollateralRepaySwap = ({
         const response = await retry(
           () =>
             axios.get(`${URL_API_BE}/crawler/swap-out`, {
-              params: { tokenIn, tokenOut, amountRepay },
+              params: { tokenIn, tokenOut, amountIn: amountRepay },
               signal: controller.signal,
             }),
           {
@@ -156,7 +156,8 @@ export const useCollateralRepaySwap = ({
         const params = {
           tokenOut: swapOut.underlyingAssetTon,
           tokenIn: swapIn.underlyingAssetTon,
-          amountRepay: normalizeBN(amountRepay.toString(), swapOut.decimals * -1).toString(),
+          // amountRepay: normalizeBN(amountRepay.toString(), swapOut.decimals * -1).toString(),
+          amountRepay: amountRepay.toString(),
         };
 
         const amountOut = await getRateTON(params);
