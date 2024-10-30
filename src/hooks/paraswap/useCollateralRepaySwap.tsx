@@ -1,12 +1,12 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OptimalRate, SwapSide } from '@paraswap/sdk';
 // import { Address } from '@ton/core';
-import axios from 'axios';
+// import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { retry } from 'ts-retry-promise';
 
-import { address_pools, URL_API_BE } from '../app-data-provider/useAppDataProviderTon';
-import { useAppFactoryTON } from '../useContract';
+// import { retry } from 'ts-retry-promise';
+import { address_pools } from '../app-data-provider/useAppDataProviderTon';
+// import { useAppFactoryTON } from '../useContract';
 import {
   convertParaswapErrorMessage,
   fetchExactInRate,
@@ -99,73 +99,77 @@ export const useCollateralRepaySwap = ({
     swapOut.variableBorrowAPY,
   ]);
 
-  const AppFactoryTON = useAppFactoryTON();
+  // const AppFactoryTON = useAppFactoryTON();
 
-  const getRateTON = useCallback(
-    async ({
-      tokenIn,
-      tokenOut,
-      amountRepay,
-    }: {
-      tokenIn: string | undefined;
-      tokenOut: string | undefined;
-      amountRepay: string;
-    }) => {
-      const controller = new AbortController();
-      if (!AppFactoryTON || !tokenIn || !tokenOut) return null;
-      try {
-        const response = await retry(
-          () =>
-            axios.get(`${URL_API_BE}/crawler/swap-out`, {
-              params: { tokenIn, tokenOut, amountIn: amountRepay },
-              signal: controller.signal,
-            }),
-          {
-            retries: 3, // number of retry attempts
-            delay: 1000, // delay between retries in ms
-          }
-        );
+  // const getRateTON = useCallback(
+  //   async ({
+  //     tokenIn,
+  //     tokenOut,
+  //     amountRepay,
+  //   }: {
+  //     tokenIn: string | undefined;
+  //     tokenOut: string | undefined;
+  //     amountRepay: string;
+  //   }) => {
+  //     const controller = new AbortController();
+  //     if (!AppFactoryTON || !tokenIn || !tokenOut) return null;
+  //     try {
+  //       const response = await retry(
+  //         () =>
+  //           axios.get(`${URL_API_BE}/crawler/swap-out`, {
+  //             params: { tokenIn, tokenOut, amountIn: amountRepay },
+  //             signal: controller.signal,
+  //           }),
+  //         {
+  //           retries: 3, // number of retry attempts
+  //           delay: 1000, // delay between retries in ms
+  //         }
+  //       );
 
-        const data: DataSwapOut = response.data;
+  //       const data: DataSwapOut = response.data;
 
-        return data?.data.amountOut;
+  //       return data?.data.amountOut;
 
-        // const amountOut = BigInt(Number(amountRepay).toFixed(0));
-        // const underlyingAddressIn = Address.parse(tokenIn);
-        // const underlyingAddressOut = Address.parse(tokenOut);
+  //       // const amountOut = BigInt(Number(amountRepay).toFixed(0));
+  //       // const underlyingAddressIn = Address.parse(tokenIn);
+  //       // const underlyingAddressOut = Address.parse(tokenOut);
 
-        // const data = await AppFactoryTON.estimateAmountInSwap(
-        //   amountOut,
-        //   underlyingAddressIn,
-        //   underlyingAddressOut
-        // );
+  //       // const data = await AppFactoryTON.estimateAmountInSwap(
+  //       //   amountOut,
+  //       //   underlyingAddressIn,
+  //       //   underlyingAddressOut
+  //       // );
 
-        // return data.toString();
-      } catch (apiError) {
-        return '0';
-      }
-    },
-    [AppFactoryTON]
-  );
+  //       // return data.toString();
+  //     } catch (apiError) {
+  //       return '0';
+  //     }
+  //   },
+  //   [AppFactoryTON]
+  // );
 
   const exactInRateTON = useMemo(
     () =>
       async ({ max }: { max: boolean }) => {
         const amountRepay = max ? valueToBigNumber(debt) : valueToBigNumber(swapOut.amount);
 
-        const params = {
-          tokenOut: swapOut.underlyingAssetTon,
-          tokenIn: swapIn.underlyingAssetTon,
-          // amountRepay: normalizeBN(amountRepay.toString(), swapOut.decimals * -1).toString(),
-          amountRepay: amountRepay.toString(),
-        };
+        // const params = {
+        //   tokenOut: swapOut.underlyingAssetTon,
+        //   tokenIn: swapIn.underlyingAssetTon,
+        //   // amountRepay: normalizeBN(amountRepay.toString(), swapOut.decimals * -1).toString(),
+        //   amountRepay: amountRepay.toString(),
+        // };
 
-        const amountOut = await getRateTON(params);
+        // const amountOut = await getRateTON(params);
 
         const amountRepayUSD = amountRepay.multipliedBy(swapOut.priceInUSD);
+
+        const amountOut = amountRepayUSD.div(swapIn.priceInUSD);
+
         const amount = normalizeBN(amountRepay, swapOut.decimals * -1);
 
-        const formatSrcAmount = normalize(amountOut || 0, swapIn.decimals);
+        // const formatSrcAmount = normalize(amountOut || 0, swapIn.decimals);
+        const formatSrcAmount = normalize(amountOut, 0);
         const srcAmount = normalizeBN(formatSrcAmount, swapIn.decimals * -1);
 
         const srcAmountUSD = valueToBigNumber(formatSrcAmount).multipliedBy(swapIn.priceInUSD);
@@ -228,16 +232,13 @@ export const useCollateralRepaySwap = ({
       },
     [
       debt,
-      getRateTON,
       swapIn.decimals,
       swapIn.priceInUSD,
       swapIn.underlyingAsset,
-      swapIn.underlyingAssetTon,
       swapOut.amount,
       swapOut.decimals,
       swapOut.priceInUSD,
       swapOut.underlyingAsset,
-      swapOut.underlyingAssetTon,
     ]
   );
 
