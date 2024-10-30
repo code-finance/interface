@@ -1,9 +1,11 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OptimalRate, SwapSide } from '@paraswap/sdk';
-import { Address } from '@ton/core';
+// import { Address } from '@ton/core';
+import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { retry } from 'ts-retry-promise';
 
-import { address_pools } from '../app-data-provider/useAppDataProviderTon';
+import { address_pools, URL_API_BE } from '../app-data-provider/useAppDataProviderTon';
 import { useAppFactoryTON } from '../useContract';
 import {
   convertParaswapErrorMessage,
@@ -109,19 +111,36 @@ export const useCollateralRepaySwap = ({
       tokenOut: string | undefined;
       amountRepay: string;
     }) => {
+      const controller = new AbortController();
       if (!AppFactoryTON || !tokenIn || !tokenOut) return null;
       try {
-        const amountOut = BigInt(Number(amountRepay).toFixed(0));
-        const underlyingAddressIn = Address.parse(tokenIn);
-        const underlyingAddressOut = Address.parse(tokenOut);
-
-        const data = await AppFactoryTON.estimateAmountInSwap(
-          amountOut,
-          underlyingAddressIn,
-          underlyingAddressOut
+        const response = await retry(
+          () =>
+            axios.get(`${URL_API_BE}/crawler/swap-out`, {
+              params: { tokenIn, tokenOut, amountRepay },
+              signal: controller.signal,
+            }),
+          {
+            retries: 3, // number of retry attempts
+            delay: 1000, // delay between retries in ms
+          }
         );
 
-        return data.toString();
+        const data: DataSwapOut = response.data;
+
+        return data?.data.amountOut;
+
+        // const amountOut = BigInt(Number(amountRepay).toFixed(0));
+        // const underlyingAddressIn = Address.parse(tokenIn);
+        // const underlyingAddressOut = Address.parse(tokenOut);
+
+        // const data = await AppFactoryTON.estimateAmountInSwap(
+        //   amountOut,
+        //   underlyingAddressIn,
+        //   underlyingAddressOut
+        // );
+
+        // return data.toString();
       } catch (apiError) {
         return '0';
       }
