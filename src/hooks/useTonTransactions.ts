@@ -197,12 +197,14 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       isBuffer: boolean | undefined,
       _underlyingAddressCollateral?: string | undefined,
       _amountCollateral?: string | undefined,
-      decimalsCollateral?: number | undefined
+      decimalsCollateral?: number | undefined,
+      isMaxSelected?: boolean
     ) => {
       if (!AppFactoryTON || !sender || !decimals)
         return { success: false, message: 'Invalid parameters' };
       try {
-        const isMaxRepay = Number(amount) === -1;
+        const isMaxRepay = Number(amount) === -1 || Boolean(isMaxSelected);
+
         const parseAmount = isMaxRepay
           ? _underlyingAddressCollateral
             ? parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString()
@@ -279,7 +281,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
           isBuffer,
           underlyingAddressCollateral,
           amountCollateral,
-          decimalsCollateral
+          decimalsCollateral,
+          isMaxSelected
         )
       );
     },

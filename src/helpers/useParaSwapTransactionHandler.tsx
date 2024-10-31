@@ -79,6 +79,7 @@ export const useParaSwapTransactionHandler = ({
   repayAmount,
   swapIn,
   swapOut,
+  isMaxSelected,
 }: UseParaSwapTransactionHandlerProps) => {
   const { walletAddressTonWallet } = useTonConnectContext();
   const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
@@ -257,7 +258,7 @@ export const useParaSwapTransactionHandler = ({
         const params = {
           amount: repayAmount || '0',
           decimals: swapOut?.decimals,
-          isMaxSelected: false,
+          isMaxSelected: isMaxSelected,
           isAToken: false,
           balance: repayAmount || '0',
           debtType: InterestRate.Variable,
