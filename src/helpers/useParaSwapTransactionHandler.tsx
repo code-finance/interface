@@ -256,7 +256,7 @@ export const useParaSwapTransactionHandler = ({
         setTxError(undefined);
         const params = {
           amount: repayAmount || '0',
-          decimals: swapIn?.decimals,
+          decimals: swapOut?.decimals,
           isMaxSelected: false,
           isAToken: false,
           balance: repayAmount || '0',
