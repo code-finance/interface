@@ -206,9 +206,7 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
         const isMaxRepay = Number(amount) === -1 || Boolean(isMaxSelected);
 
         const parseAmount = isMaxRepay
-          ? _underlyingAddressCollateral
-            ? parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString()
-            : '1'
+          ? parseUnits(valueToBigNumber(amount).toFixed(decimals), decimals).toString()
           : parseUnits(
               valueToBigNumber(amount)
                 .multipliedBy(isBuffer ? 1.001 : 1)
