@@ -115,9 +115,9 @@ export class App {
     const wallet = this.wallet(await minter.getWalletAddress(via.address));
 
     // TODO: Move the following constants to external files
-    const SUPPLY_MESSAGE_VALUE = toNano(0.1);
+    const SUPPLY_MESSAGE_VALUE = toNano(0.2);
     const SUPPLY_MESSAGE_OP = 0x1530f236;
-    const FORWARD_TON_AMOUNT = toNano(0.05);
+    const FORWARD_TON_AMOUNT = toNano(0.1);
     const FORWARD_PAYLOAD = beginCell().storeUint(SUPPLY_MESSAGE_OP, 32).endCell();
 
     return wallet.sendTransfer(
