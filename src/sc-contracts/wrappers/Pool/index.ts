@@ -69,7 +69,7 @@ export class Pool implements Contract {
   async sendSupply(provider: ContractProvider, via: Sender, params: SupplyParams) {
     const body = SupplyParamsToCell(params);
     await provider.internal(via, {
-      value: params.amount + toNano('0.05'),
+      value: params.amount + toNano('0.1'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
