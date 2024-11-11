@@ -90,7 +90,7 @@ export interface PoolContractReservesDataType {
 }
 export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
 export const address_pools = 'EQBv7Vn9SgMI6wiyTL24I5iuiaBBWLQ8DGkLZRctvJqHeGk_';
-export const MAX_ATTEMPTS = 10;
+export const MAX_ATTEMPTS = 100;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
 export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
