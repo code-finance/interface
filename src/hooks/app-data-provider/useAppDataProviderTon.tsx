@@ -89,7 +89,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
-export const address_pools = 'EQB0CZSXlWZ1s0YBZlaYeC6aX2JmGbTklXDJQwbGrX05mZ3j';
+export const address_pools = 'EQC9g89RMR-d_jnycTfj-fh_gf-q97qmfDzTHdqRi8djgy1P';
 export const MAX_ATTEMPTS = 100;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -113,6 +113,16 @@ export const OP_CODE_WITHDRAW = '0x2572afa4';
 export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
 
 export const defaultRateUSDNotValue = [
+  {
+    id: 'ts-ton',
+    address: 'EQD42OQYC4nGc3KbrcKpOKkZMz831WkqDC8fio-pgDUi_oHe',
+    usd: '0',
+  },
+  {
+    id: 'st-ton',
+    address: 'EQCsiCNW3mqOx-GqcpeP1t-0P0z6nzgq1h_n_b10neKKjWFk',
+    usd: '0',
+  },
   {
     id: 'dai',
     address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
