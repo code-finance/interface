@@ -131,14 +131,17 @@ export const defaultRateUSDNotValue = [
   {
     id: 'usd-coin',
     address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
+    usd: '0',
   },
   {
     id: 'tether',
     address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+    usd: '0',
   },
   {
     id: 'the-open-network',
     address: address_pools,
+    usd: '0',
   },
 ];
 

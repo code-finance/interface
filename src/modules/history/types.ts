@@ -205,6 +205,8 @@ export const ACTION_HISTORY: { [key: string]: string } = {
 };
 
 export const defaultUnderlyingAsset = {
+  stTON: 'EQCsiCNW3mqOx-GqcpeP1t-0P0z6nzgq1h_n_b10neKKjWFk',
+  tsTON: 'EQD42OQYC4nGc3KbrcKpOKkZMz831WkqDC8fio-pgDUi_oHe',
   USDC: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
   USDT: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
   DAI: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
@@ -216,4 +218,6 @@ export const defaultNameAsset = {
   USDT: 'Tether',
   DAI: 'Dai Stablecoin',
   TON: 'TON',
+  stTON: 'stTON',
+  tsTON: 'tsTON',
 };
