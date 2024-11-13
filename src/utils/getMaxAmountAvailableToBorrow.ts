@@ -49,7 +49,11 @@ export function getMaxAmountAvailableToBorrow(
 
   const availableForUserMarketReferenceCurrency = valueToBigNumber(
     user?.availableBorrowsMarketReferenceCurrency || 0
-  ).div(poolReserve.formattedPriceInMarketReferenceCurrency);
+  ).div(
+    Number(poolReserve.formattedPriceInMarketReferenceCurrency) === 0
+      ? 1
+      : poolReserve.formattedPriceInMarketReferenceCurrency
+  );
 
   let maxUserAmountToBorrow = BigNumber.min(
     availableForUserMarketReferenceCurrency,
@@ -100,11 +104,12 @@ export function getMaxAmountAvailableToBorrow(
   const amountWithMargin = shouldAddMargin
     ? maxUserAmountToBorrow.multipliedBy('0.99')
     : maxUserAmountToBorrow;
+
   return roundToTokenDecimals(amountWithMargin.toString(10), poolReserve.decimals);
 }
 
 /**
- * Calculates the maximum amount of GHO a user can mint
+ * Calculas the maximum amount of GHO a user can mint
  * @param user
  */
 export function getMaxGhoMintAmount(
