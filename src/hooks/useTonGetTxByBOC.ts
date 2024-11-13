@@ -181,7 +181,7 @@ export function useTonGetTxByBOC() {
 
               // Output the result
               console.log(`Contains '${targetSubstring}':`, containsSubstring);
-              return !containsSubstring ? false : status;
+              return containsSubstring ? false : status;
             } else {
               return status;
             }
