@@ -133,9 +133,15 @@ export const defaultRateUSDNotValue = [
     address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
     usd: '0',
   },
+  // usdt old
+  // {
+  //   id: 'tether',
+  //   address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+  //   usd: '0',
+  // },
   {
     id: 'tether',
-    address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+    address: 'EQCcZvU9dbEQNeCWup5FB7ixsr0K-mRm2fT_ETq6hrFBLVZk',
     usd: '0',
   },
   {
