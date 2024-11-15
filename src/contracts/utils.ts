@@ -1,8 +1,8 @@
 import { Address, beginCell, Cell, Dictionary, Slice } from '@ton/core';
 import { sha256_sync } from '@ton/crypto';
 import axios from 'axios';
-import { buffer } from 'stream/consumers';
-import { KeyPair, mnemonicNew, mnemonicToPrivateKey, sign } from 'ton-crypto';
+import { URL_API_BE } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { KeyPair, mnemonicToPrivateKey } from 'ton-crypto';
 
 // import { JettonDictValueSerializer } from '../utils/contents/jetton';
 import { makeSnakeCell } from '../helpers/snake-cell';
@@ -183,7 +183,7 @@ export async function getKeyPair(): Promise<KeyPair> {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function getPrice(symbol: any): Promise<DataPrice> {
-  const res = await fetch('https://aave-ton-api.sotatek.works/crawler/price');
+  const res = await fetch(`${URL_API_BE}/crawler/price`);
   const data = await res.json();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dataFilter: any = Object.values(data).filter((item: any) => item.symbol == symbol)[0];
@@ -200,7 +200,7 @@ export async function getPrice(symbol: any): Promise<DataPrice> {
 }
 
 export async function getPriceAll(): Promise<DataPrice[]> {
-  const res = await fetch('https://aave-ton-api.sotatek.works/crawler/price');
+  const res = await fetch(`${URL_API_BE}/crawler/price`);
   const data = await res.json();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let resultPrices: any;
@@ -251,7 +251,7 @@ export async function getMultiSig(listJettonAddressMock: any): Promise<Dictionar
   const KEYLEN = 256;
   const dict = Dictionary.empty(Dictionary.Keys.BigUint(KEYLEN), Dictionary.Values.Cell());
 
-  const res = await fetch('https://aave-ton-api.sotatek.works/crawler/price');
+  const res = await fetch(`${URL_API_BE}/crawler/price`);
   const data = await res.json();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.values(data).forEach((item: any) => {
