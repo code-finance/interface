@@ -167,23 +167,24 @@ export const RepayModalContent = ({
       balance: maxReserveTokenForRepay.toString(10),
     });
     // push reserve aToken
-    if (
-      currentMarketData.v3 &&
-      !displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket })
-    ) {
-      const aTokenBalance = valueToBigNumber(underlyingBalance);
-      const maxBalance = BigNumber.max(
-        aTokenBalance,
-        BigNumber.min(aTokenBalance, debt).toString(10)
-      );
-      repayTokens.push({
-        address: poolReserve.aTokenAddress,
-        symbol: `a${poolReserve.symbol}`,
-        iconSymbol: poolReserve.iconSymbol,
-        aToken: true,
-        balance: maxBalance.toString(10),
-      });
-    }
+    // disable aToken in site uat
+    // if (
+    //   currentMarketData.v3 &&
+    //   !displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket })
+    // ) {
+    //   const aTokenBalance = valueToBigNumber(underlyingBalance);
+    //   const maxBalance = BigNumber.max(
+    //     aTokenBalance,
+    //     BigNumber.min(aTokenBalance, debt).toString(10)
+    //   );
+    //   repayTokens.push({
+    //     address: poolReserve.aTokenAddress,
+    //     symbol: `a${poolReserve.symbol}`,
+    //     iconSymbol: poolReserve.iconSymbol,
+    //     aToken: true,
+    //     balance: maxBalance.toString(10),
+    //   });
+    // }
     setAssets(repayTokens);
     setTokenToRepayWith(repayTokens[0]);
   }, []);
