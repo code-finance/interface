@@ -90,7 +90,7 @@ export interface PoolContractReservesDataType {
 }
 
 export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
-export const address_pools = 'EQB8cGPwqEEjsNlld6o3M7sRkq-h-ku0wB9318Ji4zfG6-OS';
+export const address_pools = 'EQBw23a7sWGaEFIBm_JS8_W67YARpAtUWL2Ffex2Q9PqmsSI';
 export const MAX_ATTEMPTS = 100;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
