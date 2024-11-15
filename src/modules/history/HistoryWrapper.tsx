@@ -139,6 +139,7 @@ export const HistoryWrapper = () => {
           '1';
       }
       const iconSymbol = item.symbol;
+      console.log('iconSymboliconSymboliconSymbol', iconSymbol);
       return { ...item, action, iconSymbol, toState: collateralStatus, assetPriceUSD };
     });
 

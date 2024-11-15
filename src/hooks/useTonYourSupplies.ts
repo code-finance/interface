@@ -198,14 +198,14 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
             return {
               ...reserve,
-              underlyingBalance: normalizeWithReserve(underlyingBalance),
-              underlyingBalanceUSD: normalize(underlyingBalanceMarketReferenceCurrency, 0),
+              underlyingBalance: normalizeWithReserve(underlyingBalance) || '0',
+              underlyingBalanceUSD: normalize(underlyingBalanceMarketReferenceCurrency, 0) || '0',
 
-              variableBorrows: normalizeWithReserve(variableBorrows),
-              variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
+              variableBorrows: normalizeWithReserve(variableBorrows) || '0',
+              variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0) || '0',
 
-              stableBorrows: normalizeWithReserve(stableBorrows),
-              stableBorrowsUSD: normalize(stableBorrowsMarketReferenceCurrency, 0),
+              stableBorrows: normalizeWithReserve(stableBorrows) || '0',
+              stableBorrowsUSD: normalize(stableBorrowsMarketReferenceCurrency, 0) || '0',
 
               usageAsCollateralEnabledOnUser: matchedSupply?.isCollateral,
               usageAsCollateralEnabled: isCollateral,
@@ -237,14 +237,14 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
 
               reserve: {
                 ...reserve.reserve,
-                underlyingBalance: normalizeWithReserve(underlyingBalance),
-                underlyingBalanceUSD: normalize(underlyingBalanceMarketReferenceCurrency, 0),
+                underlyingBalance: normalizeWithReserve(underlyingBalance) || '0',
+                underlyingBalanceUSD: normalize(underlyingBalanceMarketReferenceCurrency, 0) || '0',
 
-                variableBorrows: normalizeWithReserve(variableBorrows),
-                variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0),
+                variableBorrows: normalizeWithReserve(variableBorrows) || '0',
+                variableBorrowsUSD: normalize(variableBorrowsMarketReferenceCurrency, 0) || '0',
 
-                stableBorrows: normalizeWithReserve(stableBorrows),
-                stableBorrowsUSD: normalize(stableBorrowsMarketReferenceCurrency, 0),
+                stableBorrows: normalizeWithReserve(stableBorrows) || '0',
+                stableBorrowsUSD: normalize(stableBorrowsMarketReferenceCurrency, 0) || '0',
 
                 usageAsCollateralEnabled: isCollateral,
 

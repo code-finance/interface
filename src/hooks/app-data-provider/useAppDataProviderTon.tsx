@@ -82,6 +82,7 @@ export interface PoolContractReservesDataType {
   variableBorrowIndex: bigint | 0;
   walletBalance?: string;
   stableRateBorrowingEnabled?: boolean;
+  stableBorrowLastUpdateTimestamp: bigint | string | 0 | number;
 
   // accruedToTreasury: bigint | 0;
   // image_data?: string | undefined;
@@ -89,8 +90,8 @@ export interface PoolContractReservesDataType {
 }
 
 export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
-export const address_pools = 'EQBogYHg9asKbhLIeeUvduWqMdhyFyyRLS81uGD6WfuHIsTo';
-export const MAX_ATTEMPTS = 10;
+export const address_pools = 'EQB8cGPwqEEjsNlld6o3M7sRkq-h-ku0wB9318Ji4zfG6-OS';
+export const MAX_ATTEMPTS = 100;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
 export const API_TON_V2 = 'https://testnet.toncenter.com/api/v2';
@@ -100,6 +101,8 @@ export const SCAN_TRANSACTION_TON = 'https://testnet.tonviewer.com';
 export const URL_API_BE = 'https://aton-api-stg.sotatek.works';
 export const SCAN_PRICE_TON = 'https://www.coingecko.com';
 export const URL_PUBLIC = 'https://ton-uat.codelabs.fi';
+// export const SANDBOX_V4_API_ENDPOINT = 'https://sandbox-v4.tonhubapi.com'; // testnet
+// export const MAINNET_V4_API_ENDPOINT = 'https://mainnet-v4.tonhubapi.com'; // mainnet
 
 // export const OP_CODE_SUPPLY_TON = '0x1530f236';
 // export const OP_CODE_SUPPLY_JETTON = '0x7362d09c';
@@ -112,6 +115,16 @@ export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
 
 export const defaultRateUSDNotValue = [
   {
+    id: 'ts-ton',
+    address: 'EQD42OQYC4nGc3KbrcKpOKkZMz831WkqDC8fio-pgDUi_oHe',
+    usd: '0',
+  },
+  {
+    id: 'st-ton',
+    address: 'EQCsiCNW3mqOx-GqcpeP1t-0P0z6nzgq1h_n_b10neKKjWFk',
+    usd: '0',
+  },
+  {
     id: 'dai',
     address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
     usd: '0',
@@ -119,14 +132,23 @@ export const defaultRateUSDNotValue = [
   {
     id: 'usd-coin',
     address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
+    usd: '0',
   },
+  // usdt old
   {
     id: 'tether',
     address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+    usd: '0',
+  },
+  {
+    id: 'tether',
+    address: 'EQCcZvU9dbEQNeCWup5FB7ixsr0K-mRm2fT_ETq6hrFBLVZk',
+    usd: '0',
   },
   {
     id: 'the-open-network',
     address: address_pools,
+    usd: '0',
   },
 ];
 
@@ -238,7 +260,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           // const isIsolated = item.debtCeiling.toString() !== '0'; // todo
           const isIsolated = false;
 
-          const stableBorrows = 0;
+          const stableBorrows = formatUnits(item.totalStableDebt || '0', decimals);
           const unbacked = 0;
           const poolJettonWalletAddress = item.poolJWAddress.toString();
           const borrowCap = formatUnits(item.borrowCap || '0', decimals);
@@ -278,6 +300,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
 
           const lastUpdateTimestamp = Number(item.lastUpdateTimestamp.toString());
 
+          const stableBorrowLastUpdateTimestamp = Number(
+            item.stableBorrowLastUpdateTimestamp.toString()
+          );
+
           const variableBorrowIndex = item.variableBorrowIndex.toString();
 
           const {
@@ -289,12 +315,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             {
               totalScaledVariableDebt: item.totalVariableDebt.toString(),
               variableBorrowIndex: variableBorrowIndex,
-              totalPrincipalStableDebt: '0',
+              totalPrincipalStableDebt: item.totalStableDebt.toString(),
               availableLiquidity: liquidity,
               variableBorrowRate: variableBorrowRate,
               lastUpdateTimestamp,
-              averageStableRate: '0',
-              stableDebtLastUpdateTimestamp: 0,
+              averageStableRate: item.averageStableBorrowRate.toString(),
+              stableDebtLastUpdateTimestamp: stableBorrowLastUpdateTimestamp,
               virtualUnderlyingBalance: '0',
             },
             dayjs().unix()
@@ -666,6 +692,14 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.totalStableDebt || 0)
         .toString();
 
+      const stableBorrowsUSD = valueToBigNumber(formattedPriceInUSD)
+        .multipliedBy(reserve.stableBorrows || 0)
+        .toString();
+
+      const totalDebtUSD = valueToBigNumber(formattedPriceInUSD)
+        .multipliedBy(reserve.totalDebt || 0)
+        .toString();
+
       if (dataById?.address === address_pools) {
         setGasFeeTonMarketReferenceCurrencyTON(
           valueToBigNumber(formattedPriceInUSD)
@@ -685,8 +719,9 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         borrowCapUSD,
         supplyCapUSD,
         totalVariableDebtUSD,
-        totalDebtUSD: totalVariableDebtUSD,
+        totalDebtUSD,
         totalStableDebtUSD,
+        stableBorrowsUSD,
         reserve: {
           ...reserve.reserve,
           walletBalanceUSD,
@@ -698,13 +733,14 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           borrowCapUSD,
           supplyCapUSD,
           totalVariableDebtUSD,
-          totalDebtUSD: totalVariableDebtUSD,
+          totalDebtUSD,
           totalStableDebtUSD,
+          stableBorrowsUSD,
         },
       };
     });
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
-      console.log('Assets to supply---------------', newReserves);
+      console.log('Assets to supply---------------', address_pools, newReserves);
       setReservesTon(newReserves);
       sleep(2000);
       setLoading(false);

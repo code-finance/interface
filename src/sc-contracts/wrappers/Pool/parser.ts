@@ -59,6 +59,7 @@ export function parseReserveState(cell: Cell): ReserveState {
   const totalStableDebt = stableBorrowData.loadCoins();
   const currentStableBorrowRate = stableBorrowData.loadUintBig(128);
   const averageStableBorrowRate = stableBorrowData.loadUintBig(128);
+  const stableBorrowLastUpdateTimestamp = stableBorrowData.loadUintBig(128);
 
   const lastUpdateTimestamp = cs.loadUintBig(128);
 
@@ -73,6 +74,7 @@ export function parseReserveState(cell: Cell): ReserveState {
     currentStableBorrowRate,
     currentVariableBorrowRate,
     averageStableBorrowRate,
+    stableBorrowLastUpdateTimestamp,
     lastUpdateTimestamp,
   };
 }

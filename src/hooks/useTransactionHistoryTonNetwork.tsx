@@ -113,6 +113,7 @@ export const useTransactionHistoryTonNetwork = () => {
 
           const { data } = await axios.get(`${URL_API_BE}/crawler/transaction-history`, {
             params,
+            timeout: 300000, // Set timeout to 5 minutes
           });
 
           setTransactions(data);

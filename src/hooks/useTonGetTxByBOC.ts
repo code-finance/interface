@@ -157,7 +157,34 @@ export function useTonGetTxByBOC() {
               throw new Error('Transaction in progress, retrying...');
             }
 
-            return data.actions.every((item: Action) => item.status === 'ok');
+            // return data.actions.every((item: Action) => item.status === 'ok');
+
+            const status = data.actions.every((item: Action) => item.status === 'ok');
+
+            if (status) {
+              const responseTraces = await fetch(`${API_TON_SCAN_V2}/traces/${txHash}`, {
+                signal: controller.signal,
+              });
+
+              if (!responseTraces.ok) {
+                throw new Error(`HTTP error! status: ${responseTraces.status}`);
+              }
+
+              const traceData = await responseTraces.json();
+              const jsonString = JSON.stringify(traceData);
+
+              // Define the target substring to search for
+              const targetSubstring = '6861735f6572726f72';
+
+              // Check if the substring exists in the JSON string
+              const containsSubstring = jsonString.includes(targetSubstring);
+
+              // Output the result
+              console.log(`Contains '${targetSubstring}':`, containsSubstring);
+              return containsSubstring ? false : status;
+            } else {
+              return status;
+            }
           } catch (apiError) {
             if (apiError.name === 'AbortError') {
               // console.log('Request timeout, retrying...', apiError.message);
