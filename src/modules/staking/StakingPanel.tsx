@@ -101,7 +101,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   stakedToken,
   stakeTitle,
   networkName,
-  networkIcon,
   icon,
   stakeData,
   stakeUserData,
