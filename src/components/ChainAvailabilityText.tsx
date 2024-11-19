@@ -43,7 +43,6 @@ const networkToTextMapper = (chainId: ChainId, networkConfig: BaseNetworkConfig)
 export const ChainAvailabilityText2: React.FC<ChainAvailabilityTextProps2> = ({
   chainId,
   wrapperSx,
-  page,
 }) => {
   const theme = useTheme();
   const md = useMediaQuery(theme.breakpoints.up('md'));
