@@ -171,7 +171,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       )}
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <WalletBalance
-          balance={balance.amount}
+          balance={balanceAmount}
           symbol={selectedAsset}
           marketTitle={market.marketTitle}
         />

@@ -156,7 +156,7 @@ interface TokenIconProps extends IconProps {
  */
 function SingleTokenIcon({ symbol, aToken, img, ...rest }: TokenIconProps) {
   const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
-  console.log('🚀 ~ SingleTokenIcon ~ tokenSymbol:', tokenSymbol);
+  // console.log('🚀 ~ SingleTokenIcon ~ tokenSymbol:', tokenSymbol);
 
   useEffect(() => {
     setTokenSymbol(symbol.toLowerCase());

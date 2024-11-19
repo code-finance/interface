@@ -209,6 +209,7 @@ export const WalletSelector = () => {
         walletType={WalletType.WALLET_LINK}
       />
       <WalletRow key="torus_wallet" walletName="Torus" walletType={WalletType.TORUS} />
+      <WalletRow key="ton_wallets" walletName="Ton Connect" walletType={WalletType.TON_CONNECT} />
       <Box sx={{ px: 1 }}>
         <Typography
           variant="body7"
