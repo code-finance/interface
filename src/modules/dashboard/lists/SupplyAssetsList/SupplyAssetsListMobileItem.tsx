@@ -76,7 +76,7 @@ export const SupplyAssetsListMobileItem = ({
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
           symbol={symbol}
-          variant="secondary14"
+          variant="detail3"
         />
       </Row>
 
@@ -103,7 +103,7 @@ export const SupplyAssetsListMobileItem = ({
           <Trans>Supply</Trans>
         </Button>
         <Button
-          variant="outlined"
+          variant="text"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth

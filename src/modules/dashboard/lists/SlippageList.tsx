@@ -47,20 +47,34 @@ export const ListSlippageButton = ({
       <Button
         variant="text"
         onClick={handleClick}
-        size="medium"
+        size="small"
+        sx={{
+          py: 0,
+          px: 1,
+          border: 0,
+          '.MuiButton-endIcon': {
+            ml: 0,
+          },
+        }}
         endIcon={
           <SlippageTooltip
+            iconColor="text.subTitle"
             headerContent={slippageTooltipHeader}
             text={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Trans>
-                  <Typography color="text.secondary" variant="description">
+                  <Typography variant="detail3" color="text.subTitle">
                     Slippage tolerance{' '}
                   </Typography>
-                  <Typography color="text.main" variant="secondary14" sx={{ px: '4px' }}>
+                  <Typography variant="detail3" color="text.subTitle" sx={{ px: '4px' }}>
                     {selectedSlippage}%{' '}
                   </Typography>
-                  <SvgIcon sx={{ fontSize: '14px !important', mr: '4px' }}>
+                  <SvgIcon
+                    sx={(theme) => ({
+                      fontSize: '14px !important',
+                      color: theme.palette.text.subTitle,
+                    })}
+                  >
                     {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
                   </SvgIcon>
                 </Trans>
@@ -84,7 +98,7 @@ export const ListSlippageButton = ({
         data-cy={`slippageMenu_${selectedSlippage}`}
       >
         <Box sx={{ px: '16px', py: '12px' }}>
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography variant="detail3" color="text.subTitle">
             <Trans>Select slippage tolerance</Trans>
           </Typography>
         </Box>

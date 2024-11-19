@@ -8,7 +8,7 @@ msgstr ""
 "Language: el\n"
 "Project-Id-Version: aave-interface\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-10 00:18\n"
+"PO-Revision-Date: 2024-08-13 18:06\n"
 "Last-Translator: \n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -176,10 +176,6 @@ msgstr ""
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
-msgstr ""
-
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Additionally, GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
 #: src/ui-config/errorMapping.tsx
@@ -389,6 +385,7 @@ msgstr ""
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/GhoBorrowAssetsListItem.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
 msgid "Available"
 msgstr "Διαθέσιμο"
 
@@ -534,6 +531,10 @@ msgstr ""
 msgid "Borrow power used"
 msgstr "Δανεισμός χρησιμοποιημένης ισχύος"
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Borrow rate"
+msgstr ""
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Borrow rate change"
 msgstr ""
@@ -595,6 +596,10 @@ msgstr ""
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Δανεισμός {symbol}"
+
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Borrows"
+msgstr ""
 
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
@@ -838,10 +843,6 @@ msgstr "Τρέχον LTV"
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current differential"
 msgstr "Τρέχον διαφορικό"
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Current rewards"
-msgstr ""
 
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
@@ -1099,16 +1100,17 @@ msgstr "Εισάγετε ένα ποσό"
 msgid "Error connecting. Try refreshing the page."
 msgstr "Σφάλμα σύνδεσης. Δοκιμάστε να ανανεώσετε τη σελίδα."
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Estimated borrow rate"
-msgstr ""
-
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr ""
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Estimated time"
+msgstr ""
+
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Ethereum Main"
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoPieChartContainer.tsx
@@ -1176,11 +1178,6 @@ msgstr ""
 msgid "Filter"
 msgstr "Φίλτρο"
 
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-#: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
-msgid "Fixed"
-msgstr ""
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Fixed rate"
 msgstr ""
@@ -1211,10 +1208,6 @@ msgstr "Κεφάλαια στην Μονάδα Ασφάλειας"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "GHO balance"
-msgstr ""
-
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "GHO borrowers recieve periodic rewards through the Merit program. This is a program initiated and implemented by the decentralised Aave community. Aave Labs does not guarantee the program and accepts no liability."
 msgstr ""
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
@@ -1426,6 +1419,11 @@ msgstr "Μάθετε περισσότερα."
 msgid "Let us know how we can make the app better for you. For user support related inquiries please reach out on"
 msgstr ""
 
+#: src/modules/dashboard/DashboardContentWrapper.tsx
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Lido"
+msgstr ""
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr ""
@@ -1499,10 +1497,15 @@ msgstr ""
 msgid "MAX"
 msgstr "ΜΕΓΙΣΤΟ"
 
+#: src/modules/markets/MarketsTopPanel.tsx
+msgid "Main"
+msgstr ""
+
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr ""
 
+#: src/modules/markets/MarketsTopPanel.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Αγορά"
@@ -1578,8 +1581,8 @@ msgstr ""
 msgid "Menu"
 msgstr "Μενού"
 
-#: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
-msgid "Merit Program"
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program rewards are claimed through the"
 msgstr ""
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx

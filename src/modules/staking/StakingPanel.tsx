@@ -1,9 +1,10 @@
 import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ExternalLinkIcon, RefreshIcon } from '@heroicons/react/outline';
+import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import CallMadeIcon from '@mui/icons-material/CallMade';
 import {
   Box,
   Button,
@@ -18,10 +19,6 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
-import {
-  MeritIncentivesButton,
-  UserMeritIncentivesButton,
-} from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -30,6 +27,8 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { StakeActionBox } from './StakeActionBox';
@@ -83,6 +82,8 @@ export interface StakingPanelProps {
   description?: React.ReactNode;
   headerAction?: React.ReactNode;
   stakeTitle: string;
+  networkName?: string;
+  networkIcon?: string;
   stakedToken: string;
   maxSlash: string;
   icon: string;
@@ -99,6 +100,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   headerAction,
   stakedToken,
   stakeTitle,
+  networkName,
+  networkIcon,
   icon,
   stakeData,
   stakeUserData,
@@ -110,6 +113,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const now = useCurrentTimestamp(1);
   const { openSwitch } = useModalContext();
   const theme = useTheme();
+  const { chainId } = useWeb3Context();
+  const networkConfig = getNetworkConfig(chainId);
 
   if (!stakeData || !stakeUserData) {
     return <StakingPanelSkeleton />;
@@ -172,11 +177,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const TokenContractTooltip = (
     <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
       <IconButton
+        sx={{ p: 0 }}
         LinkComponent={Link}
         href={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
       >
-        <SvgIcon sx={{ fontSize: '14px' }}>
-          <ExternalLinkIcon />
+        <SvgIcon sx={{ fontSize: '20px', color: 'text.primary', ml: '4px' }}>
+          <CallMadeIcon />
         </SvgIcon>
       </IconButton>
     </DarkTooltip>
@@ -193,16 +199,18 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         }}
       >
         <Stack>
-          <Typography variant="body4" color="text.primary">
-            <Stack direction="row" alignItems="center" gap={0} mb={4}>
-              <Trans>Stake CODE on </Trans>
-              <TokenIcon symbol={icon} sx={{ width: '24px', height: '24px', ml: 2 }} />
-              <Typography variant="h2">
-                <Box sx={{ fontSize: '24px', ml: 1.5 }}>{stakeTitle}</Box>
+          <Stack direction="row" alignItems="center" gap={0} mb={4}>
+            <Box sx={{ mr: 2 }}>
+              <Typography variant="body4" color={'text.primary'}>
+                Stake {stakeTitle} on
               </Typography>
-              {TokenContractTooltip}
-            </Stack>
-          </Typography>
+            </Box>
+            <TokenIcon symbol={icon} sx={{ width: '24px', height: '24px', ml: 2 }} />
+            <Typography variant={xsm ? 'h2' : 'body6'} sx={{ ml: 1.5 }}>
+              {networkName ? networkName : networkConfig?.name} mainnet
+            </Typography>
+            {TokenContractTooltip}
+          </Stack>
           <Typography variant="body7" color="text.secondary">
             Total staked:{' '}
             <FormattedNumber
@@ -233,8 +241,8 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           gap: { xs: 0, xsm: 2 },
           borderRadius: { xs: 0, xsm: '12px' },
           border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
-          p: { xs: 0, xsm: '12px 8px' },
-          mb: 7,
+          p: { xs: 0, xsm: '8px 12px' },
+          mb: xsm ? '28px' : '16px',
           background: {
             xs: 'unset',
             xsm: 'transparent',
@@ -257,7 +265,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
             alignItems: 'center',
-            py: '24.5px',
+            py: xsm ? '24.5px' : 0,
             mb: { xs: 3, xsm: 0 },
           }}
         >
@@ -309,11 +317,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           }}
         >
           <Stack direction="row">
-            <Typography
-              variant={xsm ? 'detail2' : 'description'}
-              color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
-              sx={{ mb: 2 }}
-            >
+            <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: xsm ? 2 : 0 }}>
               <Trans>Staking APR</Trans>
             </Typography>
             {distributionEnded && (
@@ -338,8 +342,10 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <FormattedNumber
               sx={{ mr: 2 }}
               value={stakeData.stakeApyFormatted}
+              color={'text.mainTitle'}
               symbol="USD"
-              variant="secondary14"
+              symbolsColor="text.mainTitle"
+              variant="detail2"
             />
             {/* {stakedToken === 'GHO' ? (
               stakeUserData.stakeTokenUserBalance !== '0' ? (
@@ -354,39 +360,42 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           sx={{
             display: { xs: 'flex' },
             width: { xs: '100%', xsm: 'unset' },
-            flexDirection: 'column',
+            flexDirection: xsm ? 'column' : 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'detail2' : 'description'}
-            color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
-            sx={{ mb: 2 }}
-          >
+          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: xsm ? 2 : 0 }}>
             <Trans>Max slashing</Trans>
           </Typography>
-          <FormattedNumber value={maxSlash} percent variant="secondary14" />
+          <FormattedNumber
+            symbolsColor="text.mainTitle"
+            color={'text.mainTitle'}
+            value={maxSlash}
+            percent
+            variant="detail2"
+          />
         </Box>
         <Box
           sx={{
             display: { xs: 'flex' },
             width: { xs: '100%', xsm: 'unset' },
             justifyContent: 'space-between',
-            flexDirection: 'column',
+            flexDirection: xsm ? 'column' : 'row',
             alignItems: 'center',
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'detail2' : 'description'}
-            color={xsm ? theme.palette.text.mainTitle : 'text.primary'}
-            sx={{ mb: 2 }}
-          >
+          <Typography variant={'detail2'} color={'text.mainTitle'} sx={{ mb: xsm ? 2 : 0 }}>
             <Trans>Wallet Balance</Trans>
           </Typography>
-          <FormattedNumber value={availableToStake.toString()} />
+          <FormattedNumber
+            color={'text.mainTitle'}
+            variant="detail2"
+            symbolsColor="text.mainTitle"
+            value={availableToStake.toString()}
+          />
         </Box>
 
         {/**Stake action */}
@@ -406,6 +415,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           variant="contained"
           sx={{
             p: 2,
+            mb: xsm ? 0 : '24px',
             height: '36px',
             ...(+availableToStake === 0 && {
               bgcolor: theme.palette.text.disabledBg,
@@ -419,13 +429,15 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           fullWidth={!xsm}
           data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
         >
-          <Trans>Stake</Trans>
+          <Typography variant="detail2">
+            <Trans>Stake</Trans>
+          </Typography>
         </Button>
         {/* )} */}
       </Box>
 
       <Stack
-        gap={3}
+        gap={xsm ? 3 : 4}
         direction={{ xs: 'column', xsm: 'row' }}
         sx={{ mt: 4, alignItems: { xsm: 'start' } }}
       >
@@ -608,7 +620,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                   disabled
                   data-cy={`awaitCoolDownBtn_${stakedToken}`}
                   sx={{
-                    p: 3,
+                    p: xsm ? 3 : 2,
                     bgcolor: theme.palette.text.disabledBg,
                     color: theme.palette.text.disabledText,
                   }}
@@ -652,7 +664,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             {!isCooldownActive && (
               <Button
                 sx={{
-                  p: 3,
+                  p: xsm ? 3 : 2,
                   ...(+stakeUserData?.userIncentivesToClaim === 0 && {
                     bgcolor: theme.palette.text.disabledBg,
                     color: theme.palette.text.disabledText,
@@ -666,7 +678,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
                 data-cy={`coolDownBtn_${stakedToken}`}
               >
-                <Trans>Cooldown to unstake</Trans>
+                <Typography variant="body6">
+                  <Trans>Cooldown to unstake</Trans>
+                </Typography>
               </Button>
             )}
           </StakeActionBox>
@@ -702,7 +716,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               data-cy={`claimBtn_${stakedToken}`}
               sx={{
                 flex: 1,
-                p: 3,
+                p: xsm ? 3 : 2,
                 ...(+stakeUserData?.userIncentivesToClaim === 0 && {
                   bgcolor: theme.palette.text.disabledBg,
                   color: theme.palette.text.disabledText,
@@ -711,7 +725,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 color: theme.palette.text.buttonText,
               }}
             >
-              <Trans>Claim</Trans>
+              <Typography variant="body7">
+                <Trans>Claim</Trans>
+              </Typography>
             </Button>
             {stakedToken && (
               <Button
@@ -721,7 +737,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 data-cy={`restakeBtn_${stakedToken}`}
                 sx={{
                   flex: 1,
-                  p: 3,
+                  p: xsm ? 3 : 2,
                   ...(+stakeUserData?.userIncentivesToClaim === 0 && {
                     bgcolor: theme.palette.text.disabledBg,
                     color: theme.palette.text.disabledText,
@@ -730,7 +746,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                   color: theme.palette.text.buttonText,
                 }}
               >
-                <Trans>Restake</Trans>
+                <Typography variant="body7">
+                  <Trans>Restake</Trans>
+                </Typography>
               </Button>
             )}
           </Box>

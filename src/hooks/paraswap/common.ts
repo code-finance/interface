@@ -16,7 +16,7 @@ import { GetRateFunctions, RateOptions } from '@paraswap/sdk/dist/methods/swap/r
 
 import { ComputedReserveData } from '../app-data-provider/useAppDataProvider';
 
-type ExtendedChainId = ChainId | -1 | -239;
+type ExtendedChainId = ChainId | -1 | -239 | 324;
 
 const tonChainIds = {
   ton_mainnet: -1,

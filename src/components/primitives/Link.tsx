@@ -116,15 +116,15 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
 export const ROUTES = {
   dashboard: '/',
   markets: '/markets',
+  marketDetail: '/reserve-overview',
   staking: '/staking',
   governance: '/governance',
   faucet: '/faucet',
   migrationTool: '/v3-migration',
-  referralprogram: '/referral-program',
+  referral: '/referral',
   docs: '/faq',
   marketMigrationTool: (marketName: CustomMarket) => `/v3-migration/?market=${marketName}`,
-  dynamicRenderedProposal: (proposalId: number) =>
-    `/governance/v3/proposal?proposalId=${proposalId}`,
+  dynamicRenderedProposal: (proposalId: number) => `/governance/proposal?proposalId=${proposalId}`,
   reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>
     `/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${marketName}`,
   history: '/history',

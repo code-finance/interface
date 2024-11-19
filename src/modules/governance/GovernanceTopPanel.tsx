@@ -1,38 +1,44 @@
-import { ChainId } from '@aave/contract-helpers';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
-import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
+import {
+  ChainAvailabilityText,
+  ChainAvailabilityText2,
+} from 'src/components/ChainAvailabilityText';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { ChainId } from '@aave/contract-helpers';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
+import { ReactNode } from 'react';
 
 interface ExternalLinkProps {
-  text: string;
+  text: string | ReactNode;
   href: string;
+  onClick?: () => void;
 }
 
-function ExternalLink({ text, href }: ExternalLinkProps) {
+export function ExternalLink({ text, href, onClick }: ExternalLinkProps) {
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Button
-      variant="surface"
+      variant={xsm ? 'transparent' : 'transparent-link'}
       size="small"
-      sx={{ minWidth: 'unset' }}
+      sx={xsm ? { px: 6, py: '9px' } : { p: '8px 12px 8px 16px' }}
       component={Link}
       href={href}
       target="_blank"
       rel="noopener"
-      onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: text })}
+      onClick={onClick ? onClick : () => trackEvent(GENERAL.EXTERNAL_LINK, { Link: String(text) })}
     >
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {text}
-        <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
-          <ExternalLinkIcon />
+        <Typography variant="body4">{text}</Typography>
+        <SvgIcon sx={{ ml: 1, fontSize: 17 }}>
+          <CallMadeOutlinedIcon />
         </SvgIcon>
       </Box>
     </Button>
@@ -40,36 +46,29 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
 }
 
 export const GovernanceTopPanel = () => {
-  const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <TopInfoPanel
       titleComponent={
         <Box mb={4}>
-          <ChainAvailabilityText page="Governance" wrapperSx={{ mb: 4 }} />
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
-              sx={{ ml: 2, mr: 3 }}
-            >
-              <Trans>Aave Governance</Trans>
-            </Typography>
-          </Box>
-
-          <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
+          <ChainAvailabilityText title="Governance" wrapperSx={{ mb: 3 }} />
+          <Typography color="text.secondary" variant={xsm ? 'body3' : 'detail3'}>
             <Trans>
-              Aave is a fully decentralized, community governed protocol by the AAVE token-holders.
-              AAVE token-holders collectively discuss, propose, and vote on upgrades to the
-              protocol. AAVE token-holders (Ethereum network only) can either vote themselves on new
-              proposals or delagate to an address of choice. To learn more check out the Governance
+              CODE is a fully decentralized, community governed protocol by the CODE token-holders.
+              CODE token-holders collectively discuss, propose, and vote on upgrades to the
+              protocol. CODE token-holders (Ethereum, kaia network only) can either vote themselves
+              on new proposals or delegate to an address of choice. To learn more check out the
+              Governance
             </Trans>{' '}
             <Link
               onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'FAQ Docs Governance' })}
               href="https://docs.aave.com/faq/governance"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
+              sx={{
+                textDecoration: 'underline',
+                color: 'inherit',
+              }}
             >
               <Trans>documentation</Trans>
             </Link>
@@ -82,15 +81,16 @@ export const GovernanceTopPanel = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
+          gap: 2,
           flexWrap: 'wrap',
-          maxWidth: 'sm',
         }}
       >
         <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
         <ExternalLink text="FORUM" href="https://governance.aave.com/" />
         <ExternalLink text="FAQ" href="https://docs.aave.com/faq/governance" />
-        <ExternalLink text="GOVERNANCE V2" href="https://governance-v2.aave.com/" />
+      </Box>
+      <Box sx={{ width: '100%', mt: { xs: 3, md: 5 } }}>
+        <ChainAvailabilityText2 chainId={ChainId.mainnet} />
       </Box>
     </TopInfoPanel>
   );

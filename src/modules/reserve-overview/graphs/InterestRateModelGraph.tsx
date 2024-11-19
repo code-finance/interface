@@ -280,8 +280,8 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               strokeWidth={0}
               tickStroke={theme.palette.text.secondary}
               tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
-                fontSize: 10,
+                fill: theme.palette.text.subTitle,
+                fontSize: 12,
                 textAnchor: 'middle',
               })}
               tickFormat={(n) => `${n}%`}
@@ -292,8 +292,8 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               scale={yValueScale}
               strokeWidth={0}
               tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
-                fontSize: 8,
+                fill: theme.palette.text.subTitle,
+                fontSize: 12,
                 dx: -margin.left + 10,
               })}
               numTicks={2}

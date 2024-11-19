@@ -19,8 +19,8 @@ import { WalletIcon2 } from 'src/components/icons/WalletIcon2';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
-import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
-import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import StyledToggleButton, { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import {
   ComputedReserveData,
@@ -160,7 +160,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       })}
     >
       {reserve.isWrappedBaseAsset && (
-        <Box>
+        <Box sx={{ mb: 2 }}>
           <WrappedBaseAssetSelector
             assetSymbol={reserve.symbol}
             baseAssetSymbol={baseAssetSymbol}
@@ -169,24 +169,30 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
           />
         </Box>
       )}
-      <Box sx={{ display: 'flex', gap: '8px 2px', flexWrap: 'wrap' }}>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         <WalletBalance
-          balance={balanceAmount}
+          balance={balance.amount}
           symbol={selectedAsset}
           marketTitle={market.marketTitle}
         />
         {!reserve.isFrozen && !reserve.isPaused && (
-          <>
-            {!isGho && (
-              <SupplyAction
-                reserve={reserve}
-                value={maxAmountToSupply.toString()}
-                usdValue={maxAmountToSupplyUsd}
-                symbol={selectedAsset}
-                disable={disableSupplyButton}
-                onActionClicked={onSupplyClicked}
-              />
-            )}
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 2,
+              flexWrap: 'wrap',
+              width: { xs: '100%', md: 'unset' },
+              justifyContent: 'space-between',
+            }}
+          >
+            <SupplyAction
+              reserve={reserve}
+              value={maxAmountToSupply.toString()}
+              usdValue={maxAmountToSupplyUsd}
+              symbol={selectedAsset}
+              disable={disableSupplyButton}
+              onActionClicked={onSupplyClicked}
+            />
             {reserve.borrowingEnabled && (
               <BorrowAction
                 reserve={reserve}
@@ -199,7 +205,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 }}
               />
             )}
-          </>
+          </Box>
         )}
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 5, gap: 2 }}>
@@ -272,7 +278,15 @@ const ActionsSkeleton = () => {
 const PaperWrapper = ({ children, sx }: PaperProps) => {
   return (
     <Paper
-      sx={[{ py: { xs: 4, xsm: 7 }, px: { xs: 4, xsm: 5 } }, ...(Array.isArray(sx) ? sx : [sx])]}
+      sx={[
+        (theme) => ({
+          py: { xs: 4, xsm: 7 },
+          px: { xs: 4, xsm: 5 },
+          backgroundColor: theme.palette.background.top,
+          boxShadow: 'none',
+        }),
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
     >
       <Typography variant="h2" sx={{ mb: { xs: 6, xsm: 8 } }}>
         <Trans>Your info</Trans>
@@ -285,21 +299,18 @@ const PaperWrapper = ({ children, sx }: PaperProps) => {
 
 const ConnectWallet = ({ loading }: { loading: boolean }) => {
   return (
-    <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
+    <PaperWrapper>
       {loading ? (
         <CircularProgress />
       ) : (
         <>
-          <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
-            <Trans>Your info</Trans>
-          </Typography>
           <Typography sx={{ mb: 6 }} color="text.secondary">
             <Trans>Please connect a wallet to view your personal information here.</Trans>
           </Typography>
           <ConnectWalletButton />
         </>
       )}
-    </Paper>
+    </PaperWrapper>
   );
 };
 
@@ -321,7 +332,16 @@ const SupplyAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 1,
+        alignItems: 'center',
+        flexShrink: 0,
+        width: { xs: 'unset', md: '300px' },
+        flex: { xs: 1, md: 'unset' },
+      }}
+    >
       <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
         <AvailableTooltip
           variant="detail2"
@@ -370,7 +390,16 @@ const BorrowAction = ({
   onActionClicked,
 }: ActionProps) => {
   return (
-    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0, width: '300px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 1,
+        alignItems: 'center',
+        flexShrink: 0,
+        width: { xs: 'unset', md: '300px' },
+        flex: { xs: 1, md: 'unset' },
+      }}
+    >
       <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', minWidth: '160px' }}>
         <AvailableTooltip
           variant="detail2"
@@ -424,21 +453,16 @@ const WrappedBaseAssetSelector = ({
   setSelectedAsset: (value: string) => void;
 }) => {
   return (
-    <StyledTxModalToggleGroup
-      color="standard"
+    <StyledToggleButtonGroup
       value={selectedAsset}
+      color="primary"
       exclusive
       onChange={(_, value) => setSelectedAsset(value)}
-      sx={{ mb: 4 }}
+      sx={{ mb: 4, width: '100%' }}
     >
-      <StyledTxModalToggleButton value={assetSymbol}>
-        <Typography variant="body7">{assetSymbol}</Typography>
-      </StyledTxModalToggleButton>
-
-      <StyledTxModalToggleButton value={baseAssetSymbol}>
-        <Typography variant="body7">{baseAssetSymbol}</Typography>
-      </StyledTxModalToggleButton>
-    </StyledTxModalToggleGroup>
+      <StyledToggleButton value={assetSymbol}>{assetSymbol}</StyledToggleButton>
+      <StyledToggleButton value={baseAssetSymbol}>{baseAssetSymbol}</StyledToggleButton>
+    </StyledToggleButtonGroup>
   );
 };
 
@@ -494,7 +518,16 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
           height: '60px',
         })}
       >
-        <WalletIcon2 sx={{ width: '40px', height: '35px' }} />
+        <WalletIcon2
+          sx={{
+            width: '40px',
+            height: '35px',
+            color: theme.palette.point.primary,
+            '.bg': {
+              fill: theme.palette.background.tertiary,
+            },
+          }}
+        />
       </Box>
       <Box>
         <Typography
@@ -506,7 +539,7 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
           Wallet balance
         </Typography>
         <ValueWithSymbol value={balance} symbol={symbol}>
-          <Box sx={{ ml: 2 }}>
+          <Box sx={{ ml: 2, flex: 1, maxWidth: 'max-content' }}>
             <BuyWithFiat cryptoSymbol={symbol} networkMarketName={marketTitle} />
           </Box>
         </ValueWithSymbol>

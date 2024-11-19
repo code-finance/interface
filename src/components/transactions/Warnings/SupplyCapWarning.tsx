@@ -14,7 +14,7 @@ export const SupplyCapWarning = ({ supplyCap, icon = true, ...rest }: SupplyCapW
   // Don't show a warning when less than 98% utilized
   if (!supplyCap.percentUsed || supplyCap.percentUsed < 98) return null;
 
-  const severity = 'warning';
+  const severity = 'error';
 
   const renderText = () => {
     return supplyCap.isMaxed ? (

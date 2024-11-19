@@ -1,4 +1,4 @@
-import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
+import { DuplicateIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
@@ -17,8 +17,6 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          p: '6px',
-          mb: '40px',
         }}
       >
         <Box
@@ -38,11 +36,11 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           </SvgIcon>
         </Box>
 
-        <Typography sx={{ mt: 5, mb: 2 }} variant="body1">
+        <Typography sx={{ mt: 5, mb: 2 }} variant="body1" color="text.primary" component="div">
           <Trans>Transaction failed</Trans>
         </Typography>
 
-        <Typography variant="body5" sx={{ color: 'text.secondary', px: 8, textAlign: 'center' }}>
+        <Typography variant="body5" sx={{ color: 'text.secondary', px: 10, textAlign: 'center' }}>
           <Trans>
             You can report incident to our{' '}
             <Link color="text.secondary" href="https://discord.com/invite/aave">
@@ -63,13 +61,11 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           sx={{
             mt: 4,
             color: theme.palette.text.subTitle,
-            bgcolor: 'transparent',
-            p: '0px 4px 0px 8px',
+            p: '3px 4px 3px 8px',
             borderRadius: '4px',
-            border: `1px solid ${theme.palette.text.subTitle}`,
-            '&:hover': {
-              bgcolor: 'transparent',
-            },
+            ...theme.typography.detail2,
+            border: `1px solid ${theme.palette.border.contents}`,
+            height: '24px',
           }}
         >
           <Typography variant="detail2" sx={{ textTransform: 'uppercase' }}>
@@ -82,7 +78,7 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
         </Button>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
-        <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>
+        <Button onClick={close} variant="contained" size="large" sx={{ height: '45px' }}>
           <Trans>Close</Trans>
         </Button>
       </Box>

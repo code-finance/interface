@@ -53,7 +53,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         e.stopPropagation();
       }}
     >
-      <Typography mr={1} variant="description" color="white">
+      <Typography mr={1} variant="description" color="text.buttonText">
         <Trans>E-Mode</Trans>
       </Typography>
 
@@ -213,6 +213,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           {isEModeDisabled ? (
             <Button
               fullWidth
+              size="small"
               variant={'gradient'}
               onClick={() => {
                 trackEvent(GENERAL.OPEN_MODAL, {

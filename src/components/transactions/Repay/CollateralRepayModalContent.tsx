@@ -284,7 +284,15 @@ export function CollateralRepayModalContent({
         inputTitle={<Trans>Expected amount to repay</Trans>}
         balanceText={<Trans>Borrow balance</Trans>}
       />
-      <Box sx={{ padding: '18px', pt: '14px', display: 'flex', justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          py: 1.5,
+          px: 0.5,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <SvgIcon sx={{ fontSize: '18px !important' }}>
           <ArrowDownIcon />
         </SvgIcon>
@@ -374,6 +382,7 @@ export function CollateralRepayModalContent({
           tokenIcon={poolReserve.iconSymbol}
           loading={loadingSkeleton}
           hideSymbolSuffix
+          color="text.secondary"
         />
         <DetailsNumberLineWithSub
           description={<Trans>Collateral balance after repay</Trans>}
@@ -383,6 +392,7 @@ export function CollateralRepayModalContent({
           tokenIcon={tokenToRepayWith.iconSymbol}
           loading={loadingSkeleton}
           hideSymbolSuffix
+          color="text.secondary"
         />
       </TxModalDetails>
 

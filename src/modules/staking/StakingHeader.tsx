@@ -1,6 +1,6 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+// eslint-disable-next-line import/namespace
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
@@ -11,6 +11,8 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import { NetAPYTooltip } from '../../components/infoTooltips/NetAPYTooltip';
+import * as React from 'react';
 
 interface StakingHeaderProps {
   tvl: {
@@ -22,11 +24,10 @@ interface StakingHeaderProps {
 
 export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, loading }) => {
   const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  // const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -48,22 +49,26 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
     );
   };
 
+  const symbolsVariant = downToSM ? 'body6' : 'body1';
   return (
     <TopInfoPanel
       titleComponent={
-        <Box mb={4}>
-          <ChainAvailabilityText wrapperSx={{ mb: 3 }} page="Staking" />
+        <Box mb={downToXSM ? '16px' : '40px'}>
+          <ChainAvailabilityText wrapperSx={{ mb: 3 }} title="Staking" />
 
-          <Typography sx={{ color: '#8E92A3', maxWidth: '1260px', mb: 10 }}>
+          <Typography
+            variant={downToXSM ? 'description' : 'body3'}
+            sx={{ color: 'text.secondary', maxWidth: '1260px' }}
+          >
             <Trans>
               CODE holders (Ethereum, Kaia network only) can stake their assets in the Safety Module
               to add more security to the protocol and earn Safety Incentives. In the case of a
               shortfall event, your stake can be slashed to cover the deficit, providing an
-              additional layer of protection for the protocol. Learn more about risks involved
+              additional layer of protection for the protocol. Learn more about risks involved
             </Trans>{' '}
             <Link
               href="https://docs.aave.com/faq/migration-and-staking"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
+              sx={{ textDecoration: 'underline', color: 'text.secondary' }}
               onClick={() =>
                 trackEvent(GENERAL.EXTERNAL_LINK, {
                   Link: 'Staking Risks',
@@ -75,14 +80,15 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
           </Typography>
         </Box>
       }
+      wrapperSx={{ pb: '54px' }}
     >
       <TopInfoPanelItem
         hideIcon
         title={
-          <Stack direction="row" alignItems="center" sx={{ fontSize: '18px' }}>
+          <span style={{ display: 'flex' }}>
             <Trans>Funds in the Safety Module</Trans>
             <TotalFundsTooltip />
-          </Stack>
+          </span>
         }
         loading={loading}
       >
@@ -90,7 +96,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
           sx={{ fontSize: '22px', mt: 2 }}
           value={total}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant={symbolsVariant}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}
@@ -110,7 +116,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
           sx={{ fontSize: '22px', mt: 2 }}
           value={stkEmission || 0}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant={symbolsVariant}
           symbolsVariant={symbolsTypographyVariant}
           symbolsColor="text.primary"
           visibleDecimals={2}

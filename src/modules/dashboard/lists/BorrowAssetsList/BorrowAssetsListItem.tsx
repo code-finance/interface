@@ -52,6 +52,10 @@ export const BorrowAssetsListItem = ({
         value={Number(availableBorrows)}
         subValue={Number(availableBorrowsInUSD)}
         disabled={Number(availableBorrows) === 0}
+        topColor={'text.primary'}
+        topVariant={'body6'}
+        bottomColor={'text.mainTitle'}
+        bottomVariant={'detail2'}
         withTooltip={false}
         capsComponent={
           <CapsHint
@@ -82,6 +86,7 @@ export const BorrowAssetsListItem = ({
           }}
           disabled={disableBorrow}
           variant="contained"
+          size="small"
           onClick={() => {
             openBorrow(underlyingAsset, currentMarket, name, 'dashboard');
           }}
@@ -89,19 +94,8 @@ export const BorrowAssetsListItem = ({
           <Trans>Borrow</Trans>
         </Button>
         <Button
-          sx={(theme) => ({
-            p: 2,
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-            bgcolor: 'transparent',
-            color: 'text.primary',
-            borderColor: theme.palette.text.subText,
-            '&:hover': {
-              bgcolor: 'transparent',
-            },
-          })}
-          variant="outlined"
+          variant="text"
+          size="small"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           onClick={() => {

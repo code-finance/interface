@@ -16,25 +16,26 @@ export const ListTopInfoItem = ({ title, value, percent, tooltip }: ListTopInfoI
     <Paper
       variant="outlined"
       sx={{
-        mr: 2,
-        borderRadius: '4px',
+        borderRadius: 1,
         color: theme.palette.text.buttonText,
         border: 'none',
-        p: '3px 4px',
+        p: '3px 6px',
         display: 'flex',
         alignItems: 'center',
         boxShadow: 'none',
         bgcolor: theme.palette.background.chip,
       }}
     >
-      <Typography color={theme.palette.text.buttonText} sx={{ mr: 1 }} noWrap>
+      <Typography variant="detail2" color={theme.palette.text.buttonText} sx={{ mr: 1 }} noWrap>
         {title}
       </Typography>
       <FormattedNumber
-        symbolsColor={theme.palette.text.buttonText}
+        symbolsColor="text.buttonText"
         value={value}
         percent={percent}
-        variant="secondary14"
+        variant="detail2"
+        symbolsVariant="detail2"
+        color="text.buttonText"
         symbol="USD"
       />
 

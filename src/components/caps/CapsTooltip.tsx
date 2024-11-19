@@ -45,7 +45,7 @@ export const CapsTooltip = ({ availableValue, isUSD, capType }: CapsTooltipProps
 
   return (
     <ContentWithTooltip tooltipContent={<>{message || ''}</>}>
-      <SvgIcon sx={{ fontSize: '14px', color: 'error.main' }}>
+      <SvgIcon sx={{ fontSize: '18px', color: 'warning.main' }}>
         <ExclamationIcon />
       </SvgIcon>
     </ContentWithTooltip>

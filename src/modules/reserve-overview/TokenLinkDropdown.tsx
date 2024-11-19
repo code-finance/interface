@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
 import { Address } from '@ton/core';
 import * as React from 'react';
@@ -111,7 +112,7 @@ export const TokenLinkDropdown = ({
             })}
           >
             <SvgIcon sx={{ fontSize: '14px' }}>
-              <ExternalLinkIcon />
+              <CallMadeOutlinedIcon />
             </SvgIcon>
           </Box>
         </CircleIcon>
@@ -148,8 +149,8 @@ export const TokenLinkDropdown = ({
           target="_blank"
           divider
         >
-          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+          <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '24px' }} />
+          <Typography variant="subheader1" sx={{ ml: 2 }} noWrap data-cy={`assetName`}>
             {poolReserve.symbol}
           </Typography>
         </MenuItem>

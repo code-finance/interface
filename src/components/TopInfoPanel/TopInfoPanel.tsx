@@ -1,4 +1,4 @@
-import { Box, Container, ContainerProps } from '@mui/material';
+import { Box, BoxProps, Container, ContainerProps, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { PageTitle, PageTitleProps } from './PageTitle';
@@ -7,6 +7,9 @@ interface TopInfoPanelProps extends PageTitleProps {
   children?: ReactNode;
   titleComponent?: ReactNode;
   containerProps?: ContainerProps;
+  multiMarket?: boolean;
+  isGovernanceDetails?: boolean;
+  wrapperSx?: BoxProps['sx'];
 }
 
 export const TopInfoPanel = ({
@@ -15,19 +18,23 @@ export const TopInfoPanel = ({
   withMarketSwitcher,
   withMigrateButton,
   bridge,
+  multiMarket,
   children,
   containerProps = {},
+  isGovernanceDetails,
+  wrapperSx,
 }: TopInfoPanelProps) => {
   return (
     <Box
       sx={{
-        bgcolor: 'background.top',
-        pt: { xs: 10, md: 20 },
-        pb: { xs: 18, md: 15 },
+        bgcolor: isGovernanceDetails ? 'transparent' : 'background.top',
+        pt: { xs: isGovernanceDetails ? 5 : 10, md: 15 },
+        pb: { xs: isGovernanceDetails ? 0 : 18, md: 15 },
+        ...wrapperSx,
       }}
     >
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
-        <Box sx={{ px: { xs: 4, xsm: 0 }, py: 1.5 }}>
+        <Box sx={{ py: { xs: 2, md: 3 }, px: { xs: 4, md: 0 } }}>
           {!titleComponent && (
             <PageTitle
               pageTitle={pageTitle}
@@ -43,9 +50,10 @@ export const TopInfoPanel = ({
             sx={{
               display: 'flex',
               alignItems: 'flex-start',
-              gap: { xs: 3, xsm: 5 },
+              gap: { xs: '12px 8px', xsm: 5 },
               flexWrap: 'wrap',
               width: '100%',
+              ...(multiMarket && { flexDirection: 'column' }),
             }}
           >
             {children}

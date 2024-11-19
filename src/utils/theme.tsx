@@ -2,7 +2,6 @@ import {
   CheckCircleIcon,
   ChevronDownIcon,
   ExclamationCircleIcon,
-  ExclamationIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline';
 import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
@@ -189,12 +188,16 @@ declare module '@mui/material/Typography' {
 
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
+    transparent: true;
+    'transparent-link': true;
+
+    // to be removed
     surface: true;
     gradient: true;
   }
 }
 
-export const getDesignTokens = (mode: 'light' | 'dark') => {
+export const getDesignTokens = (mode: 'light' | 'dark', desktop?: boolean) => {
   const getColor = (lightColor: string, darkColor: string) =>
     mode === 'dark' ? darkColor : lightColor;
 
@@ -218,16 +221,16 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         main: getColor(colors.red[400], colors.red[300]),
       },
       error: {
-        main: getColor('#FF2D2D', '#F44336'),
+        main: getColor(colors.red[400], colors.red[300]),
       },
       warning: {
-        main: getColor('#F89F1A', '#FFA726'),
+        main: getColor(colors.orange[400], colors.orange[400]),
       },
       info: {
         main: getColor('#0062D2', '#29B6F6'),
       },
       success: {
-        main: getColor('#1FC74E', '#38E067'),
+        main: getColor(colors.green[500], colors.green[300]),
       },
       text: {
         primary: getColor(colors.gray[950], colors.gray[50]),
@@ -296,19 +299,19 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '130%',
-        fontSize: pxToRem(36),
+        fontSize: pxToRem(desktop ? 36 : 25),
       },
       h2: {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '130%',
-        fontSize: pxToRem(24),
+        fontSize: pxToRem(desktop ? 24 : 19),
       },
       h3: {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '130%',
-        fontSize: pxToRem(18),
+        fontSize: pxToRem(desktop ? 18 : 17),
       },
       h4: {
         fontFamily: FONT_HEADING,
@@ -320,13 +323,13 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '150%',
-        fontSize: pxToRem(22),
+        fontSize: pxToRem(desktop ? 22 : 18),
       },
       h6: {
         fontFamily: FONT_HEADING,
         fontWeight: 700,
         lineHeight: '150%',
-        fontSize: '30px',
+        fontSize: pxToRem(desktop ? 30 : 24),
       },
       body1: {
         fontFamily: FONT,
@@ -337,7 +340,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       body2: {
         fontFamily: FONT,
         fontWeight: 500,
-        fontSize: pxToRem(18),
+        fontSize: pxToRem(desktop ? 18 : 15),
         lineHeight: '130%',
       },
       body3: {
@@ -348,8 +351,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       body4: {
         fontFamily: FONT,
-        fontWeight: 600,
-        fontSize: pxToRem(17),
+        fontWeight: desktop ? 600 : 500,
+        fontSize: pxToRem(desktop ? 17 : 15),
         lineHeight: '130%',
       },
       body5: {
@@ -372,8 +375,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       body8: {
         fontFamily: FONT,
-        fontWeight: 600,
-        fontSize: pxToRem(20),
+        fontWeight: desktop ? 600 : 500,
+        fontSize: pxToRem(desktop ? 20 : 16),
         lineHeight: '130%',
       },
       body9: {
@@ -465,16 +468,16 @@ export function getThemedComponents(theme: Theme) {
           sizeLarge: {
             borderRadius: '8px',
             padding: '12px 24px',
-            fontWeight: 600,
-            fontSize: 16,
+            ...theme.typography.body6,
           },
           sizeMedium: {
             borderRadius: '8px',
             padding: '12px 46.5px',
-            fontSize: 16,
+            ...theme.typography.body7,
           },
           sizeSmall: {
             padding: '9px 8px',
+            ...theme.typography.detail2,
           },
         },
         variants: [
@@ -485,8 +488,9 @@ export function getThemedComponents(theme: Theme) {
               borderColor: theme.palette.primary.main,
               color: theme.palette.primary.main,
               '&:hover': {
-                background: theme.palette.text.buttonText,
-                color: theme.palette.point.primary,
+                // background: theme.palette.text.buttonText,
+                // color: theme.palette.point.primary,
+                // opacity: 0.8,
               },
             },
           },
@@ -497,6 +501,10 @@ export function getThemedComponents(theme: Theme) {
               background: theme.palette.background.primary,
               borderColor: theme.palette.text.subText,
               color: theme.palette.text.primary,
+              '&:hover': {
+                borderColor: theme.palette.point.primary,
+                color: theme.palette.point.primary,
+              },
             },
           },
           {
@@ -506,6 +514,39 @@ export function getThemedComponents(theme: Theme) {
               background: theme.palette.background.disabled,
               borderColor: theme.palette.border.contents,
               color: theme.palette.text.disabledText,
+            },
+          },
+          {
+            props: { color: 'primary', variant: 'transparent' },
+            style: {
+              border: '1px solid',
+              background: 'transparent',
+              textTransform: 'uppercase',
+              borderColor: theme.palette.border.contents,
+              color: theme.palette.text.secondary,
+              ...theme.typography.body4,
+              '&:hover': {
+                borderColor: theme.palette.point.primary,
+                color: theme.palette.point.primary,
+              },
+            },
+          },
+          {
+            props: { color: 'primary', variant: 'transparent-link' },
+            style: {
+              paddingInline: '8px',
+              paddingBlock: '3px',
+              border: '1px solid',
+              background: 'transparent',
+              textTransform: 'uppercase',
+              borderColor: theme.palette.border.contents,
+              color: theme.palette.text.secondary,
+              ...theme.typography.detail2,
+              borderRadius: '4px',
+              '&:hover': {
+                borderColor: theme.palette.point.primary,
+                color: theme.palette.point.primary,
+              },
             },
           },
         ],
@@ -546,28 +587,32 @@ export function getThemedComponents(theme: Theme) {
         },
       },
       MuiMenu: {
+        styleOverrides: {
+          paper: {
+            borderRadius: '8px !important',
+            minWidth: 240,
+            marginTop: '4px',
+            background: theme.palette.background.secondary,
+            border: '1px solid',
+            borderColor: theme.palette.border.contents,
+          },
+          list: {
+            'li.MuiMenuItem-root.Mui-selected': {
+              background: theme.palette.background.contents,
+            },
+          },
+        },
         defaultProps: {
           PaperProps: {
-            elevation: 0,
             variant: 'outlined',
-            style: {
-              minWidth: 240,
-              marginTop: '4px',
-            },
           },
         },
       },
       MuiList: {
+        defaultProps: {},
         styleOverrides: {
-          root: {
-            '.MuiMenuItem-root+.MuiDivider-root, .MuiDivider-root': {
-              marginTop: '4px',
-              marginBottom: '4px',
-            },
-          },
           padding: {
-            paddingTop: '4px',
-            paddingBottom: '4px',
+            padding: 0,
           },
         },
       },
@@ -575,16 +620,19 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             padding: '13.5px 12px',
-            fontSize: '16px',
-            fontWeight: 400,
+            ...theme.typography.body7,
+            color: theme.palette.text.primary,
           },
         },
         defaultProps: {
-          sx: {
-            '&.Mui-selected': {
-              backgroundColor: theme.palette.background.group,
-            },
-          },
+          // sx: {
+          //   '&.Mui-selected': {
+          //     backgroundColor: theme.palette.action.hover,
+          //     '&:hover': {
+          //       backgroundColor: theme.palette.background.contents,
+          //     },
+          //   },
+          // },
         },
       },
       MuiListItemIcon: {
@@ -643,8 +691,8 @@ export function getThemedComponents(theme: Theme) {
               paddingRight: '24px',
             },
             [theme.breakpoints.up('md')]: {
-              paddingLeft: '32px',
-              paddingRight: '32px',
+              paddingLeft: '28px',
+              paddingRight: '28px',
             },
           },
         },
@@ -714,8 +762,8 @@ export function getThemedComponents(theme: Theme) {
           root: {
             boxShadow: 'none',
             borderRadius: 0,
-            padding: '8px 8px 8px 4px',
-            ...theme.typography.body7,
+            padding: '8px',
+            ...theme.typography.detail4,
             color: theme.palette.text.secondary,
             alignItems: 'flex-start',
             '.MuiAlert-message': {
@@ -723,18 +771,20 @@ export function getThemedComponents(theme: Theme) {
             },
             '.MuiAlert-icon': {
               padding: 0,
-              opacity: 1,
-              marginRight: '8px',
+              marginRight: '6px',
               '.MuiSvgIcon-root': {
-                fontSize: pxToRem(20),
+                fontSize: pxToRem(18),
               },
             },
             a: {
-              ...theme.typography.caption,
-              fontWeight: 500,
+              color: 'inherit',
+              lineHeight: 'inherit',
+              fontWeight: 'inherit',
               textDecoration: 'underline',
+              textUnderlineOffset: '2px',
+              transition: '0.3s',
               '&:hover': {
-                textDecoration: 'none',
+                opacity: 0.8,
               },
             },
             '.MuiButton-text': {
@@ -785,21 +835,12 @@ export function getThemedComponents(theme: Theme) {
             props: { severity: 'error' },
             style: {
               background: theme.palette.point.riskMedium,
-              a: {
-                color: theme.palette.error['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.palette.error['100'],
-              },
             },
           },
           {
             props: { severity: 'info' },
             style: {
               background: theme.palette.point.riskRow,
-              a: {
-                color: theme.palette.info['100'],
-              },
             },
           },
           {
@@ -807,21 +848,12 @@ export function getThemedComponents(theme: Theme) {
             style: {
               color: theme.palette.success['100'],
               background: theme.palette.success['200'],
-              a: {
-                color: theme.palette.success['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.palette.success['100'],
-              },
             },
           },
           {
             props: { severity: 'warning' },
             style: {
               background: theme.palette.point.riskHigh,
-              a: {
-                color: theme.palette.primary.main,
-              },
             },
           },
         ],
@@ -832,7 +864,7 @@ export function getThemedComponents(theme: Theme) {
             fontFamily: FONT,
             fontWeight: 400,
             fontSize: pxToRem(14),
-            minWidth: '375px',
+            minWidth: '340px',
             backgroundColor: theme.palette.mode === 'light' ? colors.gray[50] : colors.gray[800],
             '> div:first-of-type': {
               minHeight: '100vh',
@@ -860,8 +892,13 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           outlined: {
             backgroundColor: theme.palette.background.surface,
-            padding: '6px 12px',
-            color: theme.palette.primary.light,
+            borderColor: theme.palette.border.contents,
+            padding: '0px 12px',
+            height: '42px',
+            color: theme.palette.text.secondary,
+            ...theme.typography.body6,
+            display: 'flex',
+            alignItems: 'center',
           },
         },
       },

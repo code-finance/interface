@@ -25,7 +25,7 @@ export function RepayTypeSelector({
   if (!currentMarketData.enabledFeatures?.collateralRepay && !isConnectNetWorkTon) return null;
   return (
     <Box sx={{ mb: 6 }}>
-      <Typography mb={1} color="text.secondary">
+      <Typography mb={2} component="div" variant="body7" color="text.secondary">
         <Trans>Repay with</Trans>
       </Typography>
 
@@ -37,7 +37,6 @@ export function RepayTypeSelector({
       >
         <StyledTxModalToggleButton
           value={RepayType.BALANCE}
-          disabled={repayType === RepayType.BALANCE}
           onClick={() => trackEvent(REPAY_MODAL.SWITCH_REPAY_TYPE, { repayType: 'Wallet Balance' })}
         >
           <Typography variant="buttonM">
@@ -47,7 +46,6 @@ export function RepayTypeSelector({
 
         <StyledTxModalToggleButton
           value={RepayType.COLLATERAL}
-          disabled={repayType === RepayType.COLLATERAL}
           onClick={() => trackEvent(REPAY_MODAL.SWITCH_REPAY_TYPE, { repayType: 'Collateral' })}
         >
           <Typography variant="buttonM">

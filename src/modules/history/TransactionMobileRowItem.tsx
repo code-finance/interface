@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
-import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
@@ -11,10 +10,11 @@ import { GENERAL } from 'src/utils/mixPanelEvents';
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
 import { ActionFields, TransactionHistoryItem } from './types';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 
 function ActionTitle({ action }: { action: string }) {
   return (
-    <Typography variant="subheader2" color="text.muted">
+    <Typography variant="h3" color="text.primary">
       <ActionTextMap action={action} />
     </Typography>
   );
@@ -49,10 +49,11 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     ? `${SCAN_TRANSACTION_TON}/transaction/${transaction.txHash}`
     : currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
 
+  const xsm = useMediaQuery(theme.breakpoints.only('xsm'));
   return (
     <Box>
       <ListItem
-        px={4}
+        px={0}
         sx={{
           borderWidth: `1px 0 0 0`,
           borderStyle: `solid`,
@@ -82,46 +83,26 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
               <ActionTitle action={transaction.action} />
             </Box>
 
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <Typography variant="body5" color="text.mainTitle">
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
+              <Typography variant="detail2" color="text.mainTitle">
                 {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
               </Typography>
-              <Button
-                sx={{
-                  display: 'flex',
-                  ml: 3,
-                  mr: 1,
-                  width: '69px',
-                  height: '20px',
-                  fontSize: '0.6rem',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  pl: 1,
-                  pr: 1,
-                  color: theme.palette.text.secondary,
-                }}
-                variant="text"
-                href={explorerLink}
-                target="_blank"
-                onClick={() =>
-                  trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
-                }
-              >
-                <Trans>Explorer</Trans>
-                <SvgIcon
-                  sx={{
-                    fontSize: '15px',
-                    pl: 1,
-                    pb: 0.5,
-                  }}
-                >
-                  <ArrowOutward />
-                </SvgIcon>
-              </Button>
             </Box>
           </Box>
-          <Box sx={{ py: '28px' }}>
-            <ActionDetails transaction={transaction} iconSize="24px" />
+          <Button
+            sx={{ width: 'fit-content', mt: 2, ml: 'auto' }}
+            variant="transparent-link"
+            href={explorerLink}
+            target="_blank"
+            onClick={() =>
+              trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
+            }
+          >
+            <Trans>Explorer</Trans>
+            <CallMadeOutlinedIcon fontSize={'inherit'} sx={{ ml: 1 }} />
+          </Button>
+          <Box sx={{ py: { xs: 3, xsm: 4 } }}>
+            <ActionDetails transaction={transaction} iconSize={xsm ? '24px' : '18px'} />
           </Box>
         </Box>
       </ListItem>

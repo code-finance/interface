@@ -40,18 +40,14 @@ export const BorrowModal = () => {
       >
         {(params) => (
           <UserAuthenticated>
-            {(user) =>
-              displayGhoForMintableMarket({ symbol: params.symbol, currentMarket }) ? (
-                <GhoBorrowModalContent {...params} user={user} />
-              ) : (
-                <BorrowModalContent
-                  {...params}
-                  user={user}
-                  unwrap={borrowUnWrapped}
-                  setUnwrap={handleBorrowUnwrapped}
-                />
-              )
-            }
+            {(user) => (
+              <BorrowModalContent
+                {...params}
+                user={user}
+                unwrap={borrowUnWrapped}
+                setUnwrap={handleBorrowUnwrapped}
+              />
+            )}
           </UserAuthenticated>
         )}
       </ModalWrapper>

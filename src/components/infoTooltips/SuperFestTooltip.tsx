@@ -8,7 +8,7 @@ export const SuperFestTooltip = () => {
     <TextWithTooltip
       wrapperProps={{ ml: 2 }}
       color="warning.main"
-      iconSize={20}
+      iconSize={18}
       icon={<image href="/icons/other/superfest.svg" width={25} height={25} />}
     >
       <>

@@ -1,6 +1,7 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
+import { Avatar, Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { blo } from 'blo';
+import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
@@ -8,7 +9,6 @@ import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
 import { textCenterEllipsis } from '../../../helpers/text-center-ellipsis';
-// import type { GovernanceVoter } from './VotersListContainer';
 
 type EnhancedProposalVote = ProposalVote & {
   ensName?: string;
@@ -17,12 +17,19 @@ type EnhancedProposalVote = ProposalVote & {
 type VotersListItemProps = {
   compact: boolean;
   voter: EnhancedProposalVote;
+  isModal: boolean;
 };
 
-export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
+export const VotersListItem = ({
+  compact,
+  voter,
+  isModal,
+}: VotersListItemProps): JSX.Element | null => {
   const { voter: address, ensName } = voter;
   const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.down('xsm'));
 
   // This function helps determine how to display either the address or ENS name, in a way where the list looks good and names are about equal length.
   // This takes into account if the list should be compact or not, and adjusts accordingly to keep items of about equal length.
@@ -66,25 +73,49 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
   if (Number(voter.votingPower) <= 0) return null;
 
   return (
-    <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
+    <Box
+      sx={{
+        my: isModal ? '16px' : '20px',
+        pr: isModal ? '20px' : '0',
+        '&:first-of-type': { mt: 0 },
+        '&:last-of-type': { mb: 0 },
+      }}
+    >
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: '6px' }} />
           <Link
+            color={'text.primary'}
             href={`https://etherscan.io/address/${address}`}
             onClick={() =>
               trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'AIP VOTERS', Link: 'Etherscan' })
             }
           >
             <Typography
-              variant="subheader1"
-              color="primary"
-              sx={{ display: 'flex', alignItems: 'center' }}
+              variant="detail3"
+              sx={{
+                display: 'block',
+                position: 'relative',
+                alignItems: 'center',
+                maxWidth: '122px',
+              }}
             >
-              {displayName(ensName)}
-              <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
+              {/* {displayName(ensName)} */}
+              <CompactableTypography
+                compactMode={isModal || xsm ? CompactMode.LR : CompactMode.SXL}
+                compact
+              >
+                {address}
+              </CompactableTypography>
+              {/* <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
                 <ExternalLinkIcon />
-              </SvgIcon>
+              </SvgIcon> */}
             </Typography>
           </Link>
         </Box>
@@ -94,15 +125,30 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             flexGrow: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
-            maxWidth: compact ? 82 : 96,
+            maxWidth: compact ? 82 : 130,
+            gap: '12px',
           }}
         >
-          <Typography variant="subheader1" color={voter.support ? 'success.main' : 'error.main'}>
+          {!isModal && (
+            <Link
+              color={'text.primary'}
+              href={`https://etherscan.io/address/${address}`}
+              onClick={() =>
+                trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'AIP VOTERS', Link: 'Etherscan' })
+              }
+            >
+              <CallMadeOutlinedIcon sx={{ width: 24, height: 24 }} />
+            </Link>
+          )}
+          <Typography
+            variant="detail1"
+            color={voter.support ? theme.palette.point.positive : theme.palette.point.negative}
+          >
             {voter.support ? 'YAE' : 'NAY'}
           </Typography>
           <FormattedNumber
-            variant="subheader1"
-            color="primary"
+            variant="detail2"
+            color="primary !important"
             value={displayVotingPower}
             visibleDecimals={displayVotingPowerDecimals}
             roundDown

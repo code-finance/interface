@@ -87,7 +87,9 @@ export const ReserveFactorOverview = ({
                 assetName: reserveName,
               });
             }}
-            href={explorerLink}
+            href={explorerLinkBuilder({
+              address: collectorContract,
+            })}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="body6" color="text.primary">
@@ -107,7 +109,6 @@ export const ReserveFactorOverview = ({
           </Link>
         </ReserveOverviewBox>
       )}
-
       {/* TO-DO: Refactor grid layout, currently uses flex: space-around which breaks with 2 elements */}
       <Box
         sx={{

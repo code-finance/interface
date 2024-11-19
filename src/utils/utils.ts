@@ -81,8 +81,8 @@ export enum Side {
 export const showSuperFestTooltip = (symbol: string, currentMarket: string, side?: Side) => {
   return (
     currentMarket === CustomMarket.proto_base_v3 &&
-    ((side === Side.SUPPLY && symbol == 'weETH') ||
-      (side === Side.BORROW && (symbol == 'USDC' || symbol == 'ETH')))
+    side === Side.SUPPLY &&
+    (symbol == 'ETH' || symbol == 'WETH')
   );
 };
 

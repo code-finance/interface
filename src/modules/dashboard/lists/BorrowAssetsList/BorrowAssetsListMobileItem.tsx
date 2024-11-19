@@ -106,7 +106,7 @@ export const BorrowAssetsListMobileItem = ({
           <Trans>Borrow</Trans>
         </Button>
         <Button
-          variant="outlined"
+          variant="text"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           fullWidth

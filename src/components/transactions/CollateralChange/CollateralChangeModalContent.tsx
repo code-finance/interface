@@ -1,6 +1,6 @@
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
 import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -36,6 +36,7 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { debtCeiling } = useAssetCaps();
+  const theme = useTheme();
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -143,11 +144,13 @@ export const CollateralChangeModalContent = ({
       )}
 
       {showDisableIsolationModeMsg && (
-        <Warning severity="warning" sx={{ mb: 3 }}>
-          <Trans>
-            Disabling this asset as collateral affects your borrowing power and Health Factor.
-          </Trans>
-        </Warning>
+        <Box sx={{ bgcolor: theme.palette.point.riskMedium, p: '8px' }}>
+          <Typography variant="detail4" color={'text.secondary'}>
+            <Trans>
+              Disabling the asset as collateral affects your borrowing power and Health Factor.
+            </Trans>
+          </Typography>
+        </Box>
       )}
 
       {showEnterIsolationModeMsg && <IsolationModeWarning asset={poolReserve.symbol} />}

@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Skeleton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import _ from 'lodash';
 import React from 'react';
@@ -30,18 +31,17 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const downToSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'body1';
-
   const getViewOracleContractTon = (address: string | undefined) => {
     return _.find(defaultRateUSDNotValue, { address })?.id || null;
   };
+  const valueTypographyVariant = downToSM ? 'body6' : 'body1';
+  const symbolsTypographyVariant = downToSM ? 'body6' : 'body1';
 
   const linkViewOracleContract = isConnectNetWorkTon
     ? `${SCAN_PRICE_TON}/en/coins/${getViewOracleContractTon(poolReserve.underlyingAssetTon)}`
@@ -107,8 +107,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                   cursor: 'pointer',
                 })}
               >
-                <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
-                  <ExternalLinkIcon />
+                <SvgIcon sx={{ fontSize: '14px' }}>
+                  <CallMadeOutlinedIcon />
                 </SvgIcon>
               </Link>
             </CircleIcon>

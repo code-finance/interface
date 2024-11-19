@@ -30,7 +30,7 @@ export const ChangeNetworkWarning = ({
     switchNetwork(chainId);
   };
   return (
-    <Warning severity="error" {...rest}>
+    <Warning severity="warning" {...rest}>
       {switchNetworkError ? (
         <Typography>
           <Trans>
@@ -41,16 +41,18 @@ export const ChangeNetworkWarning = ({
       ) : (
         <Typography variant="description">
           <Trans>Please switch to {networkName}.</Trans>{' '}
-          <Button
-            variant="text"
-            sx={{ ml: '2px', verticalAlign: 'top' }}
+          <button
+            style={{
+              all: 'unset',
+              cursor: 'pointer',
+              marginLeft: '2px',
+              verticalAlign: 'top',
+              textDecoration: 'underline',
+            }}
             onClick={handleSwitchNetwork}
-            disableRipple
           >
-            <Typography variant="description">
-              <Trans>Switch Network</Trans>
-            </Typography>
-          </Button>
+            <Trans>Switch Network</Trans>
+          </button>
         </Typography>
       )}
     </Warning>

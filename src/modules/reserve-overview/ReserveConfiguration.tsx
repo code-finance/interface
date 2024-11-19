@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -97,7 +96,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         ) : null}
       </Box>
 
-      <PanelRow>
+      <PanelRow sx={{ mt: { xs: 6, sm: 10 } }}>
         <PanelTitle>Supply Info</PanelTitle>
         <SupplyInfo
           reserve={reserve}
@@ -145,12 +144,21 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <Box
               sx={{
                 display: 'flex',
-                flexWrap: { xs: 'wrap', mdlg: 'nowrap' },
+                flexWrap: { xs: 'wrap', md: 'nowrap' },
                 gap: 7,
                 width: '100%',
+                overflow: 'hidden',
               }}
             >
-              <Box sx={{ flex: 1, height: '100%', display: 'flex', minWidth: 400 }}>
+              <Box
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  minWidth: { xs: 'unset', md: 400 },
+                  gap: 2,
+                  flexWrap: 'wrap',
+                }}
+              >
                 <PanelItem
                   sx={{ minWidth: '150px' }}
                   title={
@@ -183,15 +191,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                       </SvgIcon>
                     }
                     component={Link}
+                    sx={{ height: 'fit-content' }}
                     size="small"
-                    variant="text"
-                    sx={(theme) => ({
-                      height: '24px',
-                      color: theme.palette.text.secondary,
-                      ...theme.typography.detail2,
-                      textTransform: 'uppercase',
-                      px: 2,
-                    })}
+                    variant="transparent-link"
                   >
                     <Trans>Interest rate strategy</Trans>
                   </Button>

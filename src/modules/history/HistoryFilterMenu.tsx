@@ -148,8 +148,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
           color: theme.palette.text.secondary,
           px: 5,
           height: 42,
-          width: 'auto',
-          minWidth: 205,
+          width: 205,
         })}
         onClick={handleClick}
         startIcon={
@@ -194,14 +193,8 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
         PaperProps={{
-          sx: (theme) => ({
-            backgroundColor: theme.palette.background.secondary,
-            border: `1px solid ${theme.palette.border.contents}`,
-            width: 205,
+          sx: () => ({
             maxHeight: 300,
-            mt: 1,
-            boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
-            borderRadius: 2,
           }),
         }}
         MenuListProps={{
@@ -212,50 +205,53 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
       >
         <MenuItem
           onClick={() => handleFilterClick(undefined)}
+          selected={allSelected}
           sx={{
-            background: allSelected ? theme.palette.background.contents : undefined,
             display: 'flex',
             justifyContent: 'space-between',
           }}
         >
           <Trans>All transactions</Trans>
           {allSelected && (
-            <SvgIcon sx={{ fontSize: '16px' }}>
+            <SvgIcon sx={{ fontSize: '16px', ml: 2 }}>
               <CheckIcon />
             </SvgIcon>
           )}
         </MenuItem>
         <Box
           sx={{
-            overflowY: 'scroll',
-            maxHeight: 200,
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            '::-webkit-scrollbar': {
-              display: 'none',
-            },
+            overflowY: 'auto',
+            maxHeight: 220,
+            // scrollbarWidth: 'none',
+            // msOverflowStyle: 'none',
+            // '::-webkit-scrollbar': {
+            //   display: 'none',
+            // },
           }}
         >
-          {visibleFilterOptions.map((option) => (
-            <MenuItem
-              key={option}
-              onClick={() => handleFilterClick(option)}
-              sx={{
-                background: currentFilter.includes(option)
-                  ? theme.palette.background.contents
-                  : undefined,
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <FilterLabel filter={option} />
-              {currentFilter.includes(option) && (
-                <SvgIcon sx={{ fontSize: '16px' }}>
-                  <CheckIcon />
-                </SvgIcon>
-              )}
-            </MenuItem>
-          ))}
+          {Object.keys(FilterOptions)
+            .filter((key) => isNaN(Number(key)))
+            .map((optionKey) => {
+              const option = FilterOptions[optionKey as keyof typeof FilterOptions];
+              return (
+                <MenuItem
+                  key={optionKey}
+                  onClick={() => handleFilterClick(option)}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}
+                  selected={currentFilter.includes(option)}
+                >
+                  <FilterLabel filter={option} />
+                  {currentFilter.includes(option) && (
+                    <SvgIcon sx={{ fontSize: '16px', ml: 2 }}>
+                      <CheckIcon />
+                    </SvgIcon>
+                  )}
+                </MenuItem>
+              );
+            })}
         </Box>
       </Menu>
     </Box>

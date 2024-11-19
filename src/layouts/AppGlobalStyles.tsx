@@ -20,6 +20,7 @@ type Mode = 'light' | 'dark';
  */
 export function AppGlobalStyles({ children }: { children: ReactNode }) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const xsm = useMediaQuery('(min-width: 640px)');
   const [mode, setMode] = useState<Mode>(prefersDarkMode ? 'dark' : 'light');
   const colorMode = useMemo(
     () => ({
@@ -44,7 +45,7 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
   }, []);
 
   const theme = useMemo(() => {
-    const themeCreate = createTheme(getDesignTokens(mode));
+    const themeCreate = createTheme(getDesignTokens(mode, xsm));
     return deepmerge(themeCreate, getThemedComponents(themeCreate));
   }, [mode]);
 

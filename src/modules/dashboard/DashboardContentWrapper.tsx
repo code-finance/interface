@@ -1,11 +1,16 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
+import { MULTIPLE_MARKET_OPTIONS } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { AUTH } from 'src/utils/mixPanelEvents';
+import { CustomMarket } from 'src/utils/marketsAndNetworksConfig';
+import { AUTH, DASHBOARD } from 'src/utils/mixPanelEvents';
 
 import { BorrowAssetsList } from './lists/BorrowAssetsList/BorrowAssetsList';
 import { BorrowedPositionsList } from './lists/BorrowedPositionsList/BorrowedPositionsList';
@@ -27,6 +32,11 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
   const paperWidth = isDesktop ? 'calc(50% - 8px)' : '100%';
 
   const downToLg = useMediaQuery(breakpoints.down('lg'));
+  const [currentMarket, setCurrentMarket] = useRootStore((store) => [
+    store.currentMarket,
+    store.setCurrentMarket,
+  ]);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
 
   return (
     <Box>
@@ -36,36 +46,16 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           display: isDesktop ? 'flex' : 'block',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
+          gap: 5,
         }}
       >
         <Box
           sx={{
             position: 'relative',
             display: { xs: isBorrow ? 'none' : 'block', lg: 'block' },
-            width: paperWidth,
+            flex: 1,
           }}
         >
-          {currentAccount && !isBorrow && downToLg && (
-            <Box>
-              <Button
-                sx={(theme) => ({
-                  position: 'absolute',
-                  top: '-120px',
-                  right: '0px',
-                  color: theme.palette.text.secondary,
-                })}
-                onClick={() => {
-                  router.push(ROUTES.history);
-                  trackEvent(AUTH.VIEW_TX_HISTORY);
-                }}
-                variant="outlined"
-                size="small"
-              >
-                <Trans>View Transactions</Trans>
-              </Button>
-            </Box>
-          )}
-
           <SuppliedPositionsList />
           <SupplyAssetsList />
         </Box>
@@ -74,7 +64,7 @@ export const DashboardContentWrapper = ({ isBorrow }: DashboardContentWrapperPro
           sx={{
             position: 'relative',
             display: { xs: !isBorrow ? 'none' : 'block', lg: 'block' },
-            width: paperWidth,
+            flex: 1,
           }}
         >
           <BorrowedPositionsList />

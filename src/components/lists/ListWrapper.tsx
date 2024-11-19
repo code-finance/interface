@@ -1,8 +1,16 @@
 import { Trans } from '@lingui/macro';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
-import { ReactNode, useState } from 'react';
+import {
+  Box,
+  BoxProps,
+  Paper,
+  PaperProps,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { ReactNode, useEffect, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
 
@@ -20,6 +28,7 @@ interface ListWrapperProps {
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
   paperSx?: PaperProps['sx'];
+  collapsedSx?: PaperProps['sx'];
   icon?: ReactNode;
   isPosition?: boolean;
 }
@@ -38,10 +47,15 @@ export const ListWrapper = ({
   paperSx,
   icon,
   isPosition,
+  collapsedSx,
 }: ListWrapperProps) => {
-  const [isCollapse, setIsCollapse] = useState(
-    localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
-  );
+  const [isCollapse, setIsCollapse] = useState(false);
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
+  useEffect(() => {
+    if (localStorageName && localStorage.getItem(localStorageName) === 'true') setIsCollapse(true);
+  }, [localStorageName]);
+
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleTrackingEvents = () => {
@@ -100,13 +114,13 @@ export const ListWrapper = ({
       sx={[
         () => ({
           mt: withTopMargin ? 4 : 0,
-          py: 9,
-          px: 5,
+          py: { xs: 4, md: 6 },
+          px: 4,
         }),
         ...(Array.isArray(paperSx) ? paperSx : [paperSx]),
       ]}
     >
-      <Box display="flex" flexDirection={'column'} gap={5}>
+      <Box display="flex" flexDirection={'column'} gap={4}>
         <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
           {!!icon && icon}
           <Box
@@ -115,21 +129,79 @@ export const ListWrapper = ({
               display: 'flex',
               alignItems: 'start',
               justifyContent: 'space-between',
+              width: '100%',
               ...wrapperSx,
             }}
           >
-            <Box sx={{ minWidth: 0 }}>
+            <Box sx={{ minWidth: 0, width: '100%' }}>
               <Box
                 sx={{
                   width: '100%',
                   display: 'flex',
-                  alignItems: { xs: 'flex-start', xsm: 'center' },
-                  py: '3.6px',
-                  flexDirection: { xs: 'column', xsm: 'row' },
+                  py: '4px',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
                 }}
               >
                 {titleComponent}
                 {subTitleComponent}
+                {!!localStorageName && !noData && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      alignSelf: 'flex-start',
+                      ml: 'auto',
+                      minHeight: '28px',
+                      pl: 3,
+                      // span: {
+                      //   width: '14px',
+                      //   height: '2px',
+                      //   bgcolor: 'text.secondary',
+                      //   position: 'relative',
+                      //   ml: 1,
+                      //   '&:after': {
+                      //     content: "''",
+                      //     position: 'absolute',
+                      //     width: '14px',
+                      //     height: '2px',
+                      //     bgcolor: 'text.secondary',
+                      //     transition: 'all 0.2s ease',
+                      //     transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
+                      //     opacity: collapsed ? 1 : 0,
+                      //   },
+                      // },
+                    }}
+                    onClick={() => {
+                      handleTrackingEvents();
+                      !!localStorageName && !noData
+                        ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
+                        : undefined;
+                    }}
+                  >
+                    <Typography
+                      variant={xsm ? 'body5' : 'detail2'}
+                      color={isPosition ? 'white' : 'text.secondary'}
+                      sx={[
+                        { display: 'flex', alignItems: 'center' },
+                        ...(Array.isArray(collapsedSx) ? collapsedSx : [collapsedSx]),
+                      ]}
+                    >
+                      {collapsed ? (
+                        <>
+                          <Trans>Show</Trans> <KeyboardArrowDownIcon sx={{ ml: 1 }} />
+                        </>
+                      ) : (
+                        <>
+                          <Trans>Hide</Trans> <KeyboardArrowUpIcon sx={{ ml: 1 }} />
+                        </>
+                      )}
+                    </Typography>
+                    <span />
+                  </Box>
+                )}
               </Box>
 
               {topInfo && (
@@ -137,76 +209,22 @@ export const ListWrapper = ({
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    px: { xs: 4, xsm: 0 },
-                    pb: { xs: collapsed && !noData ? 6 : 2, xsm: 0 },
+                    px: 0,
+                    pb: 0,
                     flexWrap: 'wrap',
-                    gap: 1.5,
+                    gap: 1,
                     overflowX: tooltipOpen ? 'hidden' : 'auto',
                   }}
                 >
                   {topInfo}
                 </Box>
               )}
-              {subChildrenComponent && !collapsed && (
-                <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
-              )}
+              {subChildrenComponent && !collapsed && <Box>{subChildrenComponent}</Box>}
             </Box>
-
-            {!!localStorageName && !noData && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  minHeight: '28px',
-                  pl: 3,
-                  // span: {
-                  //   width: '14px',
-                  //   height: '2px',
-                  //   bgcolor: 'text.secondary',
-                  //   position: 'relative',
-                  //   ml: 1,
-                  //   '&:after': {
-                  //     content: "''",
-                  //     position: 'absolute',
-                  //     width: '14px',
-                  //     height: '2px',
-                  //     bgcolor: 'text.secondary',
-                  //     transition: 'all 0.2s ease',
-                  //     transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
-                  //     opacity: collapsed ? 1 : 0,
-                  //   },
-                  // },
-                }}
-                onClick={() => {
-                  handleTrackingEvents();
-                  !!localStorageName && !noData
-                    ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
-                    : undefined;
-                }}
-              >
-                <Typography
-                  variant="buttonM"
-                  color={isPosition ? 'white' : 'text.secondary'}
-                  sx={{ display: 'flex', alignItems: 'center' }}
-                >
-                  {collapsed ? (
-                    <>
-                      <Trans>Show</Trans> <KeyboardArrowDownIcon sx={{ ml: 1 }} />
-                    </>
-                  ) : (
-                    <>
-                      <Trans>Hide</Trans> <KeyboardArrowUpIcon sx={{ ml: 1 }} />
-                    </>
-                  )}
-                </Typography>
-                <span />
-              </Box>
-            )}
           </Box>
         </Box>
 
-        <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
+        {children && <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>}
       </Box>
     </Paper>
   );
