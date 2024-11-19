@@ -236,33 +236,6 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
         {currentAccount && (
-          <Box>
-            <Button
-              onClick={() => {
-                router.push(ROUTES.history);
-                trackEvent(AUTH.VIEW_TX_HISTORY);
-              }}
-              component="a"
-              variant="outlined"
-              size="small"
-              sx={{
-                textTransform: 'uppercase',
-                color: 'text.secondary',
-                bgcolor: 'transparent',
-                height: '42px',
-                p: '10px 24px',
-                fontSize: '17px',
-                borderColor: theme.palette.text.subText,
-                '&:hover': {
-                  bgcolor: 'transparent',
-                },
-              }}
-            >
-              <Trans>View Transactions</Trans>
-            </Button>
-          </Box>
-        )}
-        {currentAccount && (
           <>
             {md ? (
               <Button

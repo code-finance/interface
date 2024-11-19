@@ -23,7 +23,6 @@ export function MainLayout({
       {/*  buttonText="Learn More"*/}
       {/*  notifyText="Users can now bridge GHO to Arbitrum with CCIP ✨"*/}
       {/*/>*/}
-      <AppHeader />
       <AppHeader isGovernanceDetails={isGovernanceDetails} />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {children}
