@@ -44,7 +44,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const symbolsTypographyVariant = downToSM ? 'body6' : 'body1';
 
   const getOraclePriceLinkTon = () => {
-    console.log('poolReserve.symbol', poolReserve);
     if (poolReserve.symbol === 'tsTON' || poolReserve.symbol === 'stTON') {
       return `${SCAN_TRANSACTION_TON}/${Address.parse(`${poolReserve.underlyingAssetTon}`)}`;
     } else {
