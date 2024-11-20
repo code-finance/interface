@@ -213,7 +213,7 @@ export const ReferralInforTable = () => {
                 '& .MuiSelect-select.MuiSelect-outlined': {
                   overflow: 'visible !important',
                   '&.Mui-disabled': {
-                    '-webkit-text-fill-color': 'unset',
+                    WebkitTextFillColor: 'unset',
                   },
                   pl: 0,
                   pr: '26px',
@@ -223,7 +223,7 @@ export const ReferralInforTable = () => {
             >
               {menuItems.map(({ value, label }) => (
                 <MenuItem sx={{ p: '12px', width: '160px' }} key={value} value={value}>
-                  <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} />{' '}
+                  <img width="24px" height="24px" src={'/icons/networks/ethereum.svg'} alt="" />{' '}
                   <Typography
                     variant={value === network ? 'body6' : 'body7'}
                     color={value === network ? 'text.secondary' : 'text.primary'}
@@ -306,7 +306,7 @@ export const ReferralInforTable = () => {
                 '& .MuiSelect-select.MuiSelect-outlined': {
                   overflow: 'visible !important',
                   '&.Mui-disabled': {
-                    '-webkit-text-fill-color': 'unset',
+                    WebkitTextFillColor: 'unset',
                   },
                   pl: 0,
                   pr: '26px',

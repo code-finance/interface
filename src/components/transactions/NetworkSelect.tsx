@@ -86,7 +86,7 @@ export const NetworkSelect = ({
               '& .MuiOutlinedInput-input.Mui-disabled': {
                 backgroundColor: 'transparent',
                 opacity: 1,
-                '-webkit-text-fill-color': 'unset',
+                WebkitTextFillColor: 'unset',
               },
             }}
           >

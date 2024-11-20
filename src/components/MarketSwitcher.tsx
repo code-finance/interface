@@ -65,7 +65,7 @@ export const getMarketHelpData = (marketName: string) => {
 
   return {
     name: marketTitle,
-    testChainName: testChainName[0],
+    testChainName: marketName === 'TON' ? 'TON' : testChainName[0],
   };
 };
 
@@ -153,7 +153,7 @@ export const MarketSwitcher = ({ viewOnly }: { viewOnly?: boolean }) => {
         '& .MuiSelect-select.MuiSelect-outlined': {
           overflow: 'visible !important',
           '&.Mui-disabled': {
-            '-webkit-text-fill-color': 'unset',
+            WebkitTextFillColor: 'unset',
           },
         },
       }}
