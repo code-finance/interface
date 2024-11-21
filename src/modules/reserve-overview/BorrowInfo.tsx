@@ -39,9 +39,9 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
-  const { isConnectNetWorkTon } = useAppDataContext();
+  const { isTonNetwork } = useAppDataContext();
 
-  const collectorContract = isConnectNetWorkTon
+  const collectorContract = isTonNetwork
     ? reserve.underlyingAssetTon
     : currentMarketData.addresses.COLLECTOR;
 
@@ -237,7 +237,7 @@ export const BorrowInfo = ({
           </PanelItem>
         )} */}
 
-        {currentMarketData.addresses.COLLECTOR && (
+        {collectorContract && (
           <>
             <Box sx={{ pt: { xs: 10, xsm: 12 }, pb: { xs: 3, xsm: 5 } }}>
               <Typography
@@ -250,7 +250,7 @@ export const BorrowInfo = ({
               </Typography>
             </Box>
             <ReserveFactorOverview
-              collectorContract={currentMarketData.addresses.COLLECTOR}
+              collectorContract={collectorContract}
               explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
               reserveFactor={reserve.reserveFactor}
               reserveName={reserve.name}

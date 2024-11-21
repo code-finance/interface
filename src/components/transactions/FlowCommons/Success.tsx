@@ -78,7 +78,7 @@ export const TxSuccessView = ({
 
         {!action && !amount && symbol && (
           <Typography variant="body5" color="text.secondary">
-            Your {symbol} {collateral ? 'now' : 'is not'} used as collateral
+            Your {symbol} {collateral ? 'is not' : 'now'} used as collateral
           </Typography>
         )}
 
