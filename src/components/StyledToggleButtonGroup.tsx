@@ -1,17 +1,17 @@
 import { styled, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
 
 const CustomToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>({
-  backgroundColor: '#383D51',
-  border: '1px solid rgba(235, 235, 237, 0.12)',
-  padding: '4px',
+  borderRadius: 1,
+  overflow: 'hidden',
 }) as typeof ToggleButtonGroup;
 
 const CustomTxModalToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.header,
-  borderRadius: 1,
   overflow: 'hidden',
   height: '41px',
   width: '100%',
+  py: '10px',
+  textAlign: 'center',
 })) as typeof ToggleButtonGroup;
 
 export function StyledTxModalToggleGroup(props: ToggleButtonGroupProps) {

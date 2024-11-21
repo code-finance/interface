@@ -57,25 +57,25 @@ export const ListItemAPYButton = ({
   return (
     <>
       <Button
-        sx={{
-          borderColor: theme.palette.text.subText,
-          bgcolor: 'transparent',
-          color: 'text.primary',
-          '&:hover': {
-            bgcolor: 'transparent',
-          },
-        }}
-        variant="outlined"
+        sx={(theme) => ({
+          padding: '3px 4px',
+          ...theme.typography.detail2,
+          borderColor: theme.palette.border.divider,
+          textTransform: 'uppercase',
+        })}
+        variant="contained"
         onClick={handleClick}
         size="small"
         endIcon={
+          !disabled &&
           stableBorrowRateEnabled && (
-            <SvgIcon sx={{ fontSize: '14px !important' }}>
+            <SvgIcon sx={{ fontSize: '14px !important', ml: -2 }}>
               {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
             </SvgIcon>
           )
         }
-        disabled={disabled}
+        // disabled={disabled}
+        disabled={true}
         data-cy={`apyButton_${borrowRateMode}`}
       >
         {borrowRateMode}

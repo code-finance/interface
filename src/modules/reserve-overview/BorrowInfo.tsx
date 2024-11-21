@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
@@ -39,12 +39,13 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
-  const { isConnectNetWorkTon } = useAppDataContext();
+  const { isTonNetwork } = useAppDataContext();
 
-  const collectorContract = isConnectNetWorkTon
+  const collectorContract = isTonNetwork
     ? reserve.underlyingAssetTon
     : currentMarketData.addresses.COLLECTOR;
 
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
   const maxAvailableToBorrow = BigNumber.max(
     valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt)),
     0
@@ -63,9 +64,7 @@ export const BorrowInfo = ({
         width: '100%',
       }}
     >
-      <Box
-        sx={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', minWidth: 400 }}
-      >
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 400 }}>
         {showBorrowCapStatus ? (
           // With a borrow cap
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
@@ -237,19 +236,27 @@ export const BorrowInfo = ({
             />
           </PanelItem>
         )} */}
-        <Box sx={{ pt: 12, pb: 5 }}>
-          <Typography variant="body6" color="text.primary" sx={{ mb: 5 }} component="div">
-            <Trans>Collector Info</Trans>
-          </Typography>
-        </Box>
+
         {collectorContract && (
-          <ReserveFactorOverview
-            collectorContract={collectorContract}
-            explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
-            reserveFactor={reserve.reserveFactor}
-            reserveName={reserve.name}
-            reserveAsset={reserve.underlyingAsset}
-          />
+          <>
+            <Box sx={{ pt: { xs: 10, xsm: 12 }, pb: { xs: 3, xsm: 5 } }}>
+              <Typography
+                variant={xsm ? 'body6' : 'detail2'}
+                color="text.primary"
+                sx={{ mb: 5 }}
+                component="div"
+              >
+                <Trans>Collector Info</Trans>
+              </Typography>
+            </Box>
+            <ReserveFactorOverview
+              collectorContract={collectorContract}
+              explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
+              reserveFactor={reserve.reserveFactor}
+              reserveName={reserve.name}
+              reserveAsset={reserve.underlyingAsset}
+            />
+          </>
         )}
       </Box>
       {renderCharts && (

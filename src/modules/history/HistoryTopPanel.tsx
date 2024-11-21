@@ -11,19 +11,6 @@ export const HistoryTopPanel = () => {
   const xsm = useMediaQuery(breakpoints.down('xsm'));
 
   return (
-    <TopInfoPanel
-      pageTitle={<></>}
-      titleComponent={
-        <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h3" sx={{ color: '#A5A8B6' }}>
-              <Trans>Transaction history</Trans>
-            </Typography>
-          </Box>
-          <PageTitle withMarketSwitcher={true} />
-          <Box sx={{ width: md ? (xsm ? '320px' : '540px') : '860px' }} />
-        </Box>
-      }
-    />
+    <TopInfoPanel pageTitle={<></>} titleComponent={<PageTitle withMarketSwitcher={true} />} />
   );
 };

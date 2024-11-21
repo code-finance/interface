@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { CircularProgress, Paper, PaperProps, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { ReactNode } from 'react';
 
 import { ConnectWalletButton } from './WalletConnection/ConnectWalletButton';
@@ -20,7 +21,8 @@ export const ConnectWalletPaper = ({ loading, description, ...rest }: ConnectWal
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
-          p: 4,
+          px: 4,
+          py: { xs: 16, md: '100px' },
           flex: 1,
           borderRadius: 4,
           background: theme.palette.background.primary,
@@ -32,7 +34,22 @@ export const ConnectWalletPaper = ({ loading, description, ...rest }: ConnectWal
           <CircularProgress />
         ) : (
           <>
-            <Typography sx={{ mb: 10, fontSize: 20 }} color="text.secondary">
+            <img
+              alt="illustration"
+              src="/Illustration.svg"
+              style={{
+                width: '100%',
+                maxWidth: 600,
+                aspectRatio: '1/1',
+                marginBottom: 32,
+              }}
+            />
+            <Typography
+              sx={{ mb: { xs: 5, xsm: 10 } }}
+              color="text.secondary"
+              variant="body8"
+              component="div"
+            >
               {description || (
                 <Trans>
                   We could’t detect a wallet. Connect a wallet to stake and view your balance.

@@ -9,15 +9,16 @@ export interface PageTitleProps extends Pick<NetworkConfig, 'bridge'> {
   pageTitle?: ReactNode;
   withMarketSwitcher?: boolean;
   withMigrateButton?: boolean;
+  viewOnly?: boolean;
 }
 
-export const PageTitle = ({ pageTitle, withMarketSwitcher }: PageTitleProps) => {
+export const PageTitle = ({ pageTitle, withMarketSwitcher, viewOnly }: PageTitleProps) => {
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: { xs: 'flex-start', xsm: 'center' },
-        mb: pageTitle ? 10 : 0,
+        mb: pageTitle ? { xs: 4, md: 10 } : 0,
         flexDirection: { xs: 'column', xsm: 'row' },
       }}
     >
@@ -43,7 +44,7 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher }: PageTitleProps) => 
           flexWrap: 'wrap',
         }}
       >
-        {withMarketSwitcher && <MarketSwitcher />}
+        {withMarketSwitcher && <MarketSwitcher viewOnly={viewOnly} />}
         {/* <BridgeButton bridge={bridge} variant="surface" withoutIcon={!upToMD} /> */}
         {/* NOTE:// Removing for now  */}
         {/*{isMigrateToV3Available && withMigrateButton && (*/}

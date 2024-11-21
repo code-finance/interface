@@ -1,5 +1,14 @@
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Grid, Paper, PaperProps, Typography } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Paper,
+  PaperProps,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { ReactNode } from 'react';
 import { StakingPanelNoWallet } from 'src/modules/staking/StakingPanelNoWallet';
 
@@ -16,6 +25,8 @@ export const ConnectWalletPaperStaking = ({
   sx,
   ...rest
 }: ConnectWalletPaperStakingProps) => {
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Paper
       {...rest}
@@ -25,8 +36,8 @@ export const ConnectWalletPaperStaking = ({
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        px: 5,
-        py: 25,
+        px: '20px',
+        py: '60px',
         flex: 1,
         ...sx,
       }}
@@ -36,31 +47,50 @@ export const ConnectWalletPaperStaking = ({
           <CircularProgress />
         ) : (
           <>
-            <Typography variant="h2" sx={{ mb: 8 }} color={'text.primary'}>
-              <Trans>Please, connect your wallet</Trans>
-            </Typography>
-            <Typography sx={{ mb: 10, fontSize: '20px' }} color="text.secondary">
-              {description || (
-                <Trans>
-                  Please connect your wallet to see your supplies, borrowings, and open positions.
-                </Trans>
-              )}
-            </Typography>
-            <ConnectWalletButton funnel={'Staking page'} />
+            <Box mb={'40px'}>
+              <Typography
+                variant="h6"
+                sx={{ mb: { xs: 5, xsm: 8 }, maxWidth: xsm ? 'unset' : 296 }}
+                color={'text.primary'}
+              >
+                <Trans>Please, </Trans>
+                {!xsm && <br />} <Trans>connect your wallet</Trans>
+              </Typography>
+              <Typography
+                sx={{ mb: { xs: 5, xsm: 10, maxWidth: xsm ? 'unset' : 280 } }}
+                color="text.secondary"
+                variant="body8"
+                component="div"
+              >
+                {description || (
+                  <Trans>
+                    Please connect your wallet to see your supplies, borrowings, and open positions.
+                  </Trans>
+                )}
+              </Typography>
+              <ConnectWalletButton funnel={'Staking page'} />
+            </Box>
             <Box
-              pt={17}
               sx={{
                 width: '100%',
                 textAlign: 'right',
                 justifyContent: 'space-between',
-                flexDirection: 'row',
+                flexDirection: { xs: 'column', xsm: 'row' },
                 display: 'flex',
-                gap: 3,
+                gap: { xs: 2, xsm: 3 },
               }}
             >
-              <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} />
-              {/* <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} /> */}
-              <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
+              {/* <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} /> */}
+              <Box sx={{ flex: 1 }}>
+                <StakingPanelNoWallet stakedToken={'AAVE'} icon={'/icons/networks/ethereum.svg'} />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <StakingPanelNoWallet
+                  stakedToken={'AAVE'}
+                  icon={'/icons/networks/kaia.svg'}
+                  networkName="Kaia"
+                />
+              </Box>
             </Box>
           </>
         )}

@@ -93,7 +93,7 @@ export const ModalWrapper: React.FC<{
   return (
     <AssetCapsProvider asset={poolReserve}>
       {!mainTxState.success && (
-        <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
+        <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} sx={{ mb: 8 }} />
       )}
       {isWrongNetworkMat && !readOnlyModeAddress && (
         <ChangeNetworkWarning

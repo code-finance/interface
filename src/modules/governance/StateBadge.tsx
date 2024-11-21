@@ -1,4 +1,4 @@
-import { alpha, experimental_sx, Skeleton, styled } from '@mui/material';
+import { BoxProps, experimental_sx, Skeleton, styled, Typography, useTheme } from '@mui/material';
 import invariant from 'tiny-invariant';
 
 import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal';
@@ -6,6 +6,7 @@ import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal'
 interface StateBadgeProps {
   state?: ProposalBadgeState;
   loading?: boolean;
+  wrapperSx?: BoxProps['sx'];
 }
 
 export enum ProposalBadgeState {
@@ -46,33 +47,37 @@ export const lifecycleToBadge = (
 
 const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
   const COLOR_MAP = {
-    [ProposalBadgeState.Created]: theme.palette.primary.light,
-    [ProposalBadgeState.OpenForVoting]: theme.palette.success.main,
-    [ProposalBadgeState.Passed]: theme.palette.success.main,
-    [ProposalBadgeState.Executed]: theme.palette.success.main,
-    [ProposalBadgeState.Cancelled]: theme.palette.error.main,
-    [ProposalBadgeState.Expired]: theme.palette.error.main,
-    [ProposalBadgeState.Failed]: theme.palette.error.main,
+    [ProposalBadgeState.Created]: theme.palette.point.primary,
+    [ProposalBadgeState.OpenForVoting]: theme.palette.point.positive,
+    [ProposalBadgeState.Passed]: theme.palette.point.positive,
+    [ProposalBadgeState.Executed]: theme.palette.point.positive,
+    [ProposalBadgeState.Cancelled]: theme.palette.point.negative,
+    [ProposalBadgeState.Expired]: theme.palette.point.negative,
+    [ProposalBadgeState.Failed]: theme.palette.point.negative,
   };
   const color = COLOR_MAP[state] || '#000';
   return experimental_sx({
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ...theme.typography.subheader2,
+    ...theme.typography.body4,
     color,
     border: '1px solid',
-    borderColor: alpha(color, 0.5),
-    py: 0.5,
-    px: 2,
-    borderRadius: 1,
+    borderColor: color,
+    px: 3,
+    py: { xs: '6px', xsm: '10px' },
+    borderRadius: '6px',
     display: 'inline-flex',
     alignItems: 'center',
+    width: 'fit-content',
   });
 });
 
-export function StateBadge({ state, loading }: StateBadgeProps) {
+export function StateBadge({ state, loading, wrapperSx }: StateBadgeProps) {
+  const theme = useTheme();
   if (loading || !state) return <Skeleton width={70} />;
-  return <Badge state={state}>{state}</Badge>;
+  return (
+    <Badge sx={{ padding: '10px 12px', ...wrapperSx }} state={state}>
+      <Typography variant="body4">{state}</Typography>
+    </Badge>
+  );
 }
 
 export const getProposalStates = () => {

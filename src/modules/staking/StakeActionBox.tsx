@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
@@ -23,10 +23,12 @@ export const StakeActionBox = ({
   children,
   bottomLineTitle,
   bottomLineComponent,
+  // gradientBorder,
   dataCy,
   cooldownAmount,
 }: StakeActionBoxProps) => {
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Box
       sx={(theme) => ({
@@ -51,7 +53,7 @@ export const StakeActionBox = ({
       <Box
         sx={(theme) => ({
           flex: 1,
-          p: 4,
+          p: xsm ? '40px 16px 20px 16px' : '16px',
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
@@ -63,16 +65,27 @@ export const StakeActionBox = ({
         })}
         data-cy={dataCy}
       >
-        <Box sx={{ mb: 9, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Typography variant="body7" color={theme.palette.text.disabledText}>
+        <Box
+          sx={{
+            mb: xsm ? '36px' : '24px',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <Typography
+            variant={xsm ? 'body7' : 'description'}
+            mb={xsm ? 0 : '4px'}
+            color={theme.palette.text.disabledText}
+          >
             {title}
           </Typography>
 
           <FormattedNumber
-            sx={{ my: '10px' }}
+            sx={{ my: xsm ? '10px' : 0 }}
             value={value}
             visibleDecimals={2}
-            variant="h2"
+            variant={'h2'}
             color={+value === 0 ? theme.palette.text.disabledText : 'text.primary'}
             data-cy={`amountNative`}
           />
@@ -87,7 +100,7 @@ export const StakeActionBox = ({
           />
         </Box>
 
-        <Box sx={{ width: '100%', mb: '10px' }}>{children}</Box>
+        <Box sx={{ width: '100%', mb: xsm ? '10px' : '8px' }}>{children}</Box>
 
         <Row caption={bottomLineTitle} captionVariant="caption" width="100%">
           {bottomLineComponent}

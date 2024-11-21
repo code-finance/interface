@@ -12,14 +12,14 @@ import {
   GhoIncentivesCard,
   GhoIncentivesCardProps,
 } from 'src/components/incentives/GhoIncentivesCard';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 import { FixedAPYTooltip } from 'src/components/infoTooltips/FixedAPYTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
-import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
-import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+// import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
+// import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+// import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -27,7 +27,6 @@ import {
 import { useGhoPoolReserve } from 'src/hooks/pool/useGhoPoolReserve';
 import { useUserGhoPoolReserve } from 'src/hooks/pool/useUserGhoPoolReserve';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -39,11 +38,7 @@ import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
-import {
-  DetailsHFLine,
-  DetailsIncentivesLine,
-  TxModalDetails,
-} from '../FlowCommons/TxModalDetails';
+import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
 import { BorrowAmountWarning } from './BorrowAmountWarning';
 import { GhoBorrowSuccessView } from './GhoBorrowSuccessView';
@@ -56,63 +51,57 @@ export enum ErrorType {
   NOT_ENOUGH_BORROWED,
 }
 
-interface BorrowModeSwitchProps {
-  interestRateMode: InterestRate;
-  setInterestRateMode: (value: InterestRate) => void;
-  variableRate: string;
-  stableRate: string;
-}
+// interface BorrowModeSwitchProps {
+//   interestRateMode: InterestRate;
+//   setInterestRateMode: (value: InterestRate) => void;
+//   variableRate: string;
+//   stableRate: string;
+// }
 
-const BorrowModeSwitch = ({
-  setInterestRateMode,
-  interestRateMode,
-  variableRate,
-  stableRate,
-}: BorrowModeSwitchProps) => {
-  return (
-    <Row
-      caption={
-        <APYTypeTooltip
-          text={<Trans>Borrow APY rate</Trans>}
-          key="APY type_modal"
-          variant="description"
-        />
-      }
-      captionVariant="description"
-      mb={5}
-      flexDirection="column"
-      align="flex-start"
-      captionColor="text.secondary"
-    >
-      <StyledTxModalToggleGroup
-        color="primary"
-        value={interestRateMode}
-        exclusive
-        onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ mt: 0.5 }}
-      >
-        <StyledTxModalToggleButton
-          value={InterestRate.Variable}
-          disabled={interestRateMode === InterestRate.Variable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Variable</Trans>
-          </Typography>
-          <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-        <StyledTxModalToggleButton
-          value={InterestRate.Stable}
-          disabled={interestRateMode === InterestRate.Stable}
-        >
-          <Typography variant="buttonM" sx={{ mr: 1 }}>
-            <Trans>Stable</Trans>
-          </Typography>
-          <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </StyledTxModalToggleButton>
-      </StyledTxModalToggleGroup>
-    </Row>
-  );
-};
+// const BorrowModeSwitch = ({
+//   setInterestRateMode,
+//   interestRateMode,
+//   variableRate,
+//   stableRate,
+// }: BorrowModeSwitchProps) => {
+//   return (
+//     <Row
+//       caption={
+//         <APYTypeTooltip
+//           text={<Trans>Borrow APY rate</Trans>}
+//           key="APY type_modal"
+//           variant="description"
+//         />
+//       }
+//       captionVariant="description"
+//       mb={5}
+//       flexDirection="column"
+//       align="flex-start"
+//       captionColor="text.secondary"
+//     >
+//       <StyledTxModalToggleGroup
+//         color="primary"
+//         value={interestRateMode}
+//         exclusive
+//         onChange={(_, value) => setInterestRateMode(value)}
+//         sx={{ mt: 0.5 }}
+//       >
+//         <StyledTxModalToggleButton value={InterestRate.Variable}>
+//           <Typography variant="buttonM" sx={{ mr: 1 }}>
+//             <Trans>Variable</Trans>
+//           </Typography>
+//           <FormattedNumber value={variableRate} percent variant="secondary14" />
+//         </StyledTxModalToggleButton>
+//         <StyledTxModalToggleButton value={InterestRate.Stable}>
+//           <Typography variant="buttonM" sx={{ mr: 1 }}>
+//             <Trans>Stable</Trans>
+//           </Typography>
+//           <FormattedNumber value={stableRate} percent variant="secondary14" />
+//         </StyledTxModalToggleButton>
+//       </StyledTxModalToggleGroup>
+//     </Row>
+//   );
+// };
 
 export const GhoBorrowModalContent = ({
   underlyingAsset,
@@ -134,7 +123,6 @@ export const GhoBorrowModalContent = ({
   const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
-  const { data: incentives } = useMeritIncentives('gho');
 
   // Check if user has any open borrow positions on GHO
   // Check if user can borrow at a discount
@@ -251,14 +239,14 @@ export const GhoBorrowModalContent = ({
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
 
-      {poolReserve.stableBorrowRateEnabled && (
+      {/* {poolReserve.stableBorrowRateEnabled && (
         <BorrowModeSwitch
           interestRateMode={interestRateMode}
           setInterestRateMode={setInterestRateMode}
           variableRate={poolReserve.variableBorrowAPY}
           stableRate={poolReserve.stableBorrowAPY}
         />
-      )}
+      )} */}
 
       <AssetInput
         image={poolReserve.image}
@@ -290,10 +278,6 @@ export const GhoBorrowModalContent = ({
           visibleHfChange={!!amount}
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString(10)}
-        />
-        <DetailsIncentivesLine
-          incentives={incentives ? [incentives] : []}
-          symbol={poolReserve.symbol}
         />
         <Row
           caption={

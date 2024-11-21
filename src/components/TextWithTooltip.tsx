@@ -45,7 +45,7 @@ export const TextWithTooltip = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '2px', ...boxSx }} {...boxRest}>
       {text && (
         <Typography {...rest} color={textColor}>
           {text}
@@ -61,9 +61,8 @@ export const TextWithTooltip = ({
             width: iconSize,
             height: iconSize,
             borderRadius: '50%',
-            p: 0,
             minWidth: 0,
-            ml: iconMargin || '2px',
+            margin: `${iconMargin}px` || 0,
           }}
           onClick={() => {
             if (event) {

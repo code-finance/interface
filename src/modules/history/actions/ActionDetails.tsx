@@ -1,6 +1,6 @@
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Box, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
@@ -11,6 +11,7 @@ import { BorrowRateModeBlock } from '../actions/BorrowRateModeBlock';
 import { fetchIconSymbolAndNameHistorical } from '../helpers';
 import { PriceUnavailable } from '../PriceUnavailable';
 import { ActionFields, TransactionHistoryItem } from '../types';
+import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 
 export const ActionTextMap = ({ action }: { action: string }) => {
   switch (action) {
@@ -44,6 +45,9 @@ export const ActionDetails = <K extends keyof ActionFields>({
   iconSize: string;
   isConnectedTonWallet?: boolean;
 }) => {
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
+  const typographyVariant = xsm ? 'body1' : 'body2';
+  const typographyVariant2 = xsm ? 'body3' : 'body7';
   switch (transaction.action) {
     case 'Supply':
     case 'Deposit':
@@ -58,13 +62,13 @@ export const ActionDetails = <K extends keyof ActionFields>({
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={formattedSupplyReserve.iconSymbol} sx={{ fontSize: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedSupplyReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            +
-          </Typography>
+          <AddCircleOutline
+            sx={(theme) => ({
+              color: theme.palette.point.positive,
+              fontSize: { xs: 18, xsm: 22 },
+              mx: { xs: '7px', xsm: '11px' },
+            })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -75,13 +79,13 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedSupplyAmount}
-                    variant="body1"
+                    variant={typographyVariant}
                     color="common.white"
                     sx={{ mr: 2 }}
                     isConnectedTonWallet
                     compact={isConnectedTonWallet ? true : false}
                   />
-                  <Typography variant="secondary14" color="common.white">
+                  <Typography variant={typographyVariant} color="common.white">
                     {formattedSupplyReserve.symbol}
                   </Typography>
                 </Box>
@@ -93,7 +97,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             <Box>
               <FormattedNumber
                 value={formattedSupplyAmount}
-                variant="body1"
+                variant={typographyVariant}
                 color="text.primary"
                 compact
                 compactThreshold={100000}
@@ -104,14 +108,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="body1" color="text.primary">
+              <Typography variant={typographyVariant} color="text.primary">
                 {formattedSupplyReserve.name} ({formattedSupplyReserve.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
-            <Typography variant="body1" color="text.primary">
+            <Typography variant={typographyVariant} color="text.primary">
               {formattedSupplyReserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -123,14 +127,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
       const formattedBorrowAmount = formatUnits(borrowTx.amount, borrowTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <TokenIcon symbol={formattedBorrowReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            &minus;
-          </Typography>
+          <TokenIcon symbol={formattedBorrowReserve.iconSymbol} sx={{ fontSize: iconSize }} />
+          <RemoveCircleOutline
+            sx={(theme) => ({
+              color: theme.palette.point.negative,
+              fontSize: { xs: 18, xsm: 22 },
+              mx: { xs: '7px', xsm: '11px' },
+            })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -141,13 +145,13 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedBorrowAmount}
-                    variant="body1"
+                    variant={typographyVariant}
                     color="text.primary"
                     sx={{ mr: 2 }}
                     isConnectedTonWallet
                     compact={isConnectedTonWallet ? true : false}
                   />
-                  <Typography variant="body1" color="text.primary">
+                  <Typography variant={typographyVariant} color="text.primary">
                     {formattedBorrowReserve.symbol}
                   </Typography>
                 </Box>
@@ -159,7 +163,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             <Box>
               <FormattedNumber
                 value={formattedBorrowAmount}
-                variant="body1"
+                variant={typographyVariant}
                 color="text.primary"
                 sx={{ mr: 2 }}
                 compact
@@ -170,14 +174,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="body1" color="text.primary">
+              <Typography variant={typographyVariant} color="text.primary">
                 {formattedBorrowReserve.name} ({formattedBorrowReserve.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
-            <Typography variant="body1" color="text.primary">
+            <Typography variant={typographyVariant} color="text.primary">
               {formattedBorrowReserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -189,14 +193,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
       const formattedWithdrawAmount = formatUnits(withdrawTx.amount, withdrawTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <TokenIcon symbol={formattedWithdrawReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedWithdrawReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            &minus;
-          </Typography>
+          <TokenIcon symbol={formattedWithdrawReserve.iconSymbol} sx={{ fontSize: iconSize }} />
+          <RemoveCircleOutline
+            sx={(theme) => ({
+              color: theme.palette.point.negative,
+              fontSize: { xs: 18, xsm: 22 },
+              mx: { xs: '7px', xsm: '11px' },
+            })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -207,13 +211,13 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedWithdrawAmount}
-                    variant="body1"
+                    variant={typographyVariant}
                     color="text.primary"
                     sx={{ mr: 2 }}
                     isConnectedTonWallet
                     compact={isConnectedTonWallet ? true : false}
                   />
-                  <Typography variant="body1" color="text.primary">
+                  <Typography variant={typographyVariant} color="text.primary">
                     {formattedWithdrawReserve.symbol}
                   </Typography>
                 </Box>
@@ -225,7 +229,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             <Box>
               <FormattedNumber
                 value={formattedWithdrawAmount}
-                variant="body1"
+                variant={typographyVariant}
                 color="text.primary"
                 sx={{ mr: 2 }}
                 compact
@@ -236,14 +240,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="body1" color="text.primary">
+              <Typography variant={typographyVariant} color="text.primary">
                 {formattedWithdrawReserve.name} ({formattedWithdrawReserve.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
-            <Typography variant="body1" color="text.primary">
+            <Typography variant={typographyVariant} color="text.primary">
               {formattedWithdrawReserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -255,14 +259,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
       const formattedRepayAmount = formatUnits(repayTx.amount, repayTx.reserve.decimals);
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <TokenIcon symbol={formattedRepayReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
-          <Typography
-            variant="body1"
-            color="text.primary"
-            sx={{ ml: formattedRepayReserve.iconSymbol.split('_').length > 1 ? 3 : 1, mb: 0.5 }}
-          >
-            +
-          </Typography>
+          <TokenIcon symbol={formattedRepayReserve.iconSymbol} sx={{ fontSize: iconSize }} />
+          <AddCircleOutline
+            sx={(theme) => ({
+              color: theme.palette.point.positive,
+              fontSize: { xs: 18, xsm: 22 },
+              mx: { xs: '7px', xsm: '11px' },
+            })}
+          />
           <DarkTooltip
             wrap
             title={
@@ -273,13 +277,13 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 <Box sx={{ display: 'flex' }}>
                   <FormattedNumber
                     value={formattedRepayAmount}
-                    variant="body1"
+                    variant={typographyVariant}
                     color="text.primary"
                     sx={{ mr: 2 }}
                     isConnectedTonWallet
                     compact={isConnectedTonWallet ? true : false}
                   />
-                  <Typography variant="body1" color="text.primary">
+                  <Typography variant={typographyVariant} color="text.primary">
                     {formattedRepayReserve.symbol}
                   </Typography>
                 </Box>
@@ -291,7 +295,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             <Box>
               <FormattedNumber
                 value={formattedRepayAmount}
-                variant="body1"
+                variant={typographyVariant}
                 color="text.primary"
                 sx={{ mr: 2 }}
                 compact
@@ -302,14 +306,14 @@ export const ActionDetails = <K extends keyof ActionFields>({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="body1" color="text.primary">
+              <Typography variant={typographyVariant} color="text.primary">
                 {formattedRepayReserve.name} ({formattedRepayReserve.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
-            <Typography variant="body1" color="text.primary">
+            <Typography variant={typographyVariant} color="text.primary">
               {formattedRepayReserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -324,30 +328,30 @@ export const ActionDetails = <K extends keyof ActionFields>({
       );
       return (
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography variant="body3" color="text.primary">
+          <Typography variant={typographyVariant2} color="text.primary">
             <Trans>Collateralization</Trans>
           </Typography>
           {collateralUsageTx.toState ? (
-            <Typography variant="body3" color="text.primary" sx={{ px: 0.75 }}>
+            <Typography variant={typographyVariant2} color="text.primary" sx={{ px: 0.75 }}>
               <Trans>enabled</Trans>
             </Typography>
           ) : (
-            <Typography variant="body3" color="error.main" sx={{ px: 0.75 }}>
+            <Typography variant={typographyVariant2} color="error.main" sx={{ px: 0.75 }}>
               <Trans>disabled</Trans>
             </Typography>
           )}
-          <Typography variant="body3" color="text.primary" sx={{ mr: 0.5 }}>
+          <Typography variant={typographyVariant2} color="text.primary" sx={{ mr: 0.5 }}>
             <Trans>for</Trans>
           </Typography>
           <TokenIcon
             symbol={formattedCollateralReserve.iconSymbol}
             sx={{
-              fontSIze: iconSize,
+              fontSize: iconSize,
             }}
           />
           <DarkTooltip
             title={
-              <Typography variant="body1" color="text.primary">
+              <Typography variant={typographyVariant} color="text.primary">
                 {formattedCollateralReserve.name} ({formattedCollateralReserve.symbol})
               </Typography>
             }
@@ -355,7 +359,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             placement="top"
           >
             <Typography
-              variant="body1"
+              variant={typographyVariant}
               color="text.primary"
               sx={{ ml: formattedCollateralReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
             >
@@ -371,36 +375,41 @@ export const ActionDetails = <K extends keyof ActionFields>({
       >;
       const formattedSwapReserve = fetchIconSymbolAndNameHistorical(swapBorrowRateTx.reserve);
       return (
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            width: '100%',
+            overflow: 'hidden',
+            gap: 1,
+          }}
+        >
           <BorrowRateModeBlock
             borrowRateMode={swapBorrowRateTx.borrowRateModeFrom.toString()}
             swapBorrowRateTx={swapBorrowRateTx}
           />
-          <SvgIcon sx={{ fontSize: '20px', px: 1 }}>
+          <SvgIcon sx={{ fontSize: '20px' }}>
             <ArrowNarrowRightIcon />
           </SvgIcon>
           <BorrowRateModeBlock
             borrowRateMode={swapBorrowRateTx.borrowRateModeTo.toString()}
             swapBorrowRateTx={swapBorrowRateTx}
           />
-          <Typography variant="body3" color="text.primary" px={2}>
+          <Typography variant={typographyVariant2} color="text.primary">
             <Trans>for</Trans>
           </Typography>
-          <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSIze: iconSize }} />
+          <TokenIcon symbol={formattedSwapReserve.iconSymbol} sx={{ fontSize: iconSize }} />
           <DarkTooltip
             title={
-              <Typography variant="body1" color="text.primary">
+              <Typography variant={typographyVariant2} color="text.primary">
                 {formattedSwapReserve.name} ({formattedSwapReserve.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
-            <Typography
-              variant="body1"
-              color="text.primary"
-              sx={{ ml: formattedSwapReserve.iconSymbol.split('_').length > 1 ? 3 : 1 }}
-            >
+            <Typography variant={typographyVariant2} color="text.primary">
               {swapBorrowRateTx.reserve.symbol}
             </Typography>
           </DarkTooltip>
@@ -423,30 +432,36 @@ export const ActionDetails = <K extends keyof ActionFields>({
         liquidationTx.principalReserve.decimals
       );
       return (
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }} pr={4.5}>
-            <Typography variant="body2" color="text.primary">
+        <Box
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: { xs: 3, sxm: '18px' },
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant={typographyVariant2} color="text.primary">
               <Trans>Liquidated collateral</Trans>
             </Typography>
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <TokenIcon
                 symbol={formattedLiquidationColatReserve.iconSymbol}
-                sx={{ fontSIze: iconSize, mr: 0.5 }}
+                sx={{ fontSize: iconSize, mr: 0.5 }}
               />
               <Box
                 sx={{
-                  ml: formattedLiquidationColatReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
                   display: 'inline-flex',
                   alignItems: 'center',
                 }}
               >
-                <Typography
-                  variant="body1"
-                  color="text.primary"
-                  sx={{ display: 'inline-flex', mb: 0.5 }}
-                >
-                  &minus;
-                </Typography>
+                <RemoveCircleOutline
+                  sx={(theme) => ({
+                    color: theme.palette.point.negative,
+                    fontSize: { xs: 18, xsm: 22 },
+                    mx: { xs: '3px', xsm: '7px' },
+                  })}
+                />
                 <DarkTooltip
                   wrap
                   title={
@@ -460,13 +475,13 @@ export const ActionDetails = <K extends keyof ActionFields>({
                       <Box sx={{ display: 'flex' }}>
                         <FormattedNumber
                           value={formattedCollateralAmount}
-                          variant="body1"
+                          variant={typographyVariant}
                           color="text.primary"
                           sx={{ mr: 1 }}
                           isConnectedTonWallet
                           compact={isConnectedTonWallet ? true : false}
                         />
-                        <Typography variant="body1" color="text.primary">
+                        <Typography variant={typographyVariant} color="text.primary">
                           {formattedLiquidationColatReserve.symbol}
                         </Typography>
                       </Box>
@@ -478,7 +493,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                   <Box>
                     <FormattedNumber
                       value={formattedCollateralAmount}
-                      variant="body1"
+                      variant={typographyVariant}
                       color="text.primary"
                       sx={{ mr: 1 }}
                       compact
@@ -489,7 +504,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 </DarkTooltip>
                 <DarkTooltip
                   title={
-                    <Typography variant="body1" color="text.primary">
+                    <Typography variant={typographyVariant} color="text.primary">
                       {formattedLiquidationColatReserve.name} (
                       {formattedLiquidationColatReserve.symbol})
                     </Typography>
@@ -498,7 +513,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                   placement="top"
                 >
                   <Typography
-                    variant="body1"
+                    variant={typographyVariant}
                     color="text.primary"
                     sx={{ display: 'inline-flex', alignItems: 'center' }}
                   >
@@ -511,29 +526,28 @@ export const ActionDetails = <K extends keyof ActionFields>({
           <SvgIcon sx={{ fontSize: iconSize }}>
             <ArrowNarrowRightIcon />
           </SvgIcon>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }} pl={4.5}>
-            <Typography variant="body2" color="text.primary">
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant={typographyVariant2} color="text.primary">
               <Trans>Covered debt</Trans>
             </Typography>
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <TokenIcon
                 symbol={formattedLiquidationBorrowReserve.iconSymbol}
-                sx={{ fontSIze: iconSize, md: 0.5 }}
+                sx={{ fontSize: iconSize, md: 0.5 }}
               />
               <Box
                 sx={{
-                  ml: formattedLiquidationBorrowReserve.iconSymbol.split('_').length > 1 ? 3 : 1,
                   display: 'inline-flex',
                   alignItems: 'center',
                 }}
               >
-                <Typography
-                  variant="body1"
-                  color="text.primary"
-                  sx={{ display: 'inline-flex', alignItems: 'center', mb: 0.5 }}
-                >
-                  +
-                </Typography>
+                <AddCircleOutline
+                  sx={(theme) => ({
+                    color: theme.palette.point.positive,
+                    fontSize: { xs: 18, xsm: 22 },
+                    mx: { xs: '3px', xsm: '7px' },
+                  })}
+                />
                 <DarkTooltip
                   wrap
                   title={
@@ -547,11 +561,11 @@ export const ActionDetails = <K extends keyof ActionFields>({
                       <Box sx={{ display: 'flex' }}>
                         <FormattedNumber
                           value={formattedLiquidationBorrowAmount}
-                          variant="body1"
+                          variant={typographyVariant}
                           color="text.primary"
                           sx={{ mr: 1 }}
                         />
-                        <Typography variant="body1" color="text.primary">
+                        <Typography variant={typographyVariant} color="text.primary">
                           {formattedLiquidationBorrowReserve.symbol}
                         </Typography>
                       </Box>
@@ -563,7 +577,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                   <Box>
                     <FormattedNumber
                       value={formattedLiquidationBorrowAmount}
-                      variant="body1"
+                      variant={typographyVariant}
                       color="text.primary"
                       sx={{ mr: 1 }}
                       compact
@@ -574,7 +588,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                 </DarkTooltip>
                 <DarkTooltip
                   title={
-                    <Typography variant="body1" color="text.primary">
+                    <Typography variant={typographyVariant} color="text.primary">
                       {formattedLiquidationBorrowReserve.name} (
                       {formattedLiquidationBorrowReserve.symbol})
                     </Typography>
@@ -582,7 +596,11 @@ export const ActionDetails = <K extends keyof ActionFields>({
                   arrow
                   placement="top"
                 >
-                  <Typography variant="body1" color="text.primary" sx={{ display: 'inline-flex' }}>
+                  <Typography
+                    variant={typographyVariant}
+                    color="text.primary"
+                    sx={{ display: 'inline-flex' }}
+                  >
                     {formattedLiquidationBorrowReserve.symbol}
                   </Typography>
                 </DarkTooltip>

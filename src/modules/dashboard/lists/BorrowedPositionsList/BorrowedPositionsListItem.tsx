@@ -117,14 +117,11 @@ const BorrowedPositionsListItemDesktop = ({
   reserve,
   borrowRateMode,
   disableBorrow,
-  disableSwitch,
   disableRepay,
-  showSwitchButton,
   totalBorrows,
   totalBorrowsUSD,
   borrowAPY,
   incentives,
-  onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
   onOpenRateSwitch,
@@ -150,7 +147,15 @@ const BorrowedPositionsListItemDesktop = ({
       showBorrowCapTooltips
       showSuperFestTooltip={showSuperFestTooltip(reserve.symbol, currentMarket, Side.BORROW)}
     >
-      <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
+      <ListValueColumn
+        symbol={reserve.symbol}
+        value={totalBorrows}
+        subValue={totalBorrowsUSD}
+        topColor={'text.primary'}
+        topVariant={'body6'}
+        bottomColor={'text.mainTitle'}
+        bottomVariant={'detail2'}
+      />
 
       <ListAPRColumn value={borrowAPY} incentives={incentives} symbol={reserve.symbol} />
 
@@ -168,48 +173,10 @@ const BorrowedPositionsListItemDesktop = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {showSwitchButton ? (
-          <Button
-            disabled={disableSwitch}
-            variant="contained"
-            onClick={onDetbSwitchClick}
-            data-cy={`swapButton`}
-          >
-            <Trans>Switch</Trans>
-          </Button>
-        ) : (
-          <Button
-            sx={{
-              p: 2,
-              height: '36px',
-              fontSize: '14px',
-              textTransform: 'capitalize',
-              borderColor: theme.palette.text.subText,
-            }}
-            disabled={disableBorrow}
-            variant="contained"
-            onClick={onOpenBorrow}
-          >
-            <Trans>Borrow</Trans>
-          </Button>
-        )}
-        <Button
-          sx={{
-            p: 2,
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-            borderColor: theme.palette.text.subText,
-            bgcolor: 'transparent',
-            color: 'text.primary',
-            '&:hover': {
-              bgcolor: 'transparent',
-            },
-          }}
-          disabled={disableRepay}
-          variant="outlined"
-          onClick={onOpenRepay}
-        >
+        <Button disabled={disableBorrow} variant="contained" size="small" onClick={onOpenBorrow}>
+          <Trans>Borrow</Trans>
+        </Button>
+        <Button disabled={disableRepay} size="small" onClick={onOpenRepay}>
           <Trans>Repay</Trans>
         </Button>
       </ListButtonsColumn>
@@ -223,12 +190,12 @@ const BorrowedPositionsListItemMobile = ({
   totalBorrows,
   totalBorrowsUSD,
   disableBorrow,
-  showSwitchButton,
-  disableSwitch,
+  // showSwitchButton,
+  // disableSwitch,
   borrowAPY,
   incentives,
   disableRepay,
-  onDetbSwitchClick,
+  // onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
   onOpenRateSwitch,
@@ -298,7 +265,7 @@ const BorrowedPositionsListItemMobile = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        {showSwitchButton ? (
+        {/* {showSwitchButton ? (
           <Button
             disabled={disableSwitch}
             variant="contained"
@@ -310,12 +277,7 @@ const BorrowedPositionsListItemMobile = ({
           </Button>
         ) : (
           <Button
-            sx={{
-              p: 2,
-              height: '36px',
-              fontSize: '14px',
-              textTransform: 'capitalize',
-            }}
+            size="small"
             disabled={disableBorrow}
             variant="contained"
             onClick={onOpenBorrow}
@@ -323,12 +285,21 @@ const BorrowedPositionsListItemMobile = ({
           >
             <Trans>Borrow</Trans>
           </Button>
-        )}
+        )} */}
+        <Button
+          disabled={disableBorrow}
+          variant="contained"
+          onClick={onOpenBorrow}
+          sx={{ flex: 1 }}
+          fullWidth
+        >
+          <Trans>Borrow</Trans>
+        </Button>
         <Button
           disabled={disableRepay}
-          variant="outlined"
+          variant="text"
           onClick={onOpenRepay}
-          sx={{ ml: 1.5 }}
+          sx={{ ml: 1.5, flex: 1 }}
           fullWidth
         >
           <Trans>Repay</Trans>

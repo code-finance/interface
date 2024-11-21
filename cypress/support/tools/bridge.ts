@@ -30,7 +30,6 @@ export class CustomizedBridge extends Eip1193Bridge {
     let callback;
     let method;
     let params;
-    console.log(args);
     if (isCallbackForm) {
       callback = args[1];
       // @ts-ignore

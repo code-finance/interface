@@ -12,6 +12,7 @@ import {
   AaveV3BaseSepolia,
   AaveV3BNB,
   AaveV3Ethereum,
+  AaveV3EthereumLido,
   AaveV3Fantom,
   AaveV3FantomTestnet,
   AaveV3Fuji,
@@ -29,7 +30,7 @@ import { ReactNode } from 'react';
 
 // Enable for premissioned market
 // import { PermissionView } from 'src/components/transactions/FlowCommons/PermissionView';
-export type ExtendedChainId = ChainId | -239 | -1;
+export type ExtendedChainId = ChainId | -239 | -1 | 324;
 
 export type MarketDataType = {
   v3?: boolean;
@@ -350,6 +351,7 @@ export const marketsData: {
       WETH_GATEWAY: AaveV3Arbitrum.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: AaveV3Arbitrum.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Arbitrum.UI_POOL_DATA_PROVIDER,
+
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Arbitrum.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3Arbitrum.L2_ENCODER,
       COLLECTOR: AaveV3Arbitrum.COLLECTOR,
@@ -399,6 +401,7 @@ export const marketsData: {
       SWAP_COLLATERAL_ADAPTER: AaveV3Avalanche.SWAP_COLLATERAL_ADAPTER,
       WALLET_BALANCE_PROVIDER: AaveV3Avalanche.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Avalanche.UI_POOL_DATA_PROVIDER,
+
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Avalanche.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Avalanche.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
@@ -612,6 +615,7 @@ export const marketsData: {
       WETH_GATEWAY: '0x0', // not applicable for Metis
       WALLET_BALANCE_PROVIDER: AaveV3Metis.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Metis.UI_POOL_DATA_PROVIDER,
+
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Metis.COLLECTOR,
     },
@@ -628,6 +632,7 @@ export const marketsData: {
       WETH_GATEWAY: AaveV3Gnosis.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: AaveV3Gnosis.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3Gnosis.UI_POOL_DATA_PROVIDER,
+
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Gnosis.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Gnosis.COLLECTOR,
     },

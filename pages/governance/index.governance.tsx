@@ -1,9 +1,5 @@
-import { Trans } from '@lingui/macro';
-import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
 import { ProposalsV3List } from 'src/modules/governance/ProposalsV3List';
@@ -24,15 +20,7 @@ const GovRepresentativesModal = dynamic(() =>
   )
 );
 
-enum Tabs {
-  PROPOSALS,
-  INFORMATION,
-}
-
 export default function Governance() {
-  const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('lg'));
-  const [mode, setMode] = useState(Tabs.PROPOSALS);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
@@ -44,45 +32,8 @@ export default function Governance() {
     <>
       <GovernanceTopPanel />
       <ContentContainer>
-        <StyledToggleButtonGroup
-          color="primary"
-          value={mode}
-          exclusive
-          onChange={(_, value) => setMode(value)}
-          sx={{
-            width: { xs: '100%', xsm: '359px' },
-            height: '44px',
-            mb: 4,
-            display: { xs: 'flex', lg: 'none' },
-          }}
-        >
-          <StyledToggleButton value={Tabs.PROPOSALS} disabled={mode === Tabs.PROPOSALS}>
-            <Typography variant="subheader1">
-              <Trans>Proposals</Trans>
-            </Typography>
-          </StyledToggleButton>
-          <StyledToggleButton value={Tabs.INFORMATION} disabled={mode === Tabs.INFORMATION}>
-            <Typography variant="subheader1">
-              <Trans>Your info</Trans>
-            </Typography>
-          </StyledToggleButton>
-        </StyledToggleButtonGroup>
-        {isMobile ? (
-          mode === Tabs.PROPOSALS ? (
-            <ProposalsV3List />
-          ) : (
-            <UserGovernanceInfo />
-          )
-        ) : (
-          <Grid container spacing={4}>
-            <Grid item md={8}>
-              <ProposalsV3List />
-            </Grid>
-            <Grid item md={4}>
-              <UserGovernanceInfo />
-            </Grid>
-          </Grid>
-        )}
+        <UserGovernanceInfo />
+        <ProposalsV3List />
       </ContentContainer>
     </>
   );

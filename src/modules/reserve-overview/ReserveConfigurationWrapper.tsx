@@ -9,20 +9,12 @@ type ReserveConfigurationProps = {
   reserve: ComputedReserveData;
 };
 
-const GhoReserveConfiguration = dynamic(() =>
-  import('./Gho/GhoReserveConfiguration').then((module) => module.GhoReserveConfiguration)
-);
-
 const ReserveConfiguration = dynamic(() =>
   import('./ReserveConfiguration').then((module) => module.ReserveConfiguration)
 );
 
 export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
-  const { currentMarket } = useProtocolDataContext();
-  const { breakpoints } = useTheme();
-  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
-
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
   return (
     <Paper
       variant="elevation"
@@ -43,15 +35,12 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
               : '28px',
         }}
       >
-        <Typography variant="h2" color="text.primary">
+        <Typography variant={'h2'} color="text.primary">
           <Trans>Reserve status &#38; configuration</Trans>
         </Typography>
       </Box>
-      {/*{isGho ? (*/}
-      {/*  <GhoReserveConfiguration reserve={reserve} />*/}
-      {/*) : (*/}
+
       <ReserveConfiguration reserve={reserve} />
-      {/*)}*/}
     </Paper>
   );
 };

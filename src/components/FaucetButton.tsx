@@ -33,7 +33,7 @@ export const FaucetButton = () => {
         }
         component={Link}
         href={ROUTES.faucet}
-        variant="outlined"
+        variant="text"
         size="small"
       >
         <Typography variant="buttonS">

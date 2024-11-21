@@ -1,5 +1,5 @@
 import { Box, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { ReactNode } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 interface TopInfoPanelItemProps {
   icon?: ReactNode;
@@ -11,6 +11,7 @@ interface TopInfoPanelItemProps {
   variant?: 'light' | 'dark' | undefined; // default dark
   withLine?: boolean;
   loading?: boolean;
+  sx?: ComponentProps<typeof Box>['sx'];
 }
 
 export const TopInfoPanelItem = ({
@@ -22,17 +23,22 @@ export const TopInfoPanelItem = ({
   withLine,
   loading,
   withoutIconWrapper,
+  sx,
 }: TopInfoPanelItemProps) => {
   const theme = useTheme();
   const upToSM = useMediaQuery(theme.breakpoints.up('sm'));
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
 
   return (
     <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        minWidth: '170px',
-      }}
+      sx={[
+        {
+          display: 'flex',
+          alignItems: 'center',
+          minWidth: xsm ? '170px' : '140px',
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
     >
       {withLine && (
         <Box
@@ -68,9 +74,9 @@ export const TopInfoPanelItem = ({
           </Box>
         ))}
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', mt: 1, gap: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: xsm ? 2 : 0, width: '100%' }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <Typography variant="body3" color="text.secondary">
+          <Typography variant={xsm ? 'body3' : 'detail3'} color="text.secondary">
             {title}
           </Typography>
           {titleIcon && titleIcon}

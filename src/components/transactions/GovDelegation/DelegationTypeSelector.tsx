@@ -24,19 +24,13 @@ export const DelegationTypeSelector = ({
       exclusive
       onChange={(_, value) => setDelegationType(value)}
     >
-      <StyledTxModalToggleButton
-        value={DelegationType.ALL}
-        disabled={delegationType === DelegationType.ALL}
-      >
+      <StyledTxModalToggleButton value={DelegationType.ALL}>
         <Typography variant="buttonM">
           <Trans>Both</Trans>
         </Typography>
       </StyledTxModalToggleButton>
 
-      <StyledTxModalToggleButton
-        value={DelegationType.VOTING}
-        disabled={delegationType === DelegationType.VOTING}
-      >
+      <StyledTxModalToggleButton value={DelegationType.VOTING}>
         <Typography variant="buttonM">
           <Trans>Voting</Trans>
         </Typography>

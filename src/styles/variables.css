@@ -21,3 +21,6 @@ body {
 #tc-widget-root .go593626609 li:nth-child(3) {
   display: block;
 }
+input {
+  text-overflow: ellipsis;
+}

@@ -1,3 +1,4 @@
 export const uiConfig = {
-  appLogo: '/aave-com-logo-header.svg',
+  appLogoLight: '/logo-light.svg',
+  appLogoDark: '/logo-dark.svg',
 };

@@ -2,6 +2,7 @@ import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box } from '@mui/system';
 import { useState } from 'react';
 import { MoneyIcon } from 'src/components/icons/MoneyIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -26,7 +27,7 @@ import {
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
-import { DashboardEModeButton } from '../../DashboardEModeButton';
+// import { DashboardEModeButton } from '../../DashboardEModeButton';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
 import { ListTopInfoItem } from '../ListTopInfoItem';
@@ -160,28 +161,40 @@ export const BorrowedPositionsList = () => {
   };
 
   if (loading)
-    return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
+    return <ListLoader title={<Trans>Your supplies</Trans>} head={head.map((c) => c.title)} />;
 
   return (
     <ListWrapper
       wrapperSx={{
-        pl: 5,
+        pl: { xs: 3, xsm: 5 },
       }}
-      paperSx={(theme) => ({ backgroundColor: theme.palette.background.group })}
-      icon={<MoneyIcon sx={{ height: '60px', width: '60px', mb: 3 }} />}
+      icon={
+        <MoneyIcon
+          sx={{
+            height: { xs: '50px', xsm: '60px' },
+            width: { xs: '50px', xsm: '60px' },
+            color: 'white',
+          }}
+        />
+      }
+      paperSx={(theme) => ({
+        backgroundColor: theme.palette.background.group,
+        py: 7,
+        px: 6,
+      })}
       tooltipOpen={tooltipOpen}
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4, color: 'white' }}>
+        <Typography
+          component="div"
+          variant={'h2'}
+          sx={{ mb: { xs: 2, xsm: 4 } }}
+          color="text.buttonText"
+        >
           <Trans>Your borrows</Trans>
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
       isPosition
-      subTitleComponent={
-        showEModeButton ? (
-          <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
-        ) : undefined
-      }
       noData={!sortedReserves.length}
       subChildrenComponent={
         !sortedReserves.length ? (
@@ -199,6 +212,7 @@ export const BorrowedPositionsList = () => {
                 percent
                 tooltip={
                   <TotalBorrowAPYTooltip
+                    iconColor="text.buttonText"
                     setOpen={setTooltipOpen}
                     event={{
                       eventName: GENERAL.TOOL_TIP,
@@ -214,6 +228,7 @@ export const BorrowedPositionsList = () => {
                 tooltip={
                   <BorrowPowerTooltip
                     setOpen={setTooltipOpen}
+                    iconColor="text.buttonText"
                     event={{
                       eventName: GENERAL.TOOL_TIP,
                       eventParams: { tooltip: 'Borrow power used' },
@@ -230,15 +245,26 @@ export const BorrowedPositionsList = () => {
         <div
           style={{
             backgroundColor: theme.palette.background.primary,
-            margin: '0px -20px -20px -20px',
-            borderRadius: '12px',
+            margin: '20px -24px -28px -24px',
+            borderRadius: '0 0 15px 15px',
+            paddingBlock: '8px',
+            paddingInline: '20px',
           }}
         >
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
-            <div key={item.underlyingAsset + item.borrowRateMode} style={{ padding: '0 20px' }}>
+            <Box
+              key={item.underlyingAsset + item.borrowRateMode}
+              sx={{
+                p: 0,
+                '&:not(:last-child)': {
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                },
+              }}
+            >
               <BorrowedPositionsListItemWrapper item={item} />
-            </div>
+            </Box>
           ))}
         </div>
       ) : null}

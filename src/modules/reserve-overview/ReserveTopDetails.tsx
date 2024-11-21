@@ -1,19 +1,20 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Skeleton, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
 import _ from 'lodash';
-import React from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import {
   defaultRateUSDNotValue,
   SCAN_PRICE_TON,
+  SCAN_TRANSACTION_TON,
 } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
+import { Address } from '@ton/core';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import {
   ComputedReserveData,
@@ -30,21 +31,30 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+  const downToSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'body1';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'body1';
-
   const getViewOracleContractTon = (address: string | undefined) => {
     return _.find(defaultRateUSDNotValue, { address })?.id || null;
   };
+  const valueTypographyVariant = downToSM ? 'body6' : 'body1';
+  const symbolsTypographyVariant = downToSM ? 'body6' : 'body1';
+
+  const getOraclePriceLinkTon = () => {
+    if (poolReserve.symbol === 'tsTON' || poolReserve.symbol === 'stTON') {
+      return `${SCAN_TRANSACTION_TON}/${Address.parse(`${poolReserve.underlyingAssetTon}`)}`;
+    } else {
+      return `${SCAN_PRICE_TON}/en/coins/${getViewOracleContractTon(
+        poolReserve.underlyingAssetTon
+      )}`;
+    }
+  };
 
   const linkViewOracleContract = isConnectNetWorkTon
-    ? `${SCAN_PRICE_TON}/en/coins/${getViewOracleContractTon(poolReserve.underlyingAssetTon)}`
+    ? getOraclePriceLinkTon()
     : currentNetworkConfig.explorerLinkBuilder({
         address: poolReserve?.priceOracle,
       });
@@ -107,8 +117,8 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
                   cursor: 'pointer',
                 })}
               >
-                <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
-                  <ExternalLinkIcon />
+                <SvgIcon sx={{ fontSize: '14px' }}>
+                  <CallMadeOutlinedIcon />
                 </SvgIcon>
               </Link>
             </CircleIcon>

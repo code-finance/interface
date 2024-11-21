@@ -3,6 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import CallMadeIcon from '@mui/icons-material/CallMade';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import {
@@ -22,9 +23,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/system';
+import React, { useEffect, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
-import { CompactMode } from 'src/components/CompactableTypography';
+import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
+import { ReferralCodeToolTip } from 'src/components/infoTooltips/ReferralCodeToolTip';
 import { Warning } from 'src/components/primitives/Warning';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { WalletModal } from 'src/components/WalletConnection/WalletModal';
@@ -39,6 +43,12 @@ import { Link } from '../components/primitives/Link';
 import { ENABLE_TESTNET, getNetworkConfig, STAGING_ENV } from '../utils/marketsAndNetworksConfig';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { MobileCloseButton } from './components/MobileCloseButton';
+import router from 'next/router';
+import { useWeb3React } from '@web3-react/core';
+import { getWeb3Token } from '../utils/getWeb3Token';
+import { getReferralCode, registerReferral } from '../utils/referral';
+import { providers } from 'ethers';
+import { useReferral } from '../libs/hooks/useReferral';
 
 interface WalletWidgetProps {
   open: boolean;
@@ -46,17 +56,29 @@ interface WalletWidgetProps {
   headerHeight: number;
 }
 
+const useStyles = makeStyles(() => ({
+  menuPaper: {
+    boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
+    padding: '20px 12px',
+    borderRadius: '12px',
+    width: '300px',
+  },
+}));
 export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidgetProps) {
   const { disconnectWallet, currentAccount, connected, chainId, loading, readOnlyModeAddress } =
     useWeb3Context();
   const { disconnectTonWallet, isConnectedTonWallet, walletAddressTonWallet } =
     useTonConnectContext();
 
+  const { library } = useWeb3React<providers.Web3Provider>();
+  const classes = useStyles();
   const { setWalletModalOpen } = useWalletModalContext();
   const theme = useTheme();
   const { breakpoints, palette } = useTheme();
   const xsm = useMediaQuery(breakpoints.down('xsm'));
-  const md = useMediaQuery(breakpoints.down('md'));
+  const lgDown = useMediaQuery(breakpoints.down('lg'));
+  const lg = useMediaQuery(breakpoints.up('lg'));
+  const md = useMediaQuery(breakpoints.up('md'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -70,6 +92,21 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   } else {
     networkColor = '#65c970';
   }
+  const { referralData } = useReferral();
+  const handleWeb3Token = async (account: string, provider: providers.Web3Provider) => {
+    await getWeb3Token(account, provider);
+
+    // Call Referral API
+    // const referral = await getReferralCode(currentAccount);
+    // if (!referral) {
+    //   await registerReferral(currentAccount)
+    // }
+  };
+  useEffect(() => {
+    if (currentAccount && library) {
+      handleWeb3Token(currentAccount, library);
+    }
+  }, [currentAccount]);
 
   const handleClose = () => {
     setOpen(false);
@@ -103,6 +140,16 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
     handleClose();
   };
 
+  const handleCopyReferralCode = async () => {
+    navigator.clipboard.writeText('73WakrfVbNJBaAmhQtEeDv');
+    handleClose();
+  };
+
+  const handleOpenReferral = (): void => {
+    router.push('/referral');
+    handleClose();
+  };
+
   const handleSwitchWallet = (): void => {
     setWalletModalOpen(true);
     trackEvent(AUTH.SWITCH_WALLET);
@@ -115,14 +162,12 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
   };
 
   const hideWalletAccountText = xsm && (ENABLE_TESTNET || STAGING_ENV || readOnlyModeAddress);
-
   const Content = ({ component = ListItem }: { component?: typeof MenuItem | typeof ListItem }) => (
     <>
       <Typography
         variant="subheader2"
         sx={{
-          display: { xs: 'block', md: 'none' },
-          color: '#A5A8B6',
+          display: { xs: 'block', lg: 'none' },
           px: 4,
           py: 2,
         }}
@@ -130,216 +175,176 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         <Trans>Account</Trans>
       </Typography>
 
-      <Box component={component} disabled sx={{ p: 0, ml: 1 }}>
+      <Box
+        component={'li'}
+        sx={{ mb: 1, px: 1.5, pb: 3, backgroundColor: 'transparent !important' }}
+      >
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-            height: '44px',
           }}
         >
           <UserDisplay
             avatarProps={{ size: AvatarSize.LG }}
             titleProps={{
-              typography: 'h4',
+              variant: 'body8',
+              color: 'text.primary',
               addressCompactMode: CompactMode.MD,
             }}
             subtitleProps={{
               addressCompactMode: CompactMode.LG,
               typography: 'caption',
             }}
+            checkVerify
           />
           {readOnlyModeAddress && (
-            <Warning
-              severity="warning"
-              sx={{ mt: 3, mb: 0, ...(md ? { background: '#301E04', color: '#FFDCA8' } : {}) }}
-            >
+            <Warning severity="warning" sx={{ mt: 3, mb: 0 }}>
               <Trans>Read-only mode.</Trans>
             </Warning>
           )}
         </Box>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
 
-      <Box component={component} disabled>
+      <Box component={component} disabled sx={{ my: 1, px: 1.5, py: 3 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              mb: 5,
-            }}
-          >
-            <Typography variant="caption" color={{ xs: '#FFFFFFB2', md: 'text.secondary' }}>
-              <Trans>Network</Trans>
-            </Typography>
-          </Box>
+          <Typography variant="detail2" color="text.mainTitle" sx={{ mb: 5 }}>
+            <Trans>Network</Trans>
+          </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box
-              sx={{
-                bgcolor: networkColor,
-                width: 6,
-                height: 6,
-                mr: 2,
-                boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
+            <img
+              style={{
+                width: 24,
+                height: 24,
+                marginRight: '8px',
                 borderRadius: '50%',
               }}
+              src={networkConfig.networkLogoPath}
+              alt={isConnectedTonWallet ? 'TON' : networkConfig.name}
             />
-            <Typography color={{ xs: '#F1F1F3', md: 'text.primary' }} variant="subheader1">
+            <Typography variant="body6" color="text.secondary">
               {isConnectedTonWallet ? 'TON' : networkConfig.name}
             </Typography>
           </Box>
         </Box>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
 
-      <Box
-        component={component}
-        sx={{
-          color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' },
-          height: '48px',
-          py: 1.5,
-        }}
-        onClick={handleCopy}
-      >
-        <ListItemIcon
-          sx={{
-            color: theme.palette.text.primary,
-          }}
-        >
-          <SvgIcon fontSize="small">
+      <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleCopy}>
+        <ListItemIcon sx={{ mr: 1 }}>
+          <SvgIcon
+            sx={(theme) => ({ fontSize: '24px !important', color: theme.palette.text.secondary })}
+          >
             <DuplicateIcon />
           </SvgIcon>
         </ListItemIcon>
         <ListItemText>
-          <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+          <Typography variant="body5" color="text.mainTitle">
             <Trans>Copy address</Trans>
-          </Box>
+          </Typography>
         </ListItemText>
       </Box>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
-      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-        <Box
-          component={component}
-          sx={{
-            color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-            height: '48px',
-            display: 'flex',
-            py: 1.5,
-          }}
-          onClick={handleViewOnExplorer}
-        >
-          <ListItemText>
-            <Box
-              sx={{ fontSize: '16px', color: theme.palette.text.primary, pl: 8, fontWeight: 600 }}
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
+      <Box
+        component={'li'}
+        sx={{ display: 'flex', mt: 1, px: 1.5, py: 3, alignItems: 'center', cursor: 'pointer' }}
+        onClick={handleOpenReferral}
+      >
+        <ListItemText>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CompactableTypography
+              color="text.primary"
+              variant="body6"
+              compactMode={CompactMode.SM}
+              compact
+              sx={{ pl: '38px' }}
             >
-              <Trans>E24C0234B9</Trans>
-            </Box>
-          </ListItemText>
-          <ListItemIcon
-            sx={{
-              color: theme.palette.text.primary,
-              pl: 4,
-              mr: 0,
-            }}
-          >
-            <SvgIcon fontSize="small">
-              <ArrowForwardIosIcon />
-            </SvgIcon>
-          </ListItemIcon>
-        </Box>
-      </Link>
-      <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
-        <Box
-          component={component}
-          sx={{
-            color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-            height: '48px',
-            p: '6px 12px',
-          }}
-          onClick={handleViewOnExplorer}
-        >
-          <ListItemIcon
-            sx={{
-              color: theme.palette.text.primary,
-              p: 0,
-              lineHeight: 1.3,
-            }}
-          >
-            <SvgIcon fontSize="small">
-              <AccountCircleOutlinedIcon />
-            </SvgIcon>
-          </ListItemIcon>
-          <ListItemText>
-            <Box
-              sx={{ fontSize: '17px', color: theme.palette.text.secondary, p: 0, lineHeight: 1.3 }}
-            >
-              <Trans>Copy referral code</Trans>
-            </Box>
-          </ListItemText>
-        </Box>
-      </Link>
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
-      {networkConfig?.explorerLinkBuilder && (
-        <Link
-          href={
-            isConnectedTonWallet
-              ? `${SCAN_TRANSACTION_TON}/${currentAccount}`
-              : networkConfig.explorerLinkBuilder({ address: currentAccount })
-          }
-        >
-          <Box
-            component={component}
-            sx={{
-              color: { xs: '#F1F1F3', md: theme.palette.text.primary },
-              height: '48px',
-              p: '6px 12px',
-            }}
-            onClick={handleViewOnExplorer}
-          >
-            <ListItemIcon
-              sx={{
-                color: theme.palette.text.primary,
-              }}
-            >
-              <SvgIcon fontSize="small">
-                <CallMadeOutlinedIcon />
-              </SvgIcon>
-            </ListItemIcon>
-            <ListItemText>
-              <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
-                <Trans>View on Explorer</Trans>
-              </Box>
-            </ListItemText>
+              73WakrfVbNJBaAmhQtEeDv
+            </CompactableTypography>
+            <ReferralCodeToolTip
+              iconSize={20}
+              iconColor="text.secondary"
+              code={referralData.myCode || ''}
+            />
           </Box>
-        </Link>
+        </ListItemText>
+        <ListItemIcon sx={{ mr: 0 }}>
+          <SvgIcon
+            sx={(theme) => ({ fontSize: '18px !important', color: theme.palette.text.secondary })}
+          >
+            <ArrowForwardIosIcon />
+          </SvgIcon>
+        </ListItemIcon>
+      </Box>
+      <Box component={component} sx={{ mb: 1, px: 1.5, py: 3 }} onClick={handleCopyReferralCode}>
+        <ListItemIcon sx={{ mr: 1 }}>
+          <SvgIcon
+            sx={(theme) => ({ fontSize: '24px !important', color: theme.palette.text.secondary })}
+          >
+            <AccountCircleOutlinedIcon />
+          </SvgIcon>
+        </ListItemIcon>
+        <ListItemText>
+          <Typography variant="body5" color="text.secondary">
+            <Trans>Copy referral code</Trans>
+          </Typography>
+        </ListItemText>
+      </Box>
+      <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
+      {networkConfig?.explorerLinkBuilder && (
+        <Box>
+          <Link href={networkConfig.explorerLinkBuilder({ address: currentAccount })}>
+            <Box
+              component={component}
+              sx={{ my: 1, px: 1.5, py: 3 }}
+              onClick={handleViewOnExplorer}
+            >
+              <ListItemIcon
+                sx={{
+                  mr: 1,
+                }}
+              >
+                <SvgIcon
+                  sx={(theme) => ({
+                    fontSize: '24px !important',
+                    color: theme.palette.text.secondary,
+                  })}
+                >
+                  <CallMadeIcon />
+                </SvgIcon>
+              </ListItemIcon>
+              <ListItemText>
+                <Typography variant="body5" color="text.secondary">
+                  <Trans>View on Explorer</Trans>
+                </Typography>
+              </ListItemText>
+            </Box>
+          </Link>
+          <Divider sx={{ my: 0, borderColor: theme.palette.border.divider }} />
+        </Box>
       )}
-      <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
-      {!md && (
-        <Box
-          component={component}
-          sx={{
-            color: { xs: '#F1F1F3', md: 'text.primary', cursor: 'pointer' },
-            height: '48px',
-            py: 1.5,
-          }}
-          onClick={handleDisconnect}
-        >
+      {!lgDown && (
+        <Box component={component} sx={{ my: 1, px: 1.5, py: 3 }} onClick={handleDisconnect}>
           <ListItemIcon
             sx={{
-              color: theme.palette.text.primary,
+              mr: 1,
             }}
           >
-            <SvgIcon fontSize="small">
+            <SvgIcon
+              sx={(theme) => ({
+                fontSize: '24px !important',
+                color: theme.palette.text.secondary,
+              })}
+            >
               <LogoutOutlinedIcon />
             </SvgIcon>
           </ListItemIcon>
           <ListItemText>
-            <Box sx={{ fontSize: '17px', color: theme.palette.text.secondary }}>
+            <Typography variant="body5" color="text.secondary">
               <Trans>Disconnect</Trans>
-            </Box>
+            </Typography>
           </ListItemText>
         </Box>
         // <Box>
@@ -370,33 +375,16 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
         //   </Button>
         // </Box>
       )}
-      {md && (
+      {lgDown && (
         <>
-          <Divider sx={{ my: { xs: 7, md: 0 }, borderColor: { xs: '#FFFFFF1F', md: 'divider' } }} />
-          <Box sx={{ padding: '16px 16px 10px' }}>
-            <Button
-              sx={{
-                marginBottom: '16px',
-                background: '#383D51',
-                color: '#F1F1F3',
-              }}
-              fullWidth
-              size="large"
-              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
-              onClick={handleSwitchWallet}
-            >
+          <Box
+            component={component}
+            sx={{ mb: 1, px: 1.5, py: 3, display: 'flex', flexDirection: 'column', gap: 2 }}
+          >
+            <Button fullWidth size="medium" variant="contained" onClick={handleSwitchWallet}>
               Switch wallet
             </Button>
-            <Button
-              sx={{
-                background: '#383D51',
-                color: '#F1F1F3',
-              }}
-              fullWidth
-              size="large"
-              variant={palette.mode === 'dark' ? 'outlined' : 'text'}
-              onClick={handleDisconnect}
-            >
+            <Button fullWidth size="medium" variant="contained" onClick={handleDisconnect}>
               Disconnect
             </Button>
           </Box>
@@ -407,51 +395,77 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
 
   return (
     <>
-      {md && (connected || isConnectedTonWallet) && open ? (
+      {lgDown && connected && open && (connected || isConnectedTonWallet) ? (
         <MobileCloseButton setOpen={setOpen} />
       ) : loading && !isConnectedTonWallet ? (
-        <Skeleton height={36} width={126} />
-      ) : (
-        <Button
-          variant={connected || isConnectedTonWallet ? 'surface' : 'gradient'}
-          aria-label="wallet"
-          id="wallet-button"
-          aria-controls={open ? 'wallet-button' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup="true"
-          onClick={handleClick}
+        <Box
           sx={{
-            p: connected || isConnectedTonWallet ? '12px' : undefined,
-            minWidth: hideWalletAccountText ? 'unset' : undefined,
-            height: '48px',
+            bgcolor: theme.palette.background.modulePopup,
+            borderRadius: 2,
+            height: lg ? '48px' : '44px',
           }}
-          endIcon={
-            (connected || isConnectedTonWallet) &&
-            !hideWalletAccountText &&
-            !md && (
-              <SvgIcon
-                sx={{
-                  display: { xs: 'none', md: 'block' },
-                }}
-              >
-                {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
-              </SvgIcon>
-            )
-          }
         >
-          {connected || isConnectedTonWallet ? (
-            <UserDisplay
-              avatarProps={{ size: AvatarSize.SM }}
-              oneLiner={true}
-              titleProps={{ variant: 'buttonM' }}
-            />
-          ) : (
-            <Trans>Connect wallet</Trans>
-          )}
-        </Button>
+          <Skeleton height={'100%'} width={167} />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            bgcolor: theme.palette.background.modulePopup,
+            borderRadius: '10px',
+            overflow: 'hidden',
+            height: lg ? '48px' : '44px',
+          }}
+        >
+          <Button
+            variant={connected || isConnectedTonWallet ? 'surface' : 'gradient'}
+            aria-label="wallet"
+            id="wallet-button"
+            aria-controls={open ? 'wallet-button' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+            size="small"
+            sx={{
+              p: 3,
+              minWidth: hideWalletAccountText ? 'unset' : undefined,
+              height: lg ? '48px' : '44px',
+              background: 'transparent',
+            }}
+            endIcon={
+              (connected || isConnectedTonWallet) &&
+              !hideWalletAccountText &&
+              !lgDown && (
+                <SvgIcon
+                  sx={{
+                    display: { xs: 'none', lg: 'block', fontSize: '24px !important' },
+                  }}
+                >
+                  {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                </SvgIcon>
+              )
+            }
+          >
+            {connected || isConnectedTonWallet ? (
+              <UserDisplay
+                avatarProps={{ size: lg ? 24 : 16 }}
+                oneLiner={true}
+                titleProps={{
+                  variant: lg ? 'body5' : 'detail5',
+                  color: 'text.primary',
+                  lineHeight: 0,
+                  addressCompactMode: CompactMode.MD,
+                }}
+              />
+            ) : (
+              <Typography variant={lg ? 'body5' : 'detail5'}>
+                <Trans>Connect wallet</Trans>
+              </Typography>
+            )}
+          </Button>
+        </Box>
       )}
 
-      {md ? (
+      {lgDown ? (
         <DrawerWrapper open={open} setOpen={setOpen} headerHeight={headerHeight}>
           <List sx={{ px: 2, '.MuiListItem-root.Mui-disabled': { opacity: 1 } }}>
             <Content />
@@ -463,14 +477,21 @@ export default function WalletWidget({ open, setOpen, headerHeight }: WalletWidg
           MenuListProps={{
             'aria-labelledby': 'wallet-button',
           }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
           keepMounted={true}
+          classes={{
+            paper: classes.menuPaper,
+          }}
         >
           <MenuList
             disablePadding
-            sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 }, px: 3, py: 5 }}
+            sx={{
+              '.MuiMenuItem-root.Mui-disabled': { opacity: 1 },
+            }}
           >
             <Content component={MenuItem} />
           </MenuList>

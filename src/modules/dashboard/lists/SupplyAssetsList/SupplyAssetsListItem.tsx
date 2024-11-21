@@ -204,7 +204,7 @@ export const SupplyAssetsListItemDesktop = ({
           symbol={symbol}
           value={Number(walletBalance)}
           subValue={walletBalanceUSD}
-          withTooltip
+          withTooltip={false}
           disabled={Number(walletBalance) === 0 || isMaxCapReached}
           capsComponent={
             <CapsHint
@@ -221,7 +221,7 @@ export const SupplyAssetsListItemDesktop = ({
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
-          <NoData variant="main14" color="text.secondary" />
+          <NoData variant="body6" color="text.primary" />
         ) : (
           <ListItemCanBeCollateral
             isIsolated={isIsolated}
@@ -233,12 +233,7 @@ export const SupplyAssetsListItemDesktop = ({
       <ListButtonsColumn>
         <Button
           disabled={disableSupply}
-          sx={{
-            p: 2,
-            height: '36px',
-            fontSize: '14px',
-            textTransform: 'capitalize',
-          }}
+          size="small"
           variant="contained"
           onClick={() => {
             openSupply(underlyingAsset, currentMarket, name, 'dashboard');
@@ -246,31 +241,17 @@ export const SupplyAssetsListItemDesktop = ({
         >
           <Trans>Supply</Trans>
         </Button>
-        <Link
-          onClick={() => onDetailsClick()}
+        <Button
+          sx={{
+            ml: 1,
+          }}
+          size="small"
+          variant="text"
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          onClick={onDetailsClick}
         >
-          <Button
-            sx={{
-              p: 2,
-              ml: '4px !important',
-              height: '36px',
-              fontSize: '14px',
-              textTransform: 'capitalize',
-              borderColor: theme.palette.text.subText,
-              bgcolor: 'transparent',
-              color: 'text.primary',
-              '&:hover': {
-                color: '#604AEF',
-                borderColor: '#604AEF',
-              },
-            }}
-            // href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-            // onClick={onDetailsClick}
-          >
-            <Trans>Details</Trans>
-          </Button>
-        </Link>
+          <Trans>Details</Trans>
+        </Button>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
@@ -322,7 +303,7 @@ export const SupplyAssetsListItemMobile = ({
         <Row
           caption={<Trans>Supply balance</Trans>}
           align="flex-start"
-          captionVariant="description"
+          captionVariant="detail3"
           mb={2}
         >
           <ContentWithTooltip
@@ -356,7 +337,7 @@ export const SupplyAssetsListItemMobile = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
+                  variant="detail3"
                   color="text.secondary"
                 />
               </Stack>
@@ -390,7 +371,7 @@ export const SupplyAssetsListItemMobile = ({
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
           symbol={symbol}
-          variant="secondary14"
+          variant="detail3"
         />
       </Row>
 
@@ -406,27 +387,33 @@ export const SupplyAssetsListItemMobile = ({
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mt: 5,
+          gap: 2,
+        }}
+      >
         <Button
           disabled={disableSupply}
           variant="contained"
           onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
-          sx={{ mr: 1.5 }}
+          sx={{ flex: 1 }}
           fullWidth
         >
           <Trans>Supply</Trans>
         </Button>
-
-        <Link href={ROUTES.reserveOverview(detailsAddress, currentMarket)}>
-          <Button
-            variant="outlined"
-            // component={Link}
-            // href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
-            fullWidth
-          >
-            <Trans>Details</Trans>
-          </Button>
-        </Link>
+        <Button
+          sx={{ flex: 1 }}
+          variant="text"
+          component={Link}
+          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          fullWidth
+        >
+          <Trans>Details</Trans>
+        </Button>
       </Box>
     </ListMobileItemWrapper>
   );

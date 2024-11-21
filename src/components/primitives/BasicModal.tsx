@@ -29,11 +29,11 @@ export const BasicModal = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        '.MuiPaper-root': {
+        '& > .MuiPaper-root': {
           outline: 'none',
           borderRadius: 0,
           background: theme.palette.background.primary,
-          boxShadow: '2px 8px 28px 3px rgba(32, 32, 32, 0.13)',
+          boxShadow: '0px 8px 16px -2px rgba(27, 33, 44, 0.12)',
         },
       })}
       onClick={(e) => {
@@ -45,24 +45,31 @@ export const BasicModal = ({
       <Paper
         sx={{
           position: 'relative',
-          margin: 2,
+          mx: 4,
           overflowY: 'auto',
-          width: '100%',
           maxWidth: { xs: 630, md: contentMaxWidth },
           maxHeight: 'calc(100vh - 20px)',
-          px: 5,
-          py: 8.5,
+          px: { xsm: 5, xs: 4 },
+          py: { xs: 7, xsm: 8.5 },
         }}
       >
         {children}
 
         {withCloseButton && (
-          <Box sx={{ position: 'absolute', top: '26px', right: '16px' }}>
-            <IconButton onClick={handleClose} data-cy={'close-button'}>
-              <SvgIcon sx={{ fontSize: '28px', color: 'text.primary' }}>
-                <XIcon data-cy={'CloseModalIcon'} />
-              </SvgIcon>
-            </IconButton>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: { xs: 28, xsm: '34px' },
+              right: { xs: 16, xsm: '18px' },
+            }}
+          >
+            <SvgIcon
+              sx={{ fontSize: '24px', color: 'text.primary', cursor: 'pointer' }}
+              onClick={handleClose}
+              data-cy={'close-button'}
+            >
+              <XIcon data-cy={'CloseModalIcon'} />
+            </SvgIcon>
           </Box>
         )}
       </Paper>

@@ -2,6 +2,7 @@ import { PayloadState, ProposalV3State, VotingMachineProposalState } from '@aave
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import CallMadeIcon from '@mui/icons-material/CallMade';
 import {
   Timeline,
   TimelineConnector,
@@ -19,6 +20,7 @@ import {
   Paper,
   SvgIcon,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
@@ -38,10 +40,13 @@ import {
   getVotingMachineProposalStateTimestamp,
   ProposalLifecycleStep,
 } from '../utils/formatProposal';
+import * as React from 'react';
+import { ExternalLink } from '../GovernanceTopPanel';
 
 export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   if (proposal === undefined) {
     return <></>; // TODO: skeleton
   }
@@ -213,8 +218,8 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
   }
 
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
-      <Typography variant="h3">
+    <Box sx={{ height: '100%' }}>
+      <Typography variant={'h2'} color="text.primary" mb={xsm ? '32px' : '20px'}>
         <Trans>Proposal details</Trans>
       </Typography>
       <Timeline
@@ -224,6 +229,8 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
             flex: 0,
             padding: 0,
           },
+          p: { xs: '6px 12px', xsm: '0px 0px 0px 20px' },
+          my: 0,
         }}
       >
         {proposalSteps.map((elem) => (
@@ -231,28 +238,20 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         ))}
       </Timeline>
       {discussionUrl && (
-        <Button
-          component={Link}
-          target="_blank"
-          rel="noopener"
-          onClick={() =>
-            trackEvent(GENERAL.EXTERNAL_LINK, {
-              AIP: proposal.subgraphProposal.id,
-              Link: 'Forum Discussion',
-            })
-          }
-          href={discussionUrl[0]}
-          variant="outlined"
-          endIcon={
-            <SvgIcon>
-              <ExternalLinkIcon />
-            </SvgIcon>
-          }
-        >
-          <Trans>Forum discussion</Trans>
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <ExternalLink
+            text={<span style={{ textTransform: 'none' }}>Forum discussion</span>}
+            href={discussionUrl[0]}
+            onClick={() =>
+              trackEvent(GENERAL.EXTERNAL_LINK, {
+                AIP: proposal.subgraphProposal.id,
+                Link: 'Forum Discussion',
+              })
+            }
+          />
+        </Box>
       )}
-    </Paper>
+    </Box>
   );
 };
 const formatTime = (timestamp: number) => {
@@ -281,6 +280,7 @@ const ProposalStep = ({
   networkLogo,
 }: ProposalStepProps) => {
   const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   const [subtimelineOpen, setSubtimelineOpen] = useState(false);
 
   const toggleSubtimeline = () => {
@@ -292,13 +292,14 @@ const ProposalStep = ({
       <TimelineSeparator>
         <TimelineDot
           sx={{
+            width: xsm ? '20px' : '16px',
+            height: xsm ? '20px' : '16px',
             background: completed
-              ? theme.palette.primary.main
+              ? theme.palette.point.primary
               : active
-              ? 'unset'
+              ? 'white'
               : theme.palette.text.disabled,
-            borderColor:
-              completed || active ? theme.palette.primary.main : theme.palette.text.disabled,
+            borderColor: completed || active ? theme.palette.primary.main : 'none',
             my: 1,
           }}
           variant={active ? 'outlined' : 'filled'}
@@ -306,22 +307,24 @@ const ProposalStep = ({
         {!lastStep && (
           <TimelineConnector
             sx={{
-              background: completed ? theme.palette.primary.main : theme.palette.text.disabled,
+              background: theme.palette.text.disabled,
+              width: '1px',
+              color: 'text.subTitle',
             }}
           />
         )}
       </TimelineSeparator>
-      <TimelineContent sx={{ pt: 0 }}>
+      <TimelineContent sx={{ p: xsm ? '0px 0px 0px 20px' : '0px 0px 0px 12px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', pt: 0 }}>
           <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {networkLogo && <Avatar sx={{ width: 16, height: 16, mr: 2 }} src={networkLogo} />}
-              <Typography variant="main14">
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: '6px' }}>
+              {networkLogo && <Avatar sx={{ width: 24, height: 24, mr: 2 }} src={networkLogo} />}
+              <Typography variant={'body2'}>
                 <Trans>{stepName}</Trans>
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Typography variant="tooltip" color="text.muted">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pb: xsm ? '28px' : '16px' }}>
+              <Typography variant={'detail2'} color="text.mainTitle">
                 {formatTime(timestamp)}
               </Typography>
               {transactionHash && (
@@ -336,13 +339,16 @@ const ProposalStep = ({
             </Box>
           </Box>
           {substeps && (
-            <IconButton sx={{ p: 0, ml: 'auto' }} onClick={toggleSubtimeline}>
+            <IconButton
+              sx={{ width: '24px', height: '24px', p: 0, ml: 'auto', color: 'text.secondary' }}
+              onClick={toggleSubtimeline}
+            >
               {subtimelineOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
             </IconButton>
           )}
         </Box>
         {substeps && subtimelineOpen && (
-          <Timeline>
+          <Timeline sx={{ px: 0, py: 0 }}>
             {substeps.map((elem) => (
               <ProposalStep key={elem.stepName?.toString()} {...elem} />
             ))}

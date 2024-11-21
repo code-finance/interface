@@ -1,16 +1,6 @@
-import { DocumentDownloadIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Paper,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Box, CircularProgress, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import React, { PropsWithChildren, useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { SearchInput } from 'src/components/SearchInput';
@@ -43,6 +33,8 @@ export const HistoryWrapper = () => {
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
   const { isConnectNetWorkTon } = useAppDataContext();
+
+  const xsm = useMediaQuery(useTheme().breakpoints.up('xsm'));
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const trackEvent = useRootStore((store) => store.trackEvent);
   const { ExchangeRateListUSD } = useSocketGetRateUSD();
@@ -239,7 +231,7 @@ export const HistoryWrapper = () => {
     <ListWrapper
       paperSx={(theme) => ({ backgroundColor: theme.palette.background.primary })}
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+        <Typography component="div" variant={'h2'} sx={{ mr: 4 }}>
           <Trans>Transactions</Trans>
         </Typography>
       }
@@ -258,50 +250,6 @@ export const HistoryWrapper = () => {
             key={searchResetKey}
           />
         </Box>
-        {!isConnectNetWorkTon && (
-          <>
-            <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
-              {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
-              <Box
-                sx={{
-                  cursor: 'pointer',
-                  color: 'primary',
-                  height: 'auto',
-                  width: 'auto',
-                  display: 'flex',
-                  alignItems: 'center',
-                  mr: 6,
-                }}
-                onClick={handleCsvDownload}
-              >
-                <SvgIcon>
-                  <DocumentDownloadIcon width={22} height={22} />
-                </SvgIcon>
-                <Typography variant="buttonM" color="text.primary">
-                  <Trans>.CSV</Trans>
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  cursor: 'pointer',
-                  color: 'primary',
-                  height: 'auto',
-                  width: 'auto',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-                onClick={handleJsonDownload}
-              >
-                <SvgIcon>
-                  <DocumentDownloadIcon width={22} height={22} />
-                </SvgIcon>
-                <Typography variant="buttonM" color="text.primary">
-                  <Trans>.JSON</Trans>
-                </Typography>
-              </Box>
-            </Box>
-          </>
-        )}
       </Box>
 
       {isLoading ? (
@@ -309,8 +257,8 @@ export const HistoryWrapper = () => {
           <HistoryItemLoader />
           <HistoryItemLoader />
         </>
-      ) : !isEmpty && filteredTxns ? (
-        Object.entries(groupByDate(filteredTxns))?.map(([date, txns], groupIndex) => (
+      ) : !isEmpty ? (
+        Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <div key={groupIndex} style={{ padding: 8 }}>
             <Typography variant="body4" color="text.subTitle" sx={{ mt: 15, mb: 2 }}>
               {date}
@@ -326,56 +274,13 @@ export const HistoryWrapper = () => {
           </div>
         ))
       ) : filterActive ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            p: 4,
-            flex: 1,
-            maxWidth: '468px',
-            margin: '0 auto',
-            my: 24,
-          }}
-        >
-          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary })}>
-            <Trans>Nothing found</Trans>
-          </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
-            <Trans>
-              We couldn&apos;t find any transactions related to your search. Try again with a
-              different asset name, or reset filters.
-            </Trans>
-          </Typography>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSearchQuery('');
-              setFilterQuery([]);
-              setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query
-            }}
-          >
-            Reset Filters
-          </Button>
-        </Box>
-      ) : isConnectNetWorkTon && !isFetchingNextPage ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            p: 4,
-            flex: 1,
-          }}
-        >
-          <Typography variant="h6" sx={(theme) => ({ color: theme.palette.text.primary, my: 24 })}>
-            <Trans>No Transaction yet.</Trans>
-          </Typography>
-        </Box>
+        <EmptySection>
+          <Trans>No Transaction yet.</Trans>
+        </EmptySection>
+      ) : !isFetchingNextPage ? (
+        <EmptySection>
+          <Trans>No Transaction yet.</Trans>
+        </EmptySection>
       ) : (
         <></>
       )}
@@ -401,4 +306,27 @@ export const HistoryWrapper = () => {
   );
 };
 
+const EmptySection = ({ children }: PropsWithChildren<{ text?: string }>) => {
+  const emptyVariant = 'h6';
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        p: 4,
+        flex: 1,
+      }}
+    >
+      <Typography
+        variant={emptyVariant}
+        sx={(theme) => ({ color: theme.palette.text.primary, my: 24 })}
+      >
+        {children}
+      </Typography>
+    </Box>
+  );
+};
 export default HistoryWrapper;

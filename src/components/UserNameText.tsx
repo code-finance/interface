@@ -1,4 +1,5 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
+import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { Box, Link, SvgIcon, TypographyProps } from '@mui/material';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -51,8 +52,8 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
             sx={{ display: 'flex' }}
             onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { funnel: funnel, Link: 'Etherscan' })}
           >
-            <SvgIcon sx={{ fontSize: iconSize }}>
-              <ExternalLinkIcon />
+            <SvgIcon sx={(theme) => ({ fontSize: iconSize, color: theme.palette.text.buttonText })}>
+              <CallMadeOutlinedIcon />
             </SvgIcon>
           </Link>
         </DarkTooltip>

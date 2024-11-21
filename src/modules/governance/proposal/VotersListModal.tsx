@@ -44,31 +44,41 @@ export const VotersListModal = ({
         sx={{
           ...borderBaseStyle,
           px: 4,
-          py: 2,
+          py: 4,
+          bgcolor: 'background.secondary',
         }}
       />
-      <Box sx={{ ...borderBaseStyle, mt: 3 }}>
+      <Box
+        sx={{
+          ...borderBaseStyle,
+          mt: '10px',
+          px: '12px',
+          py: '16px',
+          bgcolor: 'background.secondary',
+        }}
+      >
         <Row
           sx={{
-            px: 4,
-            py: 2,
             borderBottom: '1px solid',
             borderColor: 'divider',
+            pb: '16px',
+            mb: '16px',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary">
             <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary" px="8px">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
         <VotersList
+          isModal
           voters={voters.yaeVotes}
           sx={{
-            p: 4,
             mb: 0,
             maxHeight: 318,
+            bgcolor: 'background.secondary',
           }}
         />
       </Box>
@@ -83,31 +93,41 @@ export const VotersListModal = ({
         sx={{
           ...borderBaseStyle,
           px: 4,
-          py: 2,
+          py: 4,
+          bgcolor: 'background.secondary',
         }}
       />
-      <Box sx={{ ...borderBaseStyle, mt: 3 }}>
+      <Box
+        sx={{
+          ...borderBaseStyle,
+          mt: '10px',
+          px: '12px',
+          py: '16px',
+          bgcolor: 'background.secondary',
+        }}
+      >
         <Row
           sx={{
-            px: 4,
-            py: 2,
             borderBottom: '1px solid',
             borderColor: 'divider',
+            pb: '16px',
+            mb: '16px',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary">
             <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="detail2" color="text.secondary" px="8px">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
         <VotersList
+          isModal
           voters={voters.nayVotes}
           sx={{
-            p: 4,
             mb: 0,
             maxHeight: 318,
+            bgcolor: 'background.secondary',
           }}
         />
       </Box>
@@ -116,11 +136,11 @@ export const VotersListModal = ({
 
   return (
     <BasicModal open={open} setOpen={close} contentMaxWidth={mdUp ? 800 : 360}>
-      <Typography variant="h2">
+      <Typography variant="h5" color="text.primary" mb="32px">
         <Trans>Votes</Trans>
       </Typography>
       {mdUp ? (
-        <Grid container spacing={4} sx={{ mt: 4 }}>
+        <Grid container spacing={4}>
           <Grid item xs={6}>
             {yesVotesUI}
           </Grid>
@@ -134,7 +154,10 @@ export const VotersListModal = ({
             color="primary"
             value={voteView}
             exclusive
-            onChange={(_, value) => setVoteView(value)}
+            onChange={(_, value) => {
+              if (!value) return;
+              setVoteView(value);
+            }}
             sx={{ width: '100%', height: '44px', mt: 8, mb: 6 }}
           >
             <StyledToggleButton value="yaes" disabled={voteView === 'yaes'}>

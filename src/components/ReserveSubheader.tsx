@@ -1,16 +1,21 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 
 type ReserveSubheaderProps = {
   value: string;
   rightAlign?: boolean;
+  variant?: ComponentProps<typeof Typography>['variant'];
 };
 
-export function ReserveSubheader({ value, rightAlign }: ReserveSubheaderProps) {
+export function ReserveSubheader({
+  value,
+  rightAlign,
+  variant = 'detail2',
+}: ReserveSubheaderProps) {
   return (
     <Box
       sx={{
@@ -21,16 +26,16 @@ export function ReserveSubheader({ value, rightAlign }: ReserveSubheaderProps) {
       }}
     >
       {value === 'Disabled' ? (
-        <Typography component="span" sx={{ mr: 0.5 }} variant="detail2" color="text.mainTitle">
+        <Typography component="span" sx={{ mr: 0.5 }} variant={variant} color="text.mainTitle">
           (<Trans>Disabled</Trans>)
         </Typography>
       ) : (
         <FormattedNumber
           compact
           value={value}
-          variant="detail2"
-          color="text.mainTitle"
-          symbolsVariant="secondary12"
+          variant={variant}
+          color="text.secondary"
+          symbolsVariant={variant}
           symbolsColor="text.secondary"
           symbol="USD"
         />

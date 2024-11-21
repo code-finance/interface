@@ -27,25 +27,34 @@ export default function Aave404Page() {
             alignItems: 'center',
             justifyContent: 'center',
             textAlign: 'center',
-            p: 4,
+            p: '100px 40px',
             flex: 1,
-            backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
+            backgroundColor: theme.palette.background.primary,
           }}
         >
           <Box sx={{ maxWidth: 444, m: '0 auto' }}>
             <img width="100%" height="auto" src="/404/404.svg" alt="404 - Page not found" />
           </Box>
-          <Typography variant="display1" sx={{ mt: 2 }}>
+          <Typography variant="body8" sx={{ mt: '32px', color: 'text.secondary' }}>
             <Trans>Page not found</Trans>
           </Typography>
-          <Typography sx={{ mt: 3, mb: 5, maxWidth: 480 }}>
+          <Typography
+            variant="body8"
+            sx={{ mt: '24px', mb: '40px', color: 'text.secondary', maxWidth: 480 }}
+          >
             <Trans>Sorry, we couldn&apos;t find the page you were looking for.</Trans>
             <br />
             <Trans>We suggest you go back to the Dashboard.</Trans>
           </Typography>
           <Link href="/" passHref>
-            <Button variant="outlined" color="primary">
-              <Trans>Back to Dashboard</Trans>
+            <Button
+              sx={{ padding: '12px 60px', maxHeight: '45px' }}
+              variant="outlined"
+              color="primary"
+            >
+              <Typography variant="body7">
+                <Trans>Back to Dashboard</Trans>
+              </Typography>
             </Button>
           </Link>
         </Paper>

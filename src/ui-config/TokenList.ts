@@ -187,7 +187,8 @@ export const TOKEN_LIST: TokenList = {
       name: 'Aave',
       symbol: 'AAVE',
       decimals: 18,
-      logoURI: 'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/12645/standard/aave-token-round.png?1720472354',
       extensions: {
         bridgeInfo: {
           '10': {
@@ -12695,7 +12696,17 @@ export const TOKEN_LIST: TokenList = {
       symbol: 'GHO',
       decimals: 18,
       chainId: 1,
-      logoURI: 'https://assets.coingecko.com/coins/images/30663/standard/ghoaave.jpeg?1696529533',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
+    },
+    {
+      name: 'Gho Token',
+      address: '0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33',
+      symbol: 'GHO',
+      decimals: 18,
+      chainId: 42161,
+      logoURI:
+        'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
     },
   ],
 };

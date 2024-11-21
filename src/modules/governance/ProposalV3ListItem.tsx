@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -13,13 +13,18 @@ dayjs.extend(relativeTime);
 
 export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const theme = useTheme();
+  const xsm = useMediaQuery(theme.breakpoints.up('xsm'));
   return (
     <Box
       sx={{
-        p: 6,
+        py: { xs: 6, sxm: 8 },
+        px: { xs: 0, sxm: 2 },
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: { xs: 3, sxm: 5 },
         borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
       component={Link}
@@ -28,22 +33,32 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
     >
       <Stack
         direction="column"
-        gap={2}
+        gap={5}
         sx={{
-          width: {
-            xs: '100%',
-            lg: '70%',
-          },
-          pr: { xs: 0, lg: 8 },
+          flex: 1,
+          pr: { xs: 0, sxm: 5 },
+          gap: { xs: 3, sxm: 5 },
           display: 'flex',
+          height: '128px',
           flexDirection: 'column',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
         }}
       >
-        <Stack direction="row" gap={3} alignItems="center">
-          <StateBadge state={proposal.badgeState} loading={false} />
-        </Stack>
-        <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <StateBadge
+          state={proposal.badgeState}
+          loading={false}
+          wrapperSx={{ py: xsm ? '10px' : '6px' }}
+        />
+        <Typography
+          variant={'h5'}
+          sx={{
+            overflow: 'hidden',
+            display: '-webkit-box',
+            '-webkit-line-clamp': '2',
+            '-webkit-box-orient': 'vertical',
+          }}
+          color="text.primary"
+        >
           {proposal.subgraphProposal.proposalMetadata.title}
         </Typography>
       </Stack>
@@ -52,8 +67,8 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
         direction="column"
         justifyContent="center"
         sx={{
-          pl: { xs: 0, lg: 18 },
-          mt: { xs: 7, lg: 0 },
+          maxWidth: { xs: '100%', sxm: '320px' },
+          width: '100%',
         }}
       >
         <VoteBar
@@ -63,11 +78,7 @@ export const ProposalV3ListItem = ({ proposal }: { proposal: Proposal }) => {
           sx={{ mb: 4 }}
           compact
         />
-        <VoteBar
-          percent={proposal.votingInfo.againstPercent}
-          votes={proposal.votingInfo.againstVotes}
-          compact
-        />
+        <VoteBar percent={0.6} votes={120} compact />
       </Stack>
     </Box>
   );

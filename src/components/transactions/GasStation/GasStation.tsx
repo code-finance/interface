@@ -98,11 +98,17 @@ export const GasStation: React.FC<GasStationProps> = ({
   const showNotEnoughFees = isConnectNetWorkTon ? showNotEnoughFeesTON : showNotEnoughFeesMain;
 
   return (
-    <Stack gap={6} sx={{ width: '100%' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Stack sx={{ width: '100%' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <LocalGasStationIcon
-            sx={{ fontSize: '20px', mr: 1.5, color: theme.palette.text.subTitle }}
+            sx={{
+              width: 24,
+              height: 24,
+              p: '1px 2px 3px 2px',
+              mr: '4px',
+              color: theme.palette.text.subTitle,
+            }}
           />
 
           {loadingTxns && !skipLoad ? (
@@ -118,10 +124,12 @@ export const GasStation: React.FC<GasStationProps> = ({
                     : '-'
                 }
                 symbol="USD"
-                color={theme.palette.text.subTitle}
+                color="text.subTitle"
                 variant="detail3"
+                symbolsColor="text.subTitle"
+                symbolsVariant="detail3"
               />
-              <GasTooltip />
+              <GasTooltip iconSize={18} iconColor="text.subTitle" />
             </>
           ) : (
             '-'

@@ -176,14 +176,13 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                   direction="row"
                   justifyContent="center"
                   sx={{
-                    mx: 2,
-                    my: 0.5,
-                    fontSize: 12,
-                    background: theme.palette.divider,
+                    px: 2,
+                    py: 0.5,
+                    background: theme.palette.text.disabledBg,
                     borderRadius: '99px',
                   }}
                 >
-                  <Typography sx={{ m: 1 }} noWrap variant="secondary12">
+                  <Typography noWrap variant="detail4" color="text.primary">
                     Avg {avgFormatted}%
                   </Typography>
                 </Stack>
@@ -231,8 +230,8 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               numTicks={xAxisNumTicks}
               tickStroke={theme.palette.text.secondary}
               tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
-                fontSize: 10,
+                fill: theme.palette.text.subTitle,
+                fontSize: 12,
                 textAnchor: 'middle',
                 dy: 4,
               })}
@@ -246,8 +245,8 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               numTicks={3}
               tickFormat={(value) => `${value}%`}
               tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
-                fontSize: 10,
+                fill: theme.palette.text.subTitle,
+                fontSize: 12,
                 dx: -margin.left + 10,
               })}
             />

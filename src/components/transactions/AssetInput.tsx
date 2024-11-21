@@ -1,5 +1,5 @@
-import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
   Box,
   BoxProps,
@@ -126,32 +126,42 @@ export const AssetInput = <T extends Asset = Asset>({
 
   return (
     <Box {...sx}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <Typography variant="body7" color="text.secondary">
           {inputTitle ? inputTitle : <Trans>Amount</Trans>}
         </Typography>
-        {capType && <AvailableTooltip capType={capType} />}
+        {capType && <AvailableTooltip capType={capType} color="text.secondary" iconSize={16} />}
       </Box>
-
       <Box
         sx={(theme) => ({
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '6px',
+          border: `1px solid ${theme.palette.border.divider}`,
+          borderRadius: '8px',
           overflow: 'hidden',
-          padding: '16px',
+          padding: 4,
           display: 'flex',
           gap: '12px',
           flexDirection: 'column',
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: value !== '' && !disableInput ? 2 : 10,
+          }}
+        >
           {loading ? (
             <Box sx={{ flex: 1 }}>
               <CircularProgress color="inherit" size="16px" />
             </Box>
           ) : (
             <InputBase
-              sx={{ flex: 1 }}
+              sx={{
+                flex: 1,
+                'input::placeholder': {
+                  color: theme.palette.text.disabledText,
+                },
+              }}
               placeholder="0.00"
               disabled={disabled || disableInput}
               value={value}
@@ -166,12 +176,12 @@ export const AssetInput = <T extends Asset = Asset>({
               }}
               inputProps={{
                 'aria-label': 'amount input',
+
                 style: {
-                  fontFamily: 'Inter',
-                  fontSize: '20px',
-                  fontStyle: 'normal',
-                  fontWeight: '600',
-                  lineHeight: '130%',
+                  textOverflow: 'ellipsis',
+                  padding: 0,
+                  ...theme.typography.body8,
+                  color: theme.palette.text.primary,
                 },
               }}
               // eslint-disable-next-line
@@ -185,9 +195,9 @@ export const AssetInput = <T extends Asset = Asset>({
                 p: 0,
                 left: 8,
                 zIndex: 1,
-                color: 'text.muted',
+                color: 'text.subText',
                 '&:hover': {
-                  color: 'text.secondary',
+                  color: 'text.disabledBg',
                 },
               }}
               onClick={() => {
@@ -195,27 +205,29 @@ export const AssetInput = <T extends Asset = Asset>({
               }}
               disabled={disabled}
             >
-              <XCircleIcon height={22} />
+              <CancelIcon height={24} width={24} />
             </IconButton>
           )}
           {!onSelect || assets.length === 1 ? (
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
               <TokenIcon
                 img={image}
                 aToken={asset.aToken}
                 symbol={asset.iconSymbol || asset.symbol}
-                sx={{ mr: 2, ml: 4 }}
+                sx={{ ml: 3, width: '24px', height: '24px' }}
               />
-              <Typography
-                variant="body5"
-                sx={{ lineHeight: '24px', color: 'text.primary' }}
-                data-cy={'inputAsset'}
-              >
+              <Typography variant="body5" color="text.primary" data-cy={'inputAsset'}>
                 {symbol}
               </Typography>
             </Box>
           ) : (
-            <FormControl>
+            <FormControl
+              sx={{
+                '.MuiSelect-select': {
+                  height: 'unset',
+                },
+              }}
+            >
               <Select
                 disabled={disabled}
                 value={asset.symbol}
@@ -314,8 +326,8 @@ export const AssetInput = <T extends Asset = Asset>({
               compact
               symbol="USD"
               variant="body7"
-              color={theme.palette.text.mainTitle}
-              symbolsColor="text.muted"
+              color="text.mainTitle"
+              symbolsColor="text.mainTitle"
               flexGrow={1}
             />
           )}
@@ -326,29 +338,28 @@ export const AssetInput = <T extends Asset = Asset>({
                 {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
                 <FormattedNumber
                   value={asset.balance}
+                  visibleDecimals={2}
                   compact
                   variant="body7"
-                  color={theme.palette.text.mainTitle}
-                  symbolsColor="text.disabled"
-                  visibleDecimals={2}
+                  color="text.mainTitle"
+                  symbolsColor="text.mainTitle"
                 />
               </Typography>
               {!disableInput && (
                 <Button
                   // size="small"
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    lineHeight: '130%',
+                  sx={(theme) => ({
+                    ...theme.typography.body6,
                     display: 'block',
                     minWidth: 0,
                     p: 0,
+                    ml: '2px',
                     textTransform: 'uppercase',
                     border: 'none',
                     ':hover': {
                       bgcolor: 'transparent',
                     },
-                  }}
+                  })}
                   onClick={() => {
                     if (event) {
                       trackEvent(event.eventName, { ...event.eventParams });
