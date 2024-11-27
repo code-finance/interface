@@ -15,7 +15,10 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import {
+  address_pools,
+  SCAN_TRANSACTION_TON,
+} from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';
@@ -175,29 +178,29 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     compact
                   />
                 </PanelItem>
-                {!isTonNetwork && (
-                  <Button
-                    onClick={() => {
-                      trackEvent(GENERAL.EXTERNAL_LINK, {
-                        asset: reserve.underlyingAsset,
-                        Link: 'Interest Rate Strategy',
-                        assetName: reserve.name,
-                      });
-                    }}
-                    href={`${SCAN_TRANSACTION_TON}/${currentAccount}`}
-                    endIcon={
-                      <SvgIcon sx={{ width: 14, height: 14 }}>
-                        <CallMadeOutlinedIcon />
-                      </SvgIcon>
-                    }
-                    component={Link}
-                    sx={{ height: 'fit-content' }}
-                    size="small"
-                    variant="transparent-link"
-                  >
-                    <Trans>Interest rate strategy</Trans>
-                  </Button>
-                )}
+                {/* {!isTonNetwork && ( */}
+                <Button
+                  onClick={() => {
+                    trackEvent(GENERAL.EXTERNAL_LINK, {
+                      asset: reserve.underlyingAsset,
+                      Link: 'Interest Rate Strategy',
+                      assetName: reserve.name,
+                    });
+                  }}
+                  href={`${SCAN_TRANSACTION_TON}/${address_pools}`}
+                  endIcon={
+                    <SvgIcon sx={{ width: 14, height: 14 }}>
+                      <CallMadeOutlinedIcon />
+                    </SvgIcon>
+                  }
+                  component={Link}
+                  sx={{ height: 'fit-content' }}
+                  size="small"
+                  variant="transparent-link"
+                >
+                  <Trans>Interest rate strategy</Trans>
+                </Button>
+                {/* )} */}
               </Box>
               <InterestRateModelGraphContainer reserve={reserve} />
             </Box>
