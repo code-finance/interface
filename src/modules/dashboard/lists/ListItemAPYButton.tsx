@@ -41,9 +41,9 @@ export const ListItemAPYButton = ({
   onClick,
   stableBorrowAPY,
   variableBorrowAPY,
-  underlyingAsset,
-  currentMarket,
-}: ListItemAPYButtonProps) => {
+}: // underlyingAsset,
+// currentMarket,
+ListItemAPYButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
