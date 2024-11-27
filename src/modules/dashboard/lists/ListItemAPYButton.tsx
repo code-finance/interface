@@ -74,8 +74,8 @@ export const ListItemAPYButton = ({
             </SvgIcon>
           )
         }
-        // disabled={disabled}
-        disabled={true}
+        disabled={disabled}
+        // disabled={true}
         data-cy={`apyButton_${borrowRateMode}`}
       >
         {borrowRateMode}

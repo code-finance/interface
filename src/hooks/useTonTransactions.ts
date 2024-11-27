@@ -262,7 +262,8 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
       amountCollateral,
       decimalsCollateral,
     }: RepayParamsSend) => {
-      if (!balance) return { success: false, message: 'Invalid parameters', blocking: false };
+      if (!balance)
+        return { success: false, message: 'Invalid parameters', blocking: false, txHash: '' };
 
       const isBuffer =
         isMaxSelected &&
@@ -287,6 +288,29 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     [handleTransaction, onSendRepayTonNetwork]
   );
 
+  const sendSwapRateModeTonNetwork = useCallback(
+    async (currentRateMode: string | undefined) => {
+      const interestRateMode = convertInterestRateMode(currentRateMode as InterestRate);
+
+      if (!AppTON || !sender) {
+        return { success: false, message: 'Invalid parameters', blocking: false, txHash: '' };
+      }
+      try {
+        await AppTON.sendSwapRateMode(sender, Address.parse(underlyingAssetTon), interestRateMode);
+        return { success: true, message: 'success' };
+      } catch (error) {
+        return { success: false, message: error.message.replace(/\s+/g, '').toLowerCase() };
+      }
+    },
+    [AppTON, sender, underlyingAssetTon]
+  );
+
+  const actionSendSwapRateModeTonNetwork = useCallback(
+    (currentRateMode: string | undefined) =>
+      handleTransaction(() => sendSwapRateModeTonNetwork(currentRateMode)),
+    [handleTransaction, sendSwapRateModeTonNetwork]
+  );
+
   return {
     approvedAmountTonAssume,
     actionSendSupplyTonNetwork,
@@ -294,5 +318,6 @@ export const useTonTransactions = (yourAddressWallet: string, underlyingAssetTon
     actionToggleCollateralTonNetwork,
     actionSendWithdrawTonNetwork,
     actionSendRepayTonNetwork,
+    actionSendSwapRateModeTonNetwork,
   };
 };

@@ -21,6 +21,7 @@ import {
   SetUseReserveAsCollateralParamsToCell,
   SupplyParamsToCell,
   SwapParamsToCell,
+  SwapRateModeParamsToCell,
   WithdrawParamsToCell,
 } from './builder';
 import { parseRateStrategy, parseReserveConfig, parseReserveState } from './parser';
@@ -34,6 +35,7 @@ import {
   SupplyParams,
   SwapParams,
   WithdrawParams,
+  SwapRateModeParams,
 } from './types';
 
 export class Pool implements Contract {
@@ -132,6 +134,14 @@ export class Pool implements Contract {
       value: toNano('0.2'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: SwapParamsToCell(params),
+    });
+  }
+
+  async sendSwapRateMode(provider: ContractProvider, via: Sender, params: SwapRateModeParams) {
+    await provider.internal(via, {
+      value: toNano('0.05'),
+      sendMode: SendMode.PAY_GAS_SEPARATELY,
+      body: SwapRateModeParamsToCell(params),
     });
   }
 

@@ -120,6 +120,7 @@ export const RateSwitchModalContent = ({
         isWrongNetwork={isWrongNetwork}
         currentRateMode={currentRateMode}
         blocked={blockingError !== undefined}
+        underlyingAssetTon={userReserve.underlyingAssetTon || 0}
       />
     </>
   );

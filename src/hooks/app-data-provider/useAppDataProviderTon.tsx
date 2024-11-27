@@ -89,7 +89,7 @@ export interface PoolContractReservesDataType {
   // stableBorrowIndex: bigint | string | 0 | number;
 }
 export const FACTORY_DEDUST_TESTNET = 'EQAROb_l-1yGMKjPGUmc0tNjYOsXTKTsucXmhh2Fm9y98z7Y';
-export const address_pools = 'EQBTNgwZ-iDJm89B0uX3S97f85Ol1bErCsybUw2PO0HgIoaK';
+export const address_pools = 'EQC2_kMMzLpGQjokg8i9SV5R211jAUgG4KzBC5A64Ys2tM6m';
 export const MAX_ATTEMPTS = 100;
 export const MAX_ATTEMPTS_50 = 50;
 export const GAS_FEE_TON = 0.3;
@@ -617,12 +617,12 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             isJetton: item.isJetton,
             poolJettonWalletAddress: poolJettonWalletAddress?.toString(),
             stableBorrows: stableBorrows.toString(),
-            stableBorrowsMarketReferenceCurrency: '0',
-            stableBorrowsUSD: '0',
-            variableBorrowsMarketReferenceCurrency: '0',
-            totalBorrows: '0',
-            totalBorrowsMarketReferenceCurrency: '0',
-            totalBorrowsUSD: '0',
+            // stableBorrowsMarketReferenceCurrency: '0',
+            // stableBorrowsUSD: '0',
+            // variableBorrowsMarketReferenceCurrency: '0',
+            // totalBorrows: '0',
+            // totalBorrowsMarketReferenceCurrency: '0',
+            // totalBorrowsUSD: '0',
             supplyAPY,
             stableBorrowAPR,
             stableBorrowAPY,

@@ -12,6 +12,7 @@ import {
   SetUseReserveAsCollateralParams,
   SupplyParams,
   SwapParams,
+  SwapRateModeParams,
   WithdrawParams,
 } from './types';
 
@@ -178,6 +179,17 @@ export function RepayParamsToCell(params: RepayParams): Cell {
     .storeCoins(amount)
     .storeUint(interestRateMode, 1)
     .storeBit(isMaxRepay)
+    .endCell();
+}
+
+export function SwapRateModeParamsToCell(params: SwapRateModeParams): Cell {
+  const { poolJWAddress, interestRateMode } = params;
+
+  return beginCell()
+    .storeUint(Op.SWAP_RATE_MODE, 32)
+    .storeUint(Math.floor(Date.now() / 1000), 64)
+    .storeAddress(poolJWAddress)
+    .storeUint(interestRateMode, 1)
     .endCell();
 }
 
