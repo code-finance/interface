@@ -48,7 +48,7 @@ export const HealthFactorNumber = ({
       }}
       data-cy={'HealthFactorTopPannel'}
     >
-      <Box sx={{ color: healthFactorColor, borderRadius: 1, ...rest.sx }} {...rest}>
+      {/* <Box sx={{ color: healthFactorColor, borderRadius: 1, ...rest.sx }} {...rest}>
         {isHeader ? (
           <Box
             sx={(theme) => ({
@@ -72,7 +72,20 @@ export const HealthFactorNumber = ({
         ) : (
           healthFactorText
         )}
-      </Box>
+      </Box> */}
+      {value === '-1' ? (
+        <Typography variant="secondary14" color={palette.success.main}>
+          ∞
+        </Typography>
+      ) : (
+        <FormattedNumber
+          value={formattedHealthFactor}
+          sx={{ color: healthFactorColor, ...rest.sx }}
+          visibleDecimals={2}
+          compact
+          {...rest}
+        />
+      )}
 
       {onInfoClick && (
         <Button onClick={onInfoClick} variant="transparent-link">

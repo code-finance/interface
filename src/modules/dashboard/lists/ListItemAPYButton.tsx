@@ -135,7 +135,7 @@ export const ListItemAPYButton = ({
 
         <Divider />
 
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        {/* <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             sx={{ my: 2, ml: 4 }}
             size="small"
@@ -150,7 +150,7 @@ export const ListItemAPYButton = ({
           >
             <Trans>SEE CHARTS</Trans>
           </Button>
-        </Box>
+        </Box> */}
       </Menu>
     </>
   );
