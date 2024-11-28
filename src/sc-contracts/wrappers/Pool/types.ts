@@ -110,6 +110,11 @@ export type RepayParams = {
   useAToken: boolean;
 };
 
+export type SwapRateModeParams = {
+  poolJWAddress: Address;
+  interestRateMode: InterestRateMode;
+};
+
 export type SwapParams = {
   poolJWAddress: Address;
   amount?: bigint;

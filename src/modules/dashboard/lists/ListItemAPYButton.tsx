@@ -41,9 +41,9 @@ export const ListItemAPYButton = ({
   onClick,
   stableBorrowAPY,
   variableBorrowAPY,
-  underlyingAsset,
-  currentMarket,
-}: ListItemAPYButtonProps) => {
+}: // underlyingAsset,
+// currentMarket,
+ListItemAPYButtonProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
@@ -74,8 +74,8 @@ export const ListItemAPYButton = ({
             </SvgIcon>
           )
         }
-        // disabled={disabled}
-        disabled={true}
+        disabled={disabled}
+        // disabled={true}
         data-cy={`apyButton_${borrowRateMode}`}
       >
         {borrowRateMode}
@@ -135,7 +135,7 @@ export const ListItemAPYButton = ({
 
         <Divider />
 
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        {/* <Box sx={{ display: 'flex', flexDirection: 'row' }}>
           <Button
             sx={{ my: 2, ml: 4 }}
             size="small"
@@ -150,7 +150,7 @@ export const ListItemAPYButton = ({
           >
             <Trans>SEE CHARTS</Trans>
           </Button>
-        </Box>
+        </Box> */}
       </Menu>
     </>
   );

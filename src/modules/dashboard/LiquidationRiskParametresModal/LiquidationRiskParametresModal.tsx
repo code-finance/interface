@@ -85,14 +85,20 @@ export const LiquidationRiskParametresInfoModal = ({
           </Trans>
         }
         topValue={
-          <Typography
-            variant="detail2"
-            color="text.buttonText"
-            textTransform={'uppercase'}
-            whiteSpace={'nowrap'}
-          >
-            {healthFactorText}
-          </Typography>
+          // <Typography
+          //   variant="detail2"
+          //   color="text.buttonText"
+          //   textTransform={'uppercase'}
+          //   whiteSpace={'nowrap'}
+          // >
+          //   {healthFactorText}
+          // </Typography>
+
+          <HealthFactorNumber
+            value={healthFactor}
+            variant="main12"
+            sx={{ color: 'common.white' }}
+          />
         }
         bottomText={
           <Trans>
@@ -111,14 +117,21 @@ export const LiquidationRiskParametresInfoModal = ({
           <Trans>Your current loan to value based on your collateral supplied.</Trans>
         }
         topValue={
-          <Typography
-            variant="detail2"
-            color="text.buttonText"
-            textTransform={'uppercase'}
-            whiteSpace={'nowrap'}
-          >
-            {ltvText}
-          </Typography>
+          // <Typography
+          //   variant="detail2"
+          //   color="text.buttonText"
+          //   textTransform={'uppercase'}
+          //   whiteSpace={'nowrap'}
+          // >
+          //   {ltvText}
+          // </Typography>
+          <FormattedNumber
+            value={loanToValue}
+            percent
+            variant="main12"
+            color="common.white"
+            symbolsColor="common.white"
+          />
         }
         bottomText={
           <Trans>

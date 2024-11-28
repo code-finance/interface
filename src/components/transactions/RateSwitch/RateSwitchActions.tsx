@@ -11,6 +11,7 @@ export type RateSwitchActionsProps = {
   isWrongNetwork: boolean;
   currentRateMode: InterestRate;
   blocked: boolean;
+  underlyingAssetTon?: string | number;
 };
 
 export const RateSwitchActions = ({
@@ -18,6 +19,7 @@ export const RateSwitchActions = ({
   isWrongNetwork,
   currentRateMode,
   blocked,
+  underlyingAssetTon,
 }: RateSwitchActionsProps) => {
   const swapBorrowRateMode = useRootStore((state) => state.swapBorrowRateMode);
 
@@ -38,6 +40,8 @@ export const RateSwitchActions = ({
         currentRateMode === InterestRate.Variable ? InterestRate.Stable : InterestRate.Variable,
     },
     skip: blocked,
+    typeAction: 'isRateSwitch',
+    underlyingAssetTon: underlyingAssetTon,
   });
 
   return (

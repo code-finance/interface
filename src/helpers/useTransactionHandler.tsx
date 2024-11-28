@@ -37,7 +37,7 @@ interface UseTransactionHandlerProps {
   underlyingAssetTon?: string | number;
   usageAsCollateral?: boolean;
   poolJettonWalletAddress?: string;
-  typeAction?: 'isWithdraw' | 'isCollateral';
+  typeAction?: 'isWithdraw' | 'isCollateral' | 'isRateSwitch';
   decimals?: number;
 }
 
@@ -99,10 +99,11 @@ export const useTransactionHandler = ({
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
   const { walletAddressTonWallet } = useTonConnectContext();
-  const { actionToggleCollateralTonNetwork, actionSendWithdrawTonNetwork } = useTonTransactions(
-    walletAddressTonWallet,
-    String(underlyingAssetTon)
-  );
+  const {
+    actionToggleCollateralTonNetwork,
+    actionSendWithdrawTonNetwork,
+    actionSendSwapRateModeTonNetwork,
+  } = useTonTransactions(walletAddressTonWallet, String(underlyingAssetTon));
   const { getYourSupplies, getPoolContractGetReservesData, isConnectNetWorkTon } =
     useAppDataContext();
 
@@ -334,7 +335,7 @@ export const useTransactionHandler = ({
         } catch (error) {
           console.log('error Withdraw--------------', error);
         }
-      } else if ((typeAction = 'isCollateral')) {
+      } else if (typeAction === 'isCollateral') {
         const resToggle = await actionToggleCollateralTonNetwork(Boolean(usageAsCollateral));
 
         await Promise.all([
@@ -367,6 +368,42 @@ export const useTransactionHandler = ({
             loading: false,
             success: resToggle.success,
           });
+        }
+      } else if (typeAction === 'isRateSwitch') {
+        try {
+          const res = await actionSendSwapRateModeTonNetwork(eventTxInfo?.previousState);
+          await Promise.all([
+            retryPromiseFunction(
+              async () => await getPoolContractGetReservesData(true),
+              MAX_ATTEMPTS,
+              1000
+            ),
+            retryPromiseFunction(async () => await getYourSupplies(), MAX_ATTEMPTS, 1000),
+          ]);
+          if (!res.success) {
+            const error = {
+              name: 'Error switch rate Ton',
+              message: `${res?.message}`,
+            };
+            const parsedError = getErrorTextFromError(
+              error,
+              TxAction.GAS_ESTIMATION,
+              res?.blocking
+            );
+            setTxError(parsedError);
+            setMainTxState({
+              txHash: undefined,
+              loading: false,
+            });
+          } else if (res.success) {
+            setMainTxState({
+              txHash: res.txHash,
+              loading: false,
+              success: res.success,
+            });
+          }
+        } catch (error) {
+          console.log('error switch rate--------------', error);
         }
       } else {
         console.log(typeAction);

@@ -691,7 +691,7 @@ export const marketsData: {
       collateralRepay: true,
       debtSwitch: false,
       withdrawAndSwitch: false,
-      switch: false,
+      switch: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '',
@@ -714,7 +714,7 @@ export const marketsData: {
       collateralRepay: true,
       debtSwitch: false,
       withdrawAndSwitch: false,
-      switch: false,
+      switch: true,
     },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '',

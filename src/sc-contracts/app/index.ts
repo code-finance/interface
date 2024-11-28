@@ -440,6 +440,24 @@ export class App {
     });
   }
 
+  async sendSwapRateMode(
+    via: Sender,
+    underlyingAddress: Address,
+    interestRateMode: InterestRateMode
+  ) {
+    let poolJWAddress: Address;
+    if (underlyingAddress.equals(this.pool.address)) {
+      poolJWAddress = this.pool.address;
+    } else {
+      const minter = this.minter(underlyingAddress);
+      poolJWAddress = await minter.getWalletAddress(this.pool.address);
+    }
+    return this.pool.sendSwapRateMode(via, {
+      poolJWAddress: poolJWAddress,
+      interestRateMode,
+    });
+  }
+
   async getReserveData(underlyingAddress: Address) {
     const minter = this.minter(underlyingAddress);
     const poolJWAddress = await minter.getWalletAddress(this.pool.address);

@@ -20,6 +20,7 @@ export abstract class Op {
   static INIT_RESERVE = 0x36e5ebcb;
   static SET_USE_RESERVE_AS_COLLATERAL = 0xab476844;
   static SWAP = 0x9f404c0a;
+  static SWAP_RATE_MODE = 0xb3fdbde;
 }
 
 export abstract class Errors {
