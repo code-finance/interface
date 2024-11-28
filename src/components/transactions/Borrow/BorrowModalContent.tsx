@@ -40,6 +40,11 @@ import {
 import { BorrowActions } from './BorrowActions';
 import { BorrowAmountWarning } from './BorrowAmountWarning';
 import { ParameterChangewarning } from './ParameterChangewarning';
+import { Row } from 'src/components/primitives/Row';
+import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
@@ -48,73 +53,73 @@ export enum ErrorType {
   NOT_ENOUGH_BORROWED,
 }
 
-// interface BorrowModeSwitchProps {
-//   interestRateMode: InterestRate;
-//   setInterestRateMode: (value: InterestRate) => void;
-//   variableRate: string;
-//   stableRate: string;
-// }
+interface BorrowModeSwitchProps {
+  interestRateMode: InterestRate;
+  setInterestRateMode: (value: InterestRate) => void;
+  variableRate: string;
+  stableRate: string;
+}
 
-// const BorrowModeSwitch = ({
-//   setInterestRateMode,
-//   interestRateMode,
-//   variableRate,
-//   stableRate,
-// }: BorrowModeSwitchProps) => {
-//   return (
-//     <Row
-//       caption={
-//         <APYTypeTooltip
-//           text={<Trans>Borrow APY rate</Trans>}
-//           key="APY type_modal"
-//           variant="description"
-//           iconSize={18}
-//         />
-//       }
-//       captionVariant="body7"
-//       captionColor="text.secondary"
-//       mb={5}
-//       flexDirection="column"
-//       align="flex-start"
-//     >
-//       <StyledTxModalToggleGroup
-//         color="standard"
-//         value={interestRateMode}
-//         exclusive
-//         onChange={(_, value) => setInterestRateMode(value)}
-//         sx={{ mt: 2 }}
-//       >
-//         <StyledTxModalToggleButton
-//           value={InterestRate.Variable}
-//           sx={{ minWidth: 'auto !important' }}
-//         >
-//           <Typography variant="body7">
-//             <Trans>Variable</Trans>&nbsp;
-//           </Typography>
-//           <FormattedNumber
-//             value={variableRate}
-//             percent
-//             variant="body7"
-//             symbolsVariant="body7"
-//             symbolsColor="inherit"
-//           />
-//         </StyledTxModalToggleButton>
-//         <StyledTxModalToggleButton value={InterestRate.Stable} sx={{ minWidth: 'auto !important' }}>
-//           <Typography variant="body7" sx={{ mr: 1 }}>
-//             <Trans>Stable</Trans>
-//           </Typography>
-//           <FormattedNumber
-//             value={stableRate}
-//             percent
-//             variant="body7"
-//             symbolsVariant="body7"
-//             symbolsColor="inherit"
-//           />
-//         </StyledTxModalToggleButton>
-//       </StyledTxModalToggleGroup>
-//     </Row>
-//   );
-// };
+const BorrowModeSwitch = ({
+  setInterestRateMode,
+  interestRateMode,
+  variableRate,
+  stableRate,
+}: BorrowModeSwitchProps) => {
+  return (
+    <Row
+      caption={
+        <APYTypeTooltip
+          text={<Trans>Borrow APY rate</Trans>}
+          key="APY type_modal"
+          variant="description"
+          iconSize={18}
+        />
+      }
+      captionVariant="body7"
+      captionColor="text.secondary"
+      mb={5}
+      flexDirection="column"
+      align="flex-start"
+    >
+      <StyledTxModalToggleGroup
+        color="standard"
+        value={interestRateMode}
+        exclusive
+        onChange={(_, value) => setInterestRateMode(value)}
+        sx={{ mt: 2 }}
+      >
+        <StyledTxModalToggleButton
+          value={InterestRate.Variable}
+          sx={{ minWidth: 'auto !important' }}
+        >
+          <Typography variant="body7">
+            <Trans>Variable</Trans>&nbsp;
+          </Typography>
+          <FormattedNumber
+            value={variableRate}
+            percent
+            variant="body7"
+            symbolsVariant="body7"
+            symbolsColor="inherit"
+          />
+        </StyledTxModalToggleButton>
+        <StyledTxModalToggleButton value={InterestRate.Stable} sx={{ minWidth: 'auto !important' }}>
+          <Typography variant="body7" sx={{ mr: 1 }}>
+            <Trans>Stable</Trans>
+          </Typography>
+          <FormattedNumber
+            value={stableRate}
+            percent
+            variant="body7"
+            symbolsVariant="body7"
+            symbolsColor="inherit"
+          />
+        </StyledTxModalToggleButton>
+      </StyledTxModalToggleGroup>
+    </Row>
+  );
+};
 
 export const BorrowModalContent = ({
   underlyingAsset,
@@ -255,14 +260,14 @@ export const BorrowModalContent = ({
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
 
-      {/* {poolReserve.stableBorrowRateEnabled  && (
+      {poolReserve.stableBorrowRateEnabled && (
         <BorrowModeSwitch
           interestRateMode={interestRateMode}
           setInterestRateMode={setInterestRateMode}
           variableRate={poolReserve.variableBorrowAPY}
           stableRate={poolReserve.stableBorrowAPY}
         />
-      )} */}
+      )}
 
       <AssetInput
         image={poolReserve.image}
