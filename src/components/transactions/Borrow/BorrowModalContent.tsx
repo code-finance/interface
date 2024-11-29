@@ -6,7 +6,7 @@ import {
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
 // import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 // import { Row } from 'src/components/primitives/Row';
@@ -158,6 +158,10 @@ export const BorrowModalContent = ({
     }
   };
 
+  useEffect(() => {
+    setAmount('');
+  }, [interestRateMode]);
+
   const isMaxSelected = amount === maxAmountToBorrow;
 
   // health factor calculations
@@ -259,7 +263,6 @@ export const BorrowModalContent = ({
   return (
     <>
       {borrowCap.determineWarningDisplay({ borrowCap })}
-
       {poolReserve.stableBorrowRateEnabled && (
         <BorrowModeSwitch
           interestRateMode={interestRateMode}
@@ -268,7 +271,6 @@ export const BorrowModalContent = ({
           stableRate={poolReserve.stableBorrowAPY}
         />
       )}
-
       <AssetInput
         image={poolReserve.image}
         value={amount}
@@ -308,7 +310,6 @@ export const BorrowModalContent = ({
           }
         />
       )}
-
       <TxModalDetails gasLimit={gasLimit}>
         <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
         <DetailsHFLine
@@ -317,7 +318,6 @@ export const BorrowModalContent = ({
           futureHealthFactor={newHealthFactor.toString(10)}
         />
       </TxModalDetails>
-
       {txError && txError.txAction !== TxAction.GAS_ESTIMATION && (
         <GasEstimationError txError={txError} />
       )}
