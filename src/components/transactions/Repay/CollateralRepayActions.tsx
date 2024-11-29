@@ -124,6 +124,7 @@ export const CollateralRepayActions = ({
       skip: loading || !repayAmount || parseFloat(repayAmount) === 0 || blocked,
       spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER ?? '',
       deps: [fromAssetData.symbol, repayWithAmount],
+      rateMode,
     });
 
   return (

@@ -23,6 +23,7 @@ export enum ErrorType {
   NO_BORROWS_YET_USING_THIS_CURRENCY,
   YOU_CANT_BORROW_STABLE_NOW,
   STABLE_INTEREST_TYPE_IS_DISABLED,
+  VARIABLE_STABLE_SMALLER_THAN_SUPPLY,
 }
 
 export const RateSwitchModalContent = ({
@@ -60,6 +61,8 @@ export const RateSwitchModalContent = ({
     blockingError = ErrorType.YOU_CANT_BORROW_STABLE_NOW;
   } else if (InterestRate.Variable === currentRateMode && !poolReserve.stableBorrowRateEnabled) {
     blockingError = ErrorType.STABLE_INTEREST_TYPE_IS_DISABLED;
+  } else if (valueToBigNumber(poolReserve.totalStableDebt).lt(userReserve.underlyingBalance)) {
+    blockingError = ErrorType.VARIABLE_STABLE_SMALLER_THAN_SUPPLY;
   }
 
   // error render handling
@@ -74,6 +77,12 @@ export const RateSwitchModalContent = ({
           <Trans>
             You can not change Interest Type to stable as your borrowings are higher than your
             collateral
+          </Trans>
+        );
+      case ErrorType.VARIABLE_STABLE_SMALLER_THAN_SUPPLY:
+        return (
+          <Trans>
+            {`The total amount of "borrow variable" and "borrow stable" must be greater than the supply of the token itself.`}
           </Trans>
         );
       default:

@@ -58,6 +58,7 @@ interface UseParaSwapTransactionHandlerProps {
   swapOut?: SwapReserveData;
   isMaxSelected?: boolean;
   isConnectNetWorkTon?: boolean;
+  rateMode?: InterestRate;
 }
 
 interface ApprovalProps {
@@ -80,6 +81,7 @@ export const useParaSwapTransactionHandler = ({
   swapIn,
   swapOut,
   isMaxSelected,
+  rateMode,
 }: UseParaSwapTransactionHandlerProps) => {
   const { walletAddressTonWallet } = useTonConnectContext();
   const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
@@ -261,7 +263,7 @@ export const useParaSwapTransactionHandler = ({
           isMaxSelected: isMaxSelected,
           isAToken: false,
           balance: repayAmount || '0',
-          debtType: InterestRate.Variable,
+          debtType: rateMode,
           underlyingAddressCollateral: swapIn?.underlyingAssetTon,
           amountCollateral: repayWithAmount || '0',
           decimalsCollateral: swapOut?.decimals,
