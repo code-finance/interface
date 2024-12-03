@@ -50,6 +50,11 @@ export const RateSwitchModalContent = ({
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
+  const totalBorrows =
+    currentRateMode === InterestRate.Variable
+      ? userReserve.variableBorrows
+      : userReserve.stableBorrows;
+
   if (currentBorrows.eq(0)) {
     blockingError = ErrorType.NO_BORROWS_YET_USING_THIS_CURRENCY;
   } else if (
@@ -61,7 +66,7 @@ export const RateSwitchModalContent = ({
     blockingError = ErrorType.YOU_CANT_BORROW_STABLE_NOW;
   } else if (InterestRate.Variable === currentRateMode && !poolReserve.stableBorrowRateEnabled) {
     blockingError = ErrorType.STABLE_INTEREST_TYPE_IS_DISABLED;
-  } else if (valueToBigNumber(poolReserve.totalStableDebt).lt(userReserve.underlyingBalance)) {
+  } else if (valueToBigNumber(totalBorrows).lt(userReserve.underlyingBalance)) {
     blockingError = ErrorType.VARIABLE_STABLE_SMALLER_THAN_SUPPLY;
   }
 
