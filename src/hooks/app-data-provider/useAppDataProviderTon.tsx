@@ -111,6 +111,7 @@ export const OP_CODE_REPAY = '0x95cded06';
 export const OP_CODE_REPAY_COLLATERAL = '0x5dfd815f';
 export const OP_CODE_WITHDRAW = '0x2572afa4';
 export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
+export const LIQUIDATION = '0x84672e48';
 
 export const defaultRateUSDNotValue = [
   {
