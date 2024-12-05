@@ -203,7 +203,7 @@ export const ACTION_HISTORY: { [key: string]: string } = {
   [OP_CODE_REPAY_COLLATERAL]: 'Repay',
   [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
   [OP_CODE_COLLATERAL_UPDATE]: 'UsageAsCollateral',
-  [LIQUIDATION]: 'LiquidationCall',
+  // [LIQUIDATION]: 'LiquidationCall',
 };
 
 export const defaultUnderlyingAsset = {
