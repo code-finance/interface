@@ -324,7 +324,7 @@ export class App {
 
       // const tonClient = new TonClient4({ endpoint: process.env.API_ENDPOINT_TESTNET ?? '' });
       // const factory = tonClient.open(
-      //     Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST_TESTNET ?? '')),
+      //     Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST ?? '')),
       // );
 
       let assetRepay = Asset.jetton(underlyingAddress);

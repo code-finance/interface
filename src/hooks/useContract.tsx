@@ -4,7 +4,7 @@ import { useTonClient } from 'src/hooks/useTonClient';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { App } from 'src/sc-contracts/app';
 
-import { address_pools, FACTORY_DEDUST_TESTNET } from './app-data-provider/useAppDataProviderTon';
+import { address_pools, FACTORY_DEDUST } from './app-data-provider/useAppDataProviderTon';
 
 export function useContract<T extends Contract>(
   contractAddress: string,
@@ -47,6 +47,6 @@ export function useAppFactoryTON(): App | undefined {
 
   return useAsyncInitialize(async () => {
     if (!client) return;
-    return new App(client, Address.parse(address_pools), Address.parse(FACTORY_DEDUST_TESTNET));
+    return new App(client, Address.parse(address_pools), Address.parse(FACTORY_DEDUST));
   }, [client]);
 }
