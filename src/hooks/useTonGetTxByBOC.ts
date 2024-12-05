@@ -4,8 +4,8 @@ import { useCallback } from 'react';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { retry } from 'ts-retry-promise';
 
-import { API_TON_SCAN_V2 } from './app-data-provider/useAppDataProviderTon';
 import { useTonClientV2 } from './useTonClient';
+import { API_TON_SCAN_V2 } from 'src/helpers/ton-export';
 
 type EventData = {
   event_id: string;

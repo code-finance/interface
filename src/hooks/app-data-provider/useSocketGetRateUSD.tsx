@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import useSocket from 'src/utils/connectSocket';
 import { retry } from 'ts-retry-promise';
 
-import { defaultRateUSDNotValue, MAX_ATTEMPTS_50, URL_API_BE } from './useAppDataProviderTon';
+import { defaultRateUSDNotValue, MAX_ATTEMPTS_50, URL_API_BE } from 'src/helpers/ton-export';
 
 export type WalletBalanceUSD = {
   id: string;

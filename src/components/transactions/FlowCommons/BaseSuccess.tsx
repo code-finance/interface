@@ -4,10 +4,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, Button, Link, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
 import { useModalContext } from 'src/hooks/useModal';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { SCAN_TRANSACTION_TON } from 'src/helpers/ton-export';
 
 export type BaseSuccessTxViewProps = {
   txHash?: string;

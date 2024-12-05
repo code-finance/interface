@@ -13,7 +13,6 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { address_pools } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import {
   maxInputAmountWithSlippage,
   minimumReceivedAfterSlippage,
@@ -38,6 +37,7 @@ import {
 import { ErrorType, useFlashloan } from '../utils';
 import { ParaswapErrorDisplay } from '../Warnings/ParaswapErrorDisplay';
 import { CollateralRepayActions } from './CollateralRepayActions';
+import { address_pools } from 'src/helpers/ton-export';
 
 export function CollateralRepayModalContent({
   poolReserve,

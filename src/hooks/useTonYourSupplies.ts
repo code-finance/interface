@@ -16,9 +16,9 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { sleep } from 'src/utils/rotationProvider';
 import { retry } from 'ts-retry-promise';
 
-import { MAX_ATTEMPTS_50 } from './app-data-provider/useAppDataProviderTon';
 import { FormattedUserReserves } from './pool/useUserSummaryAndIncentives';
 import { useAppTON } from './useContract';
+import { MAX_ATTEMPTS_50 } from 'src/helpers/ton-export';
 
 export interface UseTransactionHandlerTonProps {
   yourAddressWallet: string;

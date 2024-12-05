@@ -3,7 +3,6 @@ import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
 
@@ -11,6 +10,7 @@ import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { unixTimestampToFormattedTime } from './helpers';
 import { ActionFields, TransactionHistoryItem } from './types';
 import CallMadeOutlinedIcon from '@mui/icons-material/CallMadeOutlined';
+import { SCAN_TRANSACTION_TON } from 'src/helpers/ton-export';
 
 function ActionTitle({ action }: { action: string }) {
   return (

@@ -5,7 +5,6 @@ import { OptimalRate, SwapSide } from '@paraswap/sdk';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // import { retry } from 'ts-retry-promise';
-import { address_pools } from '../app-data-provider/useAppDataProviderTon';
 // import { useAppFactoryTON } from '../useContract';
 import {
   convertParaswapErrorMessage,
@@ -18,6 +17,7 @@ import {
   SwapVariant,
   UseSwapProps,
 } from './common';
+import { address_pools } from 'src/helpers/ton-export';
 
 type UseRepayWithCollateralProps = UseSwapProps & {
   swapVariant: SwapVariant;

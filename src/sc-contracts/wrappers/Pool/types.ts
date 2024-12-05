@@ -27,6 +27,8 @@ export type ReserveConfig = {
   debtCeiling: bigint;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: Cell | any;
+  liquidationBonus: number;
+  liquidationProtocolFee: number;
 };
 
 export type RateStrategy = {

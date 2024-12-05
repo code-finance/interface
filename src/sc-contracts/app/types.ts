@@ -22,6 +22,8 @@ export type IReserveConfig = {
   supplyCap: bigint;
   borrowCap: bigint;
   debtCeiling: bigint;
+  liquidationBonus: number;
+  liquidationProtocolFee: number;
 };
 
 export type IRateStrategy = {

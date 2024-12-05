@@ -8,7 +8,6 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { DependencyList, useEffect, useRef, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { retryPromiseFunction } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useTonTransactions } from 'src/hooks/useTonTransactions';
@@ -19,6 +18,7 @@ import { TransactionDetails } from 'src/store/transactionsSlice';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { MAX_ATTEMPTS } from './ton-export';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 

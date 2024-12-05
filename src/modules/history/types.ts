@@ -9,7 +9,7 @@ import {
   OP_CODE_REPAY_COLLATERAL,
   OP_CODE_SUPPLY,
   OP_CODE_WITHDRAW,
-} from 'src/hooks/app-data-provider/useAppDataProviderTon';
+} from 'src/helpers/ton-export';
 
 export type TransactionHistoryItem<T = unknown> = {
   id: string;

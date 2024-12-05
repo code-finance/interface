@@ -15,10 +15,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import {
-  address_pools,
-  SCAN_TRANSACTION_TON,
-} from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { address_pools, SCAN_TRANSACTION_TON } from 'src/helpers/ton-export';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { BROKEN_ASSETS } from 'src/hooks/useReservesHistory';

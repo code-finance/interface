@@ -1,10 +1,9 @@
 import { Address, Contract, OpenedContract } from '@ton/core';
+import { address_pools, FACTORY_DEDUST } from 'src/helpers/ton-export';
 import { useAsyncInitialize } from 'src/hooks/useAsyncInitialize';
 import { useTonClient } from 'src/hooks/useTonClient';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';
 import { App } from 'src/sc-contracts/app';
-
-import { address_pools, FACTORY_DEDUST } from './app-data-provider/useAppDataProviderTon';
 
 export function useContract<T extends Contract>(
   contractAddress: string,
@@ -37,7 +36,7 @@ export function useAppTON(): App | undefined {
   const client = useTonClient();
 
   return useAsyncInitialize(async () => {
-    if (!client) return;
+    if (!client || !address_pools) return;
     return new App(client, Address.parse(address_pools));
   }, [client]);
 }
@@ -46,7 +45,7 @@ export function useAppFactoryTON(): App | undefined {
   const client = useTonClient();
 
   return useAsyncInitialize(async () => {
-    if (!client) return;
+    if (!client || !address_pools) return;
     return new App(client, Address.parse(address_pools), Address.parse(FACTORY_DEDUST));
   }, [client]);
 }

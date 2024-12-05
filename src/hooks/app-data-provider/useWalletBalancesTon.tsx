@@ -7,7 +7,8 @@ import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { retry } from 'ts-retry-promise';
 
 import { useAppTON } from '../useContract';
-import { API_TON_V2, MAX_ATTEMPTS_50, PoolContractReservesDataType } from './useAppDataProviderTon';
+import { PoolContractReservesDataType } from './useAppDataProviderTon';
+import { API_TON_V2, MAX_ATTEMPTS_50 } from 'src/helpers/ton-export';
 import { WalletBalancesMap } from './useWalletBalances';
 
 export interface WalletBalancesTop {

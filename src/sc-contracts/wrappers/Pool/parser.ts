@@ -21,6 +21,8 @@ export function parseReserveConfig(cell: Cell): ReserveConfig {
   const borrowCap = cs.loadCoins();
   const debtCeiling = cs.loadCoins();
   const content = cs.loadRef();
+  const liquidationProtocolFee = cs.loadUint(16);
+  const liquidationBonus = cs.loadUint(16);
 
   return {
     underlyingAddress,
@@ -39,6 +41,8 @@ export function parseReserveConfig(cell: Cell): ReserveConfig {
     borrowCap,
     debtCeiling,
     content,
+    liquidationBonus,
+    liquidationProtocolFee,
   };
 }
 
