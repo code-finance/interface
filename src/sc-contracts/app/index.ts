@@ -136,8 +136,7 @@ export class App {
     underlyingAddress: Address,
     amount: bigint,
     interestRateMode: InterestRateMode,
-    jettons?: Jettons,
-    tonPrice?: string
+    jettons?: Jettons
   ) {
     let poolJWAddress: Address;
     if (underlyingAddress.equals(this.pool.address)) {
@@ -166,7 +165,6 @@ export class App {
       amount,
       isMaxWithdraw,
       jettons,
-      tonPrice,
     }: { amount?: bigint; isMaxWithdraw?: boolean; jettons?: Jettons; tonPrice?: string }
   ) {
     let poolJWAddress: Address;
@@ -256,7 +254,6 @@ export class App {
       amountCollateral,
       underlyingAddressCollateral,
       jettons,
-      tonPrice,
     }: {
       interestRateMode: InterestRateMode;
       isMaxRepay: boolean;
@@ -264,7 +261,6 @@ export class App {
       amountCollateral?: bigint;
       underlyingAddressCollateral?: Address;
       jettons?: Jettons;
-      tonPrice?: string;
     }
   ) {
     if (!via.address) throw new Error('Sender address is required');
@@ -380,8 +376,7 @@ export class App {
     via: Sender,
     underlyingAddress: Address,
     useAsCollateral: boolean,
-    jettons?: Jettons,
-    tonPrice?: string
+    jettons?: Jettons
   ) {
     let poolJWAddress: Address;
 
@@ -404,14 +399,12 @@ export class App {
   async sendSwap(via: Sender, params: ISwapParams) {
     const {
       underlyingAddress,
-      collateralAddress,
       swapPoolAddress,
       collateralVaultAddress,
       interestRateMode,
       isMaxRepay,
       amount,
       jettons,
-      tonPrice,
     } = params;
 
     return this.pool.sendSwap(via, {
