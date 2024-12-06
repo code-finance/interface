@@ -84,6 +84,7 @@ export interface PoolContractReservesDataType {
   walletBalance?: string;
   stableRateBorrowingEnabled?: boolean;
   stableBorrowLastUpdateTimestamp: bigint | string | 0 | number;
+  liquidationBonus: number;
 
   // accruedToTreasury: bigint | 0;
   // image_data?: string | undefined;
@@ -304,10 +305,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const stableBorrowAPR = normalize(stableBorrowRate, RAY_DECIMALS);
           const formattedReserveLiquidationThreshold = normalize(reserveLiquidationThreshold, 4);
           // const formattedEModeLiquidationThreshold = normalize(eModeLiquidationThreshold, 4);
-          // const formattedReserveLiquidationBonus = normalize(
-          //   valueToBigNumber(reserveLiquidationBonus).minus(10 ** LTV_PRECISION),
-          //   4
-          // );
+          const formattedReserveLiquidationBonus = normalize(
+            valueToBigNumber(item.liquidationBonus).minus(10 ** LTV_PRECISION),
+            4
+          );
           // const formattedEModeLiquidationBonus = normalize(
           //   valueToBigNumber(eModeLiquidationBonus).minus(10 ** LTV_PRECISION),
           //   4
@@ -384,7 +385,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             totalLiquidity,
             borrowUsageRatio,
             supplyUsageRatio,
-            formattedReserveLiquidationBonus: '0.075',
+            formattedReserveLiquidationBonus,
             formattedEModeLiquidationBonus: '0.01',
             formattedEModeLiquidationThreshold: formattedReserveLiquidationThreshold,
             formattedEModeLtv: '0',
