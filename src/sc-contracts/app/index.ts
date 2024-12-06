@@ -147,7 +147,7 @@ export class App {
       poolJWAddress = await minter.getWalletAddress(this.pool.address);
     }
 
-    const priceData = jettons ? await getMockPriceData(jettons!, tonPrice) : await getPriceData();
+    const priceData = jettons ? await getMockPriceData() : await getPriceData();
 
     const borrowParams: BorrowParams = {
       poolJWAddress,
@@ -177,7 +177,7 @@ export class App {
       poolJWAddress = await minter.getWalletAddress(this.pool.address);
     }
 
-    const priceData = jettons ? await getPriceData() : await getMockPriceData(jettons!, tonPrice);
+    const priceData = jettons ? await getPriceData() : await getMockPriceData();
 
     const withdrawParams: WithdrawParams = {
       poolJWAddress,

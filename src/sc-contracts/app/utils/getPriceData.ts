@@ -2,7 +2,6 @@ import { Address, beginCell, Dictionary } from '@ton/core';
 import dotenv from 'dotenv';
 import { URL_API_BE } from 'src/helpers/ton-export';
 import { getAssetHash } from './getAssetHash';
-import { Jettons } from '../types';
 
 dotenv.config();
 
