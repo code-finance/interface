@@ -7,6 +7,7 @@ export const API_TON_V2 = process.env.NEXT_PUBLIC_API_TON_V2_TESTNET;
 export const API_TON_V3 = process.env.NEXT_PUBLIC_API_TON_V3_TESTNET;
 export const API_TON_SCAN_V2 = process.env.NEXT_PUBLIC_API_TON_SCAN_V2_TESTNET;
 export const SCAN_TRANSACTION_TON = process.env.NEXT_PUBLIC_SCAN_TRANSACTION_TON_TESTNET;
+export const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_ADDRESS_TREASURY;
 export const URL_API_BE = process.env.NEXT_PUBLIC_URL_API_BE || '';
 export const SCAN_PRICE_TON = process.env.NEXT_PUBLIC_SCAN_PRICE_TON;
 export const URL_PUBLIC = process.env.NEXT_PUBLIC_URL_PUBLIC;
