@@ -164,7 +164,6 @@ export class App {
     {
       amount,
       isMaxWithdraw,
-      jettons,
     }: { amount?: bigint; isMaxWithdraw?: boolean; jettons?: Jettons; tonPrice?: string }
   ) {
     let poolJWAddress: Address;
