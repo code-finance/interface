@@ -351,9 +351,7 @@ export class App {
       if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
         console.log('dedust pool ready');
 
-        const priceData = jettons
-          ? await getMockPriceData(jettons!, tonPrice)
-          : await getPriceData();
+        const priceData = jettons ? await getMockPriceData() : await getPriceData();
 
         let vaultAddress = (await this.factory.getJettonVault(underlyingAddressCollateral)).address;
         if (underlyingAddressCollateral.equals(this.pool.address)) {
@@ -394,7 +392,7 @@ export class App {
       poolJWAddress = await minter.getWalletAddress(this.pool.address);
     }
 
-    const priceData = jettons ? await getMockPriceData(jettons!, tonPrice) : await getPriceData();
+    const priceData = jettons ? await getMockPriceData() : await getPriceData();
 
     return this.pool.sendSetUseReserveAsCollateral(via, {
       useAsCollateral,
@@ -423,7 +421,7 @@ export class App {
       isMaxRepay,
       swapPoolAddress,
       collateralVaultAddress,
-      priceData: jettons ? await getMockPriceData(jettons!, tonPrice) : await getPriceData(),
+      priceData: jettons ? await getMockPriceData() : await getPriceData(),
     });
   }
 

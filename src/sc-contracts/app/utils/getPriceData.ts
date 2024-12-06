@@ -46,7 +46,7 @@ export async function getPriceData() {
   return dict;
 }
 
-export async function getMockPriceData(assets?: Jettons, tonPrice?: string) {
+export async function getMockPriceData() {
   const dict = Dictionary.empty(Dictionary.Keys.BigUint(256), Dictionary.Values.Cell());
   return dict;
 }
