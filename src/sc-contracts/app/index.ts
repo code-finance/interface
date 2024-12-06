@@ -7,7 +7,6 @@ import {
   ReadinessStatus,
 } from '@dedust/sdk';
 import { Address, beginCell, Cell, Sender, toNano } from '@ton/core';
-
 import {
   BorrowParams,
   CustomFactory,
@@ -23,7 +22,7 @@ import {
 } from '../wrappers';
 import { InterestRateMode, TON_METADATA } from './constants';
 import { DeployedContract, IRateStrategy, IReserveConfig, Jettons, Provider } from './types';
-import { getPriceData, openContract } from './utils';
+import { getMockPriceData, getPriceData, openContract } from './utils';
 import { buildJettonOnChainMetadata, readJettonMetadata } from './utils/metadata';
 
 type ISwapParams = {
@@ -35,6 +34,7 @@ type ISwapParams = {
   amount?: bigint;
   isMaxRepay?: boolean;
   jettons?: Jettons;
+  tonPrice?: string;
 };
 
 export class App {
@@ -107,7 +107,6 @@ export class App {
     if (!via.address) throw new Error('Sender address is required');
 
     if (underlyingAddress.equals(this.pool.address)) {
-      console.log('here');
       return this.pool.sendSupply(via, { amount, poolJWAddress: this.pool.address });
     }
 
@@ -137,7 +136,8 @@ export class App {
     underlyingAddress: Address,
     amount: bigint,
     interestRateMode: InterestRateMode,
-    jettons?: Jettons
+    jettons?: Jettons,
+    tonPrice?: string
   ) {
     let poolJWAddress: Address;
     if (underlyingAddress.equals(this.pool.address)) {
@@ -147,7 +147,7 @@ export class App {
       poolJWAddress = await minter.getWalletAddress(this.pool.address);
     }
 
-    const priceData = await getPriceData(this.provider, jettons);
+    const priceData = jettons ? await getMockPriceData(jettons!, tonPrice) : await getPriceData();
 
     const borrowParams: BorrowParams = {
       poolJWAddress,
@@ -166,7 +166,8 @@ export class App {
       amount,
       isMaxWithdraw,
       jettons,
-    }: { amount?: bigint; isMaxWithdraw?: boolean; jettons?: Jettons }
+      tonPrice,
+    }: { amount?: bigint; isMaxWithdraw?: boolean; jettons?: Jettons; tonPrice?: string }
   ) {
     let poolJWAddress: Address;
     if (underlyingAddress.equals(this.pool.address)) {
@@ -176,7 +177,7 @@ export class App {
       poolJWAddress = await minter.getWalletAddress(this.pool.address);
     }
 
-    const priceData = await getPriceData(this.provider, jettons);
+    const priceData = jettons ? await getPriceData() : await getMockPriceData(jettons!, tonPrice);
 
     const withdrawParams: WithdrawParams = {
       poolJWAddress,
@@ -255,6 +256,7 @@ export class App {
       amountCollateral,
       underlyingAddressCollateral,
       jettons,
+      tonPrice,
     }: {
       interestRateMode: InterestRateMode;
       isMaxRepay: boolean;
@@ -262,13 +264,16 @@ export class App {
       amountCollateral?: bigint;
       underlyingAddressCollateral?: Address;
       jettons?: Jettons;
+      tonPrice?: string;
     }
   ) {
     if (!via.address) throw new Error('Sender address is required');
 
-    if (!underlyingAddressCollateral) {
+    console.log('underlyingAddressCollateral', underlyingAddressCollateral);
+    if (underlyingAddressCollateral === undefined) {
       console.log('repay wallet balance');
       if (underlyingAddress.equals(this.pool.address)) {
+        console.log('repay wallet balance 2');
         const poolJWAddress = this.pool.address;
         return this.pool.sendRepay(via, {
           poolJWAddress,
@@ -289,9 +294,7 @@ export class App {
       const FORWARD_PAYLOAD = beginCell()
         .storeUint(REPAY_MESSAGE_OP, 32)
         .storeBit(interestRateMode)
-        .storeBit(useAToken)
         .storeBit(isMaxRepay)
-        .storeCoins(amount)
         .endCell();
 
       return wallet.sendTransfer(
@@ -322,11 +325,6 @@ export class App {
         poolJWCollateral = await minter.getWalletAddress(this.pool.address);
       }
 
-      // const tonClient = new TonClient4({ endpoint: process.env.API_ENDPOINT_TESTNET ?? '' });
-      // const factory = tonClient.open(
-      //     Factory.createFromAddress(Address.parse(process.env.FACTORY_DEDUST ?? '')),
-      // );
-
       let assetRepay = Asset.jetton(underlyingAddress);
       let assetCollateral = Asset.jetton(underlyingAddressCollateral);
 
@@ -345,9 +343,6 @@ export class App {
         assetCollateral = Asset.jetton(underlyingAddressCollateral);
       }
 
-      // const poolSwap = tonClient.open(await this.factory.getPool(PoolType.VOLATILE, [assetCollateral, assetRepay]));
-      // console.log('await poolSwap.getReadinessStatus()', await poolSwap.getReadinessStatus());
-
       const poolSwap = openContract<PoolDD>(
         this.provider,
         await this.factory.getPool(PoolType.VOLATILE, [assetRepay, assetCollateral])
@@ -356,23 +351,15 @@ export class App {
       if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
         console.log('dedust pool ready');
 
-        const priceData = await getPriceData(this.provider, jettons);
+        const priceData = jettons
+          ? await getMockPriceData(jettons!, tonPrice)
+          : await getPriceData();
 
         let vaultAddress = (await this.factory.getJettonVault(underlyingAddressCollateral)).address;
         if (underlyingAddressCollateral.equals(this.pool.address)) {
           vaultAddress = (await this.factory.getNativeVault()).address;
         }
         const swapPoolAddress = poolSwap.address;
-
-        console.log('poolSwap.address', poolSwap.address);
-        console.log('vaultAddress', vaultAddress);
-        // console.log(
-        //   'estimate out=== ',
-        //   await poolSwap.getEstimatedSwapOut({
-        //     assetIn: assetCollateral,
-        //     amountIn: amountCollateral ?? BigInt(0),
-        //   })
-        // );
 
         const repayParams: RepayCollateralParams = {
           poolJWAddress,
@@ -386,8 +373,6 @@ export class App {
           swapPoolAddress,
         };
 
-        console.log('repayParams', repayParams);
-
         return this.pool.sendRepayCollateral(via, repayParams);
       }
     }
@@ -397,7 +382,8 @@ export class App {
     via: Sender,
     underlyingAddress: Address,
     useAsCollateral: boolean,
-    jettons?: Jettons
+    jettons?: Jettons,
+    tonPrice?: string
   ) {
     let poolJWAddress: Address;
 
@@ -408,7 +394,7 @@ export class App {
       poolJWAddress = await minter.getWalletAddress(this.pool.address);
     }
 
-    const priceData = await getPriceData(this.provider, jettons);
+    const priceData = jettons ? await getMockPriceData(jettons!, tonPrice) : await getPriceData();
 
     return this.pool.sendSetUseReserveAsCollateral(via, {
       useAsCollateral,
@@ -427,6 +413,7 @@ export class App {
       isMaxRepay,
       amount,
       jettons,
+      tonPrice,
     } = params;
 
     return this.pool.sendSwap(via, {
@@ -436,7 +423,7 @@ export class App {
       isMaxRepay,
       swapPoolAddress,
       collateralVaultAddress,
-      priceData: await getPriceData(this.provider, jettons),
+      priceData: jettons ? await getMockPriceData(jettons!, tonPrice) : await getPriceData(),
     });
   }
 
@@ -459,8 +446,13 @@ export class App {
   }
 
   async getReserveData(underlyingAddress: Address) {
+    if (underlyingAddress.equals(this.pool.address)) {
+      return this.pool.getReserveData(this.pool.address);
+    }
+
     const minter = this.minter(underlyingAddress);
     const poolJWAddress = await minter.getWalletAddress(this.pool.address);
+
     return this.pool.getReserveData(poolJWAddress);
   }
 
@@ -474,6 +466,7 @@ export class App {
 
   async getUserData(ownerAddress: Address) {
     const userAddress = await this.pool.getUserAddress(ownerAddress);
+    console.log('userAddress', userAddress);
     return this.user(userAddress).getUserData();
   }
 
