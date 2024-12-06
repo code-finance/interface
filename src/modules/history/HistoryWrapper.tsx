@@ -121,6 +121,25 @@ export const HistoryWrapper = () => {
           underlyingAsset: reserveAsset,
           name: reserveName,
         };
+      } else if (action === 'LiquidationCall') {
+        item.pool = {
+          id: poolId,
+        };
+        item.collateralReserve = {
+          symbol: item.symbol,
+          decimals: item.decimals,
+          underlyingAsset: reserveAsset,
+          name: reserveName,
+        };
+        item.principalReserve = {
+          symbol: item.symbolLiquidation,
+          decimals: item.decimalsLiquidation,
+          underlyingAsset:
+            defaultUnderlyingAsset[item.symbolLiquidation as keyof typeof defaultUnderlyingAsset],
+          name: defaultNameAsset[item.symbolLiquidation as keyof typeof defaultNameAsset],
+        };
+        item.collateralAmount = item.amount;
+        item.principalAmount = item.amountLiquidation;
       } else {
         console.log('Item not match with action: ', item);
       }
@@ -131,7 +150,6 @@ export const HistoryWrapper = () => {
           '1';
       }
       const iconSymbol = item.symbol;
-      console.log('iconSymboliconSymboliconSymbol', iconSymbol);
       return { ...item, action, iconSymbol, toState: collateralStatus, assetPriceUSD };
     });
 
