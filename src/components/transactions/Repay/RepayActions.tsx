@@ -9,7 +9,6 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { MAX_ATTEMPTS } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { retryPromiseFunction } from 'src/hooks/paraswap/common';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
@@ -24,6 +23,7 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { MAX_ATTEMPTS } from 'src/helpers/ton-export';
 
 export interface RepayActionProps extends BoxProps {
   amountToRepay: string;

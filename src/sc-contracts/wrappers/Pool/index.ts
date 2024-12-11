@@ -71,7 +71,7 @@ export class Pool implements Contract {
   async sendSupply(provider: ContractProvider, via: Sender, params: SupplyParams) {
     const body = SupplyParamsToCell(params);
     await provider.internal(via, {
-      value: params.amount + toNano('0.1'),
+      value: params.amount + toNano('0.15'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -80,7 +80,7 @@ export class Pool implements Contract {
   async sendBorrow(provider: ContractProvider, via: Sender, params: BorrowParams) {
     const body = BorrowParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.15'),
+      value: toNano('0.2'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -89,7 +89,7 @@ export class Pool implements Contract {
   async sendWithdraw(provider: ContractProvider, via: Sender, params: WithdrawParams) {
     const body = WithdrawParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.15'),
+      value: toNano('0.2'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -98,7 +98,7 @@ export class Pool implements Contract {
   async sendRepay(provider: ContractProvider, via: Sender, params: RepayParams) {
     const body = RepayParamsToCell(params);
     await provider.internal(via, {
-      value: params.amount + toNano('0.1'),
+      value: params.amount + toNano('0.15'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -123,7 +123,7 @@ export class Pool implements Contract {
     params: RepayCollateralParams
   ) {
     await provider.internal(via, {
-      value: toNano('0.5'),
+      value: toNano('0.55'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: RepayCollateralParamsToCell(params),
     });
@@ -139,7 +139,7 @@ export class Pool implements Contract {
 
   async sendSwapRateMode(provider: ContractProvider, via: Sender, params: SwapRateModeParams) {
     await provider.internal(via, {
-      value: toNano('0.05'),
+      value: toNano('0.1'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: SwapRateModeParamsToCell(params),
     });

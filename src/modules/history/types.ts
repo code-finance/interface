@@ -1,5 +1,6 @@
 import {
   address_pools,
+  LIQUIDATION,
   OP_CODE_BORROW,
   OP_CODE_COLLATERAL_UPDATE,
   OP_CODE_REPAY,
@@ -8,7 +9,7 @@ import {
   OP_CODE_REPAY_COLLATERAL,
   OP_CODE_SUPPLY,
   OP_CODE_WITHDRAW,
-} from 'src/hooks/app-data-provider/useAppDataProviderTon';
+} from 'src/helpers/ton-export';
 
 export type TransactionHistoryItem<T = unknown> = {
   id: string;
@@ -202,6 +203,7 @@ export const ACTION_HISTORY: { [key: string]: string } = {
   [OP_CODE_REPAY_COLLATERAL]: 'Repay',
   [OP_CODE_WITHDRAW]: 'RedeemUnderlying',
   [OP_CODE_COLLATERAL_UPDATE]: 'UsageAsCollateral',
+  [LIQUIDATION]: 'LiquidationCall',
 };
 
 export const defaultUnderlyingAsset = {

@@ -1,6 +1,6 @@
 import { Address, beginCell, Cell, Dictionary } from '@ton/core';
 import { KeyPair, mnemonicToPrivateKey } from '@ton/crypto';
-import { URL_API_BE } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { URL_API_BE } from 'src/helpers/ton-export';
 
 export type DataPrice = {
   usd: string;

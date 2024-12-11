@@ -11,7 +11,7 @@ import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SCAN_TRANSACTION_TON } from 'src/hooks/app-data-provider/useAppDataProviderTon';
+import { SCAN_TRANSACTION_TON } from 'src/helpers/ton-export';
 import { useAppTON } from 'src/hooks/useContract';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useTonConnectContext } from 'src/libs/hooks/useTonConnectContext';

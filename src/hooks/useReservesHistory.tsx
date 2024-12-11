@@ -4,10 +4,9 @@
  */
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
+import { URL_API_BE } from 'src/helpers/ton-export';
 import { ESupportedTimeRanges } from 'src/modules/reserve-overview/TimeRangeSelector';
 import { makeCancelable } from 'src/utils/utils';
-
-import { URL_API_BE } from './app-data-provider/useAppDataProviderTon';
 
 export const reserveRateTimeRangeOptions = [
   ESupportedTimeRanges.OneMonth,

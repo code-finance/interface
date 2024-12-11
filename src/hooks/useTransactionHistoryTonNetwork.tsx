@@ -13,11 +13,7 @@ import { useRootStore } from 'src/store/root';
 import { retry } from 'ts-retry-promise';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
-import {
-  address_pools,
-  MAX_ATTEMPTS_50,
-  URL_API_BE,
-} from './app-data-provider/useAppDataProviderTon';
+import { address_pools, MAX_ATTEMPTS_50, URL_API_BE } from 'src/helpers/ton-export';
 
 export const applyTxHistoryFilters = ({
   searchQuery,

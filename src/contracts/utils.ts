@@ -1,11 +1,11 @@
 import { Address, beginCell, Cell, Dictionary, Slice } from '@ton/core';
 import { sha256_sync } from '@ton/crypto';
 import axios from 'axios';
-import { URL_API_BE } from 'src/hooks/app-data-provider/useAppDataProviderTon';
 import { KeyPair, mnemonicToPrivateKey } from 'ton-crypto';
 
 // import { JettonDictValueSerializer } from '../utils/contents/jetton';
 import { makeSnakeCell } from '../helpers/snake-cell';
+import { URL_API_BE } from 'src/helpers/ton-export';
 
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const OFFCHAIN_CONTENT_PREFIX = 0x01;

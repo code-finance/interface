@@ -9,7 +9,7 @@ import {
   defaultRateUSDNotValue,
   SCAN_PRICE_TON,
   SCAN_TRANSACTION_TON,
-} from 'src/hooks/app-data-provider/useAppDataProviderTon';
+} from 'src/helpers/ton-export';
 import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
