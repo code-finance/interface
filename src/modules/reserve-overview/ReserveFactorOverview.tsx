@@ -6,10 +6,13 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { SCAN_TRANSACTION_TON, TREASURY_ADDRESS } from 'src/helpers/ton-export';
+import { address_pools, SCAN_TRANSACTION_TON, TREASURY_ADDRESS } from 'src/helpers/ton-export';
 import { useRootStore } from 'src/store/root';
 import { ExplorerLinkBuilderProps } from 'src/ui-config/networksConfig';
 import { GENERAL } from 'src/utils/mixPanelEvents';
+import { useAppTON } from 'src/hooks/useContract';
+import { Address } from '@ton/core';
+import { useCallback, useEffect, useState } from 'react';
 
 interface ReserveFactorOverviewProps {
   collectorContract: string;
@@ -28,9 +31,29 @@ export const ReserveFactorOverview = ({
 }: ReserveFactorOverviewProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
   const { isTonNetwork } = useAppDataContext();
+  const AppTON = useAppTON();
+  const [explorerLinkTON, setExplorerLinkTON] = useState<string>(`${TREASURY_ADDRESS}`);
+
+  const geAddCollectorContract = useCallback(async () => {
+    if (AppTON && TREASURY_ADDRESS && collectorContract) {
+      if (collectorContract === address_pools) {
+        setExplorerLinkTON(TREASURY_ADDRESS);
+      } else {
+        const add = await AppTON.getJettonWallet(
+          Address.parse(TREASURY_ADDRESS),
+          Address.parse(collectorContract)
+        );
+        setExplorerLinkTON(add.toString());
+      }
+    }
+  }, [AppTON, collectorContract]);
+
+  useEffect(() => {
+    geAddCollectorContract();
+  }, [geAddCollectorContract]);
 
   const explorerLink = isTonNetwork
-    ? `${SCAN_TRANSACTION_TON}/${TREASURY_ADDRESS}`
+    ? `${SCAN_TRANSACTION_TON}/${explorerLinkTON}`
     : explorerLinkBuilder({
         address: collectorContract,
       });

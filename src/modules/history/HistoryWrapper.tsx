@@ -104,6 +104,18 @@ export const HistoryWrapper = () => {
       const reserveAsset = underlyingAsset || 'Unknown Asset';
       const collateralStatus = item.collateralStatus === 'disable' ? false : true;
 
+      let assetPriceUSD = '1';
+      let borrowAssetPriceUSD = '1';
+      if (reservesTon && reservesTon.length) {
+        assetPriceUSD =
+          reservesTon.find((subItem) => subItem.symbol === item.symbol)?.priceInUSD.toString() ??
+          '1';
+        borrowAssetPriceUSD =
+          reservesTon
+            .find((subItem) => subItem.symbol === item.symbolLiquidation)
+            ?.priceInUSD.toString() ?? '1';
+      }
+
       if (
         action === 'Supply' ||
         action === 'Repay' ||
@@ -140,14 +152,10 @@ export const HistoryWrapper = () => {
         };
         item.collateralAmount = item.amount;
         item.principalAmount = item.amountLiquidation;
+        item.collateralAssetPriceUSD = assetPriceUSD;
+        item.borrowAssetPriceUSD = borrowAssetPriceUSD;
       } else {
         console.log('Item not match with action: ', item);
-      }
-      let assetPriceUSD = '1';
-      if (reservesTon && reservesTon.length) {
-        assetPriceUSD =
-          reservesTon.find((subItem) => subItem.symbol === item.symbol)?.priceInUSD.toString() ??
-          '1';
       }
       const iconSymbol = item.symbol;
       return { ...item, action, iconSymbol, toState: collateralStatus, assetPriceUSD };
