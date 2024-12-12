@@ -131,7 +131,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         // Use retry to attempt this block of code if it fails
         await retry(
           async () => {
-            console.log('---------getPoolContractGetReservesData--------try');
+            // console.log('---------getPoolContractGetReservesData--------try');
             // Fetch reserves data from the pool contract
             const reserves = await AppTON.getReservesData();
 
@@ -174,10 +174,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           }
         );
       } catch (error) {
-        console.log(
-          '---------getPoolContractGetReservesData--------Failed to fetch ReservesData:',
-          error
-        );
+        // console.log(
+        //   '---------getPoolContractGetReservesData--------Failed to fetch ReservesData:',
+        //   error
+        // );
         setPoolContractReservesData([]); // Set empty data if failure occurs after retries
       }
     },
@@ -678,7 +678,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       };
     });
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
-      console.log('Assets to supply---------------', address_pools, newReserves);
+      // console.log('Assets to supply---------------', address_pools, newReserves);
       setReservesTon(newReserves);
       sleep(2000);
       setLoading(false);

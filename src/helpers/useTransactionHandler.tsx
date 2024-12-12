@@ -333,7 +333,7 @@ export const useTransactionHandler = ({
             });
           }
         } catch (error) {
-          console.log('error Withdraw--------------', error);
+          console.log('error Withdraw', error);
         }
       } else if (typeAction === 'isCollateral') {
         const resToggle = await actionToggleCollateralTonNetwork(Boolean(usageAsCollateral));
@@ -403,7 +403,7 @@ export const useTransactionHandler = ({
             });
           }
         } catch (error) {
-          console.log('error switch rate--------------', error);
+          console.log('error switch rate', error);
         }
       } else {
         console.log(typeAction);

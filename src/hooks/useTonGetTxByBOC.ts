@@ -141,7 +141,7 @@ export function useTonGetTxByBOC() {
           const timeoutId = setTimeout(() => controller.abort(), 600000); // 10 phút
 
           try {
-            console.log(`Starting request at: ${new Date().toISOString()}`);
+            // console.log(`Starting request at: ${new Date().toISOString()}`);
             const response = await fetch(`${API_TON_SCAN_V2}/events/${txHash}`, {
               signal: controller.signal,
             });
@@ -180,7 +180,7 @@ export function useTonGetTxByBOC() {
               const containsSubstring = jsonString.includes(targetSubstring);
 
               // Output the result
-              console.log(`Contains '${targetSubstring}':`, containsSubstring);
+              // console.log(`Contains '${targetSubstring}':`, containsSubstring);
               return containsSubstring ? false : status;
             } else {
               return status;

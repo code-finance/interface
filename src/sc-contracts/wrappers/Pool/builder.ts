@@ -106,7 +106,7 @@ export function BorrowParamsToCell(config: BorrowParams): Cell {
 
 export function WithdrawParamsToCell(config: WithdrawParams): Cell {
   const { poolJWAddress, amount, isMaxWithdraw, priceData } = config;
-  console.log('sending', poolJWAddress);
+  // console.log('sending', poolJWAddress);
 
   return beginCell()
     .storeUint(Op.WITHDRAW, 32)

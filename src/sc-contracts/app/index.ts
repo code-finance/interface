@@ -195,17 +195,17 @@ export class App {
     let assetOut = Asset.jetton(underlyingAddressOut);
 
     if (underlyingAddressIn.equals(this.pool.address)) {
-      console.log('check 1');
+      // console.log('check 1');
       assetIn = Asset.native();
     } else {
-      console.log('check 2');
+      // console.log('check 2');
       assetIn = Asset.jetton(underlyingAddressIn);
     }
     if (underlyingAddressOut.equals(this.pool.address)) {
-      console.log('check 3');
+      // console.log('check 3');
       assetOut = Asset.native();
     } else {
-      console.log('check 4');
+      // console.log('check 4');
       assetOut = Asset.jetton(underlyingAddressOut);
     }
 
@@ -224,7 +224,7 @@ export class App {
 
     // Loop until amountOutTemp is greater than amountOut
     while (amountOutTemp <= amountOut) {
-      console.log('Current amountInTemp = ', amountInTemp);
+      // console.log('Current amountInTemp = ', amountInTemp);
 
       // Increase amountInTemp by 10%
       amountInTemp = (amountInTemp * incrementFactor) / divisor;
@@ -234,8 +234,8 @@ export class App {
         await poolSwap.getEstimatedSwapOut({ assetIn: assetIn, amountIn: amountInTemp })
       ).amountOut;
 
-      console.log('Updated amountInTemp (after 10% increase) = ', amountInTemp);
-      console.log('Updated amountOutTemp = ', amountOutTemp);
+      // console.log('Updated amountInTemp (after 10% increase) = ', amountInTemp);
+      // console.log('Updated amountOutTemp = ', amountOutTemp);
     }
 
     // Return the final amountInTemp that caused amountOutTemp to exceed amountOut
@@ -264,11 +264,11 @@ export class App {
   ) {
     if (!via.address) throw new Error('Sender address is required');
 
-    console.log('underlyingAddressCollateral', underlyingAddressCollateral);
+    // console.log('underlyingAddressCollateral', underlyingAddressCollateral);
     if (underlyingAddressCollateral === undefined) {
-      console.log('repay wallet balance');
+      // console.log('repay wallet balance');
       if (underlyingAddress.equals(this.pool.address)) {
-        console.log('repay wallet balance 2');
+        // console.log('repay wallet balance 2');
         const poolJWAddress = this.pool.address;
         return this.pool.sendRepay(via, {
           poolJWAddress,
@@ -303,7 +303,7 @@ export class App {
         FORWARD_PAYLOAD
       );
     } else {
-      console.log('repay by collateral');
+      // console.log('repay by collateral');
       let poolJWAddress: Address;
       if (underlyingAddress.equals(this.pool.address)) {
         poolJWAddress = this.pool.address;
@@ -324,17 +324,17 @@ export class App {
       let assetCollateral = Asset.jetton(underlyingAddressCollateral);
 
       if (underlyingAddress.equals(this.pool.address)) {
-        console.log('check 1');
+        // console.log('check 1');
         assetRepay = Asset.native();
       } else {
-        console.log('check 2');
+        // console.log('check 2');
         assetRepay = Asset.jetton(underlyingAddress);
       }
       if (underlyingAddressCollateral.equals(this.pool.address)) {
-        console.log('check 3');
+        // console.log('check 3');
         assetCollateral = Asset.native();
       } else {
-        console.log('check 4');
+        // console.log('check 4');
         assetCollateral = Asset.jetton(underlyingAddressCollateral);
       }
 
@@ -344,7 +344,7 @@ export class App {
       );
 
       if ((await poolSwap.getReadinessStatus()) == ReadinessStatus.READY) {
-        console.log('dedust pool ready');
+        // console.log('dedust pool ready');
 
         const priceData = jettons ? await getMockPriceData() : await getPriceData();
 
@@ -456,7 +456,7 @@ export class App {
 
   async getUserData(ownerAddress: Address) {
     const userAddress = await this.pool.getUserAddress(ownerAddress);
-    console.log('userAddress', userAddress);
+    // console.log('userAddress', userAddress);
     return this.user(userAddress).getUserData();
   }
 

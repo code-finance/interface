@@ -202,7 +202,7 @@ export const RepayActions = ({
             });
           }
         } catch (error) {
-          console.log('error repay--------------', error);
+          console.log('error repay', error);
         }
       } else {
         setMainTxState({ ...mainTxState, loading: true });
