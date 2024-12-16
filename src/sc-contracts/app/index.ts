@@ -283,9 +283,9 @@ export class App {
       const wallet = this.wallet(await minter.getWalletAddress(via.address));
 
       // TODO: Move the following constants to external files
-      const REPAY_MESSAGE_VALUE = toNano(0.2);
+      const REPAY_MESSAGE_VALUE = toNano(0.25);
       const REPAY_MESSAGE_OP = 0x95cded06;
-      const FORWARD_TON_AMOUNT = toNano(0.1);
+      const FORWARD_TON_AMOUNT = toNano(0.15);
       const FORWARD_PAYLOAD = beginCell()
         .storeUint(REPAY_MESSAGE_OP, 32)
         .storeBit(interestRateMode)
