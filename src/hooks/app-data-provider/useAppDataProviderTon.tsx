@@ -370,7 +370,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             stableRateSlope1: item.stableRateSlope1.toString(),
             stableRateSlope2: item.stableRateSlope2.toString(),
             baseStableBorrowRate: stableBorrowRate,
-            baseVariableBorrowRate: '0',
+            baseVariableBorrowRate: item.baseVariableBorrowRate.toString(),
             optimalUsageRatio: item.optimalUsageRatio.toString(),
             eModeCategoryId: 0,
             eModeLtv: baseLTVasCollateral,
