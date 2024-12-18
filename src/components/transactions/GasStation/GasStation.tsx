@@ -40,7 +40,6 @@ export interface GasStationProps {
   disabled?: boolean;
   rightComponent?: ReactNode;
   chainId?: number;
-  isGasLimitTokenTon?: boolean;
 }
 
 export const getGasCosts = (
@@ -63,9 +62,9 @@ export const GasStation: React.FC<GasStationProps> = ({
   disabled,
   rightComponent,
   chainId,
-  isGasLimitTokenTon,
 }) => {
-  const [gasLimitMarketTON, setGasLimitMarketTON] = useState<number | string>('0');
+  const [gasFeeMarketTON, setGasFeeMarketTON] = useState<number | string>('0');
+  const [isGasLimitTokenTON, setIsGasLimitTokenTON] = useState<boolean>(false);
   const { state } = useGasStation();
   const { balanceTokenTONMarket, isConnectNetWorkTon, reserves } = useAppDataContext();
   const [currentChainId, account] = useRootStore((store) => [store.currentChainId, store.account]);
@@ -128,9 +127,15 @@ export const GasStation: React.FC<GasStationProps> = ({
     const gasFee = valueToBigNumber(result?.usd || 0)
       .multipliedBy(fee || 0)
       .toString();
+    const gasFeeFormat = normalize(gasFee, result?.decimal || 9);
+    setGasFeeMarketTON(gasFeeFormat);
 
-    setGasLimitMarketTON(normalize(gasFee, result?.decimal || 9));
-  }, [ExchangeRateListUSD, args, reserves, type]);
+    if (!isJetton && valueToBigNumber(balanceTokenTONMarket).isLessThan(gasFeeFormat)) {
+      setIsGasLimitTokenTON(true);
+    } else {
+      setIsGasLimitTokenTON(false);
+    }
+  }, [ExchangeRateListUSD, args.underlyingAsset, balanceTokenTONMarket, reserves, type]);
 
   const totalGasCostsUsd =
     gasPrice && poolReserves?.baseCurrencyData
@@ -147,10 +152,8 @@ export const GasStation: React.FC<GasStationProps> = ({
       : undefined;
 
   const showNotEnoughFeesTON =
-    (!disabled &&
-      !isContractAddress &&
-      Number(balanceTokenTONMarket) < Number(gasLimitMarketTON)) ||
-    isGasLimitTokenTon;
+    (!disabled && !isContractAddress && Number(balanceTokenTONMarket) < Number(gasFeeMarketTON)) ||
+    isGasLimitTokenTON;
 
   const showNotEnoughFeesMain =
     !disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd);
@@ -177,11 +180,7 @@ export const GasStation: React.FC<GasStationProps> = ({
             <>
               <FormattedNumber
                 value={
-                  isConnectNetWorkTon
-                    ? gasLimitMarketTON
-                    : totalGasCostsUsd
-                    ? totalGasCostsUsd
-                    : '-'
+                  isConnectNetWorkTon ? gasFeeMarketTON : totalGasCostsUsd ? totalGasCostsUsd : '-'
                 }
                 symbol="USD"
                 color="text.subTitle"
