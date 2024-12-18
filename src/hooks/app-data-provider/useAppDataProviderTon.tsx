@@ -85,6 +85,12 @@ export interface PoolContractReservesDataType {
   stableRateBorrowingEnabled?: boolean;
   stableBorrowLastUpdateTimestamp: bigint | string | 0 | number;
   liquidationBonus: number;
+  variableRateSlope1: bigint | string | 0 | number;
+  variableRateSlope2: bigint | string | 0 | number;
+  stableRateSlope1: bigint | string | 0 | number;
+  stableRateSlope2: bigint | string | 0 | number;
+  baseVariableBorrowRate: bigint | string | 0 | number;
+  optimalUsageRatio: bigint | string | 0 | number;
 
   // accruedToTreasury: bigint | 0;
   // image_data?: string | undefined;
@@ -359,13 +365,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             stableDebtLastUpdateTimestamp: 0,
             totalScaledVariableDebt,
             priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
-            variableRateSlope1: stableBorrowRate,
-            variableRateSlope2: '3000000000000000000000000000',
-            stableRateSlope1: '0',
-            stableRateSlope2: '0',
+            variableRateSlope1: item.variableRateSlope1.toString(),
+            variableRateSlope2: item.variableRateSlope2.toString(),
+            stableRateSlope1: item.stableRateSlope1.toString(),
+            stableRateSlope2: item.stableRateSlope2.toString(),
             baseStableBorrowRate: stableBorrowRate,
             baseVariableBorrowRate: '0',
-            optimalUsageRatio: '450000000000000000000000000',
+            optimalUsageRatio: item.optimalUsageRatio.toString(),
             eModeCategoryId: 0,
             eModeLtv: baseLTVasCollateral,
             eModeLiquidationThreshold: reserveLiquidationThreshold,
@@ -445,13 +451,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               stableDebtLastUpdateTimestamp: 0,
               totalScaledVariableDebt,
               priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
-              variableRateSlope1: stableBorrowRate,
-              variableRateSlope2: '3000000000000000000000000000',
-              stableRateSlope1: '0',
-              stableRateSlope2: '0',
+              variableRateSlope1: item.variableRateSlope1.toString(),
+              variableRateSlope2: item.variableRateSlope2.toString(),
+              stableRateSlope1: item.stableRateSlope1.toString(),
+              stableRateSlope2: item.stableRateSlope2.toString(),
               baseStableBorrowRate: stableBorrowRate,
-              baseVariableBorrowRate: '0',
-              optimalUsageRatio: '450000000000000000000000000',
+              baseVariableBorrowRate: item.baseVariableBorrowRate.toString(),
+              optimalUsageRatio: item.optimalUsageRatio.toString(),
               eModeCategoryId: 0,
               eModeLtv: baseLTVasCollateral,
               eModeLiquidationThreshold: reserveLiquidationThreshold,
