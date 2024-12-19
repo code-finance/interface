@@ -37,6 +37,7 @@ import {
   WithdrawParams,
   SwapRateModeParams,
 } from './types';
+import { GAS_FEE_BORROW_TON_NETWORK, GAS_FEE_REPAY_TON_TON_NETWORK } from 'src/helpers/ton-export';
 
 export class Pool implements Contract {
   constructor(readonly address: Address, readonly init?: { code: Cell; data: Cell }) {}
@@ -71,7 +72,7 @@ export class Pool implements Contract {
   async sendSupply(provider: ContractProvider, via: Sender, params: SupplyParams) {
     const body = SupplyParamsToCell(params);
     await provider.internal(via, {
-      value: params.amount + toNano('0.15'),
+      value: params.amount + toNano(GAS_FEE_REPAY_TON_TON_NETWORK),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -80,7 +81,7 @@ export class Pool implements Contract {
   async sendBorrow(provider: ContractProvider, via: Sender, params: BorrowParams) {
     const body = BorrowParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.2'),
+      value: toNano(GAS_FEE_BORROW_TON_NETWORK),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -89,7 +90,7 @@ export class Pool implements Contract {
   async sendWithdraw(provider: ContractProvider, via: Sender, params: WithdrawParams) {
     const body = WithdrawParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.2'),
+      value: toNano(GAS_FEE_BORROW_TON_NETWORK),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -98,7 +99,7 @@ export class Pool implements Contract {
   async sendRepay(provider: ContractProvider, via: Sender, params: RepayParams) {
     const body = RepayParamsToCell(params);
     await provider.internal(via, {
-      value: params.amount + toNano('0.15'),
+      value: params.amount + toNano(GAS_FEE_REPAY_TON_TON_NETWORK),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
@@ -111,7 +112,7 @@ export class Pool implements Contract {
   ) {
     const body = SetUseReserveAsCollateralParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.05'),
+      value: toNano('0.06'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
