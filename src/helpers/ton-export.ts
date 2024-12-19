@@ -24,6 +24,14 @@ export const OP_CODE_WITHDRAW = '0x2572afa4';
 export const OP_CODE_COLLATERAL_UPDATE = '0xab476844';
 export const LIQUIDATION = '0x84672e48';
 
+export const GAS_FEE_SUPPLY_TON_TON_NETWORK = 0.15;
+export const GAS_FEE_SUPPLY_JETTONS_TON_NETWORK = 0.25;
+export const GAS_FEE_BORROW_TON_NETWORK = 0.2;
+export const GAS_FEE_WITHDRAW_TON_NETWORK = 0.2;
+export const GAS_FEE_REPAY_TON_TON_NETWORK = 0.18;
+export const GAS_FEE_REPAY_JETTONS_TON_NETWORK = 0.25;
+export const GAS_FEE_COLLATERAL_TON_NETWORK = 0.25;
+
 export const defaultRateUSDNotValue = [
   {
     id: 'ts-ton',

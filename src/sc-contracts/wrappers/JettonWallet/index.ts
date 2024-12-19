@@ -78,7 +78,7 @@ export class JettonWallet implements Contract {
     forward_ton_amount: bigint,
     forwardPayload: Cell
   ) {
-    console.log('send transfer ---');
+    // console.log('send transfer ---');
     await provider.internal(via, {
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body: JettonWallet.transferMessage(

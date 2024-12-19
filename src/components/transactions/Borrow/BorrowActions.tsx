@@ -166,7 +166,7 @@ export const BorrowActions = React.memo(
               });
             }
           } catch (error) {
-            console.log('error borrow--------------', error);
+            console.log('error borrow', error);
           }
         } else {
           setMainTxState({ ...mainTxState, loading: true });

@@ -160,7 +160,7 @@ export const SupplyActions = React.memo(
               parseUnits(valueToBigNumber(amountToSupply).toFixed(decimals), decimals).toString()
             );
 
-            console.log('resSupplyTon---------', resSupplyTon);
+            // console.log('resSupplyTon---------', resSupplyTon);
 
             await Promise.all([
               retryPromiseFunction(
@@ -195,10 +195,7 @@ export const SupplyActions = React.memo(
               });
             }
           } catch (error) {
-            console.log(
-              'error supply--------------',
-              error instanceof Error ? error.message : error
-            );
+            console.log('error supply', error instanceof Error ? error.message : error);
             setMainTxState({ ...mainTxState, loading: false });
           }
         } else {

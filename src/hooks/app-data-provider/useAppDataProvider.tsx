@@ -74,7 +74,6 @@ export interface AppDataContextType {
   walletBalancesTon: WalletBalancesMap;
   getYourSupplies: () => void;
   getPoolContractGetReservesData: (iSPauseReload?: boolean) => void;
-  gasFeeTonMarketReferenceCurrencyTON: string | number;
   balanceTokenTONMarket: string | number;
   isTonNetwork: boolean;
   isConnectNetWorkTon: boolean;
@@ -98,7 +97,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
     reservesTon,
     loading: loadingReservesTon,
     getPoolContractGetReservesData,
-    gasFeeTonMarketReferenceCurrencyTON,
     balanceTokenTONMarket,
   } = useAppDataProviderTon(ExchangeRateListUSD);
 
@@ -225,7 +223,6 @@ export const AppDataProvider: React.FC = ({ children }) => {
         walletBalancesTon,
         getPoolContractGetReservesData,
         getYourSupplies,
-        gasFeeTonMarketReferenceCurrencyTON,
         balanceTokenTONMarket,
         isTonNetwork,
         isConnectNetWorkTon,

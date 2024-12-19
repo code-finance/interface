@@ -85,6 +85,12 @@ export interface PoolContractReservesDataType {
   stableRateBorrowingEnabled?: boolean;
   stableBorrowLastUpdateTimestamp: bigint | string | 0 | number;
   liquidationBonus: number;
+  variableRateSlope1: bigint | string | 0 | number;
+  variableRateSlope2: bigint | string | 0 | number;
+  stableRateSlope1: bigint | string | 0 | number;
+  stableRateSlope2: bigint | string | 0 | number;
+  baseVariableBorrowRate: bigint | string | 0 | number;
+  optimalUsageRatio: bigint | string | 0 | number;
 
   // accruedToTreasury: bigint | 0;
   // image_data?: string | undefined;
@@ -95,9 +101,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
   const [setAccount] = useRootStore((store) => [store.setAccount, store.currentChainId]);
   const [loading, setLoading] = useState<boolean>(false);
   const [reservesTon, setReservesTon] = useState<DashboardReserve[]>([]);
-  const [gasFeeTonMarketReferenceCurrencyTON, setGasFeeTonMarketReferenceCurrencyTON] = useState<
-    number | string
-  >('0');
   const [balanceTokenTONMarket, setBalanceTokenTONMarket] = useState<number | string>('0');
   const [poolContractReservesData, setPoolContractReservesData] = useState<
     PoolContractReservesDataType[]
@@ -131,7 +134,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         // Use retry to attempt this block of code if it fails
         await retry(
           async () => {
-            console.log('---------getPoolContractGetReservesData--------try');
+            // console.log('---------getPoolContractGetReservesData--------try');
             // Fetch reserves data from the pool contract
             const reserves = await AppTON.getReservesData();
 
@@ -174,10 +177,10 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           }
         );
       } catch (error) {
-        console.log(
-          '---------getPoolContractGetReservesData--------Failed to fetch ReservesData:',
-          error
-        );
+        // console.log(
+        //   '---------getPoolContractGetReservesData--------Failed to fetch ReservesData:',
+        //   error
+        // );
         setPoolContractReservesData([]); // Set empty data if failure occurs after retries
       }
     },
@@ -363,13 +366,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             stableDebtLastUpdateTimestamp: 0,
             totalScaledVariableDebt,
             priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
-            variableRateSlope1: stableBorrowRate,
-            variableRateSlope2: '3000000000000000000000000000',
-            stableRateSlope1: '0',
-            stableRateSlope2: '0',
+            variableRateSlope1: item.variableRateSlope1.toString(),
+            variableRateSlope2: item.variableRateSlope2.toString(),
+            stableRateSlope1: item.stableRateSlope1.toString(),
+            stableRateSlope2: item.stableRateSlope2.toString(),
             baseStableBorrowRate: stableBorrowRate,
-            baseVariableBorrowRate: '0',
-            optimalUsageRatio: '450000000000000000000000000',
+            baseVariableBorrowRate: item.baseVariableBorrowRate.toString(),
+            optimalUsageRatio: item.optimalUsageRatio.toString(),
             eModeCategoryId: 0,
             eModeLtv: baseLTVasCollateral,
             eModeLiquidationThreshold: reserveLiquidationThreshold,
@@ -449,13 +452,13 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
               stableDebtLastUpdateTimestamp: 0,
               totalScaledVariableDebt,
               priceOracle: '0xD6270dAabFe4862306190298C2B48fed9e15C847',
-              variableRateSlope1: stableBorrowRate,
-              variableRateSlope2: '3000000000000000000000000000',
-              stableRateSlope1: '0',
-              stableRateSlope2: '0',
+              variableRateSlope1: item.variableRateSlope1.toString(),
+              variableRateSlope2: item.variableRateSlope2.toString(),
+              stableRateSlope1: item.stableRateSlope1.toString(),
+              stableRateSlope2: item.stableRateSlope2.toString(),
               baseStableBorrowRate: stableBorrowRate,
-              baseVariableBorrowRate: '0',
-              optimalUsageRatio: '450000000000000000000000000',
+              baseVariableBorrowRate: item.baseVariableBorrowRate.toString(),
+              optimalUsageRatio: item.optimalUsageRatio.toString(),
               eModeCategoryId: 0,
               eModeLtv: baseLTVasCollateral,
               eModeLiquidationThreshold: reserveLiquidationThreshold,
@@ -639,14 +642,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
         .multipliedBy(reserve.totalDebt || 0)
         .toString();
 
-      if (dataById?.address === address_pools) {
-        setGasFeeTonMarketReferenceCurrencyTON(
-          valueToBigNumber(formattedPriceInUSD)
-            .multipliedBy(GAS_FEE_TON || 0)
-            .toString()
-        );
-      }
-
       return {
         ...reserve,
         walletBalanceUSD,
@@ -679,7 +674,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       };
     });
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
-      console.log('Assets to supply---------------', address_pools, newReserves);
+      // console.log('Assets to supply---------------', address_pools, newReserves);
       setReservesTon(newReserves);
       sleep(2000);
       setLoading(false);
@@ -696,7 +691,6 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
     loading: loading,
     getPoolContractGetReservesData,
     setReservesTon,
-    gasFeeTonMarketReferenceCurrencyTON,
     balanceTokenTONMarket,
   };
 };
