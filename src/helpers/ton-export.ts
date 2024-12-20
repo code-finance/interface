@@ -11,11 +11,11 @@ export const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_ADDRESS_TREASURY;
 export const URL_API_BE = process.env.NEXT_PUBLIC_URL_API_BE || '';
 export const SCAN_PRICE_TON = process.env.NEXT_PUBLIC_SCAN_PRICE_TON;
 export const URL_PUBLIC = process.env.NEXT_PUBLIC_URL_PUBLIC;
-export const ADDRESS_USDT = process.env.NEXT_PUBLIC_ADDRESS_USDT;
-export const ADDRESS_USDC = process.env.NEXT_PUBLIC_ADDRESS_USDC;
-export const ADDRESS_DAI = process.env.NEXT_PUBLIC_ADDRESS_DAI;
-export const ADDRESS_ST_TON = process.env.NEXT_PUBLIC_ADDRESS_ST_TON;
-export const ADDRESS_TS_TON = process.env.NEXT_PUBLIC_ADDRESS_TS_TON;
+export const ADDRESS_USDT = process.env.NEXT_PUBLIC_ADDRESS_USDT || '';
+export const ADDRESS_USDC = process.env.NEXT_PUBLIC_ADDRESS_USDC || '';
+export const ADDRESS_DAI = process.env.NEXT_PUBLIC_ADDRESS_DAI || '';
+export const ADDRESS_ST_TON = process.env.NEXT_PUBLIC_ADDRESS_ST_TON || '';
+export const ADDRESS_TS_TON = process.env.NEXT_PUBLIC_ADDRESS_TS_TON || '';
 // export const SANDBOX_V4_API_ENDPOINT = 'https://sandbox-v4.tonhubapi.com'; // testnet
 // export const MAINNET_V4_API_ENDPOINT = 'https://mainnet-v4.tonhubapi.com'; // mainnet
 
