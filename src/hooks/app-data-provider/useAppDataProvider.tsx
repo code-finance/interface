@@ -73,6 +73,7 @@ export interface AppDataContextType {
   ghoUserLoadingData: boolean;
   walletBalancesTon: WalletBalancesMap;
   getYourSupplies: () => void;
+  onMatchDataYourSupplies: () => void;
   getPoolContractGetReservesData: (iSPauseReload?: boolean) => void;
   balanceTokenTONMarket: string | number;
   isTonNetwork: boolean;
@@ -106,6 +107,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
     yourSuppliesTon,
     contractUserTon,
     getYourSupplies,
+    onMatchDataYourSupplies,
   } = useTonYourSupplies(walletAddressTonWallet, reservesTon);
 
   const { userSummaryTon, loading: userSummaryLoadingTon } = useUserSummaryAndIncentivesTon(
@@ -223,6 +225,7 @@ export const AppDataProvider: React.FC = ({ children }) => {
         walletBalancesTon,
         getPoolContractGetReservesData,
         getYourSupplies,
+        onMatchDataYourSupplies,
         balanceTokenTONMarket,
         isTonNetwork,
         isConnectNetWorkTon,

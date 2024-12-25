@@ -81,7 +81,8 @@ export const BorrowActions = React.memo(
     const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
     const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
     const { isConnectedTonWallet, walletAddressTonWallet } = useTonConnectContext();
-    const { getPoolContractGetReservesData, getYourSupplies } = useAppDataContext();
+    const { getPoolContractGetReservesData, getYourSupplies, onMatchDataYourSupplies } =
+      useAppDataContext();
 
     const { actionSendBorrowTonNetwork } = useTonTransactions(
       walletAddressTonWallet,
@@ -125,6 +126,7 @@ export const BorrowActions = React.memo(
         if (isConnectedTonWallet) {
           setMainTxState({ ...mainTxState, loading: true });
           try {
+            await onMatchDataYourSupplies();
             const resBorrowTop = await actionSendBorrowTonNetwork(
               parseUnits(
                 valueToBigNumber(amountToBorrow).toFixed(poolReserve.decimals),
