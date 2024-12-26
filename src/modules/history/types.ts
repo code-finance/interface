@@ -1,5 +1,11 @@
 import {
+  ADDRESS_DAI,
   address_pools,
+  ADDRESS_ST_TON,
+  ADDRESS_TS_TON,
+  ADDRESS_USDC,
+  ADDRESS_USDT,
+  ADDRESS_USDT_OLD,
   LIQUIDATION,
   OP_CODE_BORROW,
   OP_CODE_COLLATERAL_UPDATE,
@@ -207,12 +213,12 @@ export const ACTION_HISTORY: { [key: string]: string } = {
 };
 
 export const defaultUnderlyingAsset = {
-  stTON: 'EQCsiCNW3mqOx-GqcpeP1t-0P0z6nzgq1h_n_b10neKKjWFk',
-  tsTON: 'EQD42OQYC4nGc3KbrcKpOKkZMz831WkqDC8fio-pgDUi_oHe',
-  USDC: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
-  USDT: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO', // USDT
-  'USD₮': 'EQCcZvU9dbEQNeCWup5FB7ixsr0K-mRm2fT_ETq6hrFBLVZk',
-  DAI: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
+  stTON: ADDRESS_ST_TON,
+  tsTON: ADDRESS_TS_TON,
+  USDC: ADDRESS_USDC,
+  USDT: ADDRESS_USDT_OLD, // USDT
+  'USD₮': ADDRESS_USDT,
+  DAI: ADDRESS_DAI,
   TON: address_pools,
 };
 

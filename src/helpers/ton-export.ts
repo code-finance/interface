@@ -11,6 +11,12 @@ export const TREASURY_ADDRESS = process.env.NEXT_PUBLIC_ADDRESS_TREASURY;
 export const URL_API_BE = process.env.NEXT_PUBLIC_URL_API_BE || '';
 export const SCAN_PRICE_TON = process.env.NEXT_PUBLIC_SCAN_PRICE_TON;
 export const URL_PUBLIC = process.env.NEXT_PUBLIC_URL_PUBLIC;
+export const ADDRESS_USDT = process.env.NEXT_PUBLIC_ADDRESS_USDT || '';
+export const ADDRESS_USDT_OLD = process.env.NEXT_PUBLIC_ADDRESS_USDT_OLD || '';
+export const ADDRESS_USDC = process.env.NEXT_PUBLIC_ADDRESS_USDC || '';
+export const ADDRESS_DAI = process.env.NEXT_PUBLIC_ADDRESS_DAI || '';
+export const ADDRESS_ST_TON = process.env.NEXT_PUBLIC_ADDRESS_ST_TON || '';
+export const ADDRESS_TS_TON = process.env.NEXT_PUBLIC_ADDRESS_TS_TON || '';
 // export const SANDBOX_V4_API_ENDPOINT = 'https://sandbox-v4.tonhubapi.com'; // testnet
 // export const MAINNET_V4_API_ENDPOINT = 'https://mainnet-v4.tonhubapi.com'; // mainnet
 
@@ -35,33 +41,33 @@ export const GAS_FEE_COLLATERAL_TON_NETWORK = 0.25;
 export const defaultRateUSDNotValue = [
   {
     id: 'ts-ton',
-    address: 'EQD42OQYC4nGc3KbrcKpOKkZMz831WkqDC8fio-pgDUi_oHe',
+    address: ADDRESS_TS_TON,
     usd: '0',
   },
   {
     id: 'st-ton',
-    address: 'EQCsiCNW3mqOx-GqcpeP1t-0P0z6nzgq1h_n_b10neKKjWFk',
+    address: ADDRESS_ST_TON,
     usd: '0',
   },
   {
     id: 'dai',
-    address: 'EQDPC-_3w_fGyJd-gxxmP8CO_zQC2i3dt-B4D-lNQFwD_YvO',
+    address: ADDRESS_DAI,
     usd: '0',
   },
   {
     id: 'usd-coin',
-    address: 'EQAw6XehcP3V5DEc6uC9F1lUTOLXjElDOpGmNLVZzZPn4E3y',
+    address: ADDRESS_USDC,
     usd: '0',
   },
   // usdt old
   {
     id: 'tether',
-    address: 'EQD1h97vd0waJaIsqwYN8BOffL1JJPExBFCrrIgCHDdLeSjO',
+    address: ADDRESS_USDT_OLD,
     usd: '0',
   },
   {
     id: 'tether',
-    address: 'EQCcZvU9dbEQNeCWup5FB7ixsr0K-mRm2fT_ETq6hrFBLVZk',
+    address: ADDRESS_USDT,
     usd: '0',
   },
   {

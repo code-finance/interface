@@ -297,5 +297,6 @@ export const useTonYourSupplies = (yourAddressWallet: string, reserves: Dashboar
     getYourSupplies,
     contractUserTon,
     loading,
+    onMatchDataYourSupplies,
   };
 };
