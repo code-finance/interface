@@ -112,7 +112,7 @@ export class Pool implements Contract {
   ) {
     const body = SetUseReserveAsCollateralParamsToCell(params);
     await provider.internal(via, {
-      value: toNano('0.06'),
+      value: toNano('0.07'),
       sendMode: SendMode.PAY_GAS_SEPARATELY,
       body,
     });
