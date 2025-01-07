@@ -207,9 +207,11 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const poolJettonWalletAddress = item.poolJWAddress.toString();
           const borrowCap = formatUnits(item.borrowCap || '0', decimals);
           const supplyCap = formatUnits(item.supplyCap || '0', decimals);
-          const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const liquidity = item.liquidity.toString();
+          // const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
           // const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
-          const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const liquidityRate = item.currentLiquidityRate.toString(); // cut from 0 to 27 index
+          // const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
           const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
 
           const supplyAPYCalculate = calculateCompoundedRate({
@@ -217,21 +219,23 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             duration: SECONDS_PER_YEAR,
           });
 
-          const variableBorrowRate = item.currentVariableBorrowRate
-            .toString()
-            .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const variableBorrowRate = item.currentVariableBorrowRate.toString();
+          // const variableBorrowRate = item.currentVariableBorrowRate
+          //   .toString()
+          //   .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
           const variableBorrowAPYCalculate = calculateCompoundedRate({
             rate: variableBorrowRate,
             duration: SECONDS_PER_YEAR,
           });
 
-          const stableBorrowRate = item.currentStableBorrowRate
-            .toString()
-            .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const stableBorrowRate = item.currentStableBorrowRate.toString();
+          // const stableBorrowRate = item.currentStableBorrowRate
+          //   .toString()
+          //   .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
           const variableBorrowRateCalculate = calculateCompoundedRate({
-            rate: stableBorrowRate,
+            rate: variableBorrowRate,
             duration: SECONDS_PER_YEAR,
           });
 
