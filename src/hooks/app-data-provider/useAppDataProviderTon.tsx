@@ -677,7 +677,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       };
     });
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
-      // console.log('Assets to supply---------------', address_pools, newReserves);
+      console.log('Assets to supply---------------', address_pools, newReserves);
       setReservesTon(newReserves);
       sleep(2000);
       setLoading(false);
