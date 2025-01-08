@@ -224,18 +224,18 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           //   .toString()
           //   .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
-          const variableBorrowAPYCalculate = calculateCompoundedRate({
-            rate: variableBorrowRate,
-            duration: SECONDS_PER_YEAR,
-          });
-
           const stableBorrowRate = item.currentStableBorrowRate.toString();
           // const stableBorrowRate = item.currentStableBorrowRate
           //   .toString()
           //   .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
-          const variableBorrowRateCalculate = calculateCompoundedRate({
+          const variableBorrowAPYCalculate = calculateCompoundedRate({
             rate: variableBorrowRate,
+            duration: SECONDS_PER_YEAR,
+          });
+
+          const stableBorrowAPYCalculate = calculateCompoundedRate({
+            rate: stableBorrowRate,
             duration: SECONDS_PER_YEAR,
           });
 
@@ -308,7 +308,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const supplyAPR = normalize(liquidityRate, RAY_DECIMALS);
           const variableBorrowAPY = normalize(variableBorrowAPYCalculate, RAY_DECIMALS);
           const variableBorrowAPR = normalize(variableBorrowRate, RAY_DECIMALS);
-          const stableBorrowAPY = normalize(variableBorrowRateCalculate, RAY_DECIMALS);
+          const stableBorrowAPY = normalize(stableBorrowAPYCalculate, RAY_DECIMALS);
           const stableBorrowAPR = normalize(stableBorrowRate, RAY_DECIMALS);
           const formattedReserveLiquidationThreshold = normalize(reserveLiquidationThreshold, 4);
           // const formattedEModeLiquidationThreshold = normalize(eModeLiquidationThreshold, 4);
