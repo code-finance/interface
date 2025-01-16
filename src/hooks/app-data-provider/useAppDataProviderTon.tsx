@@ -207,31 +207,34 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const poolJettonWalletAddress = item.poolJWAddress.toString();
           const borrowCap = formatUnits(item.borrowCap || '0', decimals);
           const supplyCap = formatUnits(item.supplyCap || '0', decimals);
-          const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const liquidity = item.liquidity.toString();
+          // const liquidity = item.liquidity.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
           // const availableLiquidity = valueToBigNumber(liquidity); // SC confirm = liquidity --> remove .minus(totalBorrowed)
-          const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
-          // const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
-          const stableBorrowRateEnabled = false;
+          const liquidityRate = item.currentLiquidityRate.toString(); // cut from 0 to 27 index
+          // const liquidityRate = item.currentLiquidityRate.toString().substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const stableBorrowRateEnabled = item.stableRateBorrowingEnabled;
 
           const supplyAPYCalculate = calculateCompoundedRate({
             rate: liquidityRate,
             duration: SECONDS_PER_YEAR,
           });
 
-          const variableBorrowRate = item.currentVariableBorrowRate
-            .toString()
-            .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+          const variableBorrowRate = item.currentVariableBorrowRate.toString();
+          // const variableBorrowRate = item.currentVariableBorrowRate
+          //   .toString()
+          //   .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
+
+          const stableBorrowRate = item.currentStableBorrowRate.toString();
+          // const stableBorrowRate = item.currentStableBorrowRate
+          //   .toString()
+          //   .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
 
           const variableBorrowAPYCalculate = calculateCompoundedRate({
             rate: variableBorrowRate,
             duration: SECONDS_PER_YEAR,
           });
 
-          const stableBorrowRate = item.currentStableBorrowRate
-            .toString()
-            .substring(0, RAY_DECIMALS); // cut from 0 to 27 index
-
-          const variableBorrowRateCalculate = calculateCompoundedRate({
+          const stableBorrowAPYCalculate = calculateCompoundedRate({
             rate: stableBorrowRate,
             duration: SECONDS_PER_YEAR,
           });
@@ -305,7 +308,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
           const supplyAPR = normalize(liquidityRate, RAY_DECIMALS);
           const variableBorrowAPY = normalize(variableBorrowAPYCalculate, RAY_DECIMALS);
           const variableBorrowAPR = normalize(variableBorrowRate, RAY_DECIMALS);
-          const stableBorrowAPY = normalize(variableBorrowRateCalculate, RAY_DECIMALS);
+          const stableBorrowAPY = normalize(stableBorrowAPYCalculate, RAY_DECIMALS);
           const stableBorrowAPR = normalize(stableBorrowRate, RAY_DECIMALS);
           const formattedReserveLiquidationThreshold = normalize(reserveLiquidationThreshold, 4);
           // const formattedEModeLiquidationThreshold = normalize(eModeLiquidationThreshold, 4);
@@ -674,7 +677,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
       };
     });
     if (JSON.stringify(newReserves) !== JSON.stringify(reservesTon)) {
-      // console.log('Assets to supply---------------', address_pools, newReserves);
+      console.log('Assets to supply---------------', address_pools, newReserves);
       setReservesTon(newReserves);
       sleep(2000);
       setLoading(false);
