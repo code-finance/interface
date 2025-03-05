@@ -207,12 +207,18 @@ export class Pool implements Contract {
 
     const reserves = [];
     while (configs.remaining && states.remaining && strategies.remaining) {
-      const config = parseReserveConfig(configs.readCell());
-      const state = parseReserveState(states.readCell());
-      const strategy = parseRateStrategy(strategies.readCell());
-      const { metadata } = await readJettonMetadata(config.content);
-      delete config.content;
-      reserves.push({ ...config, ...metadata, ...state, ...strategy });
+      try {
+        const config = parseReserveConfig(configs.readCell());
+        const state = parseReserveState(states.readCell());
+        const strategy = parseRateStrategy(strategies.readCell());
+        const { metadata } = await readJettonMetadata(config.content);
+
+        delete config.content;
+        reserves.push({ ...config, ...metadata, ...state, ...strategy });
+      } catch (error) {
+        console.error('Error in loop:', error);
+        break;
+      }
     }
 
     return reserves;

@@ -559,6 +559,7 @@ export const useAppDataProviderTon = (ExchangeRateListUSD: WalletBalanceUSD[]) =
             currentVariableBorrowRate: item.currentVariableBorrowRate.toString(),
             description: item.description,
             isBorrowingEnabled: false,
+            // isBorrowingEnabled: item.isBorrowingEnabled,
             // stableBorrowIndex: item.stableBorrowIndex.toString(),
             averageStableBorrowRate: item.averageStableBorrowRate.toString(),
             isJetton: item.isJetton,
