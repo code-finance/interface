@@ -17,7 +17,7 @@ export const ADDRESS_USDC = process.env.NEXT_PUBLIC_ADDRESS_USDC || '';
 export const ADDRESS_DAI = process.env.NEXT_PUBLIC_ADDRESS_DAI || '';
 export const ADDRESS_ST_TON = process.env.NEXT_PUBLIC_ADDRESS_ST_TON || '';
 export const ADDRESS_TS_TON = process.env.NEXT_PUBLIC_ADDRESS_TS_TON || '';
-export const NETWORK_TON = process.env.NEXT_PUBLIC_NETWORK_TON === 'testnet';
+export const NETWORK_TON = process.env.NEXT_PUBLIC_NETWORK_TON || 'testnet';
 // export const SANDBOX_V4_API_ENDPOINT = 'https://sandbox-v4.tonhubapi.com'; // testnet
 // export const MAINNET_V4_API_ENDPOINT = 'https://mainnet-v4.tonhubapi.com'; // mainnet
 
